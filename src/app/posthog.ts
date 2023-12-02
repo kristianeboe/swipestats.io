@@ -4,7 +4,7 @@ import { PostHog } from "posthog-node";
 
 export default function PostHogClient() {
   const posthogClient = new PostHog(env.NEXT_PUBLIC_POSTHOG_KEY, {
-    host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
+    host: "https://app.posthog.com", // I think it's ok to go straight to app.posthog.com here instead of VERCEL_URL because we are on the server. No need for rewrite
     flushAt: 1,
     flushInterval: 0,
   });

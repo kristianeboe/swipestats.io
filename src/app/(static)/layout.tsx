@@ -6,6 +6,8 @@ import { TRPCReactProvider } from "@/trpc/react";
 import { Suspense } from "react";
 import { PHProvider, PostHogPageview } from "../providers";
 
+export const dynamic = "force-static"; // alt: export const revalidate = 0; https://github.com/vercel/next.js/issues/49205
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
