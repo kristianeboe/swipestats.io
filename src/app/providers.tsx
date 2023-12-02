@@ -7,7 +7,8 @@ import { env } from "@/env";
 
 if (typeof window !== "undefined") {
   posthog.init(env.NEXT_PUBLIC_POSTHOG_KEY, {
-    api_host: "https://app.posthog.com", //`${process.env.VERCEL_URL}/ingest` ?? "http://localhost:3000/ingest", // "https://app.posthog.com"
+    api_host:
+      `${process.env.VERCEL_URL}/ingest` ?? "http://localhost:3000/ingest", // "https://app.posthog.com"
     capture_pageview: false, // Disable automatic pageview capture, as we capture manually
   });
 }
