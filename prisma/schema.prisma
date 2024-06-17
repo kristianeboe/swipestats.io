@@ -194,8 +194,7 @@ model Match {
     otherMessageTypeCount Int
 
     primaryLanguage String?
-    languages       String[] // TODO implement
-    // todo languages Json[] with percentage pr language
+    languages       Json    @default("[]")
 
     initialMessageAt DateTime?
     lastMessageAt    DateTime?
@@ -247,7 +246,10 @@ model Message {
     to          Int
     sentDate    DateTime
     sentDateRaw String
-    content     String
+    contentRaw  String // html
+
+    content   String // parsed html
+    charCount Int // based on parsed html
 
     messageType MessageType
     type        String? // text, image, gif // also like from Hinge
@@ -255,9 +257,11 @@ model Message {
 
     order Int
 
-    language             String?
-    timeSinceLastMessage BigInt // 0 indicates it's an opener // distance in unix milliseconds
-    emotionScore         Int? // todo future implement
+    language String?
+
+    timeSinceLastMessage         BigInt // 0 indicates it's an opener // distance in unix milliseconds
+    timeSinceLastMessageRelative String? // null indicates it's an opener // distance in human readable format
+    emotionScore                 Int? // todo future implement
 
     matchId String
     match   Match  @relation(fields: [matchId], references: [id])

@@ -5,9 +5,12 @@ import {
   type MessageType,
   type Prisma,
 } from "@prisma/client";
-import { differenceInDays } from "date-fns";
+import { differenceInDays, formatDistance } from "date-fns";
 import { nanoid } from "nanoid";
 import { omit } from "radash";
+import he from "he";
+
+// import { getFrancLanguageContext } from "./language.service";
 
 export function createMessagesAndMatches(
   tjms: TinderJsonMatch[],
@@ -45,12 +48,22 @@ export function createMessagesAndMatches(
         }, // as Record<MessageType, number>,
       );
 
+      // const messagesConjoined = tjm.messages
+      //   .map((msg) => he.decode(msg.message))
+      //   .join("\n");
+
+      // const { mostProbableLanguage, topTrigrams } =
+      //   getFrancLanguageContext(messagesConjoined);
+
       return {
         id: nanoid(),
         tinderMatchId: tjm.match_id,
         tinderProfileId,
 
         totalMessageCount: totalMessageCount,
+
+        // languageFranc: mostProbableLanguage,
+        // languageTrigramsFranc: topTrigrams,
 
         order: i,
 
@@ -83,19 +96,30 @@ export function createMessagesAndMatches(
 
         const messageType = getMessageType(msg);
 
+        const content = he.decode(msg.message);
+        // const { mostProbableLanguage, topTrigrams } =
+        //   getFrancLanguageContext(content);
+
         return {
           messageType,
           to: msg.to,
           sentDate: new Date(msg.sent_date),
           sentDateRaw: msg.sent_date,
-          content: msg.message,
+          content,
+          charCount: content.length,
+          contentRaw: msg.message,
           type: msg.type ? String(msg.type) : undefined,
+          // primaryLanguage: mostProbableLanguage,
+          // languagesSpoken: topTrigrams,
           gifUrl: msg.fixed_height,
           matchId: match.id!,
           tinderProfileId,
           order: i,
 
           timeSinceLastMessage: timeSinceLastMessage,
+          timeSinceLastMessageRelative: timestampOfLastMessage
+            ? formatDistance(timestampOfLastMessage, timestampOfCurrentMessage)
+            : null,
           // language: "", // TODO
           //emotionScore: 0
         };

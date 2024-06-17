@@ -10,7 +10,7 @@ import { Toaster } from "@/app/_components/ui/sonner";
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--font-inter",
 });
 import { SpeedInsights } from "@vercel/speed-insights/next";
 

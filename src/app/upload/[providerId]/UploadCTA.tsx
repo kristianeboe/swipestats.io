@@ -260,11 +260,13 @@ export function UploadCTA(props: {
               fluid
               disabled={disableUpload}
             >
-              {disableUpload
-                ? "Confirm your data in the profile card"
-                : loading
-                  ? "This can take upwards of 20 seconds"
-                  : "Upload"}
+              {lastDayOnAppSameAsLastUpload
+                ? "No need to upload"
+                : disableUpload
+                  ? "Confirm your data in the profile card"
+                  : loading
+                    ? "This can take upwards of 20 seconds"
+                    : "Upload"}
             </Button>
 
             {/* <Link href="/insights/" passHref={true}>
