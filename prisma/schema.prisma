@@ -1,0 +1,731 @@
+generator client {
+    provider        = "prisma-client-js"
+    previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+    // directUrl = env("DATABASE_URL_UNPOOLED")
+}
+
+model User {
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?
+    accounts      Account[]
+    sessions      Session[]
+
+    // bumbleProfile                   Json?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+
+    hingeProfile  HingeProfile?
+    tinderProfile TinderProfile?
+
+    activeOnTinder                    Boolean  @default(true)
+    activeOnHinge                     Boolean  @default(false)
+    activeOnBumble                    Boolean  @default(false)
+    activeOnHappen                    Boolean  @default(false)
+    activeOnOther                     Boolean  @default(false)
+    otherDatingApps                   String[]
+    howHotDoYouPerceiveYourselfToBe   Int?
+    howHappyDoYouPerceiveYourselfToBe Int?
+
+    originalAnonymizedFiles OriginalAnonymizedFile[]
+    events                  Event[]
+
+    customData CustomData?
+}
+
+// Necessary for Next auth
+model Account {
+    id                String  @id @default(cuid())
+    userId            String
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String? // @db.Text
+    access_token      String? // @db.Text
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String? // @db.Text
+    session_state     String?
+    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([provider, providerAccountId])
+}
+
+model Session {
+    id           String   @id @default(cuid())
+    sessionToken String   @unique
+    userId       String
+    expires      DateTime
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
+}
+
+// Happy with the above
+
+// self reported
+
+// some events like Covid will be hard coded with the same datatype
+// 
+
+enum EventType {
+    RELATIONSHIP
+    FRIENDS_WITH_BENEFITS
+    TRIP
+    SUBSCRIPTION
+    NEW_LOCATION // switched city
+    NEW_PHOTOS
+    NEW_FIRST_PHOTO
+    NEW_JOB
+    GRADUATION
+
+    // computed
+    JOINED_SWIPESTATS // NEEDED?
+    JOINED_TINDER
+    JOINED_HINGE
+}
+
+model Event {
+    id   String @id @default(cuid())
+    name String // Tinder Gold, GF name, Carnaval in Rio
+
+    type      EventType
+    startDate DateTime
+    endDate   DateTime?
+
+    location   Location? @relation(fields: [locationId], references: [id])
+    locationId String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+
+    user   User?   @relation(fields: [userId], references: [id])
+    userId String?
+}
+
+model Job {
+    jobId            String   @id @default(cuid())
+    title            String
+    titleDisplayed   Boolean
+    company          String?
+    companyDisplayed Boolean?
+
+    tinderProfileId String
+    tinderProfile   TinderProfile @relation(fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
+}
+
+model School {
+    schooldId   String  @id @default(cuid())
+    id          String?
+    displayed   Boolean
+    name        String
+    type        String?
+    year        String?
+    metadata_id String?
+
+    // maybe turn into a many relation TinderProfile[]
+    tinderProfileId String
+    tinderProfile   TinderProfile @relation(fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
+}
+
+model TinderUsage {
+    dateStamp       DateTime
+    dateStampRaw    String
+    tinderProfileId String
+    tinderProfile   TinderProfile @relation(fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
+
+    // from tinder json
+    appOpens         Int
+    matches          Int
+    swipeLikes       Int
+    swipeSuperLikes  Int
+    swipePasses      Int
+    swipesCombined   Int
+    messagesReceived Int
+    messagesSent     Int
+
+    //   noMatches Int // ? No they don't make sense here on a pr day basis // swipeLikes - matches
+    //   noChats   Int // matches - (messagesSent, 0 or 1)
+
+    // computed
+    matchRate        Float // matches / swipeLikes
+    likeRate         Float //  swipeLikes / (swipeLikes + swipePasses)
+    messagesSentRate Float //  messagesSent / (messagesReceived + messagesSent)
+
+    responseRate   Float // messagesSent / messagesReceived
+    engagementRate Float // (swipeLikes + swipePasses + messagesSent) / (appOpens)
+
+    dateIsMissingFromOriginalData Boolean // true when the day is not in the tinder GDPR data
+    daysSinceLastActive           Int?
+
+    activeUser             Boolean
+    activeUserInLast7Days  Boolean
+    activeUserInLast14Days Boolean
+    activeUserInLast30Days Boolean
+
+    @@id([dateStampRaw, tinderProfileId])
+}
+
+model Match {
+    id String @id @default(cuid())
+
+    messages Message[]
+
+    order Int
+
+    totalMessageCount     Int
+    textCount             Int
+    gifCount              Int
+    gestureCount          Int
+    otherMessageTypeCount Int
+
+    primaryLanguage String?
+    languages       String[] // TODO implement
+    // todo languages Json[] with percentage pr language
+
+    initialMessageAt DateTime?
+    lastMessageAt    DateTime?
+    engagementScore  Int? // future todo: implement
+
+    tinderMatchId String?
+
+    tinderProfileId String?
+    tinderProfile   TinderProfile? @relation(fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
+
+    // hinge
+    weMet     Json?
+    like      Json?
+    match     Json?
+    // chats  // chats are turned into messages
+    likedAt   DateTime?
+    matchedAt DateTime?
+
+    hingeProfileId String?
+    hingeProfile   HingeProfile? @relation(fields: [hingeProfileId], references: [hingeId], onDelete: Cascade)
+
+    @@unique([tinderProfileId, order])
+    @@unique([hingeProfileId, order])
+}
+
+// maybe rename in the future
+model HingeBlock {
+    id String @id @default(cuid())
+
+    blockType    String // seems to only be remove
+    dateStamp    DateTime
+    dateStampRaw String
+
+    hingeId      String
+    hingeProfile HingeProfile @relation(fields: [hingeId], references: [hingeId], onDelete: Cascade)
+}
+
+enum MessageType {
+    TEXT
+    GIF
+    GESTURE // ❤️, 👏
+    ACTIVITY // seems like regular texts, maybe it's for sending a like on match for platinum users
+    CONTACT_CARD
+    OTHER // se TS interface Message in TinderDataJSON.ts
+}
+
+model Message {
+    id          String   @id @default(cuid())
+    to          Int
+    sentDate    DateTime
+    sentDateRaw String
+    content     String
+
+    messageType MessageType
+    type        String? // text, image, gif // also like from Hinge
+    gifUrl      String?
+
+    order Int
+
+    language             String?
+    timeSinceLastMessage BigInt // 0 indicates it's an opener // distance in unix milliseconds
+    emotionScore         Int? // todo future implement
+
+    matchId String
+    match   Match  @relation(fields: [matchId], references: [id])
+
+    tinderProfileId String?
+    tinderProfile   TinderProfile? @relation(fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
+
+    hingeProfileId String?
+    hingeProfile   HingeProfile? @relation(fields: [hingeProfileId], references: [hingeId], onDelete: Cascade)
+}
+
+model RawMessages {
+    messages        Json
+    tinderProfileId String        @id @unique
+    tinderProfile   TinderProfile @relation(fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
+}
+
+model RawUsage {
+    tinderProfileId     String        @id @unique
+    matchesRaw          Json
+    appOpensRaw         Json
+    swipeLikesRaw       Json
+    swipePassesRaw      Json
+    messagesSentRaw     Json
+    messagesReceivedRaw Json
+    tinderProfile       TinderProfile @relation(fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
+}
+
+enum Gender {
+    MALE
+    FEMALE
+    OTHER
+    MORE // Custom
+    UNKNOWN
+}
+
+model TinderProfile {
+    computed Boolean @default(false) // If the profile has been generated / comptued by swipestats
+
+    tinderId  String   @id @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+
+    birthDate      DateTime
+    ageAtUpload    Int
+    ageAtLastUsage Int
+    createDate     DateTime
+    activeTime     DateTime? // last seen?
+    gender         Gender
+    genderStr      String
+    bio            String?
+    city           String?
+    country        String?
+    region         String?
+    // location Location?
+
+    user_interests      Json? // array
+    interests           Json?
+    sexual_orientations Json?
+    descriptors         Json? // array
+
+    instagramConnected Boolean
+    spotifyConnected   Boolean
+
+    jobTitle          String?
+    jobTitleDisplayed Boolean?
+    company           String?
+    companyDisplayed  Boolean?
+    school            String?
+    schoolDisplayed   Boolean?
+    college           Json?
+    jobsRaw           Json?
+    schoolsRaw        Json?
+    educationLevel    String?
+
+    ageFilterMin    Int
+    ageFilterMax    Int
+    interestedIn    Gender
+    interestedInStr String
+    genderFilter    Gender
+    genderFilterStr String
+
+    swipestatsVersion SwipestatsVersion
+
+    // purchases         Json? Moved to subscription events
+    premiumSubscriptionPeriods Json? // array 
+    customData                 CustomData?
+    jobs                       Job[]
+    schools                    School[]
+
+    rawUsage RawUsage?
+    usage    TinderUsage[]
+
+    rawMessages RawMessages?
+
+    userId String  @unique
+    user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    media  Media[]
+
+    matches Match[]
+
+    firstDayOnApp       DateTime
+    lastDayOnApp        DateTime
+    daysInProfilePeriod Int // days between first and last day on app // also used for average calculations
+
+    profileMeta        ProfileMeta?  @relation("profileMeta") // byDay? // has aggregate numbers by day, but also acts as the main profileMeta with various totals
+    profileMetaByMonth ProfileMeta[] @relation("profileMetaByMonth")
+    profileMetaByYear  ProfileMeta[] @relation("profileMetaByYear")
+
+    messages Message[]
+}
+
+model HingeProfile {
+    hingeId   String   @id @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+
+    birthDate   DateTime
+    ageAtUpload Int
+    createDate  DateTime
+
+    heightCentimeters         Int
+    gender                    String
+    genderIdentity            String
+    genderIdentityDisplayed   Boolean
+    ethnicities               String[]
+    ethnicitiesDisplayed      Boolean
+    religions                 String[]
+    religionsDisplayed        Boolean
+    workplaces                String[]
+    workplacesDisplayed       Boolean
+    jobTitle                  String
+    jobTitleDisplayed         Boolean
+    schools                   String[]
+    schoolsDisplayed          Boolean
+    hometowns                 String[]
+    hometownsDisplayed        Boolean
+    smoking                   Boolean
+    smokingDisplayed          Boolean
+    drinking                  Boolean
+    drinkingDisplayed         Boolean
+    marijuana                 Boolean
+    marijuanaDisplayed        Boolean
+    drugs                     Boolean
+    drugsDisplayed            Boolean
+    children                  String
+    childrenDisplayed         Boolean
+    familyPlans               String
+    familyPlansDisplayed      Boolean
+    educationAttained         String
+    politics                  String
+    politicsDisplayed         Boolean
+    instagramDisplayed        Boolean
+    datingIntention           String
+    datingIntentionDisplayed  Boolean
+    languagesSpoken           String
+    languagesSpokenDisplayed  Boolean
+    relationshipType          String
+    relationshipTypeDisplayed Boolean
+    selfieVerified            Boolean
+
+    // preferences
+    distanceMilesMax     Int
+    ageMin               Int
+    ageMax               Int
+    ageDealbreaker       Boolean
+    heightMin            Int //?? 92
+    heightMax            Int //?? 214
+    heightDealbreaker    Boolean
+    genderPreference     String
+    ethnicityPreference  String[]
+    ethnicityDealbreaker Boolean
+    religionPreference   String[]
+    religionDealbreaker  Boolean
+
+    prompts      HingePrompt[]
+    media        Media[]
+    userId       String        @unique
+    user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+    customData   CustomData?
+    messages     Message[]
+    hingeBlocks  HingeBlock[]
+    hingeMatches Match[]
+    profileMeta  ProfileMeta?
+}
+
+model HingePrompt {
+    id              String   @id @default(cuid())
+    type            String
+    prompt          String
+    answerText      String
+    createdPromptAt DateTime
+    updatedPromptAt DateTime
+
+    hingeProfile   HingeProfile? @relation(fields: [hingeProfileId], references: [hingeId], onDelete: Cascade)
+    hingeProfileId String?
+}
+
+model CustomData {
+    id                    String @id @default(cuid())
+    messaged              Int? // computed? // rename to talked to?
+    goodConversation      Int?
+    movedToADifferentApp  Int?
+    phoneNumbersExchanged Int?
+    dateArranged          Int?
+    dateAttended          Int?
+    dateNoShow            Int?
+    dateCreepy            Int?
+    dateNoSpark           Int?
+    onlyOneDate           Int? // computed by dateAttended - multipleDates
+    oneNightStands        Int?
+    multipleDates         Int?
+    sleptWithOnFirstDate  Int?
+    sleptWithEventually   Int?
+    friendsWithBenefits   Int?
+    justFriends           Int?
+    relationshipsStarted  Int?
+    cohabitation          Int?
+    married               Int?
+    divorce               Int?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+
+    tinderProfileId String?        @unique
+    tinderProfile   TinderProfile? @relation(fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
+
+    hingeProfileId String?       @unique
+    hingeProfile   HingeProfile? @relation(fields: [hingeProfileId], references: [hingeId], onDelete: Cascade)
+
+    // self reported stats from outside the apps
+    userId String? @unique
+    user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// computed and added based on Usage data
+// the function used to calculate this can be reused on different timeframes
+// this model could also be extended to account for different timeframes and be stored on the profile like "profileMeta", profileMetaByMonth, profileMetaByWeek, profileMetaByYear
+model ProfileMeta {
+    id String @id @default(cuid())
+
+    from DateTime
+    to   DateTime
+
+    daysInProfilePeriod Int
+    daysActiveOnApp     Int
+    daysNotActiveOnApp  Int // daysInProfilePeriod - daysActiveOnApp
+
+    // totals
+    appOpensTotal         Int
+    swipeLikesTotal       Int
+    swipeSuperLikesTotal  Int
+    swipePassesTotal      Int
+    combinedSwipesTotal   Int // swipeLikesTotal + swipePassesTotal
+    messagesSentTotal     Int // usage
+    messagesReceivedTotal Int
+    matchesTotal          Int
+    noMatchesTotal        Int // swipeLikesTotal - matchesTotal
+
+    youSwipedOnXDays                              Int
+    youMessagedOnXDays                            Int
+    onXDaysYouOpenedTheAppButDidNotSwipe          Int
+    onXDaysYouOpenedTheAppButDidNotMessage        Int
+    onXDaysYouOpenedTheAppButDidNotSwipeOrMessage Int
+
+    // rates
+    matchRateForPeriod        Float // matches / swipeLikes
+    likeRateForPeriod         Float //  swipeLikes / (swipeLikes + swipePasses)
+    likeRatio                 Float // swipeLikes / swipePasses
+    messagesSentRateForPeriod Float //  messagesSent / (messagesReceived + messagesSent)
+    messagesSentRatio         Float // messagesSent / messagesReceived 
+
+    // averages and medians
+    averageMatchesPerDay          Int
+    averageAppOpensPerDay         Int
+    averageSwipeLikesPerDay       Int
+    averageSwipePassesPerDay      Int
+    averageMessagesSentPerDay     Int
+    averageMessagesReceivedPerDay Int
+
+    averageSwipesPerDay Int
+    // TODO maybe expand with PerDayOnActiveDays
+
+    medianMatchesPerDay          Int
+    medianAppOpensPerDay         Int
+    medianSwipeLikesPerDay       Int
+    medianSwipePassesPerDay      Int
+    medianMessagesSentPerDay     Int
+    medianMessagesReceivedPerDay Int
+
+    medianSwipesPerDay Int
+
+    // peaks
+    peakMatches              Int
+    peakMatchesDate          DateTime
+    peakAppOpens             Int
+    peakAppOpensDate         DateTime
+    peakSwipeLikes           Int
+    peakSwipeLikesDate       DateTime
+    peakSwipePasses          Int
+    peakSwipePassesDate      DateTime
+    peakMessagesSent         Int
+    peakMessagesSentDate     DateTime
+    peakMessagesReceived     Int
+    peakMessagesReceivedDate DateTime
+
+    peakCombinedSwipes     Int
+    peakCombinedSwipesDate DateTime
+
+    dailySwipeLimitsReached Int // X days where you swiped 100 times or more
+
+    longestActivePeriodInDays   Int
+    longestInactivePeriodInDays Int
+
+    nrOfConversations             Int
+    nrOfConversationsWithMessages Int
+
+    longestConversation                     Int // in messages
+    longestConversationInDays               Int
+    messageCountInLongestConversationInDays Int
+
+    longestConversationInDaysWithLessThan2WeeksBetweenMessages               Int
+    messageCountInLongestConversationInDaysWithLessThan2WeeksBetweenMessages Int
+
+    averageConversationMessageCount Int
+    averageConversationLengthInDays Int
+
+    medianConversationMessageCount Int
+    medianConversationLengthInDays Int
+
+    nrOfOneMessageConversations      Int
+    percentOfOneMessageConversations Int
+
+    nrOfGhostingsAfterInitialMatch Int // consider renaming
+
+    // relations
+
+    tinderProfileId String?        @unique
+    tinderProfile   TinderProfile? @relation(name: "profileMeta", fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
+
+    hingeProfileId String?       @unique
+    hingeProfile   HingeProfile? @relation(fields: [hingeProfileId], references: [hingeId], onDelete: Cascade)
+
+    tinderProfileIdByMonth String?
+    tinderProfileByMonth   TinderProfile? @relation(name: "profileMetaByMonth", fields: [tinderProfileIdByMonth], references: [tinderId], onDelete: Cascade)
+    tinderProfileIdByYear  String?
+    tinderProfileByYear    TinderProfile? @relation(name: "profileMetaByYear", fields: [tinderProfileIdByYear], references: [tinderId], onDelete: Cascade)
+}
+
+// todo compute after migrations
+// model Comparison {
+
+// }
+
+model Media {
+    id       String   @id @default(cuid())
+    type     String // photo / video
+    prompt   String?
+    caption  String?
+    url      String
+    fromSoMe Boolean?
+
+    hingeProfile   HingeProfile? @relation(fields: [hingeProfileId], references: [hingeId], onDelete: Cascade)
+    hingeProfileId String?
+
+    tinderProfile   TinderProfile? @relation(fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
+    tinderProfileId String?
+}
+
+model Location {
+    id              String @id @default(cuid())
+    latitude        Float
+    longitude       Float
+    country         String
+    countryShort    String
+    adminArea1      String
+    adminArea1Short String
+    adminArea2      String
+    cbsa            String
+    locality        String
+    sublocality     String
+    neighborhood    String
+    postalCode      String // Int?
+    postalSuffix    String // Int?
+    locationSource  String // google
+
+    events Event[]
+
+    // expand to tinderProfile and hingeProfile
+}
+
+model OriginalAnonymizedFile {
+    id                String            @id @default(cuid())
+    dataProvider      DataProvider
+    swipestatsVersion SwipestatsVersion
+    file              Json
+    userId            String
+    user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+    createdAt         DateTime          @default(now())
+    updatedAt         DateTime          @default(now())
+}
+
+model Waitlist {
+    id           String       @id @default(cuid())
+    email        String
+    dataProvider DataProvider
+    createdAt    DateTime     @default(now())
+    updatedAt    DateTime     @default(now())
+}
+
+model EmailReminder {
+    id           String       @id @default(cuid())
+    email        String
+    dataProvider DataProvider
+    remindOn     DateTime
+
+    doubleOptedIn Boolean @default(false)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+}
+
+enum DataProvider {
+    TINDER
+    HINGE
+    BUMBLE
+    GRINDER
+    BADOO
+    BOO
+    OK_CUPID
+    FEELD
+}
+
+enum SwipestatsVersion {
+    SWIPESTATS_1
+    SWIPESTATS_2
+    SWIPESTATS_3
+}
+
+model Newsletter {
+    id                      String  @id @default(cuid())
+    email                   String  @db.VarChar(255)
+    emailHash               String  @unique
+    threeDayReminder        Boolean
+    doubleOptInConfirmation Boolean @default(false)
+
+    globalUnsubscribe     Boolean @default(false)
+    receiveDatingTips     Boolean @default(true)
+    receiveProductUpdates Boolean @default(true)
+    receiveResearchNews   Boolean @default(true)
+
+    sequence Int @default(0)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    sequences Sequence[]
+}
+
+model Sequence {
+    id   String @id @default(cuid())
+    name String
+
+    opened  DateTime?
+    clicked DateTime?
+
+    createdAt DateTime @default(now())
+
+    newsletterId String
+    newsletter   Newsletter @relation(fields: [newsletterId], references: [id])
+}
