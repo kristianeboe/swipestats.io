@@ -148,7 +148,7 @@ export function UploadProfileCard({
                 Last recorded date: {format(lastDayOnApp, "MMMM d, yyyy")}
               </p>
 
-              {genderDataAutoUpdated && (
+              {genderDataAutoUpdated ? (
                 <Alert className="mt-4">
                   <ShieldAlert className="h-4 w-4" />
                   <AlertTitle>
@@ -182,7 +182,7 @@ export function UploadProfileCard({
                     </Button>
                   </AlertDescription>
                 </Alert>
-              )}
+              ) : null}
 
               <br />
               <p className="text-base text-gray-700">
