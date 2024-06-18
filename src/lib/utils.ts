@@ -2,6 +2,7 @@ import type { TinderProfile } from "@prisma/client";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { type TinderJsonGender } from "./interfaces/TinderDataJSON";
+import { differenceInYears } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -27,35 +28,6 @@ export function cn(...inputs: ClassValue[]) {
 //   )
 // }
 
-export function getAgeFromBirthdate(birthDateInput: Date | string): number {
-  let birthDate: Date;
-
-  // Attempt to handle the birthDateInput as a Date object or as a string
-  if (typeof birthDateInput === "string") {
-    birthDate = new Date(birthDateInput);
-    // Validate the resulting Date object
-    if (isNaN(birthDate.getTime())) {
-      throw new Error("Invalid birth date string provided.");
-    }
-  } else if (birthDateInput instanceof Date) {
-    birthDate = birthDateInput;
-  } else {
-    throw new Error(
-      "Invalid birth date input. Must be a Date object or a valid date string.",
-    );
-  }
-
-  const today = new Date();
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const m = today.getMonth() - birthDate.getMonth();
-
-  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-    age--;
-  }
-
-  return age;
-}
-
 export function getISOMonthKey(date: Date): string {
   return date.toISOString().slice(0, 7);
 }
@@ -68,7 +40,7 @@ export function getLabelForTinderProfile(tinderProfile: TinderProfile) {
   return (
     tinderProfile.gender +
     ", " +
-    getAgeFromBirthdate(new Date(tinderProfile.birthDate))
+    differenceInYears(new Date(), new Date(tinderProfile.birthDate))
   );
 }
 

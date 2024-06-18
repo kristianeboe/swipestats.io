@@ -34,6 +34,9 @@ model User {
     howHotDoYouPerceiveYourselfToBe   Int?
     howHappyDoYouPerceiveYourselfToBe Int?
 
+    timeZone String? // timeZone and country at upload time / location
+    country  String?
+
     originalAnonymizedFiles OriginalAnonymizedFile[]
     events                  Event[]
 
@@ -176,6 +179,7 @@ model TinderUsage {
     activeUserInLast7Days  Boolean
     activeUserInLast14Days Boolean
     activeUserInLast30Days Boolean
+    userAgeThisDay         Int
 
     @@id([dateStampRaw, tinderProfileId])
 }
@@ -312,7 +316,8 @@ model TinderProfile {
     activeTime     DateTime? // last seen?
     gender         Gender
     genderStr      String
-    bio            String?
+    bio            String? // decoded html
+    bioOriginal    String?
     city           String?
     country        String?
     region         String?
@@ -347,10 +352,10 @@ model TinderProfile {
     swipestatsVersion SwipestatsVersion
 
     // purchases         Json? Moved to subscription events
-    premiumSubscriptionPeriods Json? // array 
-    customData                 CustomData?
-    jobs                       Job[]
-    schools                    School[]
+    // premiumSubscriptionPeriods Json? // array 
+    customData CustomData?
+    jobs       Job[]
+    schools    School[]
 
     rawUsage RawUsage?
     usage    TinderUsage[]

@@ -13,8 +13,8 @@ const createPrismaClient = () => {
   const adapter = new PrismaNeon(pool);
   return new PrismaClient({
     adapter,
-    log:
-      env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
+    log: ["error"],
+    //env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
   });
 };
 

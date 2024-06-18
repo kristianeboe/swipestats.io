@@ -97,7 +97,7 @@ interface Descriptor {
   visibility: string; // "public" // ?
 }
 
-interface AnonymizedTinderUser extends TinderUserBase {
+export interface AnonymizedTinderUser extends TinderUserBase {
   instagram: boolean;
   spotify: boolean;
 }

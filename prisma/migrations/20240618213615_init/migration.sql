@@ -30,6 +30,8 @@ CREATE TABLE "User" (
     "otherDatingApps" TEXT[],
     "howHotDoYouPerceiveYourselfToBe" INTEGER,
     "howHappyDoYouPerceiveYourselfToBe" INTEGER,
+    "timeZone" TEXT,
+    "country" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -134,6 +136,7 @@ CREATE TABLE "TinderUsage" (
     "activeUserInLast7Days" BOOLEAN NOT NULL,
     "activeUserInLast14Days" BOOLEAN NOT NULL,
     "activeUserInLast30Days" BOOLEAN NOT NULL,
+    "userAgeThisDay" INTEGER NOT NULL,
 
     CONSTRAINT "TinderUsage_pkey" PRIMARY KEY ("dateStampRaw","tinderProfileId")
 );
@@ -234,6 +237,7 @@ CREATE TABLE "TinderProfile" (
     "gender" "Gender" NOT NULL,
     "genderStr" TEXT NOT NULL,
     "bio" TEXT,
+    "bioOriginal" TEXT,
     "city" TEXT,
     "country" TEXT,
     "region" TEXT,
@@ -260,7 +264,6 @@ CREATE TABLE "TinderProfile" (
     "genderFilter" "Gender" NOT NULL,
     "genderFilterStr" TEXT NOT NULL,
     "swipestatsVersion" "SwipestatsVersion" NOT NULL,
-    "premiumSubscriptionPeriods" JSONB,
     "userId" TEXT NOT NULL,
     "firstDayOnApp" TIMESTAMP(3) NOT NULL,
     "lastDayOnApp" TIMESTAMP(3) NOT NULL,

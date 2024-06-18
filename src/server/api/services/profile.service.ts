@@ -2,7 +2,8 @@ import type {
   AnonymizedTinderDataJSON,
   TinderJsonGender,
 } from "@/lib/interfaces/TinderDataJSON";
-import { getAgeFromBirthdate } from "@/lib/utils";
+import he from "he";
+
 import { Gender, type Prisma } from "@prisma/client";
 import {
   type ExpandedUsageValue,
@@ -14,14 +15,20 @@ import { createSubLogger } from "@/lib/tslog";
 import { db } from "@/server/db";
 import { createAggregatedProfileMetas } from "./profile.meta.service";
 import { createMessagesAndMatches } from "./profile.messages.service";
+import { differenceInYears } from "date-fns";
 
 const log = createSubLogger("profile.service");
 
 export async function prismaCreateTinderProfileTxn(params: {
-  userId: string;
+  user: {
+    userId: string;
+    timeZone?: string;
+    country?: string;
+  };
   tinderId: string;
   tinderJson: AnonymizedTinderDataJSON;
 }) {
+  const userId = params.user.userId;
   const tinderJson = params.tinderJson;
 
   const expandedUsageTimeFrame = expandAndAugmentProfileWithMissingDays({
@@ -46,10 +53,11 @@ export async function prismaCreateTinderProfileTxn(params: {
 
   const tinderProfileInput = createSwipestatsTinderProfileInput(
     params.tinderId,
-    params.userId,
+    userId,
     tinderJson,
   );
 
+  const userBirthDate = new Date(tinderJson.User.birth_date);
   const usageInput = expandedUsageTimeFrameEntries.map(([date, meta]) => {
     return computeUsageInput(
       {
@@ -63,6 +71,7 @@ export async function prismaCreateTinderProfileTxn(params: {
       },
       date,
       params.tinderId,
+      userBirthDate,
       meta,
     );
   });
@@ -79,10 +88,12 @@ export async function prismaCreateTinderProfileTxn(params: {
           user: {
             connectOrCreate: {
               where: {
-                id: params.userId, // string just needs to be defined, a cuid is used to create if there is no match
+                id: userId, // string just needs to be defined, a cuid is used to create if there is no match
               },
               create: {
-                id: params.userId,
+                id: userId,
+                timeZone: params.user.timeZone,
+                country: params.user.country,
               },
             },
           },
@@ -90,7 +101,7 @@ export async function prismaCreateTinderProfileTxn(params: {
       });
       log.info("File uploaded", {
         tinderId: params.tinderId,
-        userId: params.userId,
+        userId: userId,
       });
 
       const tinderProfile = await txn.tinderProfile.create({
@@ -213,7 +224,7 @@ export function createSwipestatsTinderProfileInput(
   );
 
   const daysInProfilePeriod = differenceInDays(lastDayOnApp, firstDayOnApp) + 1;
-
+  const userBirthDate = new Date(tinderJson.User.birth_date);
   return {
     user: {
       connect: {
@@ -222,14 +233,15 @@ export function createSwipestatsTinderProfileInput(
     },
     tinderId: tinderId,
 
-    birthDate: tinderJson.User.birth_date,
-    ageAtUpload: getAgeFromBirthdate(tinderJson.User.birth_date),
-    ageAtLastUsage: getAgeFromBirthdate(lastDayOnApp),
+    birthDate: userBirthDate,
+    ageAtUpload: differenceInYears(new Date(), tinderJson.User.birth_date),
+    ageAtLastUsage: differenceInYears(lastDayOnApp, userBirthDate),
     createDate: tinderJson.User.create_date,
     activeTime: tinderJson.User.active_time, // last seen?
     gender: getGenderFromString(tinderJson.User.gender),
     genderStr: tinderJson.User.gender,
-    bio: tinderJson.User.bio,
+    bio: tinderJson.User.bio ? he.decode(tinderJson.User.bio) : null,
+    bioOriginal: tinderJson.User.bio,
     city: tinderJson.User.city?.name,
     region: tinderJson.User.city?.region,
     // create / connect location?
@@ -317,6 +329,7 @@ export function computeUsageInput(
   },
   dateStampRaw: string,
   tinderProfileId: string,
+  userBirthDate: Date,
   meta: ExpandedUsageValue,
 ): Prisma.TinderUsageCreateManyInput {
   const matchRate = params.swipeLikesCount
@@ -345,6 +358,7 @@ export function computeUsageInput(
     : 0;
 
   const dateStamp = new Date(dateStampRaw);
+  const userAgeThisDay = differenceInYears(dateStamp, userBirthDate);
 
   return {
     appOpens: params.appOpensCount,
@@ -375,6 +389,7 @@ export function computeUsageInput(
     activeUserInLast7Days: meta.activeUserInLast7Days,
     activeUserInLast14Days: meta.activeUserInLast14Days,
     activeUserInLast30Days: meta.activeUserInLast30Days,
+    userAgeThisDay,
   };
 }
 

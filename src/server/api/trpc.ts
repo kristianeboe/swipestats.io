@@ -13,6 +13,7 @@ import { ZodError } from "zod";
 
 import { getServerAuthSession } from "@/server/auth";
 import { db } from "@/server/db";
+import { type NextRequest } from "next/server";
 
 /**
  * 1. CONTEXT
@@ -26,8 +27,17 @@ import { db } from "@/server/db";
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: { headers: Headers }) => {
+export const createTRPCContext = async (opts: {
+  headers: Headers;
+  geo: NextRequest["geo"];
+  ip?: string;
+}) => {
   const session = await getServerAuthSession();
+
+  console.log("opt", {
+    geo: opts.geo,
+    ip: opts.ip,
+  });
 
   return {
     db,

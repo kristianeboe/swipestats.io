@@ -3,18 +3,8 @@ import {
   type SwipestatsProfilePayload,
   type TinderJsonGender,
 } from "@/lib/interfaces/TinderDataJSON";
-import {
-  getAgeFromBirthdate,
-  getGenderDisplay,
-  isGenderDataUnknown,
-} from "@/lib/utils";
-import {
-  type Dispatch,
-  type SetStateAction,
-  useState,
-  useEffect,
-  useCallback,
-} from "react";
+import { getGenderDisplay, isGenderDataUnknown } from "@/lib/utils";
+import { type Dispatch, type SetStateAction, useState } from "react";
 import { RadioGroup, RadioGroupItem } from "@/app/_components/ui/radio-group";
 import { Label } from "@/app/_components/ui/label";
 
@@ -118,7 +108,8 @@ export function UploadProfileCard({
             <>
               <div className="flex items-baseline">
                 <div className="text-xl font-bold">
-                  {`${getGenderDisplay(userData.gender)}, ${getAgeFromBirthdate(
+                  {`${getGenderDisplay(userData.gender)}, ${differenceInYears(
+                    new Date(),
                     new Date(userData.birth_date),
                   )}`}
                 </div>
@@ -323,11 +314,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/app/_components/ui/form";
-import { toast } from "sonner";
 
-import { type Gender } from "@prisma/client";
 import { FemaleAvatar, MaleAvatar, UnknownAvatar } from "./AvatarSVGs";
-import { format } from "date-fns";
+import { differenceInYears, format } from "date-fns";
 import { getFirstAndLastDayOnApp } from "@/lib/profile.utils";
 import {
   Alert,

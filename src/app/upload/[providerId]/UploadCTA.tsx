@@ -31,6 +31,7 @@ import { toast } from "sonner";
 import { getISODayKey, isGenderDataUnknown } from "@/lib/utils";
 import { getFirstAndLastDayOnApp } from "@/lib/profile.utils";
 import { formatDistanceToNow } from "date-fns";
+import { IANA_TIME_ZONE_TO_COUNTRY } from "@/lib/timeZoneToCountry";
 
 export function UploadCTA(props: {
   swipestatsProfilePayload: SwipestatsProfilePayload;
@@ -42,6 +43,12 @@ export function UploadCTA(props: {
   const userData = props.swipestatsProfilePayload.anonymizedTinderJson.User;
   const [acceptedTerms, _setAcceptedTerms] = useState(true);
   const [loading, setLoading] = useState(false);
+
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const country =
+    IANA_TIME_ZONE_TO_COUNTRY[
+      timeZone as keyof typeof IANA_TIME_ZONE_TO_COUNTRY
+    ];
 
   const existingProfileQuery = api.profile.get.useQuery(
     {
@@ -88,7 +95,14 @@ export function UploadCTA(props: {
     });
     try {
       if (!existingProfileQuery.data) {
-        profileCreateMutation.mutate(props.swipestatsProfilePayload);
+        // TODO consider merging create and update into an upsert
+        profileCreateMutation.mutate({
+          tinderId: props.swipestatsProfilePayload.tinderId,
+          anonymizedTinderJson:
+            props.swipestatsProfilePayload.anonymizedTinderJson,
+          timeZone,
+          country,
+        });
 
         // track("Profile Created", { // ? moved to server
         //   tinderId: tinderProfile.tinderId,
@@ -105,7 +119,13 @@ export function UploadCTA(props: {
         //     router.push('/insights/?id=' + tinderProfile.tinderId);
         //   });
       } else {
-        profileUpdateMutation.mutate(props.swipestatsProfilePayload);
+        profileUpdateMutation.mutate({
+          tinderId: props.swipestatsProfilePayload.tinderId,
+          anonymizedTinderJson:
+            props.swipestatsProfilePayload.anonymizedTinderJson,
+          timeZone,
+          country,
+        });
       }
     } catch (error) {
       setLoading(false);

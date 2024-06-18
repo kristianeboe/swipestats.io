@@ -89,7 +89,12 @@ export const profileRouter = createTRPCRouter({
 
   create: publicProcedure
     .input(
-      z.object({ tinderId: z.string().min(1), anonymizedTinderJson: z.any() }),
+      z.object({
+        tinderId: z.string().min(1),
+        anonymizedTinderJson: z.any(),
+        timeZone: z.string().optional(),
+        country: z.string().optional(),
+      }),
     )
     .mutation(async ({ ctx, input }): Promise<TinderProfile> => {
       const existingProfile = await ctx.db.tinderProfile.findUnique({
@@ -116,7 +121,7 @@ export const profileRouter = createTRPCRouter({
       const userId = user?.id ?? nanoid(); // defaults to nanoid
 
       const swipestatsProfile = await prismaCreateTinderProfileTxn({
-        userId,
+        user: { userId, timeZone: input.timeZone, country: input.country },
         tinderId: input.tinderId,
         tinderJson,
       });
@@ -134,7 +139,12 @@ export const profileRouter = createTRPCRouter({
 
   update: publicProcedure
     .input(
-      z.object({ tinderId: z.string().min(1), anonymizedTinderJson: z.any() }),
+      z.object({
+        tinderId: z.string().min(1),
+        anonymizedTinderJson: z.any(),
+        timeZone: z.string().optional(),
+        country: z.string().optional(),
+      }),
     )
     .mutation(async ({ ctx, input }): Promise<TinderProfile> => {
       // find existing profile
@@ -186,7 +196,7 @@ export const profileRouter = createTRPCRouter({
         });
 
         await prismaCreateTinderProfileTxn({
-          userId,
+          user: { userId, timeZone: input.timeZone, country: input.country },
           tinderId: input.tinderId,
           tinderJson,
         });
@@ -207,7 +217,7 @@ export const profileRouter = createTRPCRouter({
         log.error("Error updating profile", error);
 
         await prismaCreateTinderProfileTxn({
-          userId,
+          user: { userId, timeZone: input.timeZone, country: input.country },
           tinderId: input.tinderId,
           tinderJson:
             originalAnonymizedFile.file as unknown as AnonymizedTinderDataJSON,

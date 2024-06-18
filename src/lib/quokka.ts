@@ -81,5 +81,3 @@ function consideredActiveUser(
 
   return false;
 }
-
-console.log(consideredActiveUser("2022-02-09", appOpens, 5));
