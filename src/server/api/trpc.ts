@@ -29,7 +29,7 @@ import { type NextRequest } from "next/server";
  */
 export const createTRPCContext = async (opts: {
   headers: Headers;
-  geo: NextRequest["geo"];
+  geo?: NextRequest["geo"];
   ip?: string;
 }) => {
   const session = await getServerAuthSession();
