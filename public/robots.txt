@@ -1,0 +1,28 @@
+# robots.txt for swipestats.io
+
+# Allow all user agents to access everything
+User-agent: *
+Disallow:
+
+# Disallow access to API endpoints (if any)
+User-agent: *
+Disallow: /api/
+
+# Disallow access to Next.js default build directories (if any)
+User-agent: *
+Disallow: /_next/
+Disallow: /static/
+
+
+# Allow Googlebot to access everything except the disallowed sections
+User-agent: Googlebot
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
+
+# Sitemap location
+# Sitemap: https://www.swipestats.io/sitemap.xml
+
+# Crawl delay to prevent server overload (in seconds)
+User-agent: *
+Crawl-delay: 10
