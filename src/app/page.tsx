@@ -58,7 +58,7 @@ const tiers = [
     id: "small-sample",
     href: "mailto:kristian.e.boe@gmail.com?subject=Swipestats%20Data%20Request%3A%20Sample&body=This%20tier%20is%20currently%20free%2C%20just%20write%20me%20what%20you%20are%20intending%20to%20use%20the%20data%20for%20and%20I'll%20reach%20out%20with%20the%20dataset.",
     price: "$15",
-    description: "The essentials to provide your best work for clients.",
+    description: "Get started",
     features: ["3 profiles", "Perfect to test and learn about the data model"],
     mostPopular: false,
   },
@@ -67,7 +67,7 @@ const tiers = [
     id: "full-package",
     href: "https://buy.stripe.com/fZe9BWdue9U59Nu4gi",
     price: "$49",
-    description: "A plan that scales with your rapidly growing business.",
+    description: "Scale your analysis and get access to future datasets",
     features: [
       "1,000 profiles",
       "Access to future datasets",
@@ -309,9 +309,9 @@ export default function HomePage() {
                       </p>
                     ) : null}
                   </div>
-                  <p className="mt-4 text-sm leading-6 text-gray-600">
+                  {/* <p className="mt-4 text-sm leading-6 text-gray-600">
                     {tier.description}
-                  </p>
+                  </p> */}
                   <p className="mt-6 flex items-baseline gap-x-1">
                     <span className="text-4xl font-bold tracking-tight text-gray-900">
                       {tier.price}
