@@ -134,7 +134,7 @@ export default function HomePage() {
                   Get started
                 </Link>
                 <Link
-                  href="/insights/96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5"
+                  href="/insights/demo"
                   className="text-sm font-semibold leading-6 text-gray-900"
                 >
                   Live demo <span aria-hidden="true">→</span>
@@ -504,7 +504,7 @@ export default function HomePage() {
               Get started
             </Link>
             <Link
-              href="/insights/96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5"
+              href="/insights/demo"
               className="text-sm font-semibold leading-6 text-gray-900"
             >
               Live demo <span aria-hidden="true">→</span>

@@ -35,9 +35,12 @@ export const profileRouter = createTRPCRouter({
       }),
     )
     .query(({ ctx, input }) => {
+      const demoId =
+        "96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5";
+
       const tinderProfile = ctx.db.tinderProfile.findUnique({
         where: {
-          tinderId: input.tinderId,
+          tinderId: input.tinderId === "demo" ? demoId : input.tinderId,
         },
         include: {
           profileMeta: true,
