@@ -132,6 +132,7 @@ export const profileRouter = createTRPCRouter({
       });
 
       await analyticsTrackServer(
+        userId,
         "Profile Created",
         {
           tinderId: input.tinderId,
@@ -479,9 +480,13 @@ export const profileRouter = createTRPCRouter({
         country: input.country,
       });
 
-      void analyticsTrackServer("Profile Upload Simulated", {
-        tinderId: input.tinderId,
-      });
+      void analyticsTrackServer(
+        input.tinderId, // using tinderId instead of normal userId here
+        "Profile Upload Simulated",
+        {
+          tinderId: input.tinderId,
+        },
+      );
 
       const tinderJson = input.anonymizedTinderJson as AnonymizedTinderDataJSON;
 

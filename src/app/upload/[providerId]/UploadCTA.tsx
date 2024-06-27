@@ -305,7 +305,7 @@ export function UploadCTA(props: {
               Terms of Service
             </SLink>
           </p>
-          {env.NEXT_PUBLIC_IS_DEV && (
+          {!env.NEXT_PUBLIC_IS_PROD && (
             <Button
               onClick={() =>
                 profileSimulateUploadMutation.mutate(
