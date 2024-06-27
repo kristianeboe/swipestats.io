@@ -17,7 +17,7 @@ import type {
 } from "@/lib/interfaces/TinderDataJSON";
 import { api } from "@/trpc/react";
 import { logger } from "@/lib/tslog";
-import { track } from "@vercel/analytics";
+
 import { Button } from "@/app/_components/ui/button";
 
 import { HeartIcon } from "@heroicons/react/24/outline";
@@ -32,6 +32,8 @@ import { getISODayKey, isGenderDataUnknown } from "@/lib/utils";
 import { getFirstAndLastDayOnApp } from "@/lib/profile.utils";
 import { formatDistanceToNow } from "date-fns";
 import { IANA_TIME_ZONE_TO_COUNTRY } from "@/lib/timeZoneToCountry";
+import { analyticsTrackClient } from "@/lib/analytics/client";
+import { env } from "@/env";
 
 export function UploadCTA(props: {
   swipestatsProfilePayload: SwipestatsProfilePayload;
@@ -90,7 +92,7 @@ export function UploadCTA(props: {
   async function uploadProfile() {
     setLoading(true);
 
-    track("Profile Upload Initialized", {
+    analyticsTrackClient("Profile Upload Initialized", {
       providerId: "TINDER",
     });
     try {
@@ -165,7 +167,7 @@ export function UploadCTA(props: {
       !genderDataAutoUpdated &&
       (hasUnknownGender || hasUnknownInterestedIn || hasUnknownGenderFilter)
     ) {
-      track("Profile Gender Data Auto Updated", {
+      analyticsTrackClient("Profile Gender Data Auto Updated", {
         providerId: "TINDER",
         profileId: props.swipestatsProfilePayload.tinderId,
       });
@@ -303,17 +305,23 @@ export function UploadCTA(props: {
               Terms of Service
             </SLink>
           </p>
-          {/* <Button
-            onClick={() =>
-              profileSimulateUploadMutation.mutate(
-                props.swipestatsProfilePayload,
-              )
-            }
-            loading={profileSimulateUploadMutation.isLoading || loading}
-            fluid
-          >
-            Simulate
-          </Button> */}
+          {!env.NEXT_PUBLIC_IS_PROD && (
+            <Button
+              onClick={() =>
+                profileSimulateUploadMutation.mutate({
+                  tinderId: props.swipestatsProfilePayload.tinderId,
+                  anonymizedTinderJson:
+                    props.swipestatsProfilePayload.anonymizedTinderJson,
+                  timeZone,
+                  country,
+                })
+              }
+              loading={loading}
+              fluid
+            >
+              Simulate
+            </Button>
+          )}
         </div>
 
         <div className="pt-12 sm:pt-0">

@@ -1,10 +1,11 @@
 "use client";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { track } from "@vercel/analytics";
+
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import { Alert } from "@/app/_components/tw/Alert";
 import type { DataProvider } from "@prisma/client";
+import { analyticsTrackClient } from "@/lib/analytics/client";
 
 export function UploadArea({
   dataProviderId,
@@ -25,17 +26,17 @@ export function UploadArea({
 
       acceptedFiles.forEach((file: File) => {
         const reader = new FileReader();
-        track("File reading Initialized", {
+        analyticsTrackClient("File reading Initialized", {
           providerId: dataProviderId,
         });
 
         reader.onabort = () => {
-          track("File reading Aborted", {
+          analyticsTrackClient("File reading Aborted", {
             providerId: dataProviderId,
           });
         };
         reader.onerror = () => {
-          track("File reading Failed", {
+          analyticsTrackClient("File reading Failed", {
             providerId: dataProviderId,
           });
         };
@@ -43,7 +44,7 @@ export function UploadArea({
           // Do whatever you want with the file contents
           // const binaryStr = reader.result;
           // console.log(binaryStr);
-          track("File reading Succeeded", {
+          analyticsTrackClient("File reading Succeeded", {
             providerId: dataProviderId,
           });
           onAcceptedFileLoad(reader.result as string);
@@ -66,7 +67,7 @@ export function UploadArea({
   useEffect(() => {
     if (fileRejections.length) {
       console.log("fileRejections effect", fileRejections.length);
-      track("File reading Rejected", {
+      analyticsTrackClient("File reading Rejected", {
         event_category: "Upload",
         providerId: dataProviderId,
       });

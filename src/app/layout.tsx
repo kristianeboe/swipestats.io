@@ -13,6 +13,13 @@ const inter = Inter({
   variable: "--font-inter",
 });
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { PHProvider } from "./_components/ClientProviders";
+
+import dynamic from "next/dynamic";
+
+const PostHogPageView = dynamic(() => import("./PostHogPageView"), {
+  ssr: false,
+});
 
 // export const metadata = {
 //   title: "Create T3 App",
@@ -63,9 +70,12 @@ export default function RootLayout({
       </head>
       <body className={`font-sans ${inter.variable} bg-white`}>
         <TRPCReactProvider>
-          <Header />
-          <main className="mt-20">{children}</main>
-          <Footer />
+          <PHProvider>
+            <Header />
+            <main className="mt-20">{children}</main>
+            <Footer />
+            <PostHogPageView />
+          </PHProvider>
         </TRPCReactProvider>
         <Analytics />
         <SpeedInsights />

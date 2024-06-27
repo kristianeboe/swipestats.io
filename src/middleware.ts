@@ -14,10 +14,7 @@ export const config = {
 };
 
 export default function middleware(request: NextRequest) {
-  // Extract country. Default to US if not found.
-  const country = request.geo?.country;
-
-  console.log(`Visitor from ${country}`);
+  // const country = request.geo?.country;
 
   // Rewrite to URL
   return NextResponse.rewrite(request.url);
