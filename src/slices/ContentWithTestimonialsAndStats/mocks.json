@@ -1,0 +1,62 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"testimonial_background_image": {
+				"origin": {
+					"id": "main",
+					"url": "https://images.unsplash.com/photo-1596195689404-24d8a8d1c6ea",
+					"width": 5000,
+					"height": 4613
+				},
+				"url": "https://images.unsplash.com/photo-1596195689404-24d8a8d1c6ea",
+				"width": 5000,
+				"height": 4613,
+				"edit": {
+					"zoom": 1,
+					"crop": {
+						"x": 0,
+						"y": 0
+					},
+					"background": "transparent"
+				},
+				"credits": null,
+				"alt": null,
+				"__TYPE__": "ImageContent",
+				"thumbnails": {}
+			},
+			"testimonial_company": {
+				"__TYPE__": "FieldContent",
+				"value": "camera",
+				"type": "Text"
+			},
+			"testimonial_quote": {
+				"__TYPE__": "FieldContent",
+				"value": "street",
+				"type": "Text"
+			},
+			"testimonial_name": {
+				"__TYPE__": "FieldContent",
+				"value": "paper",
+				"type": "Text"
+			},
+			"testimonial_title": {
+				"__TYPE__": "FieldContent",
+				"value": "screen",
+				"type": "Text"
+			},
+			"content_title": {
+				"__TYPE__": "FieldContent",
+				"value": "thing",
+				"type": "Text"
+			},
+			"content_eyebrow": {
+				"__TYPE__": "FieldContent",
+				"value": "heard",
+				"type": "Text"
+			}
+		},
+		"items": []
+	}
+]
