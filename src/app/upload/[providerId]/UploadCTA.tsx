@@ -308,9 +308,13 @@ export function UploadCTA(props: {
           {!env.NEXT_PUBLIC_IS_PROD && (
             <Button
               onClick={() =>
-                profileSimulateUploadMutation.mutate(
-                  props.swipestatsProfilePayload,
-                )
+                profileSimulateUploadMutation.mutate({
+                  tinderId: props.swipestatsProfilePayload.tinderId,
+                  anonymizedTinderJson:
+                    props.swipestatsProfilePayload.anonymizedTinderJson,
+                  timeZone,
+                  country,
+                })
               }
               loading={loading}
               fluid
