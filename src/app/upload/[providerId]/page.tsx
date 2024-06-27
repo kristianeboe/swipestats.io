@@ -12,7 +12,6 @@ import Head from "next/head";
 
 import { cn } from "@/lib/utils";
 import type { SwipestatsProfilePayload } from "@/lib/interfaces/TinderDataJSON";
-import { track } from "@vercel/analytics";
 
 import { Button } from "@/app/_components/ui/button";
 import { api } from "@/trpc/react";
@@ -22,6 +21,7 @@ import { UploadCTA } from "./UploadCTA";
 import { createSwipestatsProfilePayloadFromJson } from "./extractAnonymizedData";
 import { Input } from "@/app/_components/ui/input";
 import DataRequestSupport from "@/app/DataRequestSupport";
+import { analyticsTrackClient } from "@/lib/analytics/client";
 
 // import testData from '../../fixtures/kristian-data.json';
 
@@ -76,12 +76,12 @@ export default function UploadPage({
         selectedDataProvider.id,
       );
       setSwipestatsProfilePayload(payload);
-      track("Profile Anonymised Successfully", {
+      analyticsTrackClient("Profile Anonymised Successfully", {
         providerId: selectedDataProvider.id,
       });
     } catch (error) {
       console.error(error);
-      track("Profile Anonymised Failed", {
+      analyticsTrackClient("Profile Anonymised Failed", {
         providerId: selectedDataProvider.id,
       });
     }

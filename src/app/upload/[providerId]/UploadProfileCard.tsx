@@ -100,7 +100,7 @@ export function UploadProfileCard({
                   updateProfileGenderData(data);
                   setShowGenderForm(false);
                   setGenderDataAutoUpdated(false);
-                  track("Profile Gender Data Updated");
+                  analyticsTrackClient("Profile Gender Data Updated");
                 }}
               />
             </div>
@@ -157,7 +157,7 @@ export function UploadProfileCard({
                     <Button
                       onClick={() => {
                         setGenderDataAutoUpdated(false);
-                        track("Profile Gender Data Confirmed");
+                        analyticsTrackClient("Profile Gender Data Confirmed");
                       }}
                     >
                       It&apos;s correct
@@ -165,7 +165,9 @@ export function UploadProfileCard({
                     <Button
                       variant={"outline"}
                       onClick={() => {
-                        track("Profile Gender Data Update Initiated");
+                        analyticsTrackClient(
+                          "Profile Gender Data Update Initiated",
+                        );
                         setShowGenderForm(true);
                       }}
                     >
@@ -324,7 +326,8 @@ import {
   AlertTitle,
 } from "@/app/_components/ui/alert";
 import { ShieldAlert } from "lucide-react";
-import { track } from "@vercel/analytics";
+
+import { analyticsTrackClient } from "@/lib/analytics/client";
 
 const FormSchema = z.object({
   gender: z.enum(TinderJsonGenderValues, {

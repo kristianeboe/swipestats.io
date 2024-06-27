@@ -9,13 +9,15 @@ import {
 import { DataProvider, type TinderProfile } from "@prisma/client";
 import type { AnonymizedTinderDataJSON } from "@/lib/interfaces/TinderDataJSON";
 import { createSubLogger } from "@/lib/tslog";
-import { track } from "@vercel/analytics/server";
 
 import {
+  computeUsageInput,
   createSwipestatsTinderProfileInput,
   prismaCreateTinderProfileTxn,
 } from "../services/profile.service";
 import { createMessagesAndMatches } from "../services/profile.messages.service";
+import { analyticsTrackServer } from "@/lib/analytics/server";
+import { expandAndAugmentProfileWithMissingDays } from "@/lib/profile.utils";
 
 const log = createSubLogger("profile.router");
 
@@ -114,11 +116,11 @@ export const profileRouter = createTRPCRouter({
 
       const tinderJson = input.anonymizedTinderJson as AnonymizedTinderDataJSON;
 
-      log.info("Initiate prisma create");
-
-      log.info("Location", {
-        city: tinderJson.User.city?.name,
-        region: tinderJson.User.city?.region,
+      log.info("Initiate prisma create", {
+        tinderId: input.tinderId,
+        userId: user?.id,
+        timeZone: input.timeZone,
+        country: input.country,
       });
 
       const userId = user?.id ?? nanoid(); // defaults to nanoid
@@ -129,13 +131,19 @@ export const profileRouter = createTRPCRouter({
         tinderJson,
       });
 
-      await track("Profile Created", {
-        tinderId: input.tinderId,
-        gender: swipestatsProfile.gender,
-        age: swipestatsProfile.ageAtUpload,
-        city: swipestatsProfile.city,
-        region: swipestatsProfile.region,
-      });
+      await analyticsTrackServer(
+        "Profile Created",
+        {
+          tinderId: input.tinderId,
+          gender: swipestatsProfile.gender,
+          age: swipestatsProfile.ageAtUpload,
+          city: swipestatsProfile.city,
+          region: swipestatsProfile.region,
+        },
+        {
+          awaitTrack: true,
+        },
+      );
 
       return swipestatsProfile;
     }),
@@ -456,11 +464,50 @@ export const profileRouter = createTRPCRouter({
       return waitlistEntry;
     }),
   simulateProfileUplad: publicProcedure
-    .input(z.object({ tinderId: z.string(), anonymizedTinderJson: z.any() }))
+    .input(
+      z.object({
+        tinderId: z.string(),
+        anonymizedTinderJson: z.any(),
+        timeZone: z.string().optional(),
+        country: z.string().optional(),
+      }),
+    )
     .mutation(async ({ input, ctx }) => {
+      log.info("Initiate Profile Upload Simulation", {
+        tinderId: input.tinderId,
+        timeZone: input.timeZone,
+        country: input.country,
+      });
+
+      void analyticsTrackServer("Profile Upload Simulated", {
+        tinderId: input.tinderId,
+      });
+
       const tinderJson = input.anonymizedTinderJson as AnonymizedTinderDataJSON;
 
       const userId = nanoid();
+
+      const expandedUsageTimeFrame = expandAndAugmentProfileWithMissingDays({
+        appOpens: tinderJson.Usage.app_opens,
+        swipeLikes: tinderJson.Usage.swipes_likes,
+        swipePasses: tinderJson.Usage.swipes_passes,
+      });
+      const expandedUsageTimeFrameEntries = Object.entries(
+        expandedUsageTimeFrame,
+      );
+      log.info("Simulated Timeframes", {
+        original: Object.keys(tinderJson.Usage.app_opens).length,
+        expanded: expandedUsageTimeFrameEntries.length,
+      });
+
+      const { matchesInput, messagesInput } = createMessagesAndMatches(
+        tinderJson.Messages,
+        input.tinderId,
+      );
+      log.info("Matches and messagess input", {
+        matches: matchesInput.length,
+        messages: messagesInput.length,
+      });
 
       const tinderProfileInput = createSwipestatsTinderProfileInput(
         input.tinderId,
@@ -468,7 +515,28 @@ export const profileRouter = createTRPCRouter({
         tinderJson,
       );
 
-      createMessagesAndMatches(tinderJson.Messages, input.tinderId);
+      const userBirthDate = new Date(tinderJson.User.birth_date);
+      const usageInput = expandedUsageTimeFrameEntries.map(([date, meta]) => {
+        return computeUsageInput(
+          {
+            appOpensCount: tinderJson.Usage.app_opens[date] ?? 0,
+            matchesCount: tinderJson.Usage.matches[date] ?? 0,
+            swipeLikesCount: tinderJson.Usage.swipes_likes[date] ?? 0,
+            swipeSuperLikesCount: tinderJson.Usage.superlikes[date] ?? 0,
+            swipePassesCount: tinderJson.Usage.swipes_passes[date] ?? 0,
+            messagesSentCount: tinderJson.Usage.messages_sent[date] ?? 0,
+            messagesReceivedCount:
+              tinderJson.Usage.messages_received[date] ?? 0,
+          },
+          date,
+          input.tinderId,
+          userBirthDate,
+          meta,
+        );
+      });
+      log.info("Usage input created", { usageInput: usageInput.length });
+
+      log.info("Profile Upload Simulation Complete");
 
       return tinderProfileInput;
     }),
