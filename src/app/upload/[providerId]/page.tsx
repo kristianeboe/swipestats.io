@@ -43,15 +43,18 @@ const dataProviders = [
   },
 ] as const;
 
+// Return a list of `params` to populate the [slug] dynamic segment
+// export async function generateStaticParams() {
+//   return dataProviders.map((provider) => ({
+//     slug: provider.id.toLowerCase(),
+//   }));
+// }
+
 export default function UploadPage({
   params,
 }: {
   params: { providerId: "tinder" | "hinge" | "bumble" };
 }) {
-  //   const { provider: providerId } = router.query;
-  // const [jsonProfile, setJsonProfile] = useState<FullTinderDataJSON | null>(
-  //   null,
-  // );
   const [swipestatsProfilePayload, setSwipestatsProfilePayload] =
     useState<SwipestatsProfilePayload | null>(null);
 
@@ -67,8 +70,6 @@ export default function UploadPage({
   }
 
   async function onAcceptedFileLoad(data: string) {
-    // console.log('json data', data);
-    // setJsonProfile(JSON.parse(data) as FullTinderDataJSON);
     try {
       const payload = await createSwipestatsProfilePayloadFromJson(
         data,
@@ -112,10 +113,9 @@ export default function UploadPage({
         />
         <meta property="og:image" content="/ss2.png" />
       </Head>
+      <StepHeader />
       <div className="min-h-screen">
-        {/* <Navbar simple={true} /> */}
-        <StepHeader />
-        <div className="bg-white">
+        <div>
           {!swipestatsProfilePayload && (
             <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
               <div className="text-center">
@@ -171,12 +171,6 @@ export default function UploadPage({
                                 >
                                   {dataProvider.description}
                                 </RadioGroup.Description>
-                                {/* <RadioGroup.Description
-                                as="span"
-                                className="mt-6 text-sm font-medium text-gray-900"
-                              >
-                                {dataProvider.users}
-                              </RadioGroup.Description> */}
                               </div>
                             </div>
                             <CheckCircleIcon
@@ -221,22 +215,8 @@ export default function UploadPage({
                     dataProviderId={selectedDataProvider.id}
                     onAcceptedFileLoad={onAcceptedFileLoad}
                   />
-                  {/* <div className="flex">
-                    <button onClick={() => {
-                      const payload = await createSwipestatsProfilePayloadFromJson(JSON.stringify(testData), selectedDataProvider.id);
-      setSwipestatsProfilePayload(payload);
-                    } }>
-                      Use test file
-                    </button>
-                  </div> */}
                 </>
               )}
-              {/* <div>
-        Files
-        {files.map((f) => (
-          <p key={f.name}>{f.name}</p>
-        ))}
-      </div> */}
             </div>
           </div>
         ) : (
@@ -320,18 +300,7 @@ function WaitlistCTA({
                 <label htmlFor="email-address" className="sr-only">
                   Email address
                 </label>
-                {/* <input
-                  disabled={loading}
-                  id="email-address"
-                  name="email-address"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  className="w-full rounded-md border-white px-5 py-3 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-rose-700"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                /> */}
+
                 <Input
                   disabled={loading}
                   id="email-address"
@@ -339,7 +308,6 @@ function WaitlistCTA({
                   type="email"
                   autoComplete="email"
                   required
-                  // className="w-full rounded-md border-white px-5 py-3 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-rose-700"
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
