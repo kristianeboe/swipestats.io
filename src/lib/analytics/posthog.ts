@@ -8,6 +8,7 @@ export default function PostHogClient() {
     host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
     flushAt: 1,
     flushInterval: 0,
+    disabled: env.NEXT_PUBLIC_MANUAL_ENV !== "production",
   });
   return posthogClient;
 }
