@@ -35,6 +35,7 @@ export const env = createEnv({
     NEXT_PUBLIC_POSTHOG_HOST: z.string(),
     NEXT_PUBLIC_IS_DEV: z.boolean(),
     NEXT_PUBLIC_IS_PROD: z.boolean(),
+    NEXT_PUBLIC_MANUAL_ENV: z.enum(["development", "staging", "production"]),
   },
 
   /**
@@ -50,8 +51,9 @@ export const env = createEnv({
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
     NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
 
+    NEXT_PUBLIC_MANUAL_ENV: process.env.NEXT_PUBLIC_MANUAL_ENV,
     NEXT_PUBLIC_IS_DEV: process.env.NODE_ENV === "development",
-    NEXT_PUBLIC_IS_PROD: process.env.MANUAL_ENV === "production",
+    NEXT_PUBLIC_IS_PROD: process.env.NEXT_PUBLIC_MANUAL_ENV === "production",
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
