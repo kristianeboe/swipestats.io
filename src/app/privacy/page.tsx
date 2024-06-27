@@ -245,9 +245,11 @@ export default function PrivacyPage() {
           guardian of a minor and consent to the minor&apos;s use of the
           Services. If we discover that we have inadvertently collected personal
           information from users under 18, we will deactivate the account and
-          promptly delete the data from our records. Please contact us at
-          privacy@swipestats.io if you are aware of any data we have collected
-          from minors under 18.
+          promptly delete the data from our records. Please contact us at{" "}
+          <SLink href="mailto:privacy@swipestats.io">
+            privacy@swipestats.io
+          </SLink>{" "}
+          if you are aware of any data we have collected from minors under 18.
         </p>
         <h2>9. What are your privacy rights?</h2>
         <p>
@@ -303,8 +305,11 @@ export default function PrivacyPage() {
         </p>
         <h2>13. How can you contact us about this policy?</h2>
         <p>
-          For questions or comments about this policy, email us at
-          privacy@swipestats.io.
+          For questions or comments about this policy, email us at{" "}
+          <SLink href="mailto:privacy@swipestats.io">
+            privacy@swipestats.io
+          </SLink>
+          .
         </p>
         <h2>
           14. How can you review, update, or delete the data we collect from
@@ -313,7 +318,7 @@ export default function PrivacyPage() {
         <p>
           Depending on your country&apos;s laws, you may have the right to
           access, correct, or delete the personal information we collect from
-          you. To request a review, update, or deletion, please contact us at
+          you. To request a review, update, or deletion, please contact us at{" "}
           <SLink href="mailto:privacy@swipestats.io">
             privacy@swipestats.io
           </SLink>

@@ -1,29 +1,42 @@
-# Create T3 App
+# Swipestats.io
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+> Visualize your dating data
 
-## What's next? How do I make an app with this?
+## How to use
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+1. Get your data from Tinder from this [link](https://account.gotinder.com/data)
+2. Parse the the data.json file in [swipestats.io](https://swipestats.io)
+3. Upload the anonymized version
+4. View insights and graphs
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+## Privacy
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+Swipestats generates a unique id for you by hashing your email and account creation date with the SHA256 algorithm. This way the email, or any other personal information, never reaches the server and total privacy is maintained.
 
-## Learn More
+```ts
+export async function createSHA256Hash(str: string) {
+  const utf8 = new TextEncoder().encode(str);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", utf8);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray
+    .map((bytes) => bytes.toString(16).padStart(2, "0"))
+    .join("");
+  return hashHex;
+}
+```
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+Which is then used to create a profile id. Should you upload your file again in the future your data will simply be overwritten without adding extra data to the corpus.
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+```ts
+const profileId = await createSHA256Hash(
+  birthDate + "-" + appProfileCreateDate,
+);
+```
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+[SHA256 Wikipedia](https://en.wikipedia.org/wiki/SHA-2)
 
-## How do I deploy this?
+## Demo
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+<!-- ![Upload](./readMeAssets/swipeStatsUpload.png) -->
+
+![Insights](./public/ss1.png)

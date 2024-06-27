@@ -1,3 +1,5 @@
+import { SLink } from "../_components/ui/SLink";
+
 export default function TosPage() {
   return (
     <div>
@@ -14,13 +16,13 @@ export default function TosPage() {
       <div className="container prose mx-auto  lg:prose-xl ">
         <h2>1. Terms</h2>
         <p>
-          By accessing the website
-          at **[https://swipestats.io](https://swipestats.io/)**, you agree to
-          abide by these terms of service, all applicable laws and regulations,
-          and acknowledge that you are responsible for compliance with any local
-          laws. If you disagree with any of these terms, do not use or access
-          this site. The materials on this website are protected by applicable
-          copyright and trademark law.
+          By accessing the website at{" "}
+          <SLink href="https://swipestats.io">https://swipestats.io</SLink> ,
+          you agree to abide by these terms of service, all applicable laws and
+          regulations, and acknowledge that you are responsible for compliance
+          with any local laws. If you disagree with any of these terms, do not
+          use or access this site. The materials on this website are protected
+          by applicable copyright and trademark law.
         </p>
         <h2>2. Use License</h2>
         <p>
