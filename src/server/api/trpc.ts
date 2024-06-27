@@ -33,7 +33,7 @@ export const createTRPCContext = async (opts: {
   ip?: string;
 }) => {
   const session = await getServerAuthSession();
-
+  // apparently geo and ip is only available if it runs through the edge middleware, and that is not ran in front of the api routes, for now
   console.log("opt", {
     geo: opts.geo,
     ip: opts.ip,
