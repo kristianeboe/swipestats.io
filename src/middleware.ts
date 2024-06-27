@@ -1,9 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 
-// The country to block from accessing the secret page
-const BLOCKED_COUNTRY = "SE";
-
-// Trigger this middleware to run on the `/secret-page` route
 export const config = {
   matcher: [
     /*
