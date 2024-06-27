@@ -36,6 +36,9 @@ const config = {
         },
       },
     ],
+
+    // consider turning on again
+    "@next/next/no-img-element": "off", // turning it off for now to remove logs
   },
 };
 module.exports = config;

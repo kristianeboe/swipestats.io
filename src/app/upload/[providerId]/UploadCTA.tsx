@@ -87,7 +87,11 @@ export function UploadCTA(props: {
   }); // todo consider rolling these two together again
 
   const profileSimulateUploadMutation =
-    api.profile.simulateProfileUplad.useMutation({});
+    api.profile.simulateProfileUplad.useMutation({
+      onSuccess: (data) => {
+        log.info("Tinder profile simulation API Return %O", data);
+      },
+    });
 
   async function uploadProfile() {
     setLoading(true);
