@@ -45,7 +45,9 @@ type ProfileEvent =
   | "Profile Deleted"
   | "Profile Upload Simulated";
 
-export type AnalyticsEventName = ProfileEvent | FileEvent;
+type MiscEvent = "Newsletter Signup" | "Waitlist Signup";
+// TODO split client and server events
+export type AnalyticsEventName = ProfileEvent | FileEvent | MiscEvent;
 export type AnalyticsEventProperties = Record<
   string,
   string | number | boolean | null

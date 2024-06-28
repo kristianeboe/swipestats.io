@@ -18,6 +18,7 @@ import {
 import { createMessagesAndMatches } from "../services/profile.messages.service";
 import { analyticsTrackServer } from "@/lib/analytics/server";
 import { expandAndAugmentProfileWithMissingDays } from "@/lib/profile.utils";
+import { sendInternalSlackMessage } from "../services/internal-slack.service";
 
 const log = createSubLogger("profile.router");
 
@@ -145,6 +146,17 @@ export const profileRouter = createTRPCRouter({
           awaitTrack: true,
         },
       );
+
+      void sendInternalSlackMessage("bot-messages", "Profile Created", {
+        tinderId: input.tinderId,
+        gender: swipestatsProfile.gender,
+        age: swipestatsProfile.ageAtUpload,
+        city: swipestatsProfile.city,
+        region: swipestatsProfile.region,
+        bio: swipestatsProfile.bio,
+        geoTimezone: input.timeZone,
+        geoCountry: input.country,
+      });
 
       return swipestatsProfile;
     }),
@@ -460,6 +472,15 @@ export const profileRouter = createTRPCRouter({
           dataProvider: input.dataProviderId,
           updatedAt: new Date(),
         },
+      });
+
+      void analyticsTrackServer(input.email, "Waitlist Signup", {
+        email: input.email,
+        dataProvider: input.dataProviderId,
+      });
+
+      void sendInternalSlackMessage("bot-messages", "Waitlist Signup", {
+        email: input.email,
       });
 
       return waitlistEntry;

@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { createSHA256Hash } from "@/lib/utils";
+import { sendInternalSlackMessage } from "../services/internal-slack.service";
+import { analyticsTrackServer } from "@/lib/analytics/server";
 
 export const newsletterRouter = createTRPCRouter({
   subscribe: publicProcedure
@@ -11,6 +13,14 @@ export const newsletterRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       try {
+        void sendInternalSlackMessage("bot-messages", "Nesletter Signup", {
+          email: input.email,
+        });
+
+        void analyticsTrackServer(input.email, "Newsletter Signup", {
+          email: input.email,
+        });
+
         return await ctx.db.newsletter.create({
           data: {
             email: input.email,
