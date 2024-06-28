@@ -14,6 +14,13 @@ export async function analyticsTrackServer(
     awaitTrack?: boolean;
   },
 ): Promise<void> {
+  console.log("Server track", {
+    userId,
+    eventName,
+    properties,
+    options,
+  });
+
   if (options?.awaitTrack) {
     await track(eventName, properties);
   } else {

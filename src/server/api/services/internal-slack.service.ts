@@ -47,7 +47,7 @@ export function sendInternalSlackMessage(
   title: string,
   body: SlackMessageBody,
 ) {
-  if (env.NEXT_PUBLIC_MANUAL_ENV !== "production") return;
+  // if (env.NEXT_PUBLIC_MANUAL_ENV !== "production") return;
 
   const textMessage = formatSlackMessage(body);
   try {
