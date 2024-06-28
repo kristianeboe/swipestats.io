@@ -20,6 +20,7 @@ function formatSlackMessage(data: SlackMessageBody): string {
       formattedMessage += `${key}: ${value.toString()}\n`;
     }
   });
+  formattedMessage += `Environment ` + env.NEXT_PUBLIC_MANUAL_ENV;
 
   return formattedMessage;
 }
