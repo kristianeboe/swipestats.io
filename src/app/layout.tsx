@@ -13,7 +13,7 @@ const inter = Inter({
   variable: "--font-inter",
 });
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { PHProvider } from "./_components/ClientProviders";
+import { PHProvider } from "./_components/PostHogProvider";
 
 import dynamic from "next/dynamic";
 

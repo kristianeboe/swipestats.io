@@ -16,7 +16,7 @@ import {
   prismaCreateTinderProfileTxn,
 } from "../services/profile.service";
 import { createMessagesAndMatches } from "../services/profile.messages.service";
-import { analyticsTrackServer } from "@/lib/analytics/server";
+import { analyticsTrackServer } from "@/lib/analytics/analyticsTrackServer";
 import { expandAndAugmentProfileWithMissingDays } from "@/lib/profile.utils";
 import { sendInternalSlackMessage } from "../services/internal-slack.service";
 
@@ -117,14 +117,14 @@ export const profileRouter = createTRPCRouter({
 
       const tinderJson = input.anonymizedTinderJson as AnonymizedTinderDataJSON;
 
+      const userId = user?.id ?? input.tinderId; // defaults to the tinderId as it is unique too
+
       log.info("Initiate prisma create", {
         tinderId: input.tinderId,
         userId: user?.id,
         timeZone: input.timeZone,
         country: input.country,
       });
-
-      const userId = user?.id ?? nanoid(); // defaults to nanoid
 
       const swipestatsProfile = await prismaCreateTinderProfileTxn({
         user: { userId, timeZone: input.timeZone, country: input.country },
@@ -141,6 +141,8 @@ export const profileRouter = createTRPCRouter({
           age: swipestatsProfile.ageAtUpload,
           city: swipestatsProfile.city,
           region: swipestatsProfile.region,
+          timeZone: input.timeZone ?? null,
+          country: input.country ?? null,
         },
         {
           awaitTrack: true,
@@ -479,7 +481,7 @@ export const profileRouter = createTRPCRouter({
         dataProvider: input.dataProviderId,
       });
 
-      void sendInternalSlackMessage("bot-messages", "Waitlist Signup", {
+      sendInternalSlackMessage("bot-messages", "Waitlist Signup", {
         email: input.email,
       });
 
@@ -506,12 +508,14 @@ export const profileRouter = createTRPCRouter({
         "Profile Upload Simulated",
         {
           tinderId: input.tinderId,
+          timeZone: input.timeZone ?? null,
+          country: input.country ?? null,
         },
       );
 
       const tinderJson = input.anonymizedTinderJson as AnonymizedTinderDataJSON;
 
-      const userId = nanoid();
+      const userId = input.tinderId;
 
       const expandedUsageTimeFrame = expandAndAugmentProfileWithMissingDays({
         appOpens: tinderJson.Usage.app_opens,

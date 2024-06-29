@@ -32,7 +32,7 @@ import { getISODayKey, isGenderDataUnknown } from "@/lib/utils";
 import { getFirstAndLastDayOnApp } from "@/lib/profile.utils";
 import { formatDistanceToNow } from "date-fns";
 import { IANA_TIME_ZONE_TO_COUNTRY } from "@/lib/timeZoneToCountry";
-import { analyticsTrackClient } from "@/lib/analytics/client";
+import { analyticsTrackClient } from "@/lib/analytics/analyticsTrackClient";
 import { env } from "@/env";
 
 export function UploadCTA(props: {
@@ -89,7 +89,8 @@ export function UploadCTA(props: {
   const profileSimulateUploadMutation =
     api.profile.simulateProfileUplad.useMutation({
       onSuccess: (data) => {
-        log.info("Tinder profile simulation API Return %O", data);
+        log.info("Tinder profile simulation API Return", data);
+        toast.success("Profile simulated");
       },
     });
 

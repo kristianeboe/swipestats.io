@@ -11,4 +11,5 @@ export function analyticsTrackClient(
 ): void {
   track(eventName, properties);
   posthog.capture(eventName, properties);
+  console.log("Client track", { eventName, properties });
 }

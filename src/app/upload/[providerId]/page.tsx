@@ -21,7 +21,8 @@ import { UploadCTA } from "./UploadCTA";
 import { createSwipestatsProfilePayloadFromJson } from "./extractAnonymizedData";
 import { Input } from "@/app/_components/ui/input";
 import DataRequestSupport from "@/app/DataRequestSupport";
-import { analyticsTrackClient } from "@/lib/analytics/client";
+import { analyticsTrackClient } from "@/lib/analytics/analyticsTrackClient";
+import { usePostHog } from "posthog-js/react";
 
 // import testData from '../../fixtures/kristian-data.json';
 
@@ -55,6 +56,7 @@ export default function UploadPage({
 }: {
   params: { providerId: "tinder" | "hinge" | "bumble" };
 }) {
+  const posthog = usePostHog();
   const [swipestatsProfilePayload, setSwipestatsProfilePayload] =
     useState<SwipestatsProfilePayload | null>(null);
 
@@ -76,7 +78,10 @@ export default function UploadPage({
         selectedDataProvider.id,
       );
       setSwipestatsProfilePayload(payload);
+      posthog.identify(payload.tinderId);
+
       analyticsTrackClient("Profile Anonymised Successfully", {
+        tinderId: payload.tinderId,
         providerId: selectedDataProvider.id,
       });
     } catch (error) {

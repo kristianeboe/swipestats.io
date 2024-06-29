@@ -2,7 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { createSHA256Hash } from "@/lib/utils";
 import { sendInternalSlackMessage } from "../services/internal-slack.service";
-import { analyticsTrackServer } from "@/lib/analytics/server";
+import { analyticsTrackServer } from "@/lib/analytics/analyticsTrackServer";
 
 export const newsletterRouter = createTRPCRouter({
   subscribe: publicProcedure

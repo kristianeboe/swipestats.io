@@ -1,8 +1,7 @@
 import { env } from "@/env";
 
 const channels = {
-  "bot-messages":
-    "https://hooks.slack.com/services/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",
+  "bot-messages": env.SLACK_WEBHOOK_INTERNAL,
 };
 
 type SlackMessageBody = Record<
@@ -51,6 +50,7 @@ export function sendInternalSlackMessage(
   // if (env.NEXT_PUBLIC_MANUAL_ENV !== "production") return;
 
   const textMessage = formatSlackMessage(body);
+  console.log("Sending slack message", textMessage);
   try {
     void fetch(channels[to], {
       headers: {
