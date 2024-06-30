@@ -118,12 +118,21 @@ export default function TosPage() {
           personal data (like name, contact information, Instagram handle, etc.)
           of you or others.
         </p>
-        <h2>8. Data Policy</h2>
+        <h2>8. Refunds Policy</h2>
         <p>
-          By accepting the Terms of Service, you agree to the anonymized storage
-          and analysis of the data you input on our site and give us permission
-          to use and disclose the anonymized data in an aggregated and
-          standalone form, and to our Privacy Policy.
+          In accordance with Norwegian law, the User acting as a consumer
+          benefits from a right of withdrawal in principle. However, there are
+          specific situations where the Consumer&apos;s right of withdrawal does
+          not apply.
+          <br />
+          This is notably the case with digital content not supplied on physical
+          media, where the performance has begun after the prior express
+          agreement of the Consumer and formal waiver of their right of
+          withdrawal. The services offered by Swipestats do not allow the User
+          to exercise the right of withdrawal, as they consist of digital
+          content meeting the aforementioned conditions. Swipestats may offer a
+          voluntary refund policy when a money-back option was presented to you
+          during checkout.
         </p>
         <h2>9. Governing Law</h2>
         <p>

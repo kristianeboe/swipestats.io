@@ -4,7 +4,7 @@ import type {
 } from "@/lib/interfaces/TinderDataJSON";
 import he from "he";
 
-import { Gender, type Prisma } from "@prisma/client";
+import { Gender, SwipestatsVersion, type Prisma } from "@prisma/client";
 import {
   type ExpandedUsageValue,
   expandAndAugmentProfileWithMissingDays,
@@ -84,6 +84,7 @@ export async function prismaCreateTinderProfileTxn(params: {
   };
   tinderId: string;
   tinderJson: AnonymizedTinderDataJSON;
+  swipestatsVersion?: SwipestatsVersion;
 }) {
   const { matchesInput, messagesInput, tinderProfileInput, usageInput } =
     createTinderProfileTxnInput(params);
@@ -95,7 +96,7 @@ export async function prismaCreateTinderProfileTxn(params: {
         data: {
           dataProvider: "TINDER",
           file: params.tinderJson as unknown as Prisma.JsonObject,
-          swipestatsVersion: "SWIPESTATS_3",
+          swipestatsVersion: params.swipestatsVersion ?? "SWIPESTATS_3",
           user: {
             connectOrCreate: {
               where: {

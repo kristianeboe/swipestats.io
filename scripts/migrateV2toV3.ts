@@ -61,6 +61,7 @@ async function main() {
             userId: ssPayload.tinderId,
           },
           tinderJson: ssPayload.anonymizedTinderJson,
+          swipestatsVersion: "SWIPESTATS_2",
         });
 
         log.info("New Input", {
