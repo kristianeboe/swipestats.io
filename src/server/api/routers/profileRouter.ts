@@ -552,7 +552,7 @@ export const profileRouter = createTRPCRouter({
             appOpensCount: tinderJson.Usage.app_opens[date] ?? 0,
             matchesCount: tinderJson.Usage.matches[date] ?? 0,
             swipeLikesCount: tinderJson.Usage.swipes_likes[date] ?? 0,
-            swipeSuperLikesCount: tinderJson.Usage.superlikes[date] ?? 0,
+            swipeSuperLikesCount: tinderJson.Usage.superlikes?.[date] ?? 0,
             swipePassesCount: tinderJson.Usage.swipes_passes[date] ?? 0,
             messagesSentCount: tinderJson.Usage.messages_sent[date] ?? 0,
             messagesReceivedCount:

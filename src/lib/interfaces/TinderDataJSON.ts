@@ -36,7 +36,7 @@ export interface Usage {
   app_opens: DateValueMap;
   swipes_likes: DateValueMap;
   swipes_passes: DateValueMap;
-  superlikes: DateValueMap;
+  superlikes?: DateValueMap;
   matches: DateValueMap;
   messages_sent: DateValueMap;
   messages_received: DateValueMap;
@@ -73,7 +73,7 @@ interface TinderUserBase {
   interests?: Interest[];
   ip_address: string;
   is_traveling: boolean;
-  jobs: Job[];
+  jobs?: Job[];
 
   pos: Pos;
   schools?: School[];
@@ -194,7 +194,7 @@ interface Title {
 
 interface Job {
   company?: Company;
-  title: Title;
+  title?: Title;
 }
 
 interface Pos {
@@ -328,7 +328,7 @@ interface SpotifyTrack {
 export interface Message {
   to: number; // match id - 1
   from: string; // "You"
-  message: string; // should maybe clean this from HTML to string. Lot's of "don&rsquo;t"
+  message?: string; // should maybe clean this from HTML to string. Lot's of "don&rsquo;t"
   sent_date: string; // not iso string, but close "Tue, 30 Nov 2021 05:08:21 GMT" // new Date() actually works well to parse it
   type?: // undefined = text
   | "gif"
@@ -338,7 +338,8 @@ export interface Message {
     | "contact_card"
     | "swipe_note"
     | "game_notification"
-    | "contextual";
+    | "contextual"
+    | "vibes"; // almost never occurs
   fixed_height?: string; // url (to gif)
 }
 

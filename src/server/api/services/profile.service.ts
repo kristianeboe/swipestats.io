@@ -19,7 +19,7 @@ import { differenceInYears } from "date-fns";
 
 const log = createSubLogger("profile.service");
 
-export async function prismaCreateTinderProfileTxn(params: {
+export function createTinderProfileTxnInput(params: {
   user: {
     userId: string;
     timeZone?: string;
@@ -37,19 +37,11 @@ export async function prismaCreateTinderProfileTxn(params: {
     swipePasses: tinderJson.Usage.swipes_passes,
   });
   const expandedUsageTimeFrameEntries = Object.entries(expandedUsageTimeFrame);
-  log.info("Timeframes", {
-    original: Object.keys(tinderJson.Usage.app_opens).length,
-    expanded: expandedUsageTimeFrameEntries.length,
-  });
 
   const { matchesInput, messagesInput } = createMessagesAndMatches(
     tinderJson.Messages,
     params.tinderId,
   );
-  log.info("Matches and messagess input", {
-    matches: matchesInput.length,
-    messages: messagesInput.length,
-  });
 
   const tinderProfileInput = createSwipestatsTinderProfileInput(
     params.tinderId,
@@ -64,7 +56,7 @@ export async function prismaCreateTinderProfileTxn(params: {
         appOpensCount: tinderJson.Usage.app_opens[date] ?? 0,
         matchesCount: tinderJson.Usage.matches[date] ?? 0,
         swipeLikesCount: tinderJson.Usage.swipes_likes[date] ?? 0,
-        swipeSuperLikesCount: tinderJson.Usage.superlikes[date] ?? 0,
+        swipeSuperLikesCount: tinderJson.Usage.superlikes?.[date] ?? 0,
         swipePassesCount: tinderJson.Usage.swipes_passes[date] ?? 0,
         messagesSentCount: tinderJson.Usage.messages_sent[date] ?? 0,
         messagesReceivedCount: tinderJson.Usage.messages_received[date] ?? 0,
@@ -75,23 +67,42 @@ export async function prismaCreateTinderProfileTxn(params: {
       meta,
     );
   });
-  log.info("Usage input created", { usageInput: usageInput.length });
-  log.info("Starting Swipestats profile transaction");
+
+  return {
+    tinderProfileInput,
+    usageInput,
+    matchesInput,
+    messagesInput,
+  };
+}
+
+export async function prismaCreateTinderProfileTxn(params: {
+  user: {
+    userId: string;
+    timeZone?: string;
+    country?: string;
+  };
+  tinderId: string;
+  tinderJson: AnonymizedTinderDataJSON;
+}) {
+  const { matchesInput, messagesInput, tinderProfileInput, usageInput } =
+    createTinderProfileTxnInput(params);
+
   const swipestatsProfile = await db.$transaction(
     async (txn) => {
       // TODO move to R2
       await txn.originalAnonymizedFile.create({
         data: {
           dataProvider: "TINDER",
-          file: tinderJson as unknown as Prisma.JsonObject,
+          file: params.tinderJson as unknown as Prisma.JsonObject,
           swipestatsVersion: "SWIPESTATS_3",
           user: {
             connectOrCreate: {
               where: {
-                id: userId, // string just needs to be defined, a cuid is used to create if there is no match
+                id: params.user.userId, // string just needs to be defined, a cuid is used to create if there is no match
               },
               create: {
-                id: userId,
+                id: params.user.userId,
                 timeZone: params.user.timeZone,
                 country: params.user.country,
               },
@@ -101,7 +112,7 @@ export async function prismaCreateTinderProfileTxn(params: {
       });
       log.info("File uploaded", {
         tinderId: params.tinderId,
-        userId: userId,
+        userId: params.user.userId,
       });
 
       const tinderProfile = await txn.tinderProfile.create({
@@ -254,10 +265,10 @@ export function createSwipestatsTinderProfileInput(
     instagramConnected: tinderJson.User.instagram,
     spotifyConnected: tinderJson.User.spotify,
 
-    jobTitle: tinderJson.User.jobs[0]?.title.name,
-    jobTitleDisplayed: tinderJson.User.jobs[0]?.title.displayed,
-    company: tinderJson.User.jobs[0]?.company?.name,
-    companyDisplayed: tinderJson.User.jobs[0]?.company?.displayed,
+    jobTitle: tinderJson.User.jobs?.[0]?.title?.name,
+    jobTitleDisplayed: tinderJson.User.jobs?.[0]?.title?.displayed,
+    company: tinderJson.User.jobs?.[0]?.company?.name,
+    companyDisplayed: tinderJson.User.jobs?.[0]?.company?.displayed,
     school: tinderJson.User.schools?.[0]?.name,
     schoolDisplayed: tinderJson.User.schools?.[0]?.displayed,
     college: tinderJson.User.college as unknown as Prisma.JsonObject,
@@ -284,9 +295,9 @@ export function createSwipestatsTinderProfileInput(
     },
 
     jobs: {
-      create: tinderJson.User.jobs.map((j) => ({
-        title: j.title.name,
-        titleDisplayed: !!j.title.displayed,
+      create: tinderJson.User.jobs?.map((j) => ({
+        title: j.title?.name ?? "",
+        titleDisplayed: !!j.title?.displayed,
         company: j.company?.name ?? null,
         companyDisplayed: j.company?.displayed ?? null,
       })),
