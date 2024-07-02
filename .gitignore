@@ -48,3 +48,5 @@ yarn-error.log*
 # local migrations
 ssMigrations
 scripts/migrateV2toV3.ts
+
+scripts/old_swipestats_profiles

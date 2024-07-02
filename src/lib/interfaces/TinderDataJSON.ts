@@ -282,24 +282,6 @@ export interface Purchases {
   super_like_tracking: unknown[];
 }
 
-export interface Spotify {
-  spotify_connected: false;
-}
-
-export interface SpotifyConnected {
-  spotify_connected: true;
-  spotify_username: string;
-  spotify_user_type: "premium" | "free";
-  spotify_theme_track: SpotifyTrack;
-  spotify_top_artists: {
-    id: string;
-    name: string;
-    top_track: SpotifyTrack;
-    popularity: number;
-  }[];
-  spotify_last_updated_at: string; // date
-}
-
 interface SpotifyTrack {
   id: string;
   uri: string;
@@ -324,6 +306,21 @@ interface SpotifyTrack {
     selected: boolean;
   }[];
 }
+
+export type Spotify = {
+  spotify_connected: boolean;
+  // below is only present if spotify_connected is true
+  spotify_username?: string;
+  spotify_user_type?: "premium" | "free";
+  spotify_theme_track?: SpotifyTrack;
+  spotify_top_artists?: {
+    id: string;
+    name: string;
+    top_track: SpotifyTrack;
+    popularity: number;
+  }[];
+  spotify_last_updated_at?: string; // date
+};
 
 export interface Message {
   to: number; // match id - 1

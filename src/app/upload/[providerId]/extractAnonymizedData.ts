@@ -36,7 +36,9 @@ async function createSwipestatsProfileId(
   return profileId;
 }
 
-function isValidTinderJson(tinderJson: FullTinderDataJSON) {
+export function isValidTinderJson(
+  tinderJson: FullTinderDataJSON | AnonymizedTinderDataJSON,
+) {
   const errors: Record<string, { message: string; [key: string]: unknown }> =
     {};
   if (!Object.values(tinderJson.Usage.app_opens).length) {
