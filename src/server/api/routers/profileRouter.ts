@@ -151,6 +151,7 @@ export const profileRouter = createTRPCRouter({
 
       void sendInternalSlackMessage("bot-messages", "Profile Created", {
         tinderId: input.tinderId,
+        profileUrl: `https://swipestats.io/insights/${input.tinderId}`,
         gender: swipestatsProfile.gender,
         age: swipestatsProfile.ageAtUpload,
         city: swipestatsProfile.city,
