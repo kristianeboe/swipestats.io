@@ -1,0 +1,49 @@
+{
+  "id": "callout",
+  "type": "SharedSlice",
+  "name": "Callout",
+  "description": "Callout",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "emoji": {
+          "type": "Text",
+          "config": {
+            "label": "Emoji",
+            "placeholder": ""
+          }
+        },
+        "richtest": {
+          "type": "StructuredText",
+          "config": {
+            "label": "RichTest",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "bold": {
+          "type": "Text",
+          "config": {
+            "label": "Bold",
+            "placeholder": ""
+          }
+        },
+        "rest": {
+          "type": "Text",
+          "config": {
+            "label": "Rest",
+            "placeholder": ""
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

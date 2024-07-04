@@ -1,7 +1,7 @@
 {
   "format": "page",
-  "id": "blog_post",
-  "label": "Blog post",
+  "id": "paw_blog",
+  "label": "Paw blog",
   "repeatable": true,
   "status": true,
   "json": {
@@ -17,16 +17,25 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
-            "content_centered": {
+            "section_with_heading": {
               "type": "SharedSlice"
             },
-            "call_to_action": {
+            "rich_text": {
               "type": "SharedSlice"
             },
-            "alternate_grid_2": {
+            "callout": {
               "type": "SharedSlice"
             },
-            "hero": {
+            "you_may_also_like": {
+              "type": "SharedSlice"
+            },
+            "author_box": {
+              "type": "SharedSlice"
+            },
+            "tldr_box": {
+              "type": "SharedSlice"
+            },
+            "h1_with_sub_heading": {
               "type": "SharedSlice"
             }
           }

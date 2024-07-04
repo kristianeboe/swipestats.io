@@ -5,9 +5,18 @@ import dynamic from "next/dynamic";
 export const components = {
   alternate_grid: dynamic(() => import("./AlternateGrid")),
   alternate_grid_2: dynamic(() => import("./AlternateGrid2")),
+  author_box: dynamic(() => import("./AuthorBox")),
   call_to_action: dynamic(() => import("./CallToAction")),
+  callout: dynamic(() => import("./Callout")),
+  content_centered: dynamic(() => import("./ContentCentered")),
   content_with_testimonials_and_stats: dynamic(
     () => import("./ContentWithTestimonialsAndStats"),
   ),
+  cta_info: dynamic(() => import("./CtaInfo")),
+  h1_with_sub_heading: dynamic(() => import("./HeadingWithSubHeading")),
   hero: dynamic(() => import("./Hero")),
+  rich_text: dynamic(() => import("./RichText")),
+  section_with_heading: dynamic(() => import("./SectionWithHeading")),
+  tldr_box: dynamic(() => import("./TldrBox")),
+  you_may_also_like: dynamic(() => import("./YouMayAlsoLike")),
 };

@@ -1,0 +1,43 @@
+{
+  "id": "h1_with_sub_heading",
+  "type": "SharedSlice",
+  "name": "HeadingWithSubHeading",
+  "description": "H1WithSubHeading",
+  "variations": [
+    {
+      "id": "default",
+      "name": "H1WithSubheading",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "title": {
+          "type": "Text",
+          "config": {
+            "label": "Title",
+            "placeholder": ""
+          }
+        },
+        "subheading": {
+          "type": "Text",
+          "config": {
+            "label": "Subheading",
+            "placeholder": ""
+          }
+        }
+      },
+      "items": {}
+    },
+    {
+      "id": "h2WithSubheading",
+      "name": "H2WithSubheading",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {},
+      "items": {}
+    }
+  ]
+}

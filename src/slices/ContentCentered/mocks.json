@@ -1,0 +1,117 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"eyebrow": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "Introducing 3"
+			},
+			"heading": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "JavaScript for Beginners"
+			},
+			"intro": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi, nibh dui, diam eget aliquam. Quisque id at vitae feugiat egestas ac. Diam nulla orci at in viverra scelerisque eget. Eleifend egestas fringilla sapien."
+			},
+			"bullets": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"bold",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "play",
+									"type": "Text"
+								}
+							],
+							[
+								"content",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "wrong",
+									"type": "Text"
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"bold",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Test 1."
+								}
+							],
+							[
+								"content",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Content"
+								}
+							]
+						]
+					}
+				]
+			},
+			"paragraph2": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Pariatur sit cupidatat commodo sint proident amet irure nisi minim nisi dolore esse nulla id eu."
+						}
+					}
+				]
+			},
+			"paragraph1": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Hello there",
+							"spans": [
+								{
+									"type": "strong",
+									"start": 0,
+									"end": 5
+								}
+							]
+						},
+						"direction": "ltr"
+					},
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "",
+							"spans": []
+						},
+						"direction": "ltr"
+					},
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			}
+		},
+		"items": []
+	}
+]

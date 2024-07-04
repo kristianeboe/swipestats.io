@@ -1,32 +1,32 @@
 {
   "format": "page",
-  "id": "blog_post",
-  "label": "Blog post",
-  "repeatable": true,
+  "id": "paw_blog_test",
+  "label": "Paw Blog Test",
+  "repeatable": false,
   "status": true,
   "json": {
     "Main": {
-      "uid": {
-        "config": {
-          "label": "UID"
-        },
-        "type": "UID"
-      },
       "slices": {
         "type": "Slices",
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
-            "content_centered": {
+            "rich_text": {
               "type": "SharedSlice"
             },
-            "call_to_action": {
+            "section_with_heading": {
               "type": "SharedSlice"
             },
-            "alternate_grid_2": {
+            "cta_info": {
               "type": "SharedSlice"
             },
-            "hero": {
+            "h1_with_sub_heading": {
+              "type": "SharedSlice"
+            },
+            "callout": {
+              "type": "SharedSlice"
+            },
+            "author_box": {
               "type": "SharedSlice"
             }
           }

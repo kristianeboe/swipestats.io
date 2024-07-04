@@ -1,0 +1,16 @@
+{
+  "id": "you_may_also_like",
+  "type": "SharedSlice",
+  "name": "YouMayAlsoLike",
+  "description": "YouMayAlsoLike",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": ""
+    }
+  ]
+}

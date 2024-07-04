@@ -1,0 +1,20 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"rich_text_block": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Excepteur veniam tempor voluptate mollit et est adipisicing ipsum id. Aliquip laborum ad eu laboris duis nisi irure est exercitation cupidatat."
+						}
+					}
+				]
+			}
+		},
+		"items": []
+	}
+]

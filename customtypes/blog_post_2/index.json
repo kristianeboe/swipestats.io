@@ -1,7 +1,7 @@
 {
   "format": "page",
-  "id": "blog_post",
-  "label": "Blog post",
+  "id": "blog_post_2",
+  "label": "Blog post 2",
   "repeatable": true,
   "status": true,
   "json": {
@@ -17,16 +17,10 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "cta_info": {
+              "type": "SharedSlice"
+            },
             "content_centered": {
-              "type": "SharedSlice"
-            },
-            "call_to_action": {
-              "type": "SharedSlice"
-            },
-            "alternate_grid_2": {
-              "type": "SharedSlice"
-            },
-            "hero": {
               "type": "SharedSlice"
             }
           }

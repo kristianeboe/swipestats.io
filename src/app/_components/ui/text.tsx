@@ -44,13 +44,13 @@ function P(props: { children: React.ReactNode }) {
   );
 }
 
-
 function MarketingP(props: { children: React.ReactNode }) {
   return (
-    <p className="text-lg leading-8 text-gray-600 [&:not(:first-child)]:mt-6">{props.children}</p>
+    <p className="text-lg leading-8 text-gray-600 [&:not(:first-child)]:mt-6">
+      {props.children}
+    </p>
   );
 }
-
 
 function Blockquote(props: { children: React.ReactNode }) {
   return (
@@ -97,6 +97,10 @@ function Muted(props: { children: React.ReactNode }) {
   return <p className="text-muted-foreground text-sm">{props.children}</p>;
 }
 
+function Prose(props: { children: React.ReactNode }) {
+  return <div className="prose ">{props.children}</div>;
+}
+
 export const Text = {
   H1,
   MarketingH1,
@@ -112,4 +116,5 @@ export const Text = {
   Large,
   Small,
   Muted,
+  Prose,
 };
