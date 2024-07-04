@@ -45,7 +45,16 @@ type ProfileEvent =
   | "Profile Deleted"
   | "Profile Upload Simulated";
 
-export type AnalyticsEventName = ProfileEvent | FileEvent;
+// reminder of happy path order
+// File reading Initialized
+// File reading Succeeded
+// Profile Anonymised Successfully
+// Profile Upload Initialized
+// Profile Created
+
+type MiscEvent = "Newsletter Signup" | "Waitlist Signup";
+// TODO split client and server events
+export type AnalyticsEventName = ProfileEvent | FileEvent | MiscEvent;
 export type AnalyticsEventProperties = Record<
   string,
   string | number | boolean | null

@@ -16,8 +16,9 @@ import {
   prismaCreateTinderProfileTxn,
 } from "../services/profile.service";
 import { createMessagesAndMatches } from "../services/profile.messages.service";
-import { analyticsTrackServer } from "@/lib/analytics/server";
+import { analyticsTrackServer } from "@/lib/analytics/analyticsTrackServer";
 import { expandAndAugmentProfileWithMissingDays } from "@/lib/profile.utils";
+import { sendInternalSlackMessage } from "../services/internal-slack.service";
 
 const log = createSubLogger("profile.router");
 
@@ -116,14 +117,14 @@ export const profileRouter = createTRPCRouter({
 
       const tinderJson = input.anonymizedTinderJson as AnonymizedTinderDataJSON;
 
+      const userId = user?.id ?? input.tinderId; // defaults to the tinderId as it is unique too
+
       log.info("Initiate prisma create", {
         tinderId: input.tinderId,
         userId: user?.id,
         timeZone: input.timeZone,
         country: input.country,
       });
-
-      const userId = user?.id ?? nanoid(); // defaults to nanoid
 
       const swipestatsProfile = await prismaCreateTinderProfileTxn({
         user: { userId, timeZone: input.timeZone, country: input.country },
@@ -140,11 +141,25 @@ export const profileRouter = createTRPCRouter({
           age: swipestatsProfile.ageAtUpload,
           city: swipestatsProfile.city,
           region: swipestatsProfile.region,
+          timeZone: input.timeZone ?? null,
+          country: input.country ?? null,
         },
         {
           awaitTrack: true,
         },
       );
+
+      void sendInternalSlackMessage("bot-messages", "Profile Created", {
+        tinderId: input.tinderId,
+        profileUrl: `https://swipestats.io/insights/${input.tinderId}`,
+        gender: swipestatsProfile.gender,
+        age: swipestatsProfile.ageAtUpload,
+        city: swipestatsProfile.city,
+        region: swipestatsProfile.region,
+        bio: swipestatsProfile.bio,
+        geoTimezone: input.timeZone,
+        geoCountry: input.country,
+      });
 
       return swipestatsProfile;
     }),
@@ -462,6 +477,15 @@ export const profileRouter = createTRPCRouter({
         },
       });
 
+      void analyticsTrackServer(input.email, "Waitlist Signup", {
+        email: input.email,
+        dataProvider: input.dataProviderId,
+      });
+
+      sendInternalSlackMessage("bot-messages", "Waitlist Signup", {
+        email: input.email,
+      });
+
       return waitlistEntry;
     }),
   simulateProfileUplad: publicProcedure
@@ -485,12 +509,14 @@ export const profileRouter = createTRPCRouter({
         "Profile Upload Simulated",
         {
           tinderId: input.tinderId,
+          timeZone: input.timeZone ?? null,
+          country: input.country ?? null,
         },
       );
 
       const tinderJson = input.anonymizedTinderJson as AnonymizedTinderDataJSON;
 
-      const userId = nanoid();
+      const userId = input.tinderId;
 
       const expandedUsageTimeFrame = expandAndAugmentProfileWithMissingDays({
         appOpens: tinderJson.Usage.app_opens,
@@ -527,7 +553,7 @@ export const profileRouter = createTRPCRouter({
             appOpensCount: tinderJson.Usage.app_opens[date] ?? 0,
             matchesCount: tinderJson.Usage.matches[date] ?? 0,
             swipeLikesCount: tinderJson.Usage.swipes_likes[date] ?? 0,
-            swipeSuperLikesCount: tinderJson.Usage.superlikes[date] ?? 0,
+            swipeSuperLikesCount: tinderJson.Usage.superlikes?.[date] ?? 0,
             swipePassesCount: tinderJson.Usage.swipes_passes[date] ?? 0,
             messagesSentCount: tinderJson.Usage.messages_sent[date] ?? 0,
             messagesReceivedCount:

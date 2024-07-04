@@ -44,3 +44,9 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# local migrations
+ssMigrations
+scripts/migrateV2toV3.ts
+
+scripts/old_swipestats_profiles

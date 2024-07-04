@@ -96,7 +96,8 @@ export function createMessagesAndMatches(
 
         const messageType = getMessageType(msg);
 
-        const content = he.decode(msg.message);
+        const content = msg.message ? he.decode(msg.message) : "";
+
         // const { mostProbableLanguage, topTrigrams } =
         //   getFrancLanguageContext(content);
 
@@ -106,8 +107,8 @@ export function createMessagesAndMatches(
           sentDate: new Date(msg.sent_date),
           sentDateRaw: msg.sent_date,
           content,
-          charCount: content.length,
-          contentRaw: msg.message,
+          charCount: content?.length ?? 0,
+          contentRaw: msg.message ?? "",
           type: msg.type ? String(msg.type) : undefined,
           // primaryLanguage: mostProbableLanguage,
           // languagesSpoken: topTrigrams,
@@ -149,6 +150,8 @@ function getMessageType(msg: TinderJsonMatch["messages"][number]): MessageType {
     // @ts-expect-error just covering my bases
     case 1:
       return "TEXT"; // actually a number / Int, but actually actually it's just a normal text
+    case "vibes":
+      return "OTHER";
 
     // case "swipe_note": return "SWIPE_NOTE" // other for now
 

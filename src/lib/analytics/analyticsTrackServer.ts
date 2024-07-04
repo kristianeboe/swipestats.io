@@ -24,6 +24,13 @@ export async function analyticsTrackServer(
     event: eventName,
     distinctId: userId,
     properties,
+    
+  });
+  console.log("Server track", {
+    userId,
+    eventName,
+    properties,
+    options,
   });
   await PostHogClient().shutdown();
 }

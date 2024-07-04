@@ -327,7 +327,7 @@ import {
 } from "@/app/_components/ui/alert";
 import { ShieldAlert } from "lucide-react";
 
-import { analyticsTrackClient } from "@/lib/analytics/client";
+import { analyticsTrackClient } from "@/lib/analytics/analyticsTrackClient";
 
 const FormSchema = z.object({
   gender: z.enum(TinderJsonGenderValues, {

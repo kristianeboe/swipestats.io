@@ -5,7 +5,7 @@ import { useDropzone } from "react-dropzone";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import { Alert } from "@/app/_components/tw/Alert";
 import type { DataProvider } from "@prisma/client";
-import { analyticsTrackClient } from "@/lib/analytics/client";
+import { analyticsTrackClient } from "@/lib/analytics/analyticsTrackClient";
 
 export function UploadArea({
   dataProviderId,

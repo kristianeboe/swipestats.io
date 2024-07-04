@@ -22,6 +22,7 @@ export const env = createEnv({
       // VERCEL_URL doesn't include `https` so it cant be validated as a URL
       process.env.VERCEL ? z.string() : z.string().url(),
     ),
+    SLACK_WEBHOOK_INTERNAL: z.string().url(),
   },
 
   /**
@@ -32,7 +33,7 @@ export const env = createEnv({
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
     NEXT_PUBLIC_POSTHOG_KEY: z.string(),
-    NEXT_PUBLIC_POSTHOG_HOST: z.string(),
+
     NEXT_PUBLIC_IS_DEV: z.boolean(),
     NEXT_PUBLIC_IS_PROD: z.boolean(),
     NEXT_PUBLIC_MANUAL_ENV: z.enum(["development", "staging", "production"]),
@@ -49,11 +50,12 @@ export const env = createEnv({
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
 
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
-    NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
 
     NEXT_PUBLIC_MANUAL_ENV: process.env.NEXT_PUBLIC_MANUAL_ENV,
     NEXT_PUBLIC_IS_DEV: process.env.NODE_ENV === "development",
     NEXT_PUBLIC_IS_PROD: process.env.NEXT_PUBLIC_MANUAL_ENV === "production",
+
+    SLACK_WEBHOOK_INTERNAL: process.env.SLACK_WEBHOOK_INTERNAL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

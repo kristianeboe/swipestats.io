@@ -31,12 +31,14 @@ async function createSwipestatsProfileId(
   const profileId = await createSHA256Hash(
     birthDate + "-" + appProfileCreateDate,
   );
-  log.info("Profile id created", profileId);
+  // log.info("Profile id created", profileId);
 
   return profileId;
 }
 
-function isValidTinderJson(tinderJson: FullTinderDataJSON) {
+export function isValidTinderJson(
+  tinderJson: FullTinderDataJSON | AnonymizedTinderDataJSON,
+) {
   const errors: Record<string, { message: string; [key: string]: unknown }> =
     {};
   if (!Object.values(tinderJson.Usage.app_opens).length) {
@@ -67,11 +69,11 @@ export async function createSwipestatsProfilePayloadFromJson(
     case "TINDER":
       try {
         const tinderJson = JSON.parse(jsonString) as FullTinderDataJSON;
-        log.info(
-          "Tinder data parsed successfully",
-          Object.keys(tinderJson),
-          tinderJson.User,
-        );
+        // log.info(
+        //   "Tinder data parsed successfully",
+        //   Object.keys(tinderJson),
+        //   tinderJson.User,
+        // );
 
         const birthDate = tinderJson.User.birth_date;
         const createDate = tinderJson.User.create_date;
@@ -99,11 +101,11 @@ export async function createSwipestatsProfilePayloadFromJson(
             spotify: !!tinderJson.User.spotify?.spotify_connected,
           },
         } as AnonymizedTinderDataJSON;
-        log.info(
-          "Tinder data anonymized successfully",
-          Object.keys(anonymizedTinderJson),
-          anonymizedTinderJson.User,
-        );
+        // log.info(
+        //   "Tinder data anonymized successfully",
+        //   Object.keys(anonymizedTinderJson),
+        //   anonymizedTinderJson.User,
+        // );
 
         const profileId = await createSwipestatsProfileId(
           anonymizedTinderJson.User.birth_date,
