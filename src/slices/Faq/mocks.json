@@ -1,0 +1,157 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"questions_and_answers": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"question",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "What makes your photographers experts in dating profile pictures?"
+								}
+							],
+							[
+								"answer",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Our photographers are experts in dating profile pictures because we have specialized in capturing high-performing photos specifically tailored for online dating. ",
+												"spans": []
+											},
+											"direction": "ltr"
+										},
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "",
+												"spans": []
+											},
+											"direction": "ltr"
+										},
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "We have extensively tested and optimized our approach, gathering insights from research, client interviews, and swipe panels. With a focus on authenticity, confidence, and charisma, our photographers know how to bring out the best in individuals and showcase their unique attributes. ",
+												"spans": []
+											},
+											"direction": "ltr"
+										},
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "We will help you get more and better matches with your dating profile pictures.",
+												"spans": []
+											},
+											"direction": "ltr"
+										}
+									]
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"answer",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "As a dating profile photography service, we provide comprehensive coaching and tips to help you present your best self online. ",
+												"spans": []
+											},
+											"direction": "ltr"
+										},
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "",
+												"spans": []
+											},
+											"direction": "ltr"
+										},
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "Our experienced team will guide you on posing, outfits, and facial expressions to capture stunning, natural-looking photos. With our proven strategies and expertise, you'll receive professional guidance to optimize your dating profile and attract more high-quality matches.",
+												"spans": []
+											},
+											"direction": "ltr"
+										}
+									]
+								}
+							],
+							[
+								"question",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "What kind of coaching and tips will I receive?"
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"question",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "How is the data-driven optimization process carried out?"
+								}
+							],
+							[
+								"answer",
+								{
+									"__TYPE__": "StructuredTextContent",
+									"value": [
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "The data-driven optimization process is carried out through extensive testing and analysis. ",
+												"spans": []
+											},
+											"direction": "ltr"
+										},
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "",
+												"spans": []
+											},
+											"direction": "ltr"
+										},
+										{
+											"type": "paragraph",
+											"content": {
+												"text": "We use a combination of manual research, hiring swipe panels, conducting interviews, and artificial intelligence. We also provide a testing and optimization framework for clients to follow. This allows us to constantly learn and improve, ensuring that our clients' photos are highly effective in attracting more and better matches.",
+												"spans": []
+											},
+											"direction": "ltr"
+										}
+									]
+								}
+							]
+						]
+					}
+				]
+			}
+		},
+		"items": []
+	}
+]
