@@ -138,6 +138,134 @@ export type BlogPost2Document<Lang extends string = string> =
     Lang
   >;
 
+/**
+ * Item in *BlogWithPhotos → Table*
+ */
+export interface BlogwithphotosDocumentDataTableItem {
+  /**
+   * Row1Col1 field in *BlogWithPhotos → Table*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blogwithphotos.table[].row1col1
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  row1col1: prismic.KeyTextField;
+
+  /**
+   * Row2Col2 field in *BlogWithPhotos → Table*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blogwithphotos.table[].row2col2
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  row2col2: prismic.KeyTextField;
+}
+
+type BlogwithphotosDocumentDataSlicesSlice =
+  | SectionRichTextImageSlice
+  | RichTextSlice
+  | TripplePhotoSlice
+  | SectionWithHeadingSlice
+  | H1WithSubHeadingSlice;
+
+/**
+ * Content for BlogWithPhotos documents
+ */
+interface BlogwithphotosDocumentData {
+  /**
+   * PageTitle field in *BlogWithPhotos*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blogwithphotos.pagetitle
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  pagetitle: prismic.KeyTextField;
+
+  /**
+   * CoverPhoto field in *BlogWithPhotos*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blogwithphotos.coverPhoto
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  coverPhoto: prismic.ImageField<never>;
+
+  /**
+   * Table field in *BlogWithPhotos*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blogwithphotos.table[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  table: prismic.GroupField<Simplify<BlogwithphotosDocumentDataTableItem>>;
+
+  /**
+   * Slice Zone field in *BlogWithPhotos*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blogwithphotos.slices[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#slices
+   */
+  slices: prismic.SliceZone<BlogwithphotosDocumentDataSlicesSlice> /**
+   * Meta Title field in *BlogWithPhotos*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A title of the page used for social media and search engines
+   * - **API ID Path**: blogwithphotos.meta_title
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */;
+  meta_title: prismic.KeyTextField;
+
+  /**
+   * Meta Description field in *BlogWithPhotos*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A brief summary of the page
+   * - **API ID Path**: blogwithphotos.meta_description
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  meta_description: prismic.KeyTextField;
+
+  /**
+   * Meta Image field in *BlogWithPhotos*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: blogwithphotos.meta_image
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  meta_image: prismic.ImageField<never>;
+}
+
+/**
+ * BlogWithPhotos document from Prismic
+ *
+ * - **API ID**: `blogwithphotos`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type BlogwithphotosDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithoutUID<
+    Simplify<BlogwithphotosDocumentData>,
+    "blogwithphotos",
+    Lang
+  >;
+
 type HomepageDocumentDataSlicesSlice =
   | ContentWithTestimonialsAndStatsSlice
   | AlternateGridSlice;
@@ -362,6 +490,7 @@ export type PawBlogTestDocument<Lang extends string = string> =
 export type AllDocumentTypes =
   | BlogPostDocument
   | BlogPost2Document
+  | BlogwithphotosDocument
   | HomepageDocument
   | PawBlogDocument
   | PawBlogTestDocument;
@@ -1635,6 +1764,71 @@ export type RichTextSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Primary content in *SectionRichTextImage → Default → Primary*
+ */
+export interface SectionRichTextImageSliceDefaultPrimary {
+  /**
+   * sectionTitle field in *SectionRichTextImage → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: section_rich_text_image.default.primary.sectiontitle
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  sectiontitle: prismic.KeyTextField;
+
+  /**
+   * body field in *SectionRichTextImage → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: section_rich_text_image.default.primary.body
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  body: prismic.RichTextField;
+
+  /**
+   * Right Image field in *SectionRichTextImage → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: section_rich_text_image.default.primary.right_image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  right_image: prismic.ImageField<never>;
+}
+
+/**
+ * Default variation for SectionRichTextImage Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type SectionRichTextImageSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<SectionRichTextImageSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *SectionRichTextImage*
+ */
+type SectionRichTextImageSliceVariation = SectionRichTextImageSliceDefault;
+
+/**
+ * SectionRichTextImage Shared Slice
+ *
+ * - **API ID**: `section_rich_text_image`
+ * - **Description**: SectionRichTextImage
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type SectionRichTextImageSlice = prismic.SharedSlice<
+  "section_rich_text_image",
+  SectionRichTextImageSliceVariation
+>;
+
+/**
  * Primary content in *SectionWithHeading → Default → Primary*
  */
 export interface SectionWithHeadingSliceDefaultPrimary {
@@ -1720,6 +1914,81 @@ export type TldrBoxSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Primary content in *TripplePhoto → Default → Primary*
+ */
+export interface TripplePhotoSliceDefaultPrimary {
+  /**
+   * Title field in *TripplePhoto → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: tripple_photo.default.primary.title
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * Image1 field in *TripplePhoto → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: tripple_photo.default.primary.image1
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image1: prismic.ImageField<never>;
+
+  /**
+   * Image2 field in *TripplePhoto → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: tripple_photo.default.primary.image2
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image2: prismic.ImageField<never>;
+
+  /**
+   * Imag3 field in *TripplePhoto → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: tripple_photo.default.primary.imag3
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  imag3: prismic.ImageField<never>;
+}
+
+/**
+ * Default variation for TripplePhoto Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type TripplePhotoSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<TripplePhotoSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *TripplePhoto*
+ */
+type TripplePhotoSliceVariation = TripplePhotoSliceDefault;
+
+/**
+ * TripplePhoto Shared Slice
+ *
+ * - **API ID**: `tripple_photo`
+ * - **Description**: TripplePhoto
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type TripplePhotoSlice = prismic.SharedSlice<
+  "tripple_photo",
+  TripplePhotoSliceVariation
+>;
+
+/**
  * Default variation for YouMayAlsoLike Slice
  *
  * - **API ID**: `default`
@@ -1765,6 +2034,10 @@ declare module "@prismicio/client" {
       BlogPost2Document,
       BlogPost2DocumentData,
       BlogPost2DocumentDataSlicesSlice,
+      BlogwithphotosDocument,
+      BlogwithphotosDocumentData,
+      BlogwithphotosDocumentDataTableItem,
+      BlogwithphotosDocumentDataSlicesSlice,
       HomepageDocument,
       HomepageDocumentData,
       HomepageDocumentDataSlicesSlice,
@@ -1832,6 +2105,10 @@ declare module "@prismicio/client" {
       RichTextSliceDefaultPrimary,
       RichTextSliceVariation,
       RichTextSliceDefault,
+      SectionRichTextImageSlice,
+      SectionRichTextImageSliceDefaultPrimary,
+      SectionRichTextImageSliceVariation,
+      SectionRichTextImageSliceDefault,
       SectionWithHeadingSlice,
       SectionWithHeadingSliceDefaultPrimary,
       SectionWithHeadingSliceVariation,
@@ -1839,6 +2116,10 @@ declare module "@prismicio/client" {
       TldrBoxSlice,
       TldrBoxSliceVariation,
       TldrBoxSliceDefault,
+      TripplePhotoSlice,
+      TripplePhotoSliceDefaultPrimary,
+      TripplePhotoSliceVariation,
+      TripplePhotoSliceDefault,
       YouMayAlsoLikeSlice,
       YouMayAlsoLikeSliceVariation,
       YouMayAlsoLikeSliceDefault,

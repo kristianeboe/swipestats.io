@@ -1,6 +1,6 @@
 import { type Content, isFilled } from "@prismicio/client";
 import { PrismicNextLink, PrismicNextImage } from "@prismicio/next";
-import { SliceComponentProps, PrismicRichText } from "@prismicio/react";
+import { type SliceComponentProps, PrismicRichText } from "@prismicio/react";
 
 export type HeroProps = SliceComponentProps<Content.HeroSlice>;
 
@@ -12,14 +12,11 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
       className="es-bounded es-fullpage-hero"
     >
       <div
-        className={`
-            es-fullpage-hero__content
-            ${
-              slice.variation === "imageRight"
-                ? "es-fullpage-hero__image--right"
-                : "es-fullpage-hero__image--left"
-            }
-        `}
+        className={`es-fullpage-hero__content ${
+          slice.variation === "imageRight"
+            ? "es-fullpage-hero__image--right"
+            : "es-fullpage-hero__image--left"
+        } `}
       >
         <div>
           {isFilled.image(slice.primary.image) && (
@@ -52,7 +49,7 @@ const Hero = ({ slice }: HeroProps): JSX.Element => {
                 className="es-call-to-action__link"
                 field={slice.primary.callToActionLink}
               >
-                {slice.primary.callToActionLabel || "Learn more…"}
+                {slice.primary.callToActionLabel ?? "Learn more…"}
               </PrismicNextLink>
             )}
           </div>

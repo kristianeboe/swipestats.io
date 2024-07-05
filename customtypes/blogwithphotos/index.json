@@ -1,0 +1,99 @@
+{
+  "format": "page",
+  "id": "blogwithphotos",
+  "label": "BlogWithPhotos",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "Main": {
+      "pagetitle": {
+        "type": "Text",
+        "config": {
+          "label": "PageTitle",
+          "placeholder": ""
+        }
+      },
+      "coverPhoto": {
+        "type": "Image",
+        "config": {
+          "label": "CoverPhoto",
+          "constraint": {},
+          "thumbnails": []
+        }
+      },
+      "table": {
+        "type": "Group",
+        "config": {
+          "label": "Table",
+          "repeat": true,
+          "fields": {
+            "row1col1": {
+              "type": "Text",
+              "config": {
+                "label": "Row1Col1",
+                "placeholder": ""
+              }
+            },
+            "row2col2": {
+              "type": "Text",
+              "config": {
+                "label": "Row2Col2",
+                "placeholder": ""
+              }
+            }
+          }
+        }
+      },
+      "slices": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {
+            "section_rich_text_image": {
+              "type": "SharedSlice"
+            },
+            "rich_text": {
+              "type": "SharedSlice"
+            },
+            "tripple_photo": {
+              "type": "SharedSlice"
+            },
+            "section_with_heading": {
+              "type": "SharedSlice"
+            },
+            "h1_with_sub_heading": {
+              "type": "SharedSlice"
+            }
+          }
+        }
+      }
+    },
+    "SEO & Metadata": {
+      "meta_title": {
+        "config": {
+          "label": "Meta Title",
+          "placeholder": "A title of the page used for social media and search engines"
+        },
+        "type": "Text"
+      },
+      "meta_description": {
+        "config": {
+          "label": "Meta Description",
+          "placeholder": "A brief summary of the page"
+        },
+        "type": "Text"
+      },
+      "meta_image": {
+        "config": {
+          "constraint": {
+            "height": 1260,
+            "width": 2400
+          },
+          "label": "Meta Image",
+          "thumbnails": []
+        },
+        "type": "Image"
+      }
+    }
+  }
+}

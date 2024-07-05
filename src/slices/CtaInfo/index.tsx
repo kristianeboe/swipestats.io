@@ -15,8 +15,9 @@ const CtaInfo = ({ slice }: CtaInfoProps): JSX.Element => {
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
+      className="mt-10"
     >
-      <div className="max-w-xl rounded-xl  border-l-8 border-rose-300 bg-white p-6 shadow-lg ring-1 ring-gray-900/10">
+      <div className="max-w-xl rounded-xl border-l-8 border-rose-300 bg-white p-6 shadow-lg ring-1 ring-gray-900/10">
         <h2 className="text-xl font-bold text-rose-300">
           {slice.primary.emoji} {slice.primary.heading}
         </h2>

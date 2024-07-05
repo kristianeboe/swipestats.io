@@ -1,6 +1,6 @@
 import { type Content, isFilled } from "@prismicio/client";
 import { PrismicNextLink, PrismicNextImage } from "@prismicio/next";
-import { PrismicRichText, SliceComponentProps } from "@prismicio/react";
+import { PrismicRichText, type SliceComponentProps } from "@prismicio/react";
 
 export type CallToActionProps = SliceComponentProps<Content.CallToActionSlice>;
 
@@ -37,7 +37,7 @@ const CallToAction = ({ slice }: CallToActionProps): JSX.Element => {
             className="es-call-to-action__button"
             field={slice.primary.buttonLink}
           >
-            {slice.primary.buttonLabel || "Learn more…"}
+            {slice.primary.buttonLabel ?? "Learn more…"}
           </PrismicNextLink>
         )}
       </div>

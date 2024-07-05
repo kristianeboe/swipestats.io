@@ -16,7 +16,7 @@ function MarketingH1(props: { children: React.ReactNode }) {
 
 function H2(props: { children: React.ReactNode }) {
   return (
-    <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+    <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
       {props.children}
     </h2>
   );
@@ -98,7 +98,7 @@ function Muted(props: { children: React.ReactNode }) {
 }
 
 function Prose(props: { children: React.ReactNode }) {
-  return <div className="prose ">{props.children}</div>;
+  return <div className="prose">{props.children}</div>;
 }
 
 export const Text = {

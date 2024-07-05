@@ -9,7 +9,7 @@ export default async function Page() {
   const page = await client.getSingle("paw_blog_test");
 
   return (
-    <main className="container py-20">
+    <main className="container prose py-20">
       <SliceZone slices={page.data.slices} components={components} />
     </main>
   );
