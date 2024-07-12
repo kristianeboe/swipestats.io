@@ -1,0 +1,42 @@
+{
+  "id": "table",
+  "type": "SharedSlice",
+  "name": "Table",
+  "description": "Table",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "rows": {
+          "type": "Group",
+          "config": {
+            "label": "Rows",
+            "repeat": true,
+            "fields": {
+              "col1": {
+                "type": "Text",
+                "config": {
+                  "label": "Col1",
+                  "placeholder": ""
+                }
+              },
+              "col2": {
+                "type": "Text",
+                "config": {
+                  "label": "Col2",
+                  "placeholder": ""
+                }
+              }
+            }
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

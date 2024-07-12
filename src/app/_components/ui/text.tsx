@@ -1,3 +1,5 @@
+import { cn } from "@/lib/utils";
+
 function H1(props: { children: React.ReactNode }) {
   return (
     <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
@@ -6,17 +8,27 @@ function H1(props: { children: React.ReactNode }) {
   );
 }
 
-function MarketingH1(props: { children: React.ReactNode }) {
+function MarketingH1(props: { className?: string; children: React.ReactNode }) {
   return (
-    <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+    <h1
+      className={cn(
+        "text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl",
+        props.className,
+      )}
+    >
       {props.children}
     </h1>
   );
 }
 
-function H2(props: { children: React.ReactNode }) {
+function H2(props: { className?: string; children: React.ReactNode }) {
   return (
-    <h2 className="scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0">
+    <h2
+      className={cn(
+        "scroll-m-20 text-3xl font-semibold tracking-tight first:mt-0",
+        props.className,
+      )}
+    >
       {props.children}
     </h2>
   );

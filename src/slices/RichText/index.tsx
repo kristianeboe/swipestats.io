@@ -14,7 +14,7 @@ const RichText = ({ slice }: RichTextProps): JSX.Element => {
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="prose lg:prose-xl"
+      className="prose mt-10 lg:prose-xl"
     >
       <PrismicRichText field={slice.primary.rich_text_block} />
     </section>

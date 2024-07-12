@@ -10,7 +10,63 @@
       "docURL": "...",
       "version": "initial",
       "description": "Default",
-      "imageUrl": ""
+      "imageUrl": "",
+      "primary": {
+        "author_image": {
+          "type": "Image",
+          "config": {
+            "label": "Author Image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "author_name": {
+          "type": "Text",
+          "config": {
+            "label": "Author Name",
+            "placeholder": ""
+          }
+        },
+        "author_role": {
+          "type": "Text",
+          "config": {
+            "label": "Author Role",
+            "placeholder": ""
+          }
+        },
+        "author_description": {
+          "type": "Text",
+          "config": {
+            "label": "Author description",
+            "placeholder": ""
+          }
+        },
+        "author_instagram": {
+          "type": "Link",
+          "config": {
+            "label": "Author Instagram",
+            "placeholder": "",
+            "select": null
+          }
+        },
+        "author_linkedin": {
+          "type": "Link",
+          "config": {
+            "label": "Author LinkedIn",
+            "placeholder": "",
+            "select": null
+          }
+        },
+        "author_x": {
+          "type": "Link",
+          "config": {
+            "label": "Author X",
+            "placeholder": "",
+            "select": null
+          }
+        }
+      },
+      "items": {}
     }
   ]
 }

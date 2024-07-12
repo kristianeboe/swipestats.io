@@ -1,5 +1,7 @@
-type BlogPost = {
-  id: number;
+import Link from "next/link";
+
+export type BlogPost = {
+  id: string;
   title: string;
   href: string;
   readTime: string;
@@ -19,9 +21,9 @@ type BlogPost = {
   };
 };
 
-const posts: BlogPost[] = [
+export const posts: BlogPost[] = [
   {
-    id: 1,
+    id: "1",
     title:
       "I analyzed hundreds of user’s Tinder data — including messages — so you don’t have to.",
     href: "https://towardsdatascience.com/i-analyzed-hundreds-of-users-tinder-data-including-messages-so-you-dont-have-to-14c6dc4a5fdd",
@@ -40,7 +42,7 @@ const posts: BlogPost[] = [
     },
   },
   {
-    id: 2,
+    id: "2",
     title: "Why do women have the Upper Hand on Tinder?",
     href: "https://thebolditalic.com/the-two-worlds-of-tinder-f1c34e800db4?gi=87ab2f7db817",
     description:
@@ -59,7 +61,7 @@ const posts: BlogPost[] = [
     },
   },
   {
-    id: 3,
+    id: "3",
     title:
       "[OC] Despite being far more selective, women still match more frequently than men on Tinder",
     href: "https://www.reddit.com/r/dataisbeautiful/comments/mbf6wg/oc_despite_being_far_more_selective_women_still",
@@ -83,12 +85,14 @@ const posts: BlogPost[] = [
 
 export function Blog() {
   return (
-    <div id="blog" className="bg-white py-32">
+    <div id="blog" className="bg-white pt-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            From the blog
-          </h2>
+          <Link href={"/blog"}>
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              From the blog
+            </h2>
+          </Link>
           <p className="mt-2 text-lg leading-8 text-gray-600">
             Learn how to grow your business with our expert advice.
           </p>
@@ -157,7 +161,7 @@ export function Blog() {
 
 export default function Blog2() {
   return (
-    <div className="bg-white py-24 ">
+    <div className="bg-white py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">

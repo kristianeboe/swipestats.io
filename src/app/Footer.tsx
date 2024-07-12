@@ -59,14 +59,16 @@ const navigation = {
     //   ),
     // },
     {
+      // React.SVGProps<SVGSVGElement>
       name: "Instagram",
       href: "https://instagram.com/kristianeboe",
-      icon: () => (
+      icon: (props: React.SVGProps<SVGSVGElement>) => (
         <svg
           fill="currentColor"
           viewBox="0 0 24 24"
           className="h-6 w-6"
           aria-hidden="true"
+          {...props}
         >
           <path
             fillRule="evenodd"
@@ -184,7 +186,7 @@ export function Footer() {
             @kristianeboe
           </Link>
         </p>
-        <p className=" text-center text-xs leading-5 text-gray-500">
+        <p className="text-center text-xs leading-5 text-gray-500">
           &copy; 2024 Boe Ventures AS. All rights reserved.
         </p>
       </div>

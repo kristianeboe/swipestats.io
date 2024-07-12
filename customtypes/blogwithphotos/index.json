@@ -1,7 +1,7 @@
 {
   "format": "page",
   "id": "blogwithphotos",
-  "label": "BlogWithPhotos",
+  "label": "LP Dating Photographer",
   "repeatable": false,
   "status": true,
   "json": {
@@ -27,17 +27,17 @@
           "label": "Table",
           "repeat": true,
           "fields": {
-            "row1col1": {
+            "col1": {
               "type": "Text",
               "config": {
-                "label": "Row1Col1",
+                "label": "Col1",
                 "placeholder": ""
               }
             },
-            "row2col2": {
+            "col2": {
               "type": "Text",
               "config": {
-                "label": "Row2Col2",
+                "label": "Col2",
                 "placeholder": ""
               }
             }
@@ -49,6 +49,9 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "hero_section": {
+              "type": "SharedSlice"
+            },
             "section_rich_text_image": {
               "type": "SharedSlice"
             },

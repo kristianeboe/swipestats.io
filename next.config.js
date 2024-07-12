@@ -11,6 +11,12 @@ const config = {
       {
         hostname: "images.prismic.io",
       },
+      {
+        hostname: "images.unsplash.com",
+      },
+      {
+        hostname: "miro.medium.com",
+      },
     ],
   },
 };

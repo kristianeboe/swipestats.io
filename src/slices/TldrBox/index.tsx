@@ -1,5 +1,6 @@
-import { Content } from "@prismicio/client";
-import { SliceComponentProps } from "@prismicio/react";
+import { Card } from "@/app/_components/ui/card";
+import { type Content } from "@prismicio/client";
+import { PrismicRichText, type SliceComponentProps } from "@prismicio/react";
 
 /**
  * Props for `TldrBox`.
@@ -11,12 +12,18 @@ export type TldrBoxProps = SliceComponentProps<Content.TldrBoxSlice>;
  */
 const TldrBox = ({ slice }: TldrBoxProps): JSX.Element => {
   return (
-    <section
+    <Card.Container
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
+      className="max-w-3xl"
     >
-      Placeholder component for tldr_box (variation: {slice.variation}) Slices
-    </section>
+      <div className="flex p-6">
+        {/* <div className="mr-4">{slice.primary.emoji}</div> */}
+        <div className="prose">
+          <PrismicRichText field={slice.primary.tldr_content} />
+        </div>
+      </div>
+    </Card.Container>
   );
 };
 

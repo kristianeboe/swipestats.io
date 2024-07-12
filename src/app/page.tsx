@@ -17,7 +17,7 @@ import Testimonials from "./Testimonials";
 import { FAQ } from "./FAQ";
 import NewsletterCTA from "./NewsletterCTA";
 import { StarIcon } from "lucide-react";
-import { Blog } from "./BlogSection";
+import { Blog } from "./blog/BlogSection";
 import { About } from "./AboutSection";
 
 const features = [
@@ -261,7 +261,9 @@ export default function HomePage() {
       </div>
 
       <DataRequestSupport />
-      <NewsletterCTA />
+      <section className="mx-auto max-w-7xl pt-32 sm:px-6 lg:px-8">
+        <NewsletterCTA />
+      </section>
 
       <Blog />
 

@@ -12,21 +12,57 @@
         },
         "type": "UID"
       },
+      "publish_date": {
+        "type": "Date",
+        "config": {
+          "label": "Publish date",
+          "placeholder": ""
+        }
+      },
+      "read_time": {
+        "type": "Text",
+        "config": {
+          "label": "Read time",
+          "placeholder": ""
+        }
+      },
+      "title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        }
+      },
+      "description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
       "slices": {
         "type": "Slices",
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
-            "content_centered": {
+            "table": {
               "type": "SharedSlice"
             },
-            "call_to_action": {
+            "callout": {
               "type": "SharedSlice"
             },
-            "alternate_grid_2": {
+            "cta_info": {
               "type": "SharedSlice"
             },
-            "hero": {
+            "tldr_box": {
+              "type": "SharedSlice"
+            },
+            "rich_text": {
+              "type": "SharedSlice"
+            },
+            "author_box": {
               "type": "SharedSlice"
             }
           }

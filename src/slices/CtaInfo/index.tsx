@@ -1,6 +1,8 @@
 import { Alert } from "@/app/_components/tw/Alert";
+import { getPrismicLinkUrl } from "@/lib/utils/prismic.utils";
 import { type Content } from "@prismicio/client";
 import { type SliceComponentProps } from "@prismicio/react";
+import Link from "next/link";
 
 /**
  * Props for `CtaInfo`.
@@ -17,8 +19,8 @@ const CtaInfo = ({ slice }: CtaInfoProps): JSX.Element => {
       data-slice-variation={slice.variation}
       className="mt-10"
     >
-      <div className="max-w-xl rounded-xl border-l-8 border-rose-300 bg-white p-6 shadow-lg ring-1 ring-gray-900/10">
-        <h2 className="text-xl font-bold text-rose-300">
+      <div className="rounded-xl border-l-8 border-rose-600 bg-white p-6 shadow-lg ring-1 ring-gray-900/10">
+        <h2 className="text-xl font-bold text-rose-600">
           {slice.primary.emoji} {slice.primary.heading}
         </h2>
         <p className="text-sm leading-6 text-gray-900">
@@ -32,18 +34,20 @@ const CtaInfo = ({ slice }: CtaInfoProps): JSX.Element => {
           </a> .*/}
         </p>
         <div className="mt-4 flex items-center gap-x-5">
-          <button
-            type="button"
-            className="rounded-md bg-gray-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
-          >
-            Accept all
-          </button>
-          <button
+          <Link href={getPrismicLinkUrl(slice.primary.link)}>
+            <button
+              type="button"
+              className="rounded-md bg-gray-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
+            >
+              {">>>Learn How<<<"}
+            </button>
+          </Link>
+          {/* <button
             type="button"
             className="text-sm font-semibold leading-6 text-gray-900"
           >
             Reject all
-          </button>
+          </button> */}
         </div>
       </div>
     </section>

@@ -6,18 +6,14 @@ import { components } from "@/slices";
 
 export default async function Page() {
   const client = createClient();
-  const page = await client.getSingle("paw_blog_test");
+  const page = await client.getSingle("landing_page_swipe_guide");
 
-  return (
-    <main className="container max-w-4xl py-20">
-      <SliceZone slices={page.data.slices} components={components} />
-    </main>
-  );
+  return <SliceZone slices={page.data.slices} components={components} />;
 }
 
 export async function generateMetadata(): Promise<Metadata> {
   const client = createClient();
-  const page = await client.getSingle("paw_blog_test");
+  const page = await client.getSingle("landing_page_swipe_guide");
 
   return {
     title: page.data.meta_title,

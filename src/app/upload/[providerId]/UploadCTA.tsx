@@ -224,7 +224,7 @@ export function UploadCTA(props: {
   return (
     <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
       <div className="flex flex-wrap items-center justify-around gap-5">
-        <div className="text-center md:text-left ">
+        <div className="text-center md:text-left">
           <h2 className="text-base font-semibold uppercase tracking-wide text-rose-600">
             Upload
           </h2>
@@ -280,7 +280,7 @@ export function UploadCTA(props: {
             checked={acceptedTerms}
             onChange={setAcceptedTerms}
           /> */}
-          <div className="mx-auto mt-4 flex  max-w-md justify-center md:mx-0 md:mt-8 md:justify-start">
+          <div className="mx-auto mt-4 flex max-w-md justify-center md:mx-0 md:mt-8 md:justify-start">
             <Button
               onClick={uploadProfile}
               loading={existingProfileQuery.isLoading || loading}

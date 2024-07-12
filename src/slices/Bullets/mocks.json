@@ -1,0 +1,35 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"bullets": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"bold",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Remarkable"
+								}
+							],
+							[
+								"body",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "contentj alsdkjf aølskdjf fjasldkfj asdfj"
+								}
+							]
+						]
+					}
+				]
+			}
+		},
+		"items": []
+	}
+]

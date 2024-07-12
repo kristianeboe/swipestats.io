@@ -52,7 +52,10 @@ type ProfileEvent =
 // Profile Upload Initialized
 // Profile Created
 
-type MiscEvent = "Newsletter Signup" | "Waitlist Signup";
+type MiscEvent =
+  | "Newsletter Signup"
+  | "Waitlist Signup"
+  | "FAQ Question Clicked";
 // TODO split client and server events
 export type AnalyticsEventName = ProfileEvent | FileEvent | MiscEvent;
 export type AnalyticsEventProperties = Record<

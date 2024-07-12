@@ -1,0 +1,49 @@
+{
+  "id": "bullets",
+  "type": "SharedSlice",
+  "name": "Bullets",
+  "description": "Bullets",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "bullets": {
+          "type": "Group",
+          "config": {
+            "label": "Bullets",
+            "repeat": true,
+            "fields": {
+              "bold": {
+                "type": "Text",
+                "config": {
+                  "label": "Bold",
+                  "placeholder": ""
+                }
+              },
+              "body": {
+                "type": "Text",
+                "config": {
+                  "label": "Body",
+                  "placeholder": ""
+                }
+              }
+            }
+          }
+        },
+        "emoji": {
+          "type": "Text",
+          "config": {
+            "label": "Emoji",
+            "placeholder": ""
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

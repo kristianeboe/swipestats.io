@@ -1,7 +1,7 @@
 {
   "format": "page",
-  "id": "paw_blog_test",
-  "label": "Paw Blog Test",
+  "id": "landing_page_swipe_guide",
+  "label": "Landing Page Swipe Guide",
   "repeatable": false,
   "status": true,
   "json": {
@@ -11,25 +11,7 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
-            "testimonial": {
-              "type": "SharedSlice"
-            },
-            "rich_text": {
-              "type": "SharedSlice"
-            },
-            "section_with_heading": {
-              "type": "SharedSlice"
-            },
-            "cta_info": {
-              "type": "SharedSlice"
-            },
-            "h1_with_sub_heading": {
-              "type": "SharedSlice"
-            },
-            "callout": {
-              "type": "SharedSlice"
-            },
-            "author_box": {
+            "hero_section": {
               "type": "SharedSlice"
             }
           }

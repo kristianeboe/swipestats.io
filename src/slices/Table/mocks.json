@@ -1,0 +1,98 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"rows": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"col1",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Bad Photos"
+								}
+							],
+							[
+								"col2",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Explanation"
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"col1",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Blurry photos"
+								}
+							],
+							[
+								"col2",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "These make you look less professional and less attractive."
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"col1",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Mirror selfies"
+								}
+							],
+							[
+								"col2",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Overdone and unoriginal. It also shows a lack of effort."
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"col1",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Pictures Limit selfies"
+								}
+							],
+							[
+								"col2",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Shows lack of effort and variety."
+								}
+							]
+						]
+					}
+				]
+			}
+		},
+		"items": []
+	}
+]

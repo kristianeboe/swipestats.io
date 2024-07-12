@@ -2,7 +2,24 @@
 	{
 		"__TYPE__": "SharedSliceContent",
 		"variation": "default",
-		"primary": {},
+		"primary": {
+			"emoji": {
+				"__TYPE__": "FieldContent",
+				"value": "well",
+				"type": "Text"
+			},
+			"tldr_content": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Enim amet duis id officia non nisi ut elit culpa culpa sint sunt irure sit. Aliquip veniam aliquip amet nisi ea incididunt minim sit sit exercitation. Ex sint occaecat velit incididunt culpa excepteur deserunt culpa laborum in aliquip."
+						}
+					}
+				]
+			}
+		},
 		"items": []
 	}
 ]

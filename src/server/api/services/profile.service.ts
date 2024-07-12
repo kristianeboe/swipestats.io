@@ -4,7 +4,7 @@ import type {
 } from "@/lib/interfaces/TinderDataJSON";
 import he from "he";
 
-import { Gender, SwipestatsVersion, type Prisma } from "@prisma/client";
+import { Gender, type SwipestatsVersion, type Prisma } from "@prisma/client";
 import {
   type ExpandedUsageValue,
   expandAndAugmentProfileWithMissingDays,

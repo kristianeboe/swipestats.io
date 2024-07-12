@@ -1,0 +1,104 @@
+{
+  "id": "hero_section",
+  "type": "SharedSlice",
+  "name": "HeroSection",
+  "description": "HeroSection",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "title": {
+          "type": "Text",
+          "config": {
+            "label": "Title",
+            "placeholder": ""
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": ""
+          }
+        },
+        "primaryctabuttontext": {
+          "type": "Text",
+          "config": {
+            "label": "PrimaryCtaButtonText",
+            "placeholder": ""
+          }
+        },
+        "primaryctabuttonhref": {
+          "type": "Link",
+          "config": {
+            "label": "PrimaryCtaButtonHref",
+            "placeholder": "",
+            "select": null
+          }
+        },
+        "ctalinktext": {
+          "type": "Text",
+          "config": {
+            "label": "CtaLinkText",
+            "placeholder": ""
+          }
+        },
+        "ctalinkHref": {
+          "type": "Link",
+          "config": {
+            "label": "CtaLinkHref",
+            "placeholder": "",
+            "allowTargetBlank": false,
+            "select": null
+          }
+        },
+        "image1": {
+          "type": "Image",
+          "config": {
+            "label": "Image1",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "image2": {
+          "type": "Image",
+          "config": {
+            "label": "Image2",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "image3": {
+          "type": "Image",
+          "config": {
+            "label": "Image3",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "image4": {
+          "type": "Image",
+          "config": {
+            "label": "Image4",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "image5": {
+          "type": "Image",
+          "config": {
+            "label": "Image5",
+            "constraint": {},
+            "thumbnails": []
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}
