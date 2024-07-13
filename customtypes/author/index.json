@@ -25,6 +25,21 @@
           "label": "Role",
           "placeholder": ""
         }
+      },
+      "profile_image": {
+        "type": "Image",
+        "config": {
+          "label": "Profile Image",
+          "constraint": {},
+          "thumbnails": []
+        }
+      },
+      "description": {
+        "type": "Text",
+        "config": {
+          "label": "Description",
+          "placeholder": ""
+        }
       }
     }
   }

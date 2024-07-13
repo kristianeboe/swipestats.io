@@ -10,13 +10,13 @@
 			},
 			"heading": {
 				"__TYPE__": "FieldContent",
-				"value": "burst",
-				"type": "Text"
+				"type": "Text",
+				"value": "Curious Where YOU Stand on the Dating Market?"
 			},
 			"body": {
 				"__TYPE__": "FieldContent",
-				"value": "warm",
-				"type": "Text"
+				"type": "Text",
+				"value": "Upload your Tinder data to Swipestats and find out!"
 			},
 			"link": {
 				"__TYPE__": "LinkContent",

@@ -87,7 +87,20 @@ const allPosts = [
 
 export default async function BlogPage() {
   const client = createClient();
-  const pages = await client.getAllByType("blog_post");
+  const pages = await client.getAllByType("blog_post", {
+    graphQuery: `{
+        blog_post {
+            ...blog_postFields
+            author {
+                ...on author {
+                    name
+                    role
+                }
+            }
+        }
+    }`,
+  });
+
   // const page = await client.getSingle("blog_home_page");
 
   //return <SliceZone slices={page.data.slices} components={components} />;
@@ -106,6 +119,84 @@ export default async function BlogPage() {
         {/* <FeaturedArticle post={allPosts[1]!} /> */}
         <SecondaryFeaturedPost3 post={allPosts[1]!} />
         {/* <BlogArticleCard post={allPosts[1]!} /> */}
+      </div>
+      <div className="mx-auto mt-16 max-w-7xl px-6 lg:px-8">
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          Prismic Articles
+        </h2>
+        <div className="mt-10 grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+          {pages.map(
+            (post) => {
+              const publishedDate =
+                post.last_publication_date || new Date().toISOString();
+              console.log("post.data.author", post.data.author);
+              console.log("publishedDate", {
+                publishedDate,
+                firstPublisheDate: post.first_publication_date,
+                lastPublicationDate: post.last_publication_date,
+              });
+              // console.log("post", post.data);
+              console.log("full post", post);
+
+              return (
+                <article
+                  key={post.id}
+                  className="flex max-w-xl flex-col items-start justify-between"
+                >
+                  <div className="flex items-center gap-x-4 text-xs">
+                    <time
+                      dateTime={publishedDate.toString()}
+                      className="text-gray-500"
+                    >
+                      {publishedDate.toString()}
+                    </time>
+                    {/* <a
+                  href={post.category.href}
+                  className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100"
+                >
+                  {post.category.title}
+                </a> */}
+                  </div>
+                  <div className="group relative">
+                    <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
+                      <Link href={`${post.url}`}>
+                        <span className="absolute inset-0" />
+                        {post.data.title}
+                      </Link>
+                    </h3>
+                    <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
+                      {post.data.description}
+                    </p>
+                  </div>
+                  <div className="relative mt-8 flex items-center gap-x-4">
+                    {/* <img
+                  alt=""
+                  src={post.data.author author.imageUrl}
+                  className="h-10 w-10 rounded-full bg-gray-50"
+                /> */}
+                    <div className="text-sm leading-6">
+                      <p className="font-semibold text-gray-900">
+                        <a href="#">
+                          <span className="absolute inset-0" />
+                          {post.data.author.data?.name}
+                        </a>
+                      </p>
+                      <p className="text-gray-600">
+                        {post.data.author.data?.role}
+                      </p>
+                    </div>
+                  </div>
+                </article>
+              );
+            },
+            // <BlogArticleCard key={post.id} post={{
+            //   author: {
+            //     href: "/#",
+
+            //   }
+            // }} />
+          )}
+        </div>
       </div>
 
       <div className="mx-auto mt-16 max-w-7xl px-6 lg:px-8">

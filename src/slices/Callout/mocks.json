@@ -3,31 +3,29 @@
 		"__TYPE__": "SharedSliceContent",
 		"variation": "default",
 		"primary": {
-			"emoji": {
-				"__TYPE__": "FieldContent",
-				"value": "glass",
-				"type": "Text"
-			},
 			"richtest": {
 				"__TYPE__": "StructuredTextContent",
 				"value": [
 					{
 						"type": "paragraph",
 						"content": {
-							"text": "Velit anim id labore id ut pariatur pariatur sint anim anim eiusmod labore voluptate magna. Esse minim voluptate dolore sunt adipisicing mollit eiusmod."
-						}
+							"text": "Velit anim id labore id ut pariatur pariatur sint anim anim eiusmod labore voluptate magna. Esse minim voluptate dolore sunt adipisicing mollit eiusmod.",
+							"spans": [
+								{
+									"type": "strong",
+									"start": 0,
+									"end": 10
+								}
+							]
+						},
+						"direction": "ltr"
 					}
 				]
 			},
-			"bold": {
+			"emoji": {
 				"__TYPE__": "FieldContent",
-				"value": "jungle",
-				"type": "Text"
-			},
-			"rest": {
-				"__TYPE__": "FieldContent",
-				"value": "thousand",
-				"type": "Text"
+				"type": "Text",
+				"value": "🔥"
 			}
 		},
 		"items": []

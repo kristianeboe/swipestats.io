@@ -43,12 +43,12 @@ export default async function Page({ params }: { params: Params }) {
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
               {page.data.title}
             </h1>
-            {/* <p className="mt-6 text-lg leading-8 text-gray-600">
+            <p className="mt-6 text-lg leading-8 text-gray-600">
               {page.data.description}
-            </p> */}
-            <div className="mt-6 text-gray-600">
+            </p>
+            {/* <div className="mt-6 text-gray-600">
               <PrismicRichText field={page.data.description} />
-            </div>
+            </div> */}
             {/* <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
                 href="#"
