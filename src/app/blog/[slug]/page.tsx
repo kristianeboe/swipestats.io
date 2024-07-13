@@ -103,7 +103,9 @@ export async function generateMetadata({
 
 export async function generateStaticParams() {
   const client = createClient();
-  const pages = await client.getAllByType("blog_post").catch(() => notFound());
+  console.log("generate static blog");
+  const pages = await client.getAllByType("blog_post"); // .catch(() => notFound());
+  console.log("pages", pages.length);
 
   return pages.map((page) => {
     return { uid: page.uid };
