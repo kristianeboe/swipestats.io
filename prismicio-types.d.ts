@@ -43,71 +43,6 @@ interface AuthorDocumentData {
 export type AuthorDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithUID<Simplify<AuthorDocumentData>, "author", Lang>;
 
-type BlogHomePageDocumentDataSlicesSlice = never;
-
-/**
- * Content for Blog Home Page documents
- */
-interface BlogHomePageDocumentData {
-  /**
-   * Slice Zone field in *Blog Home Page*
-   *
-   * - **Field Type**: Slice Zone
-   * - **Placeholder**: *None*
-   * - **API ID Path**: blog_home_page.slices[]
-   * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#slices
-   */
-  slices: prismic.SliceZone<BlogHomePageDocumentDataSlicesSlice> /**
-   * Meta Title field in *Blog Home Page*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: A title of the page used for social media and search engines
-   * - **API ID Path**: blog_home_page.meta_title
-   * - **Tab**: SEO & Metadata
-   * - **Documentation**: https://prismic.io/docs/field#key-text
-   */;
-  meta_title: prismic.KeyTextField;
-
-  /**
-   * Meta Description field in *Blog Home Page*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: A brief summary of the page
-   * - **API ID Path**: blog_home_page.meta_description
-   * - **Tab**: SEO & Metadata
-   * - **Documentation**: https://prismic.io/docs/field#key-text
-   */
-  meta_description: prismic.KeyTextField;
-
-  /**
-   * Meta Image field in *Blog Home Page*
-   *
-   * - **Field Type**: Image
-   * - **Placeholder**: *None*
-   * - **API ID Path**: blog_home_page.meta_image
-   * - **Tab**: SEO & Metadata
-   * - **Documentation**: https://prismic.io/docs/field#image
-   */
-  meta_image: prismic.ImageField<never>;
-}
-
-/**
- * Blog Home Page document from Prismic
- *
- * - **API ID**: `blog_home_page`
- * - **Repeatable**: `false`
- * - **Documentation**: https://prismic.io/docs/custom-types
- *
- * @typeParam Lang - Language API ID of the document.
- */
-export type BlogHomePageDocument<Lang extends string = string> =
-  prismic.PrismicDocumentWithoutUID<
-    Simplify<BlogHomePageDocumentData>,
-    "blog_home_page",
-    Lang
-  >;
-
 type BlogPostDocumentDataSlicesSlice =
   | TableSlice
   | CalloutSlice
@@ -341,82 +276,6 @@ export type BlogwithphotosDocument<Lang extends string = string> =
     Lang
   >;
 
-type HomepageDocumentDataSlicesSlice = ContentWithTestimonialsAndStatsSlice;
-
-/**
- * Content for Homepage documents
- */
-interface HomepageDocumentData {
-  /**
-   * Test Rich Text field in *Homepage*
-   *
-   * - **Field Type**: Rich Text
-   * - **Placeholder**: *None*
-   * - **API ID Path**: homepage.test_rich_text
-   * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
-   */
-  test_rich_text: prismic.RichTextField;
-
-  /**
-   * Slice Zone field in *Homepage*
-   *
-   * - **Field Type**: Slice Zone
-   * - **Placeholder**: *None*
-   * - **API ID Path**: homepage.slices[]
-   * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#slices
-   */
-  slices: prismic.SliceZone<HomepageDocumentDataSlicesSlice> /**
-   * Meta Title field in *Homepage*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: A title of the page used for social media and search engines
-   * - **API ID Path**: homepage.meta_title
-   * - **Tab**: SEO & Metadata
-   * - **Documentation**: https://prismic.io/docs/field#key-text
-   */;
-  meta_title: prismic.KeyTextField;
-
-  /**
-   * Meta Description field in *Homepage*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: A brief summary of the page
-   * - **API ID Path**: homepage.meta_description
-   * - **Tab**: SEO & Metadata
-   * - **Documentation**: https://prismic.io/docs/field#key-text
-   */
-  meta_description: prismic.KeyTextField;
-
-  /**
-   * Meta Image field in *Homepage*
-   *
-   * - **Field Type**: Image
-   * - **Placeholder**: *None*
-   * - **API ID Path**: homepage.meta_image
-   * - **Tab**: SEO & Metadata
-   * - **Documentation**: https://prismic.io/docs/field#image
-   */
-  meta_image: prismic.ImageField<never>;
-}
-
-/**
- * Homepage document from Prismic
- *
- * - **API ID**: `homepage`
- * - **Repeatable**: `false`
- * - **Documentation**: https://prismic.io/docs/custom-types
- *
- * @typeParam Lang - Language API ID of the document.
- */
-export type HomepageDocument<Lang extends string = string> =
-  prismic.PrismicDocumentWithoutUID<
-    Simplify<HomepageDocumentData>,
-    "homepage",
-    Lang
-  >;
-
 type PawBlogDocumentDataSlicesSlice =
   | SectionWithHeadingSlice
   | RichTextSlice
@@ -563,10 +422,8 @@ export type PawBlogTestDocument<Lang extends string = string> =
 
 export type AllDocumentTypes =
   | AuthorDocument
-  | BlogHomePageDocument
   | BlogPostDocument
   | BlogwithphotosDocument
-  | HomepageDocument
   | PawBlogDocument
   | PawBlogTestDocument;
 
@@ -1898,9 +1755,6 @@ declare module "@prismicio/client" {
     export type {
       AuthorDocument,
       AuthorDocumentData,
-      BlogHomePageDocument,
-      BlogHomePageDocumentData,
-      BlogHomePageDocumentDataSlicesSlice,
       BlogPostDocument,
       BlogPostDocumentData,
       BlogPostDocumentDataSlicesSlice,
@@ -1908,9 +1762,6 @@ declare module "@prismicio/client" {
       BlogwithphotosDocumentData,
       BlogwithphotosDocumentDataTableItem,
       BlogwithphotosDocumentDataSlicesSlice,
-      HomepageDocument,
-      HomepageDocumentData,
-      HomepageDocumentDataSlicesSlice,
       PawBlogDocument,
       PawBlogDocumentData,
       PawBlogDocumentDataSlicesSlice,
