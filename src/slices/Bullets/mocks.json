@@ -14,7 +14,7 @@
 								{
 									"__TYPE__": "FieldContent",
 									"type": "Text",
-									"value": "Remarkable"
+									"value": "Lorem ipsum dolor"
 								}
 							],
 							[
@@ -22,7 +22,49 @@
 								{
 									"__TYPE__": "FieldContent",
 									"type": "Text",
-									"value": "contentj alsdkjf aølskdjf fjasldkfj asdfj"
+									"value": "Nullam auctor, nisl nec ultricies tincidunt, nunc nisl aliquam nunc, vitae aliquam nisl nunc vitae nunc."
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"bold",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Donec auctor"
+								}
+							],
+							[
+								"body",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "nisl nec ultricies tincidunt, nunc nisl aliquam nunc, vitae aliquam nisl nunc vitae nunc. Sed euismod, nunc sit amet aliquam tincidunt, nisl nisl aliquam nisl, vitae aliquam nisl nunc vitae nunc"
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"bold",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Sed euismod"
+								}
+							],
+							[
+								"body",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "nunc sit amet aliquam tincidunt, nisl nisl aliquam nisl, vitae aliquam nisl nunc vitae nunc."
 								}
 							]
 						]

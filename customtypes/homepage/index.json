@@ -22,9 +22,6 @@
           "choices": {
             "content_with_testimonials_and_stats": {
               "type": "SharedSlice"
-            },
-            "alternate_grid": {
-              "type": "SharedSlice"
             }
           }
         }

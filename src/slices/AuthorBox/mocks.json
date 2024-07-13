@@ -5,41 +5,41 @@
 		"primary": {
 			"author_name": {
 				"__TYPE__": "FieldContent",
-				"value": "worse",
-				"type": "Text"
+				"type": "Text",
+				"value": "Ginger Man"
 			},
 			"author_image": {
+				"url": "https://images.unsplash.com/photo-1548544149-4835e62ee5b3?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMzc0NjN8MHwxfHNlYXJjaHw0fHxwZXJzb24lMjBmYWNlfGVufDB8fHx8MTcyMDgxNDUwMnww&ixlib=rb-4.0.3&q=85",
+				"alt": "man in black top",
 				"origin": {
-					"id": "main",
-					"url": "https://images.unsplash.com/photo-1593642633279-1796119d5482",
-					"width": 4016,
-					"height": 6016
+					"id": "rpF3p_RrE9g",
+					"url": "https://images.unsplash.com/photo-1548544149-4835e62ee5b3?crop=entropy&cs=srgb&fm=jpg&ixid=M3wzMzc0NjN8MHwxfHNlYXJjaHw0fHxwZXJzb24lMjBmYWNlfGVufDB8fHx8MTcyMDgxNDUwMnww&ixlib=rb-4.0.3&q=85",
+					"width": 2667,
+					"height": 4000
 				},
-				"url": "https://images.unsplash.com/photo-1593642633279-1796119d5482",
-				"width": 4016,
-				"height": 6016,
+				"width": 2667,
+				"height": 4000,
 				"edit": {
+					"background": "transparent",
 					"zoom": 1,
 					"crop": {
 						"x": 0,
 						"y": 0
-					},
-					"background": "transparent"
+					}
 				},
 				"credits": null,
-				"alt": null,
 				"__TYPE__": "ImageContent",
 				"thumbnails": {}
 			},
 			"author_role": {
 				"__TYPE__": "FieldContent",
-				"value": "exercise",
-				"type": "Text"
+				"type": "Text",
+				"value": "Dating Coach"
 			},
 			"author_description": {
 				"__TYPE__": "FieldContent",
-				"value": "feel",
-				"type": "Text"
+				"type": "Text",
+				"value": "Alex Morgan is a certified relationship coach with over a decade of experience helping singles navigate the modern dating landscape. With a blend of psychology, practical advice, and a dash of humor, Alex empowers clients to build confidence, improve communication, and find meaningful connections."
 			},
 			"author_instagram": {
 				"__TYPE__": "LinkContent",

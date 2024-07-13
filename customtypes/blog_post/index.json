@@ -12,13 +12,6 @@
         },
         "type": "UID"
       },
-      "publish_date": {
-        "type": "Date",
-        "config": {
-          "label": "Publish date",
-          "placeholder": ""
-        }
-      },
       "read_time": {
         "type": "Text",
         "config": {

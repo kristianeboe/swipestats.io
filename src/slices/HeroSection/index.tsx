@@ -1,4 +1,5 @@
 import { SLink } from "@/app/_components/ui/SLink";
+import { getPrismicLinkUrl } from "@/lib/utils/prismic.utils";
 import { type Content } from "@prismicio/client";
 import { PrismicLink, type SliceComponentProps } from "@prismicio/react";
 import Link from "next/link";
@@ -78,7 +79,7 @@ const HeroSection = ({ slice }: HeroSectionProps): JSX.Element => {
                     Book Prismic
                   </PrismicLink>
                   <Link
-                    href={slice.primary.primaryctabuttonhref}
+                    href={getPrismicLinkUrl(slice.primary.primaryctabuttonhref)}
                     className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Book Custom
