@@ -51,6 +51,17 @@ interface AuthorDocumentData {
    * - **Documentation**: https://prismic.io/docs/field#key-text
    */
   description: prismic.KeyTextField;
+
+  /**
+   * instagramUrl field in *Author*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: author.instagramurl
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  instagramurl: prismic.KeyTextField;
 }
 
 /**
@@ -70,8 +81,7 @@ type BlogPostDocumentDataSlicesSlice =
   | CalloutSlice
   | CtaInfoSlice
   | TldrBoxSlice
-  | RichTextSlice
-  | AuthorBoxSlice;
+  | RichTextSlice;
 
 /**
  * Content for Blog post documents

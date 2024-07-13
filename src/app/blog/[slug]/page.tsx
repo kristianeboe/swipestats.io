@@ -5,13 +5,21 @@ import { PrismicRichText, SliceZone } from "@prismicio/react";
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
 import { Text } from "@/app/_components/ui/text";
+import {
+  type Author,
+  blogPostGraphQuery,
+  getAuthorFromBlog,
+} from "@/lib/utils/prismic.utils";
+import { AuthorCard } from "./AuthorCard";
 
 type Params = { slug: string };
 
 export default async function Page({ params }: { params: Params }) {
   const client = createClient();
   const page = await client
-    .getByUID("blog_post", params.slug)
+    .getByUID("blog_post", params.slug, {
+      graphQuery: blogPostGraphQuery,
+    })
     .catch(() => notFound());
 
   return (
@@ -80,6 +88,9 @@ export default async function Page({ params }: { params: Params }) {
       </div>
       <div className="container max-w-3xl">
         <SliceZone slices={page.data.slices} components={components} />
+        <div className="mt-20">
+          <AuthorCard author={getAuthorFromBlog(page.data)} />
+        </div>
       </div>
     </div>
   );

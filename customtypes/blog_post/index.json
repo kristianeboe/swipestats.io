@@ -59,9 +59,6 @@
             },
             "rich_text": {
               "type": "SharedSlice"
-            },
-            "author_box": {
-              "type": "SharedSlice"
             }
           }
         }

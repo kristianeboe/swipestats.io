@@ -40,6 +40,13 @@
           "label": "Description",
           "placeholder": ""
         }
+      },
+      "instagramurl": {
+        "type": "Text",
+        "config": {
+          "label": "instagramUrl",
+          "placeholder": ""
+        }
       }
     }
   }

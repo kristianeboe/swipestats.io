@@ -9,6 +9,11 @@ import Image from "next/image";
 import { Text } from "../_components/ui/text";
 import NewsletterCTA from "../NewsletterCTA";
 import Link from "next/link";
+import {
+  type Author,
+  blogPostGraphQuery,
+  getAuthorFromBlog,
+} from "@/lib/utils/prismic.utils";
 
 const featuredPost: BlogPost = {
   id: "1",
@@ -88,17 +93,7 @@ const allPosts = [
 export default async function BlogPage() {
   const client = createClient();
   const pages = await client.getAllByType("blog_post", {
-    graphQuery: `{
-        blog_post {
-            ...blog_postFields
-            author {
-                ...on author {
-                    name
-                    role
-                }
-            }
-        }
-    }`,
+    graphQuery: blogPostGraphQuery,
   });
 
   // const page = await client.getSingle("blog_home_page");
@@ -137,6 +132,8 @@ export default async function BlogPage() {
               });
               // console.log("post", post.data);
               console.log("full post", post);
+
+              const author = getAuthorFromBlog(post.data);
 
               return (
                 <article
@@ -178,12 +175,10 @@ export default async function BlogPage() {
                       <p className="font-semibold text-gray-900">
                         <a href="#">
                           <span className="absolute inset-0" />
-                          {post.data.author.data?.name}
+                          {author.name}
                         </a>
                       </p>
-                      <p className="text-gray-600">
-                        {post.data.author.data?.role}
-                      </p>
+                      <p className="text-gray-600">{author.role}</p>
                     </div>
                   </div>
                 </article>
