@@ -109,6 +109,12 @@ export async function generateMetadata({
   return {
     title: page.data.meta_title,
     description: page.data.meta_description,
+    openGraph: {
+      images: [
+        page.data.meta_image.url ??
+          "https://swipestats.io/api/og/blog/" + page.id,
+      ],
+    },
   };
 }
 

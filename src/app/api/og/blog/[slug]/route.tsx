@@ -1,4 +1,5 @@
 // Image for blog post
+import { SwipestatsLogo } from "@/svg/logos/SwipestatsLogo";
 import { ImageResponse } from "next/og";
 import { type NextRequest } from "next/server";
 
@@ -19,9 +20,21 @@ export async function GET(req: NextRequest) {
           textAlign: "center",
           justifyContent: "center",
           alignItems: "center",
+          position: "relative",
         }}
       >
-        🔥 {slug}
+        <h1 className="text-center text-6xl font-black">{slug}</h1>
+
+        <div
+          style={{
+            position: "absolute",
+            display: "flex",
+            bottom: "20px",
+            right: "20px",
+          }}
+        >
+          <SwipestatsLogo />
+        </div>
       </div>
     ),
     {
