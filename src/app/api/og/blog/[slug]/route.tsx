@@ -1,7 +1,11 @@
-// This is just a static image. Go to /[slug] to see the dynamic version.
+// Image for blog post
 import { ImageResponse } from "next/og";
+import { type NextRequest } from "next/server";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const slug = searchParams.get("slug");
+
   return new ImageResponse(
     (
       <div
@@ -17,7 +21,7 @@ export async function GET() {
           alignItems: "center",
         }}
       >
-        🔥 Hello
+        🔥 {slug}
       </div>
     ),
     {
