@@ -1,17 +1,7 @@
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/app/_components/ui/avatar";
 import { ImageResponse } from "next/og";
 import { type NextRequest } from "next/server";
-import * as AvatarPrimitive from "@radix-ui/react-avatar";
-import { createClient } from "@/prismicio";
-import {
-  blogPostGraphQuery,
-  getAuthorFromBlog,
-  getBlogPostAndAuthor,
-} from "@/lib/utils/prismic.utils";
+
+import { getBlogPostAndAuthor } from "@/lib/utils/prismic.utils";
 import { SwipestatsLogo } from "@/svg/logos/SwipestatsLogo";
 
 export const runtime = "edge";
@@ -56,31 +46,31 @@ export async function GET(
             justifyContent: "center",
             alignItems: "center",
             backgroundColor: "#FEF2F2",
-            padding: "10px 20px",
+            padding: "16px 24px",
             borderRadius: "4px",
-            marginTop: "20px",
+            marginTop: "64px",
           }}
         >
           <SwipestatsLogo
             style={{
-              height: "24px",
-              width: "24px",
+              height: "32px",
+              width: "32px",
             }}
           />
           <span
-            style={{ fontSize: "24px", color: "#B91C1C", fontWeight: "bold" }}
+            style={{ fontSize: "32px", color: "#B91C1C", fontWeight: "bold" }}
           >
-            Swipestats
+            swipestats.io
           </span>
         </div>
 
         {true ? (
           <h1
             style={{
-              marginTop: "124px",
-              fontSize: "48px",
+              marginTop: "64px",
+              fontSize: "64px",
               textAlign: "center",
-              maxWidth: "50%",
+              maxWidth: "80%",
             }}
             className="text-center text-6xl font-black"
           >
@@ -130,7 +120,7 @@ export async function GET(
             alignItems: "center",
             gap: "20px",
             marginTop: "auto",
-            background: "gray",
+            background: "#FAFAFA",
             width: "100%",
             padding: "20px",
           }}
@@ -141,7 +131,7 @@ export async function GET(
               textAlign: "center",
               fontSize: "24px",
               color: "#4B5563",
-              maxWidth: "80%",
+              maxWidth: "70%",
             }}
           >
             {description}
@@ -155,6 +145,7 @@ export async function GET(
             }}
           >
             <img
+              // @ts-expect-error ArrayBuffer is accepted as a valid argument for src
               src={avatarData}
               alt=""
               className={"aspect-square h-full w-full rounded-full"}

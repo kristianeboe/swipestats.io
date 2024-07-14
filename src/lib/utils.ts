@@ -101,3 +101,28 @@ export function getGenderDisplay(gender: TinderJsonGender) {
       return "Unknown";
   }
 }
+
+export function formatDate(input: string | Date, showTime = false): string {
+  const date = typeof input === "string" ? new Date(input) : input;
+  const dateOptions: Intl.DateTimeFormatOptions = {
+    weekday: "short",
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  };
+  const timeOptions: Intl.DateTimeFormatOptions = {
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: false,
+  };
+
+  const formattedDate = new Intl.DateTimeFormat("en-GB", dateOptions).format(
+    date,
+  );
+  const formattedTime = new Intl.DateTimeFormat("en-GB", timeOptions).format(
+    date,
+  );
+
+  return showTime ? `${formattedDate}, ${formattedTime}` : formattedDate;
+}
