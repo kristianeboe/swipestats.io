@@ -147,6 +147,7 @@ export default async function BlogPage() {
                   href: post.url!,
                   imageUrl:
                     post.data.meta_image.url ??
+                    `https://swipestats.io/api/og/v0/${post.uid}` ??
                     `https://swipestats.io/api/og/blog/${post.data.title}`,
                   category: {
                     title: "Article",

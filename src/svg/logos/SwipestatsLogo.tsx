@@ -35,9 +35,15 @@
 //     );
 //   }
 
-export function SwipestatsLogo(props: { className?: string }) {
+import { type CSSProperties } from "react";
+
+export function SwipestatsLogo(props: {
+  className?: string;
+  style?: CSSProperties;
+}) {
   return (
     <svg
+      style={props.style}
       viewBox="29.716 29.716 150 150"
       xmlns="http://www.w3.org/2000/svg"
       className={props.className}
@@ -47,7 +53,12 @@ export function SwipestatsLogo(props: { className?: string }) {
         transform="matrix(1.702461, 0, 0, 1.702461, 22.997358, 22.997534)"
         fill="#fe3c72"
       >
-        <g xmlns="http://www.w3.org/2000/svg" fill="none" stroke="black" transform="scale(1 -1)">
+        <g
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          stroke="black"
+          transform="scale(1 -1)"
+        >
           <g transform="translate(0 -96)">
             <g>
               <path

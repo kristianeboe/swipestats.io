@@ -1,3 +1,4 @@
+import { createClient } from "@/prismicio";
 import { isFilled, type LinkField } from "@prismicio/client";
 import {
   type BlogPostDocumentData,
@@ -30,4 +31,19 @@ export function getAuthorFromBlog(blogPost: BlogPostDocumentData) {
   // @ts-expect-error supposes that the blogPostGraphQuery has been used in the original query
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   return blogPost.author.data as unknown as Author;
+}
+
+export async function getBlogPostAndAuthor(uid: string) {
+  const client = createClient();
+  const page = await client.getByUID("blog_post", uid, {
+    graphQuery: blogPostGraphQuery,
+  });
+  // .catch(() => notFound());
+  console.log("page", page);
+  const author = getAuthorFromBlog(page.data);
+
+  return {
+    blog: page,
+    author,
+  };
 }

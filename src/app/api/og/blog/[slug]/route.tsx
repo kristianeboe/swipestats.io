@@ -3,13 +3,16 @@ import { SwipestatsLogo } from "@/svg/logos/SwipestatsLogo";
 import { ImageResponse } from "next/og";
 import { type NextRequest } from "next/server";
 
-export async function GET(req: NextRequest) {
-  const slug = req.url.split("/").pop();
-  if (!slug) {
-    throw new Error("No slug found");
-  }
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { slug: string } },
+) {
+  const searchParams = req.nextUrl.searchParams;
 
-  const text = decodeURIComponent(slug);
+  console.log("og", {
+    params,
+    searchParams: searchParams.toString(),
+  });
 
   return new ImageResponse(
     (
@@ -28,14 +31,14 @@ export async function GET(req: NextRequest) {
           position: "relative",
         }}
       >
-        <h1 className="text-center text-6xl font-black">{text}</h1>
+        <h1 className="text-center text-6xl font-black">{params.slug}</h1>
 
         <div
           style={{
             position: "absolute",
             display: "flex",
             bottom: "20px",
-            right: "20px",
+            // right: "20px",
           }}
         >
           <SwipestatsLogo />
