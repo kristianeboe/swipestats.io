@@ -1,0 +1,28 @@
+{
+  "id": "pricing_section",
+  "type": "SharedSlice",
+  "name": "PricingSection",
+  "description": "PricingSection",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {},
+      "items": {}
+    },
+    {
+      "id": "singleTier",
+      "name": "Single Tier",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {},
+      "items": {}
+    }
+  ]
+}

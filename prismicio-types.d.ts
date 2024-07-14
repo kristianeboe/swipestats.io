@@ -1501,6 +1501,51 @@ export type ImageSectionSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Default variation for PricingSection Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type PricingSectionSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Record<string, never>,
+  never
+>;
+
+/**
+ * Single Tier variation for PricingSection Slice
+ *
+ * - **API ID**: `singleTier`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type PricingSectionSliceSingleTier = prismic.SharedSliceVariation<
+  "singleTier",
+  Record<string, never>,
+  never
+>;
+
+/**
+ * Slice variation for *PricingSection*
+ */
+type PricingSectionSliceVariation =
+  | PricingSectionSliceDefault
+  | PricingSectionSliceSingleTier;
+
+/**
+ * PricingSection Shared Slice
+ *
+ * - **API ID**: `pricing_section`
+ * - **Description**: PricingSection
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type PricingSectionSlice = prismic.SharedSlice<
+  "pricing_section",
+  PricingSectionSliceVariation
+>;
+
+/**
  * Primary content in *RichText → Default → Primary*
  */
 export interface RichTextSliceDefaultPrimary {
@@ -2238,6 +2283,10 @@ declare module "@prismicio/client" {
       ImageSectionSliceDefaultPrimary,
       ImageSectionSliceVariation,
       ImageSectionSliceDefault,
+      PricingSectionSlice,
+      PricingSectionSliceVariation,
+      PricingSectionSliceDefault,
+      PricingSectionSliceSingleTier,
       RichTextSlice,
       RichTextSliceDefaultPrimary,
       RichTextSliceVariation,

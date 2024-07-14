@@ -18,6 +18,7 @@ export const components = {
   h1_with_sub_heading: dynamic(() => import("./HeadingWithSubHeading")),
   hero_section: dynamic(() => import("./HeroSection")),
   image_section: dynamic(() => import("./ImageSection")),
+  pricing_section: dynamic(() => import("./PricingSection")),
   rich_text: dynamic(() => import("./RichText")),
   section_rich_text_image: dynamic(() => import("./SectionRichTextImage")),
   section_with_heading: dynamic(() => import("./SectionWithHeading")),
