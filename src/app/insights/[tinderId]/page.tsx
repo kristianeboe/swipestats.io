@@ -13,7 +13,6 @@ import { Card } from "@/app/_components/ui/card";
 import {
   Calendar,
   CircleSlash,
-  DollarSign,
   Ghost,
   MessageCircle,
   MessagesSquare,

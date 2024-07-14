@@ -1,41 +1,20 @@
 {
   "format": "page",
-  "id": "paw_blog",
-  "label": "Paw blog",
-  "repeatable": true,
+  "id": "ai_dating_photos",
+  "label": "AI Dating Photos",
+  "repeatable": false,
   "status": true,
   "json": {
     "Main": {
-      "uid": {
-        "config": {
-          "label": "UID"
-        },
-        "type": "UID"
-      },
       "slices": {
         "type": "Slices",
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
-            "section_with_heading": {
+            "hero_section": {
               "type": "SharedSlice"
             },
-            "rich_text": {
-              "type": "SharedSlice"
-            },
-            "callout": {
-              "type": "SharedSlice"
-            },
-            "you_may_also_like": {
-              "type": "SharedSlice"
-            },
-            "author_box": {
-              "type": "SharedSlice"
-            },
-            "tldr_box": {
-              "type": "SharedSlice"
-            },
-            "h1_with_sub_heading": {
+            "content_with_testimonials_and_stats": {
               "type": "SharedSlice"
             }
           }

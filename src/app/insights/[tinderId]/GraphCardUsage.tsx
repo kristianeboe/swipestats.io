@@ -102,8 +102,8 @@ export function aggregateDataPoints(
       aggregationByYear[year] = { xDataKey: year, value: 0 };
     }
 
-    aggregationByMonth[month]!.value += value;
-    aggregationByYear[year]!.value += value;
+    aggregationByMonth[month].value += value;
+    aggregationByYear[year].value += value;
   });
 
   const byMonth: AggregateData[] = Object.values(aggregationByMonth).sort(

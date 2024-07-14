@@ -4,6 +4,73 @@ import type * as prismic from "@prismicio/client";
 
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 
+type AiDatingPhotosDocumentDataSlicesSlice =
+  | HeroSectionSlice
+  | ContentWithTestimonialsAndStatsSlice;
+
+/**
+ * Content for AI Dating Photos documents
+ */
+interface AiDatingPhotosDocumentData {
+  /**
+   * Slice Zone field in *AI Dating Photos*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ai_dating_photos.slices[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#slices
+   */
+  slices: prismic.SliceZone<AiDatingPhotosDocumentDataSlicesSlice> /**
+   * Meta Title field in *AI Dating Photos*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A title of the page used for social media and search engines
+   * - **API ID Path**: ai_dating_photos.meta_title
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */;
+  meta_title: prismic.KeyTextField;
+
+  /**
+   * Meta Description field in *AI Dating Photos*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A brief summary of the page
+   * - **API ID Path**: ai_dating_photos.meta_description
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  meta_description: prismic.KeyTextField;
+
+  /**
+   * Meta Image field in *AI Dating Photos*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: ai_dating_photos.meta_image
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  meta_image: prismic.ImageField<never>;
+}
+
+/**
+ * AI Dating Photos document from Prismic
+ *
+ * - **API ID**: `ai_dating_photos`
+ * - **Repeatable**: `false`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type AiDatingPhotosDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithoutUID<
+    Simplify<AiDatingPhotosDocumentData>,
+    "ai_dating_photos",
+    Lang
+  >;
+
 /**
  * Content for Author documents
  */
@@ -320,156 +387,11 @@ export type BlogwithphotosDocument<Lang extends string = string> =
     Lang
   >;
 
-type PawBlogDocumentDataSlicesSlice =
-  | SectionWithHeadingSlice
-  | RichTextSlice
-  | CalloutSlice
-  | YouMayAlsoLikeSlice
-  | AuthorBoxSlice
-  | TldrBoxSlice
-  | H1WithSubHeadingSlice;
-
-/**
- * Content for Paw blog documents
- */
-interface PawBlogDocumentData {
-  /**
-   * Slice Zone field in *Paw blog*
-   *
-   * - **Field Type**: Slice Zone
-   * - **Placeholder**: *None*
-   * - **API ID Path**: paw_blog.slices[]
-   * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#slices
-   */
-  slices: prismic.SliceZone<PawBlogDocumentDataSlicesSlice> /**
-   * Meta Title field in *Paw blog*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: A title of the page used for social media and search engines
-   * - **API ID Path**: paw_blog.meta_title
-   * - **Tab**: SEO & Metadata
-   * - **Documentation**: https://prismic.io/docs/field#key-text
-   */;
-  meta_title: prismic.KeyTextField;
-
-  /**
-   * Meta Description field in *Paw blog*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: A brief summary of the page
-   * - **API ID Path**: paw_blog.meta_description
-   * - **Tab**: SEO & Metadata
-   * - **Documentation**: https://prismic.io/docs/field#key-text
-   */
-  meta_description: prismic.KeyTextField;
-
-  /**
-   * Meta Image field in *Paw blog*
-   *
-   * - **Field Type**: Image
-   * - **Placeholder**: *None*
-   * - **API ID Path**: paw_blog.meta_image
-   * - **Tab**: SEO & Metadata
-   * - **Documentation**: https://prismic.io/docs/field#image
-   */
-  meta_image: prismic.ImageField<never>;
-}
-
-/**
- * Paw blog document from Prismic
- *
- * - **API ID**: `paw_blog`
- * - **Repeatable**: `true`
- * - **Documentation**: https://prismic.io/docs/custom-types
- *
- * @typeParam Lang - Language API ID of the document.
- */
-export type PawBlogDocument<Lang extends string = string> =
-  prismic.PrismicDocumentWithUID<
-    Simplify<PawBlogDocumentData>,
-    "paw_blog",
-    Lang
-  >;
-
-type PawBlogTestDocumentDataSlicesSlice =
-  | TestimonialSlice
-  | RichTextSlice
-  | SectionWithHeadingSlice
-  | CtaInfoSlice
-  | H1WithSubHeadingSlice
-  | CalloutSlice
-  | AuthorBoxSlice;
-
-/**
- * Content for Paw Blog Test documents
- */
-interface PawBlogTestDocumentData {
-  /**
-   * Slice Zone field in *Paw Blog Test*
-   *
-   * - **Field Type**: Slice Zone
-   * - **Placeholder**: *None*
-   * - **API ID Path**: paw_blog_test.slices[]
-   * - **Tab**: Main
-   * - **Documentation**: https://prismic.io/docs/field#slices
-   */
-  slices: prismic.SliceZone<PawBlogTestDocumentDataSlicesSlice> /**
-   * Meta Title field in *Paw Blog Test*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: A title of the page used for social media and search engines
-   * - **API ID Path**: paw_blog_test.meta_title
-   * - **Tab**: SEO & Metadata
-   * - **Documentation**: https://prismic.io/docs/field#key-text
-   */;
-  meta_title: prismic.KeyTextField;
-
-  /**
-   * Meta Description field in *Paw Blog Test*
-   *
-   * - **Field Type**: Text
-   * - **Placeholder**: A brief summary of the page
-   * - **API ID Path**: paw_blog_test.meta_description
-   * - **Tab**: SEO & Metadata
-   * - **Documentation**: https://prismic.io/docs/field#key-text
-   */
-  meta_description: prismic.KeyTextField;
-
-  /**
-   * Meta Image field in *Paw Blog Test*
-   *
-   * - **Field Type**: Image
-   * - **Placeholder**: *None*
-   * - **API ID Path**: paw_blog_test.meta_image
-   * - **Tab**: SEO & Metadata
-   * - **Documentation**: https://prismic.io/docs/field#image
-   */
-  meta_image: prismic.ImageField<never>;
-}
-
-/**
- * Paw Blog Test document from Prismic
- *
- * - **API ID**: `paw_blog_test`
- * - **Repeatable**: `false`
- * - **Documentation**: https://prismic.io/docs/custom-types
- *
- * @typeParam Lang - Language API ID of the document.
- */
-export type PawBlogTestDocument<Lang extends string = string> =
-  prismic.PrismicDocumentWithoutUID<
-    Simplify<PawBlogTestDocumentData>,
-    "paw_blog_test",
-    Lang
-  >;
-
 export type AllDocumentTypes =
+  | AiDatingPhotosDocument
   | AuthorDocument
   | BlogPostDocument
-  | BlogwithphotosDocument
-  | PawBlogDocument
-  | PawBlogTestDocument;
+  | BlogwithphotosDocument;
 
 /**
  * Primary content in *AuthorBox → Default → Primary*
@@ -1817,6 +1739,9 @@ declare module "@prismicio/client" {
 
   namespace Content {
     export type {
+      AiDatingPhotosDocument,
+      AiDatingPhotosDocumentData,
+      AiDatingPhotosDocumentDataSlicesSlice,
       AuthorDocument,
       AuthorDocumentData,
       BlogPostDocument,
@@ -1826,12 +1751,6 @@ declare module "@prismicio/client" {
       BlogwithphotosDocumentData,
       BlogwithphotosDocumentDataTableItem,
       BlogwithphotosDocumentDataSlicesSlice,
-      PawBlogDocument,
-      PawBlogDocumentData,
-      PawBlogDocumentDataSlicesSlice,
-      PawBlogTestDocument,
-      PawBlogTestDocumentData,
-      PawBlogTestDocumentDataSlicesSlice,
       AllDocumentTypes,
       AuthorBoxSlice,
       AuthorBoxSliceDefaultPrimary,

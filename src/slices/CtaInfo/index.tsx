@@ -21,9 +21,9 @@ const CtaInfo = ({ slice }: CtaInfoProps): JSX.Element => {
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="relative mt-10 rounded-xl border-l-8 border-rose-600 bg-white p-6 shadow-lg ring-1 ring-gray-900/10"
+      className="relative mt-10 max-w-4xl rounded-xl border-l-8 border-rose-600 bg-white p-6 shadow-lg ring-1 ring-gray-900/10"
     >
-      <div className="max-w-lg">
+      <div className="mr-52">
         <Text.H3>
           {slice.primary.emoji} {slice.primary.heading}
         </Text.H3>
@@ -40,7 +40,7 @@ const CtaInfo = ({ slice }: CtaInfoProps): JSX.Element => {
           </Link>
         </div>
       </div>
-      <div className="pointer-events-none absolute bottom-0 right-0 z-0">
+      <div className="pointer-events-none absolute bottom-0 right-0 z-0 hidden md:block">
         {slice.primary.image.url ? (
           <PrismicNextImage
             field={slice.primary.image}
