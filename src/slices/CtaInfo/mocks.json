@@ -26,7 +26,6 @@
 				}
 			},
 			"image": {
-				"__TYPE__": "ImageContent",
 				"origin": {
 					"id": "main",
 					"url": "https://images.unsplash.com/photo-1571126770897-2d612d1f7b89",
@@ -44,7 +43,15 @@
 					},
 					"background": "transparent"
 				},
+				"credits": null,
+				"alt": null,
+				"__TYPE__": "ImageContent",
 				"thumbnails": {}
+			},
+			"cta_link_label": {
+				"__TYPE__": "FieldContent",
+				"value": "village",
+				"type": "Text"
 			}
 		},
 		"items": []

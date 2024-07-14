@@ -1013,6 +1013,16 @@ export interface CtaInfoSliceDefaultPrimary {
    * - **Documentation**: https://prismic.io/docs/field#image
    */
   image: prismic.ImageField<never>;
+
+  /**
+   * CTA Link Label field in *CtaInfo → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_info.default.primary.cta_link_label
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  cta_link_label: prismic.KeyTextField;
 }
 
 /**

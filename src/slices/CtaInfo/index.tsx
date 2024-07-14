@@ -21,11 +21,33 @@ const CtaInfo = ({ slice }: CtaInfoProps): JSX.Element => {
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="relative mt-10"
+      className="relative mt-10 rounded-xl border-l-8 border-rose-600 bg-white p-6 shadow-lg ring-1 ring-gray-900/10"
     >
-      <div className="absolute bottom-0 left-0 flex w-full justify-end">
+      <div className="max-w-lg">
+        <Text.H3>
+          {slice.primary.emoji} {slice.primary.heading}
+        </Text.H3>
+        <Text.P>{slice.primary.body}</Text.P>
+        <div className="mt-6 flex items-center gap-x-5">
+          <Link
+            href={
+              getPrismicLinkUrl(slice.primary.link) ?? "https://swipestats.io"
+            }
+          >
+            <Button size={"lg"}>
+              {slice.primary.cta_link_label ?? "Learn How"}
+            </Button>
+          </Link>
+        </div>
+      </div>
+      <div className="pointer-events-none absolute bottom-0 right-0 z-0">
         {slice.primary.image.url ? (
-          <PrismicNextImage field={slice.primary.image} />
+          <PrismicNextImage
+            field={slice.primary.image}
+            height={200}
+            width={200}
+            className="pointer-events-auto h-[200px] rounded-r-lg object-cover"
+          />
         ) : (
           <Image
             src={
@@ -34,21 +56,9 @@ const CtaInfo = ({ slice }: CtaInfoProps): JSX.Element => {
             alt="Swipestats CTA image"
             height={200}
             width={200}
+            className="pointer-events-auto h-[200px] rounded-r-lg object-cover"
           />
         )}
-      </div>
-      <div className="rounded-xl border-l-8 border-rose-600 bg-white p-6 shadow-lg ring-1 ring-gray-900/10">
-        <Text.H3>
-          {slice.primary.emoji} {slice.primary.heading}
-        </Text.H3>
-        <h2 className="text-xl font-bold"></h2>
-        <Text.P>{slice.primary.body}</Text.P>
-        <p className="text-sm leading-6 text-gray-900"></p>
-        <div className="mt-4 flex items-center gap-x-5">
-          <Link href={getPrismicLinkUrl(slice.primary.link)}>
-            <Button>{"Learn How"}</Button>
-          </Link>
-        </div>
       </div>
     </section>
   );

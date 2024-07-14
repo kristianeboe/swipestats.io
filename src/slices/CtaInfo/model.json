@@ -48,6 +48,13 @@
             "constraint": {},
             "thumbnails": []
           }
+        },
+        "cta_link_label": {
+          "type": "Text",
+          "config": {
+            "label": "CTA Link Label",
+            "placeholder": ""
+          }
         }
       },
       "items": {}
