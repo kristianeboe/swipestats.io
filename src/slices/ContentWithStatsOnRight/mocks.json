@@ -1,0 +1,97 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"heading": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "Our mission"
+			},
+			"description": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi, nibh dui, diam eget aliquam. Quisque id at vitae feugiat egestas ac. Diam nulla orci at in viverra scelerisque eget. Eleifend egestas fringilla sapien."
+			},
+			"paragraph1": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim. Mattis mauris semper sed amet vitae sed turpis id. Id dolor praesent donec est. Odio penatibus risus viverra tellus varius sit neque erat velit. Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim. Mattis mauris semper sed amet vitae sed turpis id."
+			},
+			"paragraph2": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "Et vitae blandit facilisi magna lacus commodo. Vitae sapien duis odio id et. Id blandit molestie auctor fermentum dignissim. Lacus diam tincidunt ac cursus in vel. Mauris varius vulputate et ultrices hac adipiscing egestas. Iaculis convallis ac tempor et ut. Ac lorem vel integer orci."
+			},
+			"stats": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"stat_text",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "44 million"
+								}
+							],
+							[
+								"stat_description",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Transactions every 24 hours"
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"stat_text",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "$119 trillion"
+								}
+							],
+							[
+								"stat_description",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Assets under holding"
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"stat_text",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "46,000"
+								}
+							],
+							[
+								"stat_description",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "New users annually"
+								}
+							]
+						]
+					}
+				]
+			}
+		},
+		"items": []
+	}
+]

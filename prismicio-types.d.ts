@@ -776,6 +776,119 @@ export type ContentCenteredSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Item in *ContentWithStatsOnRight → Default → Primary → Stats*
+ */
+export interface ContentWithStatsOnRightSliceDefaultPrimaryStatsItem {
+  /**
+   * Stat text field in *ContentWithStatsOnRight → Default → Primary → Stats*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_with_stats_on_right.default.primary.stats[].stat_text
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  stat_text: prismic.KeyTextField;
+
+  /**
+   * Stat description field in *ContentWithStatsOnRight → Default → Primary → Stats*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_with_stats_on_right.default.primary.stats[].stat_description
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  stat_description: prismic.KeyTextField;
+}
+
+/**
+ * Primary content in *ContentWithStatsOnRight → Default → Primary*
+ */
+export interface ContentWithStatsOnRightSliceDefaultPrimary {
+  /**
+   * Heading field in *ContentWithStatsOnRight → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_with_stats_on_right.default.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Description field in *ContentWithStatsOnRight → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_with_stats_on_right.default.primary.description
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  description: prismic.KeyTextField;
+
+  /**
+   * paragraph1 field in *ContentWithStatsOnRight → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_with_stats_on_right.default.primary.paragraph1
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  paragraph1: prismic.KeyTextField;
+
+  /**
+   * paragraph2 field in *ContentWithStatsOnRight → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_with_stats_on_right.default.primary.paragraph2
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  paragraph2: prismic.KeyTextField;
+
+  /**
+   * Stats field in *ContentWithStatsOnRight → Default → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: content_with_stats_on_right.default.primary.stats[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  stats: prismic.GroupField<
+    Simplify<ContentWithStatsOnRightSliceDefaultPrimaryStatsItem>
+  >;
+}
+
+/**
+ * Default variation for ContentWithStatsOnRight Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ContentWithStatsOnRightSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<ContentWithStatsOnRightSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *ContentWithStatsOnRight*
+ */
+type ContentWithStatsOnRightSliceVariation =
+  ContentWithStatsOnRightSliceDefault;
+
+/**
+ * ContentWithStatsOnRight Shared Slice
+ *
+ * - **API ID**: `content_with_stats_on_right`
+ * - **Description**: ContentWithStatsOnRight
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ContentWithStatsOnRightSlice = prismic.SharedSlice<
+  "content_with_stats_on_right",
+  ContentWithStatsOnRightSliceVariation
+>;
+
+/**
  * Primary content in *ContentWithTestimonialsAndStats → Default → Primary*
  */
 export interface ContentWithTestimonialsAndStatsSliceDefaultPrimary {
@@ -1343,6 +1456,51 @@ export type HeroSectionSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Primary content in *ImageSection → Default → Primary*
+ */
+export interface ImageSectionSliceDefaultPrimary {
+  /**
+   * Image field in *ImageSection → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: image_section.default.primary.image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+}
+
+/**
+ * Default variation for ImageSection Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ImageSectionSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<ImageSectionSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *ImageSection*
+ */
+type ImageSectionSliceVariation = ImageSectionSliceDefault;
+
+/**
+ * ImageSection Shared Slice
+ *
+ * - **API ID**: `image_section`
+ * - **Description**: ImageSection
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ImageSectionSlice = prismic.SharedSlice<
+  "image_section",
+  ImageSectionSliceVariation
+>;
+
+/**
  * Primary content in *RichText → Default → Primary*
  */
 export interface RichTextSliceDefaultPrimary {
@@ -1505,6 +1663,111 @@ type SectionWithHeadingSliceVariation = SectionWithHeadingSliceDefault;
 export type SectionWithHeadingSlice = prismic.SharedSlice<
   "section_with_heading",
   SectionWithHeadingSliceVariation
+>;
+
+/**
+ * Primary content in *SuccessPhotosSection → Default → Primary*
+ */
+export interface SuccessPhotosSectionSliceDefaultPrimary {
+  /**
+   * Heading field in *SuccessPhotosSection → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: success_photos_section.default.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Description field in *SuccessPhotosSection → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: success_photos_section.default.primary.description
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  description: prismic.KeyTextField;
+
+  /**
+   * Content field in *SuccessPhotosSection → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: success_photos_section.default.primary.content
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  content: prismic.KeyTextField;
+
+  /**
+   * Image Top Right field in *SuccessPhotosSection → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: success_photos_section.default.primary.image_top_right
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image_top_right: prismic.ImageField<never>;
+
+  /**
+   * Image Bottom Left field in *SuccessPhotosSection → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: success_photos_section.default.primary.image_bottom_left
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image_bottom_left: prismic.ImageField<never>;
+
+  /**
+   * Image Bottom Center field in *SuccessPhotosSection → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: success_photos_section.default.primary.image_bottom_center
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image_bottom_center: prismic.ImageField<never>;
+
+  /**
+   * Image Bottom Right field in *SuccessPhotosSection → Default → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: success_photos_section.default.primary.image_bottom_right
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image_bottom_right: prismic.ImageField<never>;
+}
+
+/**
+ * Default variation for SuccessPhotosSection Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type SuccessPhotosSectionSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<SuccessPhotosSectionSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *SuccessPhotosSection*
+ */
+type SuccessPhotosSectionSliceVariation = SuccessPhotosSectionSliceDefault;
+
+/**
+ * SuccessPhotosSection Shared Slice
+ *
+ * - **API ID**: `success_photos_section`
+ * - **Description**: SuccessPhotosSection
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type SuccessPhotosSectionSlice = prismic.SharedSlice<
+  "success_photos_section",
+  SuccessPhotosSectionSliceVariation
 >;
 
 /**
@@ -1780,6 +2043,98 @@ export type TripplePhotoSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Item in *ValuesSection → Default → Primary → Values*
+ */
+export interface ValuesSectionSliceDefaultPrimaryValuesItem {
+  /**
+   * Name field in *ValuesSection → Default → Primary → Values*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: values_section.default.primary.values[].name
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  name: prismic.KeyTextField;
+
+  /**
+   * Description field in *ValuesSection → Default → Primary → Values*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: values_section.default.primary.values[].description
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  description: prismic.KeyTextField;
+}
+
+/**
+ * Primary content in *ValuesSection → Default → Primary*
+ */
+export interface ValuesSectionSliceDefaultPrimary {
+  /**
+   * Heading field in *ValuesSection → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: values_section.default.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Description field in *ValuesSection → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: values_section.default.primary.description
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  description: prismic.KeyTextField;
+
+  /**
+   * Values field in *ValuesSection → Default → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: values_section.default.primary.values[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  values: prismic.GroupField<
+    Simplify<ValuesSectionSliceDefaultPrimaryValuesItem>
+  >;
+}
+
+/**
+ * Default variation for ValuesSection Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ValuesSectionSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<ValuesSectionSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *ValuesSection*
+ */
+type ValuesSectionSliceVariation = ValuesSectionSliceDefault;
+
+/**
+ * ValuesSection Shared Slice
+ *
+ * - **API ID**: `values_section`
+ * - **Description**: ValuesSection
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ValuesSectionSlice = prismic.SharedSlice<
+  "values_section",
+  ValuesSectionSliceVariation
+>;
+
+/**
  * Default variation for YouMayAlsoLike Slice
  *
  * - **API ID**: `default`
@@ -1850,6 +2205,11 @@ declare module "@prismicio/client" {
       ContentCenteredSliceDefaultPrimary,
       ContentCenteredSliceVariation,
       ContentCenteredSliceDefault,
+      ContentWithStatsOnRightSlice,
+      ContentWithStatsOnRightSliceDefaultPrimaryStatsItem,
+      ContentWithStatsOnRightSliceDefaultPrimary,
+      ContentWithStatsOnRightSliceVariation,
+      ContentWithStatsOnRightSliceDefault,
       ContentWithTestimonialsAndStatsSlice,
       ContentWithTestimonialsAndStatsSliceDefaultPrimary,
       ContentWithTestimonialsAndStatsSliceVariation,
@@ -1874,6 +2234,10 @@ declare module "@prismicio/client" {
       HeroSectionSliceDefaultPrimary,
       HeroSectionSliceVariation,
       HeroSectionSliceDefault,
+      ImageSectionSlice,
+      ImageSectionSliceDefaultPrimary,
+      ImageSectionSliceVariation,
+      ImageSectionSliceDefault,
       RichTextSlice,
       RichTextSliceDefaultPrimary,
       RichTextSliceVariation,
@@ -1886,6 +2250,10 @@ declare module "@prismicio/client" {
       SectionWithHeadingSliceDefaultPrimary,
       SectionWithHeadingSliceVariation,
       SectionWithHeadingSliceDefault,
+      SuccessPhotosSectionSlice,
+      SuccessPhotosSectionSliceDefaultPrimary,
+      SuccessPhotosSectionSliceVariation,
+      SuccessPhotosSectionSliceDefault,
       TableSlice,
       TableSliceDefaultPrimaryRowsItem,
       TableSliceDefaultPrimary,
@@ -1903,6 +2271,11 @@ declare module "@prismicio/client" {
       TripplePhotoSliceDefaultPrimary,
       TripplePhotoSliceVariation,
       TripplePhotoSliceDefault,
+      ValuesSectionSlice,
+      ValuesSectionSliceDefaultPrimaryValuesItem,
+      ValuesSectionSliceDefaultPrimary,
+      ValuesSectionSliceVariation,
+      ValuesSectionSliceDefault,
       YouMayAlsoLikeSlice,
       YouMayAlsoLikeSliceVariation,
       YouMayAlsoLikeSliceDefault,

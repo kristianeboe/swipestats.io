@@ -1,0 +1,72 @@
+{
+  "id": "success_photos_section",
+  "type": "SharedSlice",
+  "name": "SuccessPhotosSection",
+  "description": "SuccessPhotosSection",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": ""
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": ""
+          }
+        },
+        "content": {
+          "type": "Text",
+          "config": {
+            "label": "Content",
+            "placeholder": ""
+          }
+        },
+        "image_top_right": {
+          "type": "Image",
+          "config": {
+            "label": "Image Top Right",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "image_bottom_left": {
+          "type": "Image",
+          "config": {
+            "label": "Image Bottom Left",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "image_bottom_center": {
+          "type": "Image",
+          "config": {
+            "label": "Image Bottom Center",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "image_bottom_right": {
+          "type": "Image",
+          "config": {
+            "label": "Image Bottom Right",
+            "constraint": {},
+            "thumbnails": []
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

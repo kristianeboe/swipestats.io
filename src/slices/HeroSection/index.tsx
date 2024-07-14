@@ -1,7 +1,8 @@
+import { Button } from "@/app/_components/ui/button";
 import { SLink } from "@/app/_components/ui/SLink";
 import { getPrismicLinkUrl } from "@/lib/utils/prismic.utils";
 import { type Content } from "@prismicio/client";
-import { PrismicLink, type SliceComponentProps } from "@prismicio/react";
+import { type SliceComponentProps } from "@prismicio/react";
 import Link from "next/link";
 
 /**
@@ -72,20 +73,14 @@ const HeroSection = ({ slice }: HeroSectionProps): JSX.Element => {
                   {slice.primary.description}
                 </p>
                 <div className="mt-10 flex items-center gap-x-6">
-                  <PrismicLink
-                    field={slice.primary.primaryctabuttonhref}
-                    className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  >
-                    Book Prismic
-                  </PrismicLink>
                   <Link
                     href={getPrismicLinkUrl(slice.primary.primaryctabuttonhref)}
-                    className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
-                    Book Custom
+                    <Button>Book today</Button>
                   </Link>
+
                   <SLink href="#">
-                    Book Custom 2 <span aria-hidden="true">→</span>
+                    Learn more <span aria-hidden="true">→</span>
                   </SLink>
                 </div>
               </div>

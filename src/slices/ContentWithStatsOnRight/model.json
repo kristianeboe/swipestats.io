@@ -1,0 +1,70 @@
+{
+  "id": "content_with_stats_on_right",
+  "type": "SharedSlice",
+  "name": "ContentWithStatsOnRight",
+  "description": "ContentWithStatsOnRight",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": ""
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": ""
+          }
+        },
+        "paragraph1": {
+          "type": "Text",
+          "config": {
+            "label": "paragraph1",
+            "placeholder": ""
+          }
+        },
+        "paragraph2": {
+          "type": "Text",
+          "config": {
+            "label": "paragraph2",
+            "placeholder": ""
+          }
+        },
+        "stats": {
+          "type": "Group",
+          "config": {
+            "label": "Stats",
+            "repeat": true,
+            "fields": {
+              "stat_text": {
+                "type": "Text",
+                "config": {
+                  "label": "Stat text",
+                  "placeholder": ""
+                }
+              },
+              "stat_description": {
+                "type": "Text",
+                "config": {
+                  "label": "Stat description",
+                  "placeholder": ""
+                }
+              }
+            }
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

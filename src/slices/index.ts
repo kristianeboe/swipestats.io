@@ -7,6 +7,9 @@ export const components = {
   bullets: dynamic(() => import("./Bullets")),
   callout: dynamic(() => import("./Callout")),
   content_centered: dynamic(() => import("./ContentCentered")),
+  content_with_stats_on_right: dynamic(
+    () => import("./ContentWithStatsOnRight"),
+  ),
   content_with_testimonials_and_stats: dynamic(
     () => import("./ContentWithTestimonialsAndStats"),
   ),
@@ -14,12 +17,15 @@ export const components = {
   faqs: dynamic(() => import("./Faq")),
   h1_with_sub_heading: dynamic(() => import("./HeadingWithSubHeading")),
   hero_section: dynamic(() => import("./HeroSection")),
+  image_section: dynamic(() => import("./ImageSection")),
   rich_text: dynamic(() => import("./RichText")),
   section_rich_text_image: dynamic(() => import("./SectionRichTextImage")),
   section_with_heading: dynamic(() => import("./SectionWithHeading")),
+  success_photos_section: dynamic(() => import("./SuccessPhotosSection")),
   table: dynamic(() => import("./Table")),
   testimonial: dynamic(() => import("./Testimonial")),
   tldr_box: dynamic(() => import("./TldrBox")),
   tripple_photo: dynamic(() => import("./TripplePhoto")),
+  values_section: dynamic(() => import("./ValuesSection")),
   you_may_also_like: dynamic(() => import("./YouMayAlsoLike")),
 };

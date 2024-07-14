@@ -5,13 +5,13 @@
 		"primary": {
 			"title": {
 				"__TYPE__": "FieldContent",
-				"value": "blue",
-				"type": "Text"
+				"type": "Text",
+				"value": "We’re changing the way people connect."
 			},
 			"description": {
 				"__TYPE__": "FieldContent",
-				"value": "time",
-				"type": "Text"
+				"type": "Text",
+				"value": "Cupidatat minim id magna ipsum sint dolor qui. Sunt sit in quis cupidatat mollit aute velit. Et labore commodo nulla aliqua proident mollit ullamco exercitation tempor. Sint aliqua anim nulla sunt mollit id pariatur in voluptate cillum. Eu voluptate tempor esse minim amet fugiat veniam occaecat aliqua."
 			},
 			"ctalinktext": {
 				"__TYPE__": "FieldContent",
@@ -130,7 +130,6 @@
 				"thumbnails": {}
 			},
 			"image5": {
-				"__TYPE__": "ImageContent",
 				"origin": {
 					"id": "main",
 					"url": "https://images.unsplash.com/photo-1551739440-5dd934d3a94a",
@@ -148,6 +147,9 @@
 					},
 					"background": "transparent"
 				},
+				"credits": null,
+				"alt": null,
+				"__TYPE__": "ImageContent",
 				"thumbnails": {}
 			}
 		},
