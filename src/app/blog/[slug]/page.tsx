@@ -1,16 +1,15 @@
 import { type Metadata } from "next";
 import { notFound } from "next/navigation";
-import { PrismicRichText, SliceZone } from "@prismicio/react";
 
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
-import { Text } from "@/app/_components/ui/text";
+
 import {
-  type Author,
   blogPostGraphQuery,
   getAuthorFromBlog,
 } from "@/lib/utils/prismic.utils";
 import { AuthorCard } from "./AuthorCard";
+import { SliceZone } from "@prismicio/react";
 
 type Params = { slug: string };
 
