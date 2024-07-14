@@ -15,78 +15,9 @@ import {
   getAuthorFromBlog,
 } from "@/lib/utils/prismic.utils";
 
-const featuredPost: BlogPost = {
-  id: "1",
-  title: "Introducing our new platform",
-  href: "/blog/introducing-new-platform",
-  readTime: "5 min read",
-  description:
-    "Today, we're excited to announce the launch of our revolutionary new platform that will transform the way you work and collaborate.",
-  imageUrl: "/images/featured-post.jpg",
-  date: "Mar 16, 2024",
-  datetime: "2024-03-16T09:00:00Z",
-  category: {
-    title: "Article",
-    href: "/category/article",
-  },
-  author: {
-    name: "Jane Doe",
-    role: "CEO & Founder",
-    href: "/authors/jane-doe",
-    imageUrl: "/images/authors/jane-doe.jpg",
-  },
-};
-
-const secondaryFeaturedPosts: BlogPost[] = [
-  {
-    id: "2",
-    imageUrl: "/images/secondary-post-1.jpg",
-    datetime: "2024-03-14T14:30:00Z",
-    date: "Mar 14, 2024",
-    category: {
-      href: "/category/productivity",
-      title: "Article",
-    },
-    href: "/blog/10-productivity-tips",
-    readTime: "7 min read",
-    title: "10 tips for better productivity",
-    description:
-      "Boost your productivity with these simple yet effective tips that you can implement in your daily routine.",
-    author: {
-      imageUrl: "/images/authors/john-smith.jpg",
-      href: "/authors/john-smith",
-      name: "John Smith",
-      role: "Productivity Coach",
-    },
-  },
-  {
-    id: "3",
-    imageUrl: "/images/secondary-post-2.jpg",
-    datetime: "2024-03-12T11:00:00Z",
-    date: "Mar 12, 2024",
-    readTime: "5 min read",
-    category: {
-      href: "/category/technology",
-      title: "Case-Study",
-    },
-    href: "/blog/future-of-ai",
-    title: "The future of AI in everyday life",
-    description:
-      "Explore how AI is set to transform our daily routines and the potential impact it will have on various industries.",
-    author: {
-      imageUrl: "/images/authors/alice-johnson.jpg",
-      href: "/authors/alice-johnson",
-      name: "Alice Johnson",
-      role: "AI Researcher",
-    },
-  },
-];
-
-const allPosts = [
+const externalPosts = [
   ...posts,
-  ...posts,
-  featuredPost,
-  ...secondaryFeaturedPosts,
+
   // ... include all posts, including featured ones
 ];
 
@@ -104,16 +35,16 @@ export default async function BlogPage() {
       <Text.MarketingH1 className="pb-12 text-center md:pb-24">
         Blog
       </Text.MarketingH1>
-      {/* <FeaturedPost post={allPosts[0]!} /> */}
-      <FeaturedArticleFlex post={allPosts[0]!} />
+      {/* <FeaturedPost post={externalPosts[0]!} /> */}
+      <FeaturedArticleFlex post={externalPosts[0]!} />
       <div className="mt-20 grid items-center gap-4 md:grid-cols-3 lg:gap-20">
         <div className="md:col-span-2">
           <NewsletterCTA />
         </div>
-        {/* <SecondaryFeaturedPost2 post={allPosts[1]!} /> */}
-        {/* <FeaturedArticle post={allPosts[1]!} /> */}
-        <SecondaryFeaturedPost3 post={allPosts[1]!} />
-        {/* <BlogArticleCard post={allPosts[1]!} /> */}
+        {/* <SecondaryFeaturedPost2 post={externalPosts[1]!} /> */}
+        {/* <FeaturedArticle post={externalPosts[1]!} /> */}
+        <SecondaryFeaturedPost3 post={externalPosts[1]!} />
+        {/* <BlogArticleCard post={externalPosts[1]!} /> */}
       </div>
       <div className="mx-auto mt-16 max-w-7xl px-6 lg:px-8">
         <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -124,14 +55,14 @@ export default async function BlogPage() {
             (post) => {
               const publishedDate =
                 post.last_publication_date || new Date().toISOString();
-              console.log("post.data.author", post.data.author);
-              console.log("publishedDate", {
-                publishedDate,
-                firstPublisheDate: post.first_publication_date,
-                lastPublicationDate: post.last_publication_date,
-              });
+              // console.log("post.data.author", post.data.author);
+              // console.log("publishedDate", {
+              //   publishedDate,
+              //   firstPublisheDate: post.first_publication_date,
+              //   lastPublicationDate: post.last_publication_date,
+              // });
               // console.log("post", post.data);
-              console.log("full post", post);
+              // console.log("full post", post);
 
               const author = getAuthorFromBlog(post.data);
 
@@ -196,10 +127,50 @@ export default async function BlogPage() {
 
       <div className="mx-auto mt-16 max-w-7xl px-6 lg:px-8">
         <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          Prismic articles 2
+        </h2>
+        <div className="mt-10 grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+          {pages.map((post) => {
+            const publishedDate =
+              post.last_publication_date || new Date().toISOString();
+            const author = getAuthorFromBlog(post.data);
+            return (
+              <BlogArticleCard
+                key={post.id}
+                post={{
+                  id: post.id,
+                  title: post.data.title!,
+                  description: post.data.description!,
+                  date: publishedDate.toString(),
+                  readTime: "5 min read",
+                  datetime: publishedDate.toString(),
+                  href: post.url!,
+                  imageUrl:
+                    post.data.meta_image.url ??
+                    `https://swipestats.io/api/og/blog/${post.data.title}`,
+                  category: {
+                    title: "Article",
+                    href: "#",
+                  },
+                  author: {
+                    href: author.instagramurl!,
+                    imageUrl: author.profile_image.url!,
+                    name: author.name!,
+                    role: author.role!,
+                  },
+                }}
+              />
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="mx-auto mt-16 max-w-7xl px-6 lg:px-8">
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
           Latest Articles
         </h2>
         <div className="mt-10 grid gap-10 md:grid-cols-2 lg:grid-cols-3">
-          {allPosts.map((post) => (
+          {externalPosts.map((post) => (
             <BlogArticleCard key={post.id} post={post} />
           ))}
         </div>
@@ -214,7 +185,7 @@ export default async function BlogPage() {
             Learn how to grow your business with our expert advice.
           </p>
           <div className="mt-16 space-y-20 lg:mt-20 lg:space-y-20">
-            {allPosts.slice(4).map((post) => (
+            {externalPosts.slice(4).map((post) => (
               <CompressedBlogEntry2 key={post.id} post={post} />
             ))}
           </div>
@@ -224,15 +195,16 @@ export default async function BlogPage() {
   );
 }
 
-// export async function generateMetadata(): Promise<Metadata> {
-//   const client = createClient();
-//   const page = await client.getSingle("blog_home_page");
+// TODO FIx
+//  export async function generateMetadata(): Promise<Metadata> {
+//    const client = createClient();
+//    const page = await client.getSingle("blog_home_page");
 
-//   return {
-//     title: page.data.meta_title,
-//     description: page.data.meta_description,
-//   };
-// }
+//    return {
+//      title: page.data.meta_title,
+//      description: page.data.meta_description,
+//    };
+//  }
 
 const FeaturedArticleFlex = ({ post }: { post: BlogPost }) => {
   return (

@@ -5,6 +5,11 @@ import { type NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
   const slug = req.url.split("/").pop();
+  if (!slug) {
+    throw new Error("No slug found");
+  }
+
+  const text = decodeURIComponent(slug);
 
   return new ImageResponse(
     (
@@ -23,7 +28,7 @@ export async function GET(req: NextRequest) {
           position: "relative",
         }}
       >
-        <h1 className="text-center text-6xl font-black">{slug}</h1>
+        <h1 className="text-center text-6xl font-black">{text}</h1>
 
         <div
           style={{
