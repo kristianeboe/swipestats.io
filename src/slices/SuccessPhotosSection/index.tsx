@@ -1,5 +1,8 @@
+import { Button } from "@/app/_components/ui/button";
+import { getPrismicLinkUrl } from "@/lib/utils/prismic.utils";
 import { type Content } from "@prismicio/client";
 import { type SliceComponentProps } from "@prismicio/react";
+import Link from "next/link";
 
 /**
  * Props for `SuccessPhotosSection`.
@@ -31,6 +34,20 @@ const SuccessPhotosSection = ({
             <p className="mt-6 text-base leading-7 text-gray-600">
               {slice.primary.content}
             </p>
+            <div className="mt-10 flex">
+              <Link href={getPrismicLinkUrl(slice.primary.cta_href)}>
+                <Button>
+                  {slice.primary.cta_label}{" "}
+                  <span aria-hidden="true">&rarr;</span>
+                </Button>
+              </Link>
+              <a
+                href="#"
+                className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Join our team <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
           </div>
           <div className="flex flex-wrap items-start justify-end gap-6 sm:gap-8 lg:contents">
             <div className="w-0 flex-auto lg:ml-auto lg:w-auto lg:flex-none lg:self-end">

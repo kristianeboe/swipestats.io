@@ -33,6 +33,21 @@
             "placeholder": ""
           }
         },
+        "cta_href": {
+          "type": "Link",
+          "config": {
+            "label": "Cta Href",
+            "placeholder": "",
+            "select": null
+          }
+        },
+        "cta_label": {
+          "type": "Text",
+          "config": {
+            "label": "Cta Label",
+            "placeholder": ""
+          }
+        },
         "image_top_right": {
           "type": "Image",
           "config": {

@@ -2400,6 +2400,26 @@ export interface SuccessPhotosSectionSliceDefaultPrimary {
   content: prismic.KeyTextField;
 
   /**
+   * Cta Href field in *SuccessPhotosSection → Default → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: success_photos_section.default.primary.cta_href
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  cta_href: prismic.LinkField;
+
+  /**
+   * Cta Label field in *SuccessPhotosSection → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: success_photos_section.default.primary.cta_label
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  cta_label: prismic.KeyTextField;
+
+  /**
    * Image Top Right field in *SuccessPhotosSection → Default → Primary*
    *
    * - **Field Type**: Image
