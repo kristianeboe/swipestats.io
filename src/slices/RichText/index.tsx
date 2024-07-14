@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { type Content } from "@prismicio/client";
 import { PrismicRichText, type SliceComponentProps } from "@prismicio/react";
 
@@ -14,7 +15,10 @@ const RichText = ({ slice }: RichTextProps): JSX.Element => {
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="prose mt-10 lg:prose-xl"
+      className={cn(
+        "prose mt-10 lg:prose-xl",
+        slice.primary.centered && "mx-auto",
+      )}
     >
       <PrismicRichText field={slice.primary.rich_text_block} />
     </section>

@@ -26,7 +26,7 @@ const Table = ({ slice }: TableProps): JSX.Element => {
     <Card.Container
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="mt-5 max-w-3xl"
+      className="mx-auto mt-5 max-w-3xl"
     >
       <ShadTable className="">
         <TableHeader>

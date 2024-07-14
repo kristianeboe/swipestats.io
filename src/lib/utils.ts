@@ -126,3 +126,21 @@ export function formatDate(input: string | Date, showTime = false): string {
 
   return showTime ? `${formattedDate}, ${formattedTime}` : formattedDate;
 }
+
+export function annualPriceWithTwoMonthsFree(monthlyPrice: number | null): {
+  annualPrice: number;
+  effectiveMonthlyPrice: number;
+} {
+  if (monthlyPrice === null)
+    return {
+      annualPrice: NaN,
+      effectiveMonthlyPrice: NaN,
+    };
+  // Calculate the annual price with 2 months free
+  const annualPrice = monthlyPrice * 10; // Since 2 months are free, only pay for 10 months
+
+  // Calculate the effective monthly price
+  const effectiveMonthlyPrice = annualPrice / 12;
+
+  return { annualPrice, effectiveMonthlyPrice };
+}

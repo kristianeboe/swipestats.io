@@ -11,6 +11,27 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "success_photos_section": {
+              "type": "SharedSlice"
+            },
+            "image_section": {
+              "type": "SharedSlice"
+            },
+            "pricing_section": {
+              "type": "SharedSlice"
+            },
+            "faqs": {
+              "type": "SharedSlice"
+            },
+            "rich_text": {
+              "type": "SharedSlice"
+            },
+            "bullets": {
+              "type": "SharedSlice"
+            },
+            "table": {
+              "type": "SharedSlice"
+            },
             "features_section": {
               "type": "SharedSlice"
             },

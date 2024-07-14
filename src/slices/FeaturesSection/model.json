@@ -59,10 +59,83 @@
                   "label": "Icon",
                   "placeholder": "",
                   "options": [
-                    "cloudArrowUpIcon",
-                    "lockClosedIcon"
+                    "squaresPlus",
+                    "lookGood",
+                    "clock",
+                    "link",
+                    "bellAlertSolid",
+                    "uploadSolid",
+                    "settingsSolid"
                   ],
-                  "default_value": "cloudArrowUpIcon"
+                  "default_value": "squaresPlus"
+                }
+              }
+            }
+          }
+        }
+      },
+      "items": {}
+    },
+    {
+      "id": "containedInPanel",
+      "name": "ContainedInPanel",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "eyebrow": {
+          "type": "Text",
+          "config": {
+            "label": "Eyebrow",
+            "placeholder": ""
+          }
+        },
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": ""
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": ""
+          }
+        },
+        "features": {
+          "type": "Group",
+          "config": {
+            "label": "Features",
+            "repeat": true,
+            "fields": {
+              "name": {
+                "type": "Text",
+                "config": {
+                  "label": "Name",
+                  "placeholder": ""
+                }
+              },
+              "description": {
+                "type": "Text",
+                "config": {
+                  "label": "Description",
+                  "placeholder": ""
+                }
+              },
+              "icon": {
+                "type": "Select",
+                "config": {
+                  "label": "Icon",
+                  "placeholder": "",
+                  "options": [
+                    "bellAlertSolid",
+                    "uploadSolid",
+                    "settingsSolid"
+                  ],
+                  "default_value": "bellAlertSolid"
                 }
               }
             }

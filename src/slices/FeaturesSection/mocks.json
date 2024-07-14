@@ -29,7 +29,7 @@
 								"icon",
 								{
 									"__TYPE__": "FieldContent",
-									"value": "cloudArrowUpIcon",
+									"value": "squaresPlus",
 									"type": "Select"
 								}
 							]
@@ -58,8 +58,8 @@
 								"icon",
 								{
 									"__TYPE__": "FieldContent",
-									"type": "Select",
-									"value": "lockClosedIcon"
+									"value": "link",
+									"type": "Select"
 								}
 							]
 						]
@@ -87,8 +87,8 @@
 								"icon",
 								{
 									"__TYPE__": "FieldContent",
-									"type": "Select",
-									"value": "cloudArrowUpIcon"
+									"value": "uploadSolid",
+									"type": "Select"
 								}
 							]
 						]
@@ -116,8 +116,8 @@
 								"icon",
 								{
 									"__TYPE__": "FieldContent",
-									"type": "Select",
-									"value": "lockClosedIcon"
+									"value": "lookGood",
+									"type": "Select"
 								}
 							]
 						]
@@ -136,5 +136,66 @@
 			}
 		},
 		"items": []
+	},
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "containedInPanel",
+		"primary": {
+			"eyebrow": {
+				"__TYPE__": "FieldContent",
+				"value": "myself",
+				"type": "Text"
+			},
+			"heading": {
+				"__TYPE__": "FieldContent",
+				"value": "spite",
+				"type": "Text"
+			},
+			"description": {
+				"__TYPE__": "FieldContent",
+				"value": "activity",
+				"type": "Text"
+			},
+			"features": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"name",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "local",
+									"type": "Text"
+								}
+							],
+							[
+								"description",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "outer",
+									"type": "Text"
+								}
+							],
+							[
+								"icon",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "bellAlertSolid",
+									"type": "Select"
+								}
+							]
+						]
+					}
+				]
+			}
+		},
+		"items": [
+			{
+				"__TYPE__": "GroupItemContent",
+				"value": []
+			}
+		]
 	}
 ]

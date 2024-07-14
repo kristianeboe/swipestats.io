@@ -21,7 +21,184 @@
       "version": "initial",
       "description": "Default",
       "imageUrl": "",
-      "primary": {},
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": ""
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": ""
+          }
+        },
+        "sub_heading": {
+          "type": "Text",
+          "config": {
+            "label": "Sub Heading",
+            "placeholder": ""
+          }
+        },
+        "sub_description": {
+          "type": "Text",
+          "config": {
+            "label": "Sub Description",
+            "placeholder": ""
+          }
+        },
+        "features": {
+          "type": "Group",
+          "config": {
+            "label": "Features",
+            "repeat": true,
+            "fields": {
+              "feature": {
+                "type": "Text",
+                "config": {
+                  "label": "Feature",
+                  "placeholder": ""
+                }
+              }
+            }
+          }
+        },
+        "price": {
+          "type": "Number",
+          "config": {
+            "label": "Price",
+            "placeholder": ""
+          }
+        }
+      },
+      "items": {}
+    },
+    {
+      "id": "threeTiersWithDividers",
+      "name": "Three tiers with dividers",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "tier_1_name": {
+          "type": "Text",
+          "config": {
+            "label": "Tier 1 Name",
+            "placeholder": ""
+          }
+        },
+        "tier_2_name": {
+          "type": "Text",
+          "config": {
+            "label": "Tier 2 Name",
+            "placeholder": ""
+          }
+        },
+        "tier_3_name": {
+          "type": "Text",
+          "config": {
+            "label": "Tier 3 Name",
+            "placeholder": ""
+          }
+        },
+        "tier_1_price": {
+          "type": "Number",
+          "config": {
+            "label": "Tier 1 Price",
+            "placeholder": ""
+          }
+        },
+        "tier_1_cta_href": {
+          "type": "Link",
+          "config": {
+            "label": "Tier 1 CTA Href",
+            "placeholder": "",
+            "select": null
+          }
+        },
+        "tier_1_features": {
+          "type": "Group",
+          "config": {
+            "label": "Tier 1 Features",
+            "repeat": true,
+            "fields": {
+              "feature": {
+                "type": "Text",
+                "config": {
+                  "label": "Feature",
+                  "placeholder": ""
+                }
+              }
+            }
+          }
+        },
+        "tier_2_price": {
+          "type": "Number",
+          "config": {
+            "label": "Tier 2 Price",
+            "placeholder": ""
+          }
+        },
+        "tier_2_cta_href": {
+          "type": "Link",
+          "config": {
+            "label": "Tier 2 CTA Href",
+            "placeholder": "",
+            "select": null
+          }
+        },
+        "tier_2_features": {
+          "type": "Group",
+          "config": {
+            "label": "Tier 2 Features",
+            "repeat": true,
+            "fields": {
+              "feature": {
+                "type": "Text",
+                "config": {
+                  "label": "Feature",
+                  "placeholder": ""
+                }
+              }
+            }
+          }
+        },
+        "tier_3_price": {
+          "type": "Number",
+          "config": {
+            "label": "Tier 3 Price",
+            "placeholder": ""
+          }
+        },
+        "tier_3_cta_href": {
+          "type": "Link",
+          "config": {
+            "label": "Tier 3 CTA Href",
+            "placeholder": "",
+            "select": null
+          }
+        },
+        "tier_3_features": {
+          "type": "Group",
+          "config": {
+            "label": "Tier 3 Features",
+            "repeat": true,
+            "fields": {
+              "feature": {
+                "type": "Text",
+                "config": {
+                  "label": "Feature",
+                  "placeholder": ""
+                }
+              }
+            }
+          }
+        }
+      },
       "items": {}
     }
   ]

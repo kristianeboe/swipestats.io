@@ -5,6 +5,13 @@ import type * as prismic from "@prismicio/client";
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 
 type AiDatingPhotosDocumentDataSlicesSlice =
+  | SuccessPhotosSectionSlice
+  | ImageSectionSlice
+  | PricingSectionSlice
+  | FaqsSlice
+  | RichTextSlice
+  | BulletsSlice
+  | TableSlice
   | FeaturesSectionSlice
   | HeroSectionSlice
   | ContentWithTestimonialsAndStatsSlice;
@@ -1269,11 +1276,59 @@ export interface FeaturesSectionSliceDefaultPrimaryFeaturesItem {
    *
    * - **Field Type**: Select
    * - **Placeholder**: *None*
-   * - **Default Value**: cloudArrowUpIcon
+   * - **Default Value**: squaresPlus
    * - **API ID Path**: features_section.default.primary.features[].icon
    * - **Documentation**: https://prismic.io/docs/field#select
    */
-  icon: prismic.SelectField<"cloudArrowUpIcon" | "lockClosedIcon", "filled">;
+  icon: prismic.SelectField<
+    | "squaresPlus"
+    | "lookGood"
+    | "clock"
+    | "link"
+    | "bellAlertSolid"
+    | "uploadSolid"
+    | "settingsSolid",
+    "filled"
+  >;
+}
+
+/**
+ * Item in *FeaturesSection → ContainedInPanel → Primary → Features*
+ */
+export interface FeaturesSectionSliceContainedInPanelPrimaryFeaturesItem {
+  /**
+   * Name field in *FeaturesSection → ContainedInPanel → Primary → Features*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features_section.containedInPanel.primary.features[].name
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  name: prismic.KeyTextField;
+
+  /**
+   * Description field in *FeaturesSection → ContainedInPanel → Primary → Features*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features_section.containedInPanel.primary.features[].description
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  description: prismic.KeyTextField;
+
+  /**
+   * Icon field in *FeaturesSection → ContainedInPanel → Primary → Features*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **Default Value**: bellAlertSolid
+   * - **API ID Path**: features_section.containedInPanel.primary.features[].icon
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  icon: prismic.SelectField<
+    "bellAlertSolid" | "uploadSolid" | "settingsSolid",
+    "filled"
+  >;
 }
 
 /**
@@ -1337,9 +1392,71 @@ export type FeaturesSectionSliceDefault = prismic.SharedSliceVariation<
 >;
 
 /**
+ * Primary content in *FeaturesSection → ContainedInPanel → Primary*
+ */
+export interface FeaturesSectionSliceContainedInPanelPrimary {
+  /**
+   * Eyebrow field in *FeaturesSection → ContainedInPanel → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features_section.containedInPanel.primary.eyebrow
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  eyebrow: prismic.KeyTextField;
+
+  /**
+   * Heading field in *FeaturesSection → ContainedInPanel → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features_section.containedInPanel.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Description field in *FeaturesSection → ContainedInPanel → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features_section.containedInPanel.primary.description
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  description: prismic.KeyTextField;
+
+  /**
+   * Features field in *FeaturesSection → ContainedInPanel → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features_section.containedInPanel.primary.features[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  features: prismic.GroupField<
+    Simplify<FeaturesSectionSliceContainedInPanelPrimaryFeaturesItem>
+  >;
+}
+
+/**
+ * ContainedInPanel variation for FeaturesSection Slice
+ *
+ * - **API ID**: `containedInPanel`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type FeaturesSectionSliceContainedInPanel = prismic.SharedSliceVariation<
+  "containedInPanel",
+  Simplify<FeaturesSectionSliceContainedInPanelPrimary>,
+  never
+>;
+
+/**
  * Slice variation for *FeaturesSection*
  */
-type FeaturesSectionSliceVariation = FeaturesSectionSliceDefault;
+type FeaturesSectionSliceVariation =
+  | FeaturesSectionSliceDefault
+  | FeaturesSectionSliceContainedInPanel;
 
 /**
  * FeaturesSection Shared Slice
@@ -1755,6 +1872,66 @@ export type ImageSectionSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Item in *PricingSection → Single Tier → Primary → Features*
+ */
+export interface PricingSectionSliceSingleTierPrimaryFeaturesItem {
+  /**
+   * Feature field in *PricingSection → Single Tier → Primary → Features*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.singleTier.primary.features[].feature
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  feature: prismic.KeyTextField;
+}
+
+/**
+ * Item in *PricingSection → Three tiers with dividers → Primary → Tier 1 Features*
+ */
+export interface PricingSectionSliceThreeTiersWithDividersPrimaryTier1FeaturesItem {
+  /**
+   * Feature field in *PricingSection → Three tiers with dividers → Primary → Tier 1 Features*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.threeTiersWithDividers.primary.tier_1_features[].feature
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  feature: prismic.KeyTextField;
+}
+
+/**
+ * Item in *PricingSection → Three tiers with dividers → Primary → Tier 2 Features*
+ */
+export interface PricingSectionSliceThreeTiersWithDividersPrimaryTier2FeaturesItem {
+  /**
+   * Feature field in *PricingSection → Three tiers with dividers → Primary → Tier 2 Features*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.threeTiersWithDividers.primary.tier_2_features[].feature
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  feature: prismic.KeyTextField;
+}
+
+/**
+ * Item in *PricingSection → Three tiers with dividers → Primary → Tier 3 Features*
+ */
+export interface PricingSectionSliceThreeTiersWithDividersPrimaryTier3FeaturesItem {
+  /**
+   * Feature field in *PricingSection → Three tiers with dividers → Primary → Tier 3 Features*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.threeTiersWithDividers.primary.tier_3_features[].feature
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  feature: prismic.KeyTextField;
+}
+
+/**
  * Default variation for PricingSection Slice
  *
  * - **API ID**: `default`
@@ -1768,6 +1945,73 @@ export type PricingSectionSliceDefault = prismic.SharedSliceVariation<
 >;
 
 /**
+ * Primary content in *PricingSection → Single Tier → Primary*
+ */
+export interface PricingSectionSliceSingleTierPrimary {
+  /**
+   * Heading field in *PricingSection → Single Tier → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.singleTier.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Description field in *PricingSection → Single Tier → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.singleTier.primary.description
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  description: prismic.KeyTextField;
+
+  /**
+   * Sub Heading field in *PricingSection → Single Tier → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.singleTier.primary.sub_heading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  sub_heading: prismic.KeyTextField;
+
+  /**
+   * Sub Description field in *PricingSection → Single Tier → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.singleTier.primary.sub_description
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  sub_description: prismic.KeyTextField;
+
+  /**
+   * Features field in *PricingSection → Single Tier → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.singleTier.primary.features[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  features: prismic.GroupField<
+    Simplify<PricingSectionSliceSingleTierPrimaryFeaturesItem>
+  >;
+
+  /**
+   * Price field in *PricingSection → Single Tier → Primary*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.singleTier.primary.price
+   * - **Documentation**: https://prismic.io/docs/field#number
+   */
+  price: prismic.NumberField;
+}
+
+/**
  * Single Tier variation for PricingSection Slice
  *
  * - **API ID**: `singleTier`
@@ -1776,16 +2020,162 @@ export type PricingSectionSliceDefault = prismic.SharedSliceVariation<
  */
 export type PricingSectionSliceSingleTier = prismic.SharedSliceVariation<
   "singleTier",
-  Record<string, never>,
+  Simplify<PricingSectionSliceSingleTierPrimary>,
   never
 >;
+
+/**
+ * Primary content in *PricingSection → Three tiers with dividers → Primary*
+ */
+export interface PricingSectionSliceThreeTiersWithDividersPrimary {
+  /**
+   * Tier 1 Name field in *PricingSection → Three tiers with dividers → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.threeTiersWithDividers.primary.tier_1_name
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  tier_1_name: prismic.KeyTextField;
+
+  /**
+   * Tier 2 Name field in *PricingSection → Three tiers with dividers → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.threeTiersWithDividers.primary.tier_2_name
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  tier_2_name: prismic.KeyTextField;
+
+  /**
+   * Tier 3 Name field in *PricingSection → Three tiers with dividers → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.threeTiersWithDividers.primary.tier_3_name
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  tier_3_name: prismic.KeyTextField;
+
+  /**
+   * Tier 1 Price field in *PricingSection → Three tiers with dividers → Primary*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.threeTiersWithDividers.primary.tier_1_price
+   * - **Documentation**: https://prismic.io/docs/field#number
+   */
+  tier_1_price: prismic.NumberField;
+
+  /**
+   * Tier 1 CTA Href field in *PricingSection → Three tiers with dividers → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.threeTiersWithDividers.primary.tier_1_cta_href
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  tier_1_cta_href: prismic.LinkField;
+
+  /**
+   * Tier 1 Features field in *PricingSection → Three tiers with dividers → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.threeTiersWithDividers.primary.tier_1_features[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  tier_1_features: prismic.GroupField<
+    Simplify<PricingSectionSliceThreeTiersWithDividersPrimaryTier1FeaturesItem>
+  >;
+
+  /**
+   * Tier 2 Price field in *PricingSection → Three tiers with dividers → Primary*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.threeTiersWithDividers.primary.tier_2_price
+   * - **Documentation**: https://prismic.io/docs/field#number
+   */
+  tier_2_price: prismic.NumberField;
+
+  /**
+   * Tier 2 CTA Href field in *PricingSection → Three tiers with dividers → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.threeTiersWithDividers.primary.tier_2_cta_href
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  tier_2_cta_href: prismic.LinkField;
+
+  /**
+   * Tier 2 Features field in *PricingSection → Three tiers with dividers → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.threeTiersWithDividers.primary.tier_2_features[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  tier_2_features: prismic.GroupField<
+    Simplify<PricingSectionSliceThreeTiersWithDividersPrimaryTier2FeaturesItem>
+  >;
+
+  /**
+   * Tier 3 Price field in *PricingSection → Three tiers with dividers → Primary*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.threeTiersWithDividers.primary.tier_3_price
+   * - **Documentation**: https://prismic.io/docs/field#number
+   */
+  tier_3_price: prismic.NumberField;
+
+  /**
+   * Tier 3 CTA Href field in *PricingSection → Three tiers with dividers → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.threeTiersWithDividers.primary.tier_3_cta_href
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  tier_3_cta_href: prismic.LinkField;
+
+  /**
+   * Tier 3 Features field in *PricingSection → Three tiers with dividers → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.threeTiersWithDividers.primary.tier_3_features[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  tier_3_features: prismic.GroupField<
+    Simplify<PricingSectionSliceThreeTiersWithDividersPrimaryTier3FeaturesItem>
+  >;
+}
+
+/**
+ * Three tiers with dividers variation for PricingSection Slice
+ *
+ * - **API ID**: `threeTiersWithDividers`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type PricingSectionSliceThreeTiersWithDividers =
+  prismic.SharedSliceVariation<
+    "threeTiersWithDividers",
+    Simplify<PricingSectionSliceThreeTiersWithDividersPrimary>,
+    never
+  >;
 
 /**
  * Slice variation for *PricingSection*
  */
 type PricingSectionSliceVariation =
   | PricingSectionSliceDefault
-  | PricingSectionSliceSingleTier;
+  | PricingSectionSliceSingleTier
+  | PricingSectionSliceThreeTiersWithDividers;
 
 /**
  * PricingSection Shared Slice
@@ -1812,6 +2202,17 @@ export interface RichTextSliceDefaultPrimary {
    * - **Documentation**: https://prismic.io/docs/field#rich-text-title
    */
   rich_text_block: prismic.RichTextField;
+
+  /**
+   * Centered field in *RichText → Default → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: rich_text.default.primary.centered
+   * - **Documentation**: https://prismic.io/docs/field#boolean
+   */
+  centered: prismic.BooleanField;
 }
 
 /**
@@ -2527,8 +2928,11 @@ declare module "@prismicio/client" {
       FeaturesSectionSlice,
       FeaturesSectionSliceDefaultPrimaryFeaturesItem,
       FeaturesSectionSliceDefaultPrimary,
+      FeaturesSectionSliceContainedInPanelPrimaryFeaturesItem,
+      FeaturesSectionSliceContainedInPanelPrimary,
       FeaturesSectionSliceVariation,
       FeaturesSectionSliceDefault,
+      FeaturesSectionSliceContainedInPanel,
       H1WithSubHeadingSlice,
       H1WithSubHeadingSliceDefaultPrimary,
       H1WithSubHeadingSliceVariation,
@@ -2545,9 +2949,16 @@ declare module "@prismicio/client" {
       ImageSectionSliceVariation,
       ImageSectionSliceDefault,
       PricingSectionSlice,
+      PricingSectionSliceSingleTierPrimaryFeaturesItem,
+      PricingSectionSliceSingleTierPrimary,
+      PricingSectionSliceThreeTiersWithDividersPrimaryTier1FeaturesItem,
+      PricingSectionSliceThreeTiersWithDividersPrimaryTier2FeaturesItem,
+      PricingSectionSliceThreeTiersWithDividersPrimaryTier3FeaturesItem,
+      PricingSectionSliceThreeTiersWithDividersPrimary,
       PricingSectionSliceVariation,
       PricingSectionSliceDefault,
       PricingSectionSliceSingleTier,
+      PricingSectionSliceThreeTiersWithDividers,
       RichTextSlice,
       RichTextSliceDefaultPrimary,
       RichTextSliceVariation,

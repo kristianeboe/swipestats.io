@@ -7,8 +7,208 @@
 	},
 	{
 		"__TYPE__": "SharedSliceContent",
+		"variation": "threeTiersWithDividers",
+		"primary": {
+			"tier_1_name": {
+				"__TYPE__": "FieldContent",
+				"value": "slabs",
+				"type": "Text"
+			},
+			"tier_2_name": {
+				"__TYPE__": "FieldContent",
+				"value": "take",
+				"type": "Text"
+			},
+			"tier_3_name": {
+				"__TYPE__": "FieldContent",
+				"value": "finally",
+				"type": "Text"
+			},
+			"tier_1_price": {
+				"__TYPE__": "FieldContent",
+				"value": "78",
+				"type": "Number"
+			},
+			"tier_2_price": {
+				"__TYPE__": "FieldContent",
+				"value": "56",
+				"type": "Number"
+			},
+			"tier_3_price": {
+				"__TYPE__": "FieldContent",
+				"value": "97",
+				"type": "Number"
+			},
+			"tier_1_features": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"feature",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "furniture",
+									"type": "Text"
+								}
+							]
+						]
+					}
+				]
+			},
+			"tier_2_features": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"feature",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "silver",
+									"type": "Text"
+								}
+							]
+						]
+					}
+				]
+			},
+			"tier_3_features": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"feature",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "pile",
+									"type": "Text"
+								}
+							]
+						]
+					}
+				]
+			},
+			"tier_1_cta_href": {
+				"__TYPE__": "LinkContent",
+				"value": {
+					"__TYPE__": "ExternalLink",
+					"url": "http://google.com"
+				}
+			},
+			"tier_2_cta_href": {
+				"__TYPE__": "LinkContent",
+				"value": {
+					"__TYPE__": "ExternalLink",
+					"url": "http://google.com"
+				}
+			},
+			"tier_3_cta_href": {
+				"__TYPE__": "LinkContent",
+				"value": {
+					"__TYPE__": "ExternalLink",
+					"url": "https://slicemachine.dev"
+				}
+			}
+		},
+		"items": [
+			{
+				"__TYPE__": "GroupItemContent",
+				"value": []
+			}
+		]
+	},
+	{
+		"__TYPE__": "SharedSliceContent",
 		"variation": "singleTier",
-		"primary": {},
+		"primary": {
+			"heading": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "Transform Your Profile with Our Premium AI Photo Service"
+			},
+			"price": {
+				"__TYPE__": "FieldContent",
+				"type": "Number",
+				"value": "199"
+			},
+			"description": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "At Swipestats.io, we offer a comprehensive package designed to enhance your dating profile and help you attract meaningful connections."
+			},
+			"sub_heading": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "Ultimate Package"
+			},
+			"features": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"feature",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "AI model operated by dating app experts."
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"feature",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Over 10 hours of training on your specific photos."
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"feature",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Operators experienced in dating photography and app use."
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"feature",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Direct connection to our operator for assistance."
+								}
+							]
+						]
+					}
+				]
+			},
+			"sub_description": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "Get the complete experience with 30 diverse, high-quality photos in various settings, ensuring you showcase your best self from every angle."
+			}
+		},
 		"items": [
 			{
 				"__TYPE__": "GroupItemContent",

@@ -1,13 +1,12 @@
 import { createClient } from "@/prismicio";
-import { isFilled, type LinkField } from "@prismicio/client";
-import { SliceComponentProps } from "@prismicio/react";
+import { type LinkField } from "@prismicio/client";
+
 import {
   type BlogPostDocumentData,
   type AuthorDocumentData,
 } from "prismicio-types";
 
 export function getPrismicLinkUrl(linkField: LinkField): string {
-  console.log("linkField", linkField);
   if (linkField.link_type === "Web") {
     // @ts-expect-error - We know this is a FilledLinkToWebField
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -30,6 +29,7 @@ export const blogPostGraphQuery = `{
             }
         }
     }`;
+
 export type Author = AuthorDocumentData;
 
 export function getAuthorFromBlog(blogPost: BlogPostDocumentData) {
