@@ -883,11 +883,11 @@ export type ContentWithTestimonialsAndStatsSlice = prismic.SharedSlice<
 >;
 
 /**
- * Primary content in *CtaInfo → Default → Primary*
+ * Primary content in *Cta → Default → Primary*
  */
 export interface CtaInfoSliceDefaultPrimary {
   /**
-   * Emoji field in *CtaInfo → Default → Primary*
+   * Emoji field in *Cta → Default → Primary*
    *
    * - **Field Type**: Text
    * - **Placeholder**: *None*
@@ -897,7 +897,7 @@ export interface CtaInfoSliceDefaultPrimary {
   emoji: prismic.KeyTextField;
 
   /**
-   * Heading field in *CtaInfo → Default → Primary*
+   * Heading field in *Cta → Default → Primary*
    *
    * - **Field Type**: Text
    * - **Placeholder**: *None*
@@ -907,7 +907,7 @@ export interface CtaInfoSliceDefaultPrimary {
   heading: prismic.KeyTextField;
 
   /**
-   * Body field in *CtaInfo → Default → Primary*
+   * Body field in *Cta → Default → Primary*
    *
    * - **Field Type**: Text
    * - **Placeholder**: *None*
@@ -917,7 +917,7 @@ export interface CtaInfoSliceDefaultPrimary {
   body: prismic.KeyTextField;
 
   /**
-   * Link field in *CtaInfo → Default → Primary*
+   * Link field in *Cta → Default → Primary*
    *
    * - **Field Type**: Link
    * - **Placeholder**: *None*
@@ -927,7 +927,7 @@ export interface CtaInfoSliceDefaultPrimary {
   link: prismic.LinkField;
 
   /**
-   * Image field in *CtaInfo → Default → Primary*
+   * Image field in *Cta → Default → Primary*
    *
    * - **Field Type**: Image
    * - **Placeholder**: *None*
@@ -937,7 +937,7 @@ export interface CtaInfoSliceDefaultPrimary {
   image: prismic.ImageField<never>;
 
   /**
-   * CTA Link Label field in *CtaInfo → Default → Primary*
+   * CTA Link Label field in *Cta → Default → Primary*
    *
    * - **Field Type**: Text
    * - **Placeholder**: *None*
@@ -948,7 +948,7 @@ export interface CtaInfoSliceDefaultPrimary {
 }
 
 /**
- * Default variation for CtaInfo Slice
+ * Default variation for Cta Slice
  *
  * - **API ID**: `default`
  * - **Description**: Default
@@ -961,12 +961,92 @@ export type CtaInfoSliceDefault = prismic.SharedSliceVariation<
 >;
 
 /**
- * Slice variation for *CtaInfo*
+ * Primary content in *Cta → Visualize your Tinder data → Primary*
  */
-type CtaInfoSliceVariation = CtaInfoSliceDefault;
+export interface CtaInfoSliceVisualizeYourTinderDataPrimary {
+  /**
+   * Emoji field in *Cta → Visualize your Tinder data → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: 📈
+   * - **API ID Path**: cta_info.visualizeYourTinderData.primary.emoji
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  emoji: prismic.KeyTextField;
+
+  /**
+   * Heading field in *Cta → Visualize your Tinder data → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Visualize Your Tinder Data
+   * - **API ID Path**: cta_info.visualizeYourTinderData.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Body field in *Cta → Visualize your Tinder data → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Curious where you stand on the dating market? Anonymously upload your data to Swipestats and find out today (it's free)
+   * - **API ID Path**: cta_info.visualizeYourTinderData.primary.body
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  body: prismic.KeyTextField;
+
+  /**
+   * Link field in *Cta → Visualize your Tinder data → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: https://swipestats.io
+   * - **API ID Path**: cta_info.visualizeYourTinderData.primary.link
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  link: prismic.LinkField;
+
+  /**
+   * Image field in *Cta → Visualize your Tinder data → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_info.visualizeYourTinderData.primary.image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+
+  /**
+   * CTA Link Label field in *Cta → Visualize your Tinder data → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Learn How (It's FREE)
+   * - **API ID Path**: cta_info.visualizeYourTinderData.primary.cta_link_label
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  cta_link_label: prismic.KeyTextField;
+}
 
 /**
- * CtaInfo Shared Slice
+ * Visualize your Tinder data variation for Cta Slice
+ *
+ * - **API ID**: `visualizeYourTinderData`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type CtaInfoSliceVisualizeYourTinderData = prismic.SharedSliceVariation<
+  "visualizeYourTinderData",
+  Simplify<CtaInfoSliceVisualizeYourTinderDataPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *Cta*
+ */
+type CtaInfoSliceVariation =
+  | CtaInfoSliceDefault
+  | CtaInfoSliceVisualizeYourTinderData;
+
+/**
+ * Cta Shared Slice
  *
  * - **API ID**: `cta_info`
  * - **Description**: CtaInfo
@@ -1776,8 +1856,10 @@ declare module "@prismicio/client" {
       ContentWithTestimonialsAndStatsSliceDefault,
       CtaInfoSlice,
       CtaInfoSliceDefaultPrimary,
+      CtaInfoSliceVisualizeYourTinderDataPrimary,
       CtaInfoSliceVariation,
       CtaInfoSliceDefault,
+      CtaInfoSliceVisualizeYourTinderData,
       FaqsSlice,
       FaqsSliceDefaultPrimaryQuestionsAndAnswersItem,
       FaqsSliceDefaultPrimary,

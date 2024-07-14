@@ -10,7 +10,7 @@ export const components = {
   content_with_testimonials_and_stats: dynamic(
     () => import("./ContentWithTestimonialsAndStats"),
   ),
-  cta_info: dynamic(() => import("./CtaInfo")),
+  cta_info: dynamic(() => import("./Cta")),
   faqs: dynamic(() => import("./Faq")),
   h1_with_sub_heading: dynamic(() => import("./HeadingWithSubHeading")),
   hero_section: dynamic(() => import("./HeroSection")),

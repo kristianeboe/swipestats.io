@@ -1,5 +1,6 @@
 import { createClient } from "@/prismicio";
 import { isFilled, type LinkField } from "@prismicio/client";
+import { SliceComponentProps } from "@prismicio/react";
 import {
   type BlogPostDocumentData,
   type AuthorDocumentData,
@@ -18,6 +19,7 @@ export function getPrismicLinkUrl(linkField: LinkField): string {
 export const blogPostGraphQuery = `{
         blog_post {
             ...blog_postFields
+
             author {
                 ...on author {
                     ...authorFields
@@ -47,3 +49,32 @@ export async function getBlogPostAndAuthor(uid: string) {
     author,
   };
 }
+
+// ? Failed experiment
+// export function createDefaultContentForSlice<T>(slice: SliceComponentProps["slice"] , obj: Record<
+//   typeof slice.variation,
+//   Record<keyof typeof slice.primary, string>) {
+//     return obj
+// }
+// ? Just use this pattern instead and define it top of file
+// const variationsDefaultContent: Record<
+// typeof slice.variation,
+// Record<keyof typeof slice.primary, string>
+// > = {
+// default: {
+//   heading: "Visualize Your Tinder Data",
+//   body: "Curious where you stand on the dating market? Anonymously upload your data to Swipestats and find out today (it's free)",
+//   emoji: "📊",
+//   cta_link_label: "Learn How(It's FREE)",
+//   link: "https://swipestats.io",
+//   image: "/ss2.png",
+// },
+// visualizeYourTinderData: {
+//   heading: "Visualize Your Tinder Data",
+//   body: "Curious where you stand on the dating market? Anonymously upload your data to Swipestats and find out today (it's free)",
+//   emoji: "📊",
+//   cta_link_label: "Learn How(It's FREE)",
+//   link: "https://swipestats.io",
+//   image: "/ss2.png",
+// },
+// };
