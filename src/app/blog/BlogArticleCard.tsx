@@ -8,7 +8,7 @@ export function BlogArticleCard(props: { post: BlogPost }) {
   return (
     <article
       key={post.id}
-      className="group flex flex-col items-start justify-between"
+      className="group flex flex-col items-start justify-between transition-colors"
     >
       <Link href={post.href}>
         <div className="relative w-full">

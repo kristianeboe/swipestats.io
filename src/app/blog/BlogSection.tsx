@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Button } from "../_components/ui/button";
 
 export type BlogPost = {
   id: string;
@@ -153,6 +154,11 @@ export function Blog() {
               </div>
             </article>
           ))}
+        </div>
+        <div className="my-10 flex justify-center">
+          <Link href={"/blog"}>
+            <Button>See all blog posts and news articles</Button>
+          </Link>
         </div>
       </div>
     </div>

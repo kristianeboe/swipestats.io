@@ -35,9 +35,9 @@ export default async function BlogPage() {
         <SecondaryFeaturedPost post={externalPosts[1]!} />
       </div>
 
-      <div className="mx-auto mt-16 max-w-7xl px-6 lg:px-8">
+      <div className="mt-16">
         <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          Prismic articles 2
+          More articles
         </h2>
         <div className="mt- mt-10 grid gap-10 md:grid-cols-2 lg:grid-cols-3">
           {pages.map((post) => {
@@ -92,7 +92,7 @@ export default async function BlogPage() {
 
 const FeaturedArticle = ({ post }: { post: BlogPost }) => {
   return (
-    <Link href={"/blog/test-blog"} className="group">
+    <Link href={"/blog/test-blog"} className="group transition-colors">
       <div className="mb-10 flex flex-col gap-10 overflow-hidden md:h-96 md:flex-row">
         <div className="flex-none md:w-1/2 lg:w-3/5">
           <Image
@@ -194,7 +194,7 @@ function SecondaryFeaturedPost(props: { post: BlogPost }) {
   return (
     <article
       key={post.id}
-      className="relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-gray-900 px-8 pb-8 pt-48 md:h-96"
+      className="group relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-gray-900 px-8 pb-8 pt-48 transition-colors md:h-96"
     >
       <img
         alt=""
@@ -225,7 +225,7 @@ function SecondaryFeaturedPost(props: { post: BlogPost }) {
           </div>
         </div>
       </div>
-      <h3 className="mt-3 text-lg font-semibold leading-6 text-white">
+      <h3 className="mt-3 text-lg font-semibold leading-6 text-white group-hover:text-rose-600">
         <a href={post.href}>
           <span className="absolute inset-0" />
           {post.title}
