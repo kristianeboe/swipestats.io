@@ -1,26 +1,16 @@
 import { type Metadata } from "next";
-import { notFound } from "next/navigation";
 
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
 
-import {
-  blogPostGraphQuery,
-  getAuthorFromBlog,
-} from "@/lib/utils/prismic.utils";
+import { getBlogPostAndAuthor } from "@/lib/utils/prismic.utils";
 import { AuthorCard } from "./AuthorCard";
 import { SliceZone } from "@prismicio/react";
 
 type Params = { slug: string };
 
 export default async function Page({ params }: { params: Params }) {
-  const client = createClient();
-  const page = await client
-    .getByUID("blog_post", params.slug, {
-      graphQuery: blogPostGraphQuery,
-    })
-    .catch(() => notFound());
-
+  const { blog, author } = await getBlogPostAndAuthor(params.slug);
   return (
     <div>
       <div className="relative isolate px-6 pt-14 lg:px-8">
@@ -48,13 +38,13 @@ export default async function Page({ params }: { params: Params }) {
           </div> */}
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              {page.data.title}
+              {blog.data.title}
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              {page.data.description}
+              {blog.data.description}
             </p>
             {/* <div className="mt-6 text-gray-600">
-              <PrismicRichText field={page.data.description} />
+              <PrismicRichText field={blog.data.description} />
             </div> */}
             {/* <div className="mt-10 flex items-center justify-center gap-x-6">
               <a
@@ -86,9 +76,9 @@ export default async function Page({ params }: { params: Params }) {
         </div>
       </div>
       <div className="container max-w-3xl">
-        <SliceZone slices={page.data.slices} components={components} />
+        <SliceZone slices={blog.data.slices} components={components} />
         <div className="mt-20">
-          <AuthorCard author={getAuthorFromBlog(page.data)} />
+          <AuthorCard author={author} />
         </div>
       </div>
     </div>
@@ -100,18 +90,15 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const client = createClient();
-  const page = await client
-    .getByUID("blog_post", params.slug)
-    .catch(() => notFound());
+  const { blog } = await getBlogPostAndAuthor(params.slug);
 
   return {
-    title: page.data.meta_title,
-    description: page.data.meta_description,
+    title: blog.data.meta_title,
+    description: blog.data.meta_description,
     openGraph: {
       images: [
-        page.data.meta_image.url ??
-          "https://swipestats.io/api/og/blog/" + page.id,
+        blog.data.meta_image.url ??
+          "https://swipestats.io/api/og/v0/" + blog.uid,
       ],
     },
   };
