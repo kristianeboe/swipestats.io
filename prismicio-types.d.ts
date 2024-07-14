@@ -5,6 +5,7 @@ import type * as prismic from "@prismicio/client";
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 
 type AiDatingPhotosDocumentDataSlicesSlice =
+  | FeaturesSectionSlice
   | HeroSectionSlice
   | ContentWithTestimonialsAndStatsSlice;
 
@@ -1240,6 +1241,119 @@ type FaqsSliceVariation = FaqsSliceDefault;
 export type FaqsSlice = prismic.SharedSlice<"faqs", FaqsSliceVariation>;
 
 /**
+ * Item in *FeaturesSection → Default → Primary → Features*
+ */
+export interface FeaturesSectionSliceDefaultPrimaryFeaturesItem {
+  /**
+   * Name field in *FeaturesSection → Default → Primary → Features*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features_section.default.primary.features[].name
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  name: prismic.KeyTextField;
+
+  /**
+   * Description field in *FeaturesSection → Default → Primary → Features*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features_section.default.primary.features[].description
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  description: prismic.KeyTextField;
+
+  /**
+   * Icon field in *FeaturesSection → Default → Primary → Features*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **Default Value**: cloudArrowUpIcon
+   * - **API ID Path**: features_section.default.primary.features[].icon
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  icon: prismic.SelectField<"cloudArrowUpIcon" | "lockClosedIcon", "filled">;
+}
+
+/**
+ * Primary content in *FeaturesSection → Default → Primary*
+ */
+export interface FeaturesSectionSliceDefaultPrimary {
+  /**
+   * Eyebrow field in *FeaturesSection → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features_section.default.primary.eyebrow
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  eyebrow: prismic.KeyTextField;
+
+  /**
+   * Heading field in *FeaturesSection → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features_section.default.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Description field in *FeaturesSection → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features_section.default.primary.description
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  description: prismic.KeyTextField;
+
+  /**
+   * Features field in *FeaturesSection → Default → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: features_section.default.primary.features[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  features: prismic.GroupField<
+    Simplify<FeaturesSectionSliceDefaultPrimaryFeaturesItem>
+  >;
+}
+
+/**
+ * Default variation for FeaturesSection Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type FeaturesSectionSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<FeaturesSectionSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *FeaturesSection*
+ */
+type FeaturesSectionSliceVariation = FeaturesSectionSliceDefault;
+
+/**
+ * FeaturesSection Shared Slice
+ *
+ * - **API ID**: `features_section`
+ * - **Description**: FeaturesSection
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type FeaturesSectionSlice = prismic.SharedSlice<
+  "features_section",
+  FeaturesSectionSliceVariation
+>;
+
+/**
  * Primary content in *HeadingWithSubHeading → H1WithSubheading → Primary*
  */
 export interface H1WithSubHeadingSliceDefaultPrimary {
@@ -1439,9 +1553,149 @@ export type HeroSectionSliceDefault = prismic.SharedSliceVariation<
 >;
 
 /**
+ * Primary content in *HeroSection → WithRichText → Primary*
+ */
+export interface HeroSectionSliceWithRichTextPrimary {
+  /**
+   * Title field in *HeroSection → WithRichText → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withRichText.primary.title
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * Description field in *HeroSection → WithRichText → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withRichText.primary.description
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  description: prismic.KeyTextField;
+
+  /**
+   * Rich Description field in *HeroSection → WithRichText → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withRichText.primary.rich_description
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  rich_description: prismic.RichTextField;
+
+  /**
+   * PrimaryCtaButtonText field in *HeroSection → WithRichText → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withRichText.primary.primaryctabuttontext
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  primaryctabuttontext: prismic.KeyTextField;
+
+  /**
+   * PrimaryCtaButtonHref field in *HeroSection → WithRichText → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withRichText.primary.primaryctabuttonhref
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  primaryctabuttonhref: prismic.LinkField;
+
+  /**
+   * CtaLinkText field in *HeroSection → WithRichText → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withRichText.primary.ctalinktext
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  ctalinktext: prismic.KeyTextField;
+
+  /**
+   * CtaLinkHref field in *HeroSection → WithRichText → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withRichText.primary.ctalinkHref
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  ctalinkHref: prismic.LinkField;
+
+  /**
+   * Image1 field in *HeroSection → WithRichText → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withRichText.primary.image1
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image1: prismic.ImageField<never>;
+
+  /**
+   * Image2 field in *HeroSection → WithRichText → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withRichText.primary.image2
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image2: prismic.ImageField<never>;
+
+  /**
+   * Image3 field in *HeroSection → WithRichText → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withRichText.primary.image3
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image3: prismic.ImageField<never>;
+
+  /**
+   * Image4 field in *HeroSection → WithRichText → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withRichText.primary.image4
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image4: prismic.ImageField<never>;
+
+  /**
+   * Image5 field in *HeroSection → WithRichText → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withRichText.primary.image5
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image5: prismic.ImageField<never>;
+}
+
+/**
+ * WithRichText variation for HeroSection Slice
+ *
+ * - **API ID**: `withRichText`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type HeroSectionSliceWithRichText = prismic.SharedSliceVariation<
+  "withRichText",
+  Simplify<HeroSectionSliceWithRichTextPrimary>,
+  never
+>;
+
+/**
  * Slice variation for *HeroSection*
  */
-type HeroSectionSliceVariation = HeroSectionSliceDefault;
+type HeroSectionSliceVariation =
+  | HeroSectionSliceDefault
+  | HeroSectionSliceWithRichText;
 
 /**
  * HeroSection Shared Slice
@@ -2270,6 +2524,11 @@ declare module "@prismicio/client" {
       FaqsSliceDefaultPrimary,
       FaqsSliceVariation,
       FaqsSliceDefault,
+      FeaturesSectionSlice,
+      FeaturesSectionSliceDefaultPrimaryFeaturesItem,
+      FeaturesSectionSliceDefaultPrimary,
+      FeaturesSectionSliceVariation,
+      FeaturesSectionSliceDefault,
       H1WithSubHeadingSlice,
       H1WithSubHeadingSliceDefaultPrimary,
       H1WithSubHeadingSliceVariation,
@@ -2277,8 +2536,10 @@ declare module "@prismicio/client" {
       H1WithSubHeadingSliceH2WithSubheading,
       HeroSectionSlice,
       HeroSectionSliceDefaultPrimary,
+      HeroSectionSliceWithRichTextPrimary,
       HeroSectionSliceVariation,
       HeroSectionSliceDefault,
+      HeroSectionSliceWithRichText,
       ImageSectionSlice,
       ImageSectionSliceDefaultPrimary,
       ImageSectionSliceVariation,

@@ -7,10 +7,13 @@ import {
 } from "prismicio-types";
 
 export function getPrismicLinkUrl(linkField: LinkField): string {
+  console.log("linkField", linkField);
   if (linkField.link_type === "Web") {
     // @ts-expect-error - We know this is a FilledLinkToWebField
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return linkField.url ?? "#";
+  } else if (linkField.link_type === "Any") {
+    return "#";
   } else {
     throw new Error("Unsupported link type");
   }

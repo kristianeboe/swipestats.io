@@ -2,7 +2,7 @@ import { Button } from "@/app/_components/ui/button";
 import { SLink } from "@/app/_components/ui/SLink";
 import { getPrismicLinkUrl } from "@/lib/utils/prismic.utils";
 import { type Content } from "@prismicio/client";
-import { type SliceComponentProps } from "@prismicio/react";
+import { PrismicRichText, type SliceComponentProps } from "@prismicio/react";
 import Link from "next/link";
 
 /**
@@ -69,9 +69,17 @@ const HeroSection = ({ slice }: HeroSectionProps): JSX.Element => {
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
                   {slice.primary.title}
                 </h1>
-                <p className="mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
-                  {slice.primary.description}
-                </p>
+                {slice.variation === "withRichText" &&
+                slice.primary.rich_description ? (
+                  <div className="prose mt-6 text-lg leading-8 sm:max-w-md lg:max-w-none">
+                    <PrismicRichText field={slice.primary.rich_description} />
+                  </div>
+                ) : (
+                  <p className="mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
+                    {slice.primary.description}
+                  </p>
+                )}
+
                 <div className="mt-10 flex items-center gap-x-6">
                   <Link
                     href={getPrismicLinkUrl(slice.primary.primaryctabuttonhref)}
@@ -80,7 +88,8 @@ const HeroSection = ({ slice }: HeroSectionProps): JSX.Element => {
                   </Link>
 
                   <SLink href="#">
-                    Learn more <span aria-hidden="true">→</span>
+                    {slice.primary.ctalinktext ?? "Learn more"}{" "}
+                    <span aria-hidden="true">→</span>
                   </SLink>
                 </div>
               </div>

@@ -99,6 +99,111 @@
         }
       },
       "items": {}
+    },
+    {
+      "id": "withRichText",
+      "name": "WithRichText",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "title": {
+          "type": "Text",
+          "config": {
+            "label": "Title",
+            "placeholder": ""
+          }
+        },
+        "description": {
+          "type": "Text",
+          "config": {
+            "label": "Description",
+            "placeholder": ""
+          }
+        },
+        "rich_description": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Rich Description",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "primaryctabuttontext": {
+          "type": "Text",
+          "config": {
+            "label": "PrimaryCtaButtonText",
+            "placeholder": ""
+          }
+        },
+        "primaryctabuttonhref": {
+          "type": "Link",
+          "config": {
+            "label": "PrimaryCtaButtonHref",
+            "placeholder": "",
+            "select": null
+          }
+        },
+        "ctalinktext": {
+          "type": "Text",
+          "config": {
+            "label": "CtaLinkText",
+            "placeholder": ""
+          }
+        },
+        "ctalinkHref": {
+          "type": "Link",
+          "config": {
+            "label": "CtaLinkHref",
+            "placeholder": "",
+            "allowTargetBlank": false,
+            "select": null
+          }
+        },
+        "image1": {
+          "type": "Image",
+          "config": {
+            "label": "Image1",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "image2": {
+          "type": "Image",
+          "config": {
+            "label": "Image2",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "image3": {
+          "type": "Image",
+          "config": {
+            "label": "Image3",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "image4": {
+          "type": "Image",
+          "config": {
+            "label": "Image4",
+            "constraint": {},
+            "thumbnails": []
+          }
+        },
+        "image5": {
+          "type": "Image",
+          "config": {
+            "label": "Image5",
+            "constraint": {},
+            "thumbnails": []
+          }
+        }
+      },
+      "items": {}
     }
   ]
 }

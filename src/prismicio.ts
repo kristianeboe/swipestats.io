@@ -28,6 +28,10 @@ const routes: prismic.ClientConfig["routes"] = [
     type: "blog_post",
     path: "/blog/:uid",
   },
+  {
+    type: "ai_dating_photos",
+    path: "/ai-dating-photos",
+  },
 ];
 
 /**

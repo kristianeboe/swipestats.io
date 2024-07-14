@@ -1,0 +1,140 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"features": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"name",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Flaunt Your Hobbies"
+								}
+							],
+							[
+								"description",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Our AI technology emphasizes the activities you love, giving your potential matches a glimpse into your specific lifestyle."
+								}
+							],
+							[
+								"icon",
+								{
+									"__TYPE__": "FieldContent",
+									"value": "cloudArrowUpIcon",
+									"type": "Select"
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"name",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Look Irresistibly Good"
+								}
+							],
+							[
+								"description",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "We ensure that you look your finest in every picture, thanks to our sophisticated AI that understands the art of attraction."
+								}
+							],
+							[
+								"icon",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Select",
+									"value": "lockClosedIcon"
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"name",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Save Time and Hassle"
+								}
+							],
+							[
+								"description",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Forget about picking outfits, paying $1000s to photographers and hour long photo shoots. We provide quick and stunning results with just a few clicks."
+								}
+							],
+							[
+								"icon",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Select",
+									"value": "cloudArrowUpIcon"
+								}
+							]
+						]
+					},
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": [
+							[
+								"name",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "Real Results, Real Connections:"
+								}
+							],
+							[
+								"description",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Text",
+									"value": "With Swipestats.io, you're not just enhancing your profile; you're increasing the likelihood of meaningful connections."
+								}
+							],
+							[
+								"icon",
+								{
+									"__TYPE__": "FieldContent",
+									"type": "Select",
+									"value": "lockClosedIcon"
+								}
+							]
+						]
+					}
+				]
+			},
+			"eyebrow": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "Benefits"
+			},
+			"heading": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "Your Best Self, Effortlessly"
+			}
+		},
+		"items": []
+	}
+]
