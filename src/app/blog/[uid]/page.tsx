@@ -14,10 +14,10 @@ import { env } from "@/env";
 // export const dynamic = "force-static";
 // export const runtime = "nodejs";
 
-type Params = { slug: string };
+type Params = { uid: string };
 
 export default async function Page({ params }: { params: Params }) {
-  const { blog, author } = await getBlogPostAndAuthor(params.slug);
+  const { blog, author } = await getBlogPostAndAuthor(params.uid);
   return (
     <div>
       <div className="relative isolate px-6 pt-14 lg:px-8">
@@ -72,7 +72,7 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const { blog } = await getBlogPostAndAuthor(params.slug);
+  const { blog } = await getBlogPostAndAuthor(params.uid);
 
   return {
     title: blog.data.meta_title,
@@ -92,13 +92,6 @@ export async function generateStaticParams() {
   const pages = await client.getAllByType("blog_post", {
     graphQuery: blogPostGraphQuery,
   }); // .catch(() => notFound());
-  console.log(
-    "pages",
-    pages.length,
-    pages.map((page) => {
-      return { uid: page.uid };
-    }),
-  );
 
   return pages.map((page) => {
     return { uid: page.uid };

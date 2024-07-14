@@ -16,7 +16,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { PHProvider } from "./_components/PostHogProvider";
 
 import dynamic from "next/dynamic";
-import { PrismicPreview } from "@prismicio/next";
+// import { PrismicPreview } from "@prismicio/next";
 
 const PostHogPageView = dynamic(() => import("./PostHogPageView"), {
   ssr: false,
@@ -76,7 +76,7 @@ export default function RootLayout({
             <main className="mt-20">{children}</main>
             <Footer />
             <PostHogPageView />
-            <PrismicPreview repositoryName={"swipestats"} />
+            {/* <PrismicPreview repositoryName={"swipestats"} /> */}
           </PHProvider>
         </TRPCReactProvider>
         <Analytics />

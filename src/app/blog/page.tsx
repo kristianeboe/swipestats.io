@@ -79,17 +79,6 @@ export default async function BlogPage() {
   );
 }
 
-// TODO FIXø
-//  export async function generateMetadata(): Promise<Metadata> {
-//    const client = createClient();
-//    const page = await client.getSingle("blog_home_page");
-
-//    return {
-//      title: page.data.meta_title,
-//      description: page.data.meta_description,
-//    };
-//  }
-
 const FeaturedArticle = ({ post }: { post: BlogPost }) => {
   return (
     <Link href={"/blog/test-blog"} className="group transition-colors">
