@@ -7,9 +7,9 @@ import {
 } from "@prisma/client";
 import { addMonths, differenceInDays } from "date-fns";
 import { getMessagesMetaFromMatches } from "./profile.messages.service";
-import { createSubLogger } from "@/lib/tslog";
+// import { createSubLogger } from "@/lib/tslog";
 
-const log = createSubLogger("profile.meta");
+// const log = createSubLogger("profile.meta");
 
 export function createProfileMeta(
   profile: TinderProfileWithUsageAndMatches,

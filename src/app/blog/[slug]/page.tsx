@@ -3,9 +3,16 @@ import { type Metadata } from "next";
 import { createClient } from "@/prismicio";
 import { components } from "@/slices";
 
-import { getBlogPostAndAuthor } from "@/lib/utils/prismic.utils";
+import {
+  blogPostGraphQuery,
+  getBlogPostAndAuthor,
+} from "@/lib/utils/prismic.utils";
 import { AuthorCard } from "./AuthorCard";
 import { SliceZone } from "@prismicio/react";
+import { env } from "@/env";
+
+// export const dynamic = "force-static";
+// export const runtime = "nodejs";
 
 type Params = { slug: string };
 
@@ -27,15 +34,7 @@ export default async function Page({ params }: { params: Params }) {
           />
         </div>
         <div className="mx-auto max-w-2xl py-16">
-          {/* <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-            <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-              Announcing our next round of funding.{" "}
-              <a href="#" className="font-semibold text-rose-600">
-                <span aria-hidden="true" className="absolute inset-0" />
-                Read more <span aria-hidden="true">&rarr;</span>
-              </a>
-            </div>
-          </div> */}
+          ´
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
               {blog.data.title}
@@ -43,23 +42,6 @@ export default async function Page({ params }: { params: Params }) {
             <p className="mt-6 text-lg leading-8 text-gray-600">
               {blog.data.description}
             </p>
-            {/* <div className="mt-6 text-gray-600">
-              <PrismicRichText field={blog.data.description} />
-            </div> */}
-            {/* <div className="mt-10 flex items-center justify-center gap-x-6">
-              <a
-                href="#"
-                className="rounded-md bg-rose-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
-              >
-                Get started
-              </a>
-              <a
-                href="#"
-                className="text-sm font-semibold leading-6 text-gray-900"
-              >
-                Learn more <span aria-hidden="true">→</span>
-              </a>
-            </div> */}
           </div>
         </div>
         <div
@@ -98,7 +80,7 @@ export async function generateMetadata({
     openGraph: {
       images: [
         blog.data.meta_image.url ??
-          "https://swipestats.io/api/og/v0/" + blog.uid,
+          env.NEXT_PUBLIC_BASE_URL + "/api/og/v0/" + blog.uid,
       ],
     },
   };
@@ -107,8 +89,16 @@ export async function generateMetadata({
 export async function generateStaticParams() {
   const client = createClient();
   console.log("generate static blog");
-  const pages = await client.getAllByType("blog_post"); // .catch(() => notFound());
-  console.log("pages", pages.length);
+  const pages = await client.getAllByType("blog_post", {
+    graphQuery: blogPostGraphQuery,
+  }); // .catch(() => notFound());
+  console.log(
+    "pages",
+    pages.length,
+    pages.map((page) => {
+      return { uid: page.uid };
+    }),
+  );
 
   return pages.map((page) => {
     return { uid: page.uid };

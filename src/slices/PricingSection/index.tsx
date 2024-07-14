@@ -5,13 +5,6 @@ import { type SliceComponentProps } from "@prismicio/react";
 import { annualPriceWithTwoMonthsFree } from "@/lib/utils";
 import { getPrismicLinkUrl } from "@/lib/utils/prismic.utils";
 
-const includedFeatures = [
-  "Private forum access",
-  "Member resources",
-  "Entry to annual conference",
-  "Official member t-shirt",
-];
-
 /**
  * Props for `PricingSection`.
  */

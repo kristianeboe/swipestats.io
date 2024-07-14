@@ -1,7 +1,6 @@
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
 import { type Content } from "@prismicio/client";
 import { type SliceComponentProps } from "@prismicio/react";
-import { PrismicRichText } from "node_modules/@prismicio/react/dist/react-server/PrismicRichText";
 
 /**
  * Props for `Bullets`.
