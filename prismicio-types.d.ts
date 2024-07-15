@@ -1179,6 +1179,181 @@ export type CtaInfoSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Primary content in *CtaSection → Default → Primary*
+ */
+export interface CtaSectionSliceDefaultPrimary {
+  /**
+   * Heading field in *CtaSection → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.default.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Body field in *CtaSection → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.default.primary.body
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  body: prismic.KeyTextField;
+
+  /**
+   * Cta Label field in *CtaSection → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.default.primary.cta_label
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  cta_label: prismic.KeyTextField;
+
+  /**
+   * Cta Href field in *CtaSection → Default → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.default.primary.cta_href
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  cta_href: prismic.LinkField;
+
+  /**
+   * Secondary Cta Label field in *CtaSection → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.default.primary.secondary_cta_label
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  secondary_cta_label: prismic.KeyTextField;
+
+  /**
+   * Secondary CTA Href field in *CtaSection → Default → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.default.primary.secondary_cta_href
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  secondary_cta_href: prismic.LinkField;
+}
+
+/**
+ * Default variation for CtaSection Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type CtaSectionSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<CtaSectionSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Primary content in *CtaSection → Simple Centered → Primary*
+ */
+export interface CtaSectionSliceSimpleCenteredPrimary {
+  /**
+   * Heading field in *CtaSection → Simple Centered → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.simpleCentered.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
+
+  /**
+   * Body field in *CtaSection → Simple Centered → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.simpleCentered.primary.body
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  body: prismic.KeyTextField;
+
+  /**
+   * Cta Label field in *CtaSection → Simple Centered → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.simpleCentered.primary.cta_label
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  cta_label: prismic.KeyTextField;
+
+  /**
+   * Cta Href field in *CtaSection → Simple Centered → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.simpleCentered.primary.cta_href
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  cta_href: prismic.LinkField;
+
+  /**
+   * Secondary Cta Label field in *CtaSection → Simple Centered → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.simpleCentered.primary.secondary_cta_label
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  secondary_cta_label: prismic.KeyTextField;
+
+  /**
+   * Secondary CTA Href field in *CtaSection → Simple Centered → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_section.simpleCentered.primary.secondary_cta_href
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  secondary_cta_href: prismic.LinkField;
+}
+
+/**
+ * Simple Centered variation for CtaSection Slice
+ *
+ * - **API ID**: `simpleCentered`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type CtaSectionSliceSimpleCentered = prismic.SharedSliceVariation<
+  "simpleCentered",
+  Simplify<CtaSectionSliceSimpleCenteredPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *CtaSection*
+ */
+type CtaSectionSliceVariation =
+  | CtaSectionSliceDefault
+  | CtaSectionSliceSimpleCentered;
+
+/**
+ * CtaSection Shared Slice
+ *
+ * - **API ID**: `cta_section`
+ * - **Description**: CtaSection
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type CtaSectionSlice = prismic.SharedSlice<
+  "cta_section",
+  CtaSectionSliceVariation
+>;
+
+/**
  * Item in *Faq → Default → Primary → Questions And Answers*
  */
 export interface FaqsSliceDefaultPrimaryQuestionsAndAnswersItem {
@@ -1869,6 +2044,52 @@ type ImageSectionSliceVariation = ImageSectionSliceDefault;
 export type ImageSectionSlice = prismic.SharedSlice<
   "image_section",
   ImageSectionSliceVariation
+>;
+
+/**
+ * Primary content in *LogoCloud → Default → Primary*
+ */
+export interface LogoCloudSliceDefaultPrimary {
+  /**
+   * Dark Background field in *LogoCloud → Default → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: logo_cloud.default.primary.dark_background
+   * - **Documentation**: https://prismic.io/docs/field#boolean
+   */
+  dark_background: prismic.BooleanField;
+}
+
+/**
+ * Default variation for LogoCloud Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type LogoCloudSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<LogoCloudSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *LogoCloud*
+ */
+type LogoCloudSliceVariation = LogoCloudSliceDefault;
+
+/**
+ * LogoCloud Shared Slice
+ *
+ * - **API ID**: `logo_cloud`
+ * - **Description**: LogoCloud
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type LogoCloudSlice = prismic.SharedSlice<
+  "logo_cloud",
+  LogoCloudSliceVariation
 >;
 
 /**
@@ -2855,6 +3076,48 @@ export type ValuesSectionSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Primary content in *Video → Default → Primary*
+ */
+export interface VideoSliceDefaultPrimary {
+  /**
+   * Video Embed field in *Video → Default → Primary*
+   *
+   * - **Field Type**: Embed
+   * - **Placeholder**: *None*
+   * - **API ID Path**: video.default.primary.video_embed
+   * - **Documentation**: https://prismic.io/docs/field#embed
+   */
+  video_embed: prismic.EmbedField;
+}
+
+/**
+ * Default variation for Video Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type VideoSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<VideoSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *Video*
+ */
+type VideoSliceVariation = VideoSliceDefault;
+
+/**
+ * Video Shared Slice
+ *
+ * - **API ID**: `video`
+ * - **Description**: Video
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type VideoSlice = prismic.SharedSlice<"video", VideoSliceVariation>;
+
+/**
  * Default variation for YouMayAlsoLike Slice
  *
  * - **API ID**: `default`
@@ -2940,6 +3203,12 @@ declare module "@prismicio/client" {
       CtaInfoSliceVariation,
       CtaInfoSliceDefault,
       CtaInfoSliceVisualizeYourTinderData,
+      CtaSectionSlice,
+      CtaSectionSliceDefaultPrimary,
+      CtaSectionSliceSimpleCenteredPrimary,
+      CtaSectionSliceVariation,
+      CtaSectionSliceDefault,
+      CtaSectionSliceSimpleCentered,
       FaqsSlice,
       FaqsSliceDefaultPrimaryQuestionsAndAnswersItem,
       FaqsSliceDefaultPrimary,
@@ -2968,6 +3237,10 @@ declare module "@prismicio/client" {
       ImageSectionSliceDefaultPrimary,
       ImageSectionSliceVariation,
       ImageSectionSliceDefault,
+      LogoCloudSlice,
+      LogoCloudSliceDefaultPrimary,
+      LogoCloudSliceVariation,
+      LogoCloudSliceDefault,
       PricingSectionSlice,
       PricingSectionSliceSingleTierPrimaryFeaturesItem,
       PricingSectionSliceSingleTierPrimary,
@@ -3017,6 +3290,10 @@ declare module "@prismicio/client" {
       ValuesSectionSliceDefaultPrimary,
       ValuesSectionSliceVariation,
       ValuesSectionSliceDefault,
+      VideoSlice,
+      VideoSliceDefaultPrimary,
+      VideoSliceVariation,
+      VideoSliceDefault,
       YouMayAlsoLikeSlice,
       YouMayAlsoLikeSliceVariation,
       YouMayAlsoLikeSliceDefault,

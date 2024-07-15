@@ -1,0 +1,40 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"video_embed": {
+				"embed_url": "https://www.youtube.com/watch?v=gotvpCDEzdU",
+				"__TYPE__": "EmbedContent",
+				"type": "video",
+				"version": "1.0",
+				"title": "Requesting and Uploading Your Tinder Data to Swipestats",
+				"author_name": "Swipestats",
+				"author_url": "https://www.youtube.com/@swipestats",
+				"provider_name": "YouTube",
+				"provider_url": "https://www.youtube.com/",
+				"thumbnail_url": "https://i.ytimg.com/vi/gotvpCDEzdU/hqdefault.jpg",
+				"thumbnail_width": 480,
+				"thumbnail_height": 360,
+				"html": "<iframe width=\"200\" height=\"113\" src=\"https://www.youtube.com/embed/gotvpCDEzdU?feature=oembed\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen title=\"Requesting and Uploading Your Tinder Data to Swipestats\"></iframe>",
+				"all": {
+					"embed_url": "https://www.youtube.com/watch?v=gotvpCDEzdU",
+					"type": "video",
+					"version": "1.0",
+					"title": "Requesting and Uploading Your Tinder Data to Swipestats",
+					"author_name": "Swipestats",
+					"author_url": "https://www.youtube.com/@swipestats",
+					"provider_name": "YouTube",
+					"provider_url": "https://www.youtube.com/",
+					"thumbnail_url": "https://i.ytimg.com/vi/gotvpCDEzdU/hqdefault.jpg",
+					"thumbnail_width": 480,
+					"thumbnail_height": 360,
+					"html": "<iframe width=\"200\" height=\"113\" src=\"https://www.youtube.com/embed/gotvpCDEzdU?feature=oembed\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen title=\"Requesting and Uploading Your Tinder Data to Swipestats\"></iframe>",
+					"height": 113,
+					"width": 200
+				}
+			}
+		},
+		"items": []
+	}
+]
