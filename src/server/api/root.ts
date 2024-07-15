@@ -2,6 +2,7 @@ import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 import { profileRouter } from "./routers/profileRouter";
 import { aggregationRouter } from "./routers/aggregationRouter";
 import { newsletterRouter } from "./routers/newsletterRouter";
+import { aiDatingPhotosRouter } from "./routers/aiDatingPhotos";
 
 /**
  * This is the primary router for your server.
@@ -12,6 +13,7 @@ export const appRouter = createTRPCRouter({
   profile: profileRouter,
   aggregation: aggregationRouter,
   newsletter: newsletterRouter,
+  aiDatingPhotosRouter: aiDatingPhotosRouter,
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;

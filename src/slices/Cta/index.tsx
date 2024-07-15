@@ -25,7 +25,7 @@ const CtaInfo = ({ slice }: CtaInfoProps): JSX.Element => {
       body: "Curious where you stand on the dating market? Anonymously upload your data to Swipestats and find out today (it's free)",
       emoji: "📊",
       cta_link_label: "Learn How(It's FREE)",
-      link: "https://swipestats.io",
+      link: "https://www.swipestats.io/upload/tinder",
       image:
         "https://images.prismic.io/swipestats/ZpGD7R5LeNNTxH-S_pikaso_texttoimage_35mm-film-photography-handsome-masculine-man-pensi-9-BackgroundRemovedBackgroundRemoved.png?auto=format,compress",
     },
@@ -34,7 +34,7 @@ const CtaInfo = ({ slice }: CtaInfoProps): JSX.Element => {
       body: "Curious where you stand on the dating market? Anonymously upload your data to Swipestats and find out today (it's free)",
       emoji: "📊",
       cta_link_label: "Learn How(It's FREE)",
-      link: "https://swipestats.io",
+      link: "https://www.swipestats.io/upload/tinder",
       image: "/ss2.png",
     },
   };

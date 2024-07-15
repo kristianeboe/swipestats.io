@@ -24,6 +24,9 @@ export const env = createEnv({
     ),
     SLACK_WEBHOOK_INTERNAL: z.string().url(),
     PRISMIC_MASTER_TOKEN: z.string(),
+
+    GOOGLE_DRIVE_SERVICE_ACCOUNT_PRIVATE_KEY: z.string(),
+    AI_PHOTOS_PROVIDER_EMAIL: z.string().email(),
   },
 
   /**
@@ -60,6 +63,10 @@ export const env = createEnv({
 
     SLACK_WEBHOOK_INTERNAL: process.env.SLACK_WEBHOOK_INTERNAL,
     PRISMIC_MASTER_TOKEN: process.env.PRISMIC_MASTER_TOKEN,
+
+    GOOGLE_DRIVE_SERVICE_ACCOUNT_PRIVATE_KEY:
+      process.env.GOOGLE_DRIVE_SERVICE_ACCOUNT_PRIVATE_KEY,
+    AI_PHOTOS_PROVIDER_EMAIL: process.env.AI_PHOTOS_PROVIDER_EMAIL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
