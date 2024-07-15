@@ -1,56 +1,56 @@
 {
   "format": "page",
-  "id": "ai_dating_photos",
-  "label": "AI Dating Photos",
-  "repeatable": false,
+  "id": "product_page",
+  "label": "Product Page",
+  "repeatable": true,
   "status": true,
   "json": {
     "Main": {
+      "uid": {
+        "config": {
+          "label": "UID"
+        },
+        "type": "UID"
+      },
       "slices": {
         "type": "Slices",
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
-            "content_with_stats_on_right": {
-              "type": "SharedSlice"
-            },
-            "values_section": {
-              "type": "SharedSlice"
-            },
-            "logo_cloud": {
-              "type": "SharedSlice"
-            },
-            "video": {
+            "image_section": {
               "type": "SharedSlice"
             },
             "success_photos_section": {
               "type": "SharedSlice"
             },
-            "image_section": {
-              "type": "SharedSlice"
-            },
-            "pricing_section": {
-              "type": "SharedSlice"
-            },
-            "faqs": {
-              "type": "SharedSlice"
-            },
-            "rich_text": {
-              "type": "SharedSlice"
-            },
-            "bullets": {
-              "type": "SharedSlice"
-            },
-            "table": {
-              "type": "SharedSlice"
-            },
-            "features_section": {
+            "values_section": {
               "type": "SharedSlice"
             },
             "hero_section": {
               "type": "SharedSlice"
             },
-            "content_with_testimonials_and_stats": {
+            "features_section": {
+              "type": "SharedSlice"
+            },
+            "table": {
+              "type": "SharedSlice"
+            },
+            "rich_text": {
+              "type": "SharedSlice"
+            },
+            "video": {
+              "type": "SharedSlice"
+            },
+            "logo_cloud": {
+              "type": "SharedSlice"
+            },
+            "pricing_section": {
+              "type": "SharedSlice"
+            },
+            "cta_section": {
+              "type": "SharedSlice"
+            },
+            "content_with_stats_on_right": {
               "type": "SharedSlice"
             }
           }

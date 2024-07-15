@@ -5,6 +5,10 @@ import type * as prismic from "@prismicio/client";
 type Simplify<T> = { [KeyType in keyof T]: T[KeyType] };
 
 type AiDatingPhotosDocumentDataSlicesSlice =
+  | ContentWithStatsOnRightSlice
+  | ValuesSectionSlice
+  | LogoCloudSlice
+  | VideoSlice
   | SuccessPhotosSectionSlice
   | ImageSectionSlice
   | PricingSectionSlice
@@ -395,11 +399,89 @@ export type BlogwithphotosDocument<Lang extends string = string> =
     Lang
   >;
 
+type ProductPageDocumentDataSlicesSlice =
+  | ImageSectionSlice
+  | SuccessPhotosSectionSlice
+  | ValuesSectionSlice
+  | HeroSectionSlice
+  | FeaturesSectionSlice
+  | TableSlice
+  | RichTextSlice
+  | VideoSlice
+  | LogoCloudSlice
+  | PricingSectionSlice
+  | CtaSectionSlice
+  | ContentWithStatsOnRightSlice;
+
+/**
+ * Content for Product Page documents
+ */
+interface ProductPageDocumentData {
+  /**
+   * Slice Zone field in *Product Page*
+   *
+   * - **Field Type**: Slice Zone
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product_page.slices[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#slices
+   */
+  slices: prismic.SliceZone<ProductPageDocumentDataSlicesSlice> /**
+   * Meta Title field in *Product Page*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A title of the page used for social media and search engines
+   * - **API ID Path**: product_page.meta_title
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */;
+  meta_title: prismic.KeyTextField;
+
+  /**
+   * Meta Description field in *Product Page*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: A brief summary of the page
+   * - **API ID Path**: product_page.meta_description
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  meta_description: prismic.KeyTextField;
+
+  /**
+   * Meta Image field in *Product Page*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: product_page.meta_image
+   * - **Tab**: SEO & Metadata
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  meta_image: prismic.ImageField<never>;
+}
+
+/**
+ * Product Page document from Prismic
+ *
+ * - **API ID**: `product_page`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type ProductPageDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<
+    Simplify<ProductPageDocumentData>,
+    "product_page",
+    Lang
+  >;
+
 export type AllDocumentTypes =
   | AiDatingPhotosDocument
   | AuthorDocument
   | BlogPostDocument
-  | BlogwithphotosDocument;
+  | BlogwithphotosDocument
+  | ProductPageDocument;
 
 /**
  * Primary content in *AuthorBox → Default → Primary*
@@ -3169,6 +3251,9 @@ declare module "@prismicio/client" {
       BlogwithphotosDocumentData,
       BlogwithphotosDocumentDataTableItem,
       BlogwithphotosDocumentDataSlicesSlice,
+      ProductPageDocument,
+      ProductPageDocumentData,
+      ProductPageDocumentDataSlicesSlice,
       AllDocumentTypes,
       AuthorBoxSlice,
       AuthorBoxSliceDefaultPrimary,
