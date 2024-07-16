@@ -197,6 +197,15 @@
               }
             }
           }
+        },
+        "price_is_pr_month": {
+          "type": "Boolean",
+          "config": {
+            "label": "Price is pr month",
+            "default_value": false,
+            "placeholder_true": "true",
+            "placeholder_false": "false"
+          }
         }
       },
       "items": {}

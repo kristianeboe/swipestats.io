@@ -11,9 +11,6 @@ import { AuthorCard } from "./AuthorCard";
 import { SliceZone } from "@prismicio/react";
 import { env } from "@/env";
 
-// export const dynamic = "force-static";
-// export const runtime = "nodejs";
-
 type Params = { uid: string };
 
 export default async function Page({ params }: { params: Params }) {
@@ -34,7 +31,6 @@ export default async function Page({ params }: { params: Params }) {
           />
         </div>
         <div className="mx-auto max-w-2xl py-16">
-          ´
           <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
               {blog.data.title}

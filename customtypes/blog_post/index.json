@@ -45,6 +45,15 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "cta_section": {
+              "type": "SharedSlice"
+            },
+            "image_section": {
+              "type": "SharedSlice"
+            },
+            "video": {
+              "type": "SharedSlice"
+            },
             "faqs": {
               "type": "SharedSlice"
             },

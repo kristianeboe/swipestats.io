@@ -57,7 +57,14 @@ type MiscEvent =
   | "Waitlist Signup"
   | "FAQ Question Clicked";
 // TODO split client and server events
-export type AnalyticsEventName = ProfileEvent | FileEvent | MiscEvent;
+
+type AiPhotosEvent = "AI Dating Photos Purchase";
+
+export type AnalyticsEventName =
+  | ProfileEvent
+  | FileEvent
+  | MiscEvent
+  | AiPhotosEvent;
 export type AnalyticsEventProperties = Record<
   string,
   string | number | boolean | null

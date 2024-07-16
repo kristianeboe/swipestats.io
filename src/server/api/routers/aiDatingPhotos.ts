@@ -2,7 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 import { sendInternalSlackMessage } from "../services/internal-slack.service";
-// import { analyticsTrackServer } from "@/lib/analytics/analyticsTrackServer";
+import { analyticsTrackServer } from "@/lib/analytics/analyticsTrackServer";
 import { initializeAiDatingPhotosFolderForCustomer } from "../integrations/googleDrive";
 
 export const aiDatingPhotosRouter = createTRPCRouter({
@@ -15,20 +15,20 @@ export const aiDatingPhotosRouter = createTRPCRouter({
     .mutation(async ({ input }) => {
       try {
         void sendInternalSlackMessage(
-          "bot-messages",
+          "ai-photos",
           "AI Dating Photos Purchase",
           {
             customerEmail: input.customerEmail,
           },
         );
 
-        // void analyticsTrackServer(
-        //   input.customerEmail,
-        //   "AI Dating Photos Purchase",
-        //   {
-        //     customerEmail: input.customerEmail,
-        //   },
-        // );
+        void analyticsTrackServer(
+          input.customerEmail,
+          "AI Dating Photos Purchase",
+          {
+            customerEmail: input.customerEmail,
+          },
+        );
 
         // await ctx.db.aiDatingPhotos.create({
         //     data: {

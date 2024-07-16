@@ -45,17 +45,22 @@ const PricingSection = ({ slice }: PricingSectionProps): JSX.Element => {
                   <span className="text-5xl font-bold tracking-tight text-gray-900">
                     {slice.primary.tier_1_price}
                   </span>
-                  <span className="text-sm font-semibold leading-6 text-gray-600">
-                    /month
-                  </span>
+                  {slice.primary.price_is_pr_month && (
+                    <span className="text-sm font-semibold leading-6 text-gray-600">
+                      /month
+                    </span>
+                  )}
                 </p>
-                <p className="mt-3 text-sm leading-6 text-gray-500">
-                  {
-                    annualPriceWithTwoMonthsFree(slice.primary.tier_1_price)
-                      .effectiveMonthlyPrice
-                  }{" "}
-                  per month if paid annually
-                </p>
+                {slice.primary.price_is_pr_month && (
+                  <p className="mt-3 text-sm leading-6 text-gray-500">
+                    {
+                      annualPriceWithTwoMonthsFree(slice.primary.tier_1_price)
+                        .effectiveMonthlyPrice
+                    }{" "}
+                    per month if paid annually
+                  </p>
+                )}
+
                 <a
                   href={getPrismicLinkUrl(slice.primary.tier_1_cta_href)}
                   aria-describedby={"tier1"}
@@ -93,17 +98,22 @@ const PricingSection = ({ slice }: PricingSectionProps): JSX.Element => {
                   <span className="text-5xl font-bold tracking-tight text-gray-900">
                     {slice.primary.tier_2_price}
                   </span>
-                  <span className="text-sm font-semibold leading-6 text-gray-600">
-                    /month
-                  </span>
+                  {slice.primary.price_is_pr_month && (
+                    <span className="text-sm font-semibold leading-6 text-gray-600">
+                      /month
+                    </span>
+                  )}
                 </p>
-                <p className="mt-3 text-sm leading-6 text-gray-500">
-                  {
-                    annualPriceWithTwoMonthsFree(slice.primary.tier_2_price)
-                      .effectiveMonthlyPrice
-                  }{" "}
-                  per month if paid annually
-                </p>
+
+                {slice.primary.price_is_pr_month && (
+                  <p className="mt-3 text-sm leading-6 text-gray-500">
+                    {
+                      annualPriceWithTwoMonthsFree(slice.primary.tier_2_price)
+                        .effectiveMonthlyPrice
+                    }{" "}
+                    per month if paid annually
+                  </p>
+                )}
                 <a
                   href={getPrismicLinkUrl(slice.primary.tier_2_cta_href)}
                   aria-describedby={"tier2"}
@@ -141,17 +151,21 @@ const PricingSection = ({ slice }: PricingSectionProps): JSX.Element => {
                   <span className="text-5xl font-bold tracking-tight text-gray-900">
                     {slice.primary.tier_3_price}
                   </span>
-                  <span className="text-sm font-semibold leading-6 text-gray-600">
-                    /month
-                  </span>
+                  {slice.primary.price_is_pr_month && (
+                    <span className="text-sm font-semibold leading-6 text-gray-600">
+                      /month
+                    </span>
+                  )}
                 </p>
-                <p className="mt-3 text-sm leading-6 text-gray-500">
-                  {
-                    annualPriceWithTwoMonthsFree(slice.primary.tier_3_price)
-                      .effectiveMonthlyPrice
-                  }{" "}
-                  per month if paid annually
-                </p>
+                {slice.primary.price_is_pr_month && (
+                  <p className="mt-3 text-sm leading-6 text-gray-500">
+                    {
+                      annualPriceWithTwoMonthsFree(slice.primary.tier_3_price)
+                        .effectiveMonthlyPrice
+                    }{" "}
+                    per month if paid annually
+                  </p>
+                )}
                 <a
                   href={getPrismicLinkUrl(slice.primary.tier_3_cta_href)}
                   aria-describedby={"tier3"}

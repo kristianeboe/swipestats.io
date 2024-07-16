@@ -156,6 +156,9 @@ export type AuthorDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithUID<Simplify<AuthorDocumentData>, "author", Lang>;
 
 type BlogPostDocumentDataSlicesSlice =
+  | CtaSectionSlice
+  | ImageSectionSlice
+  | VideoSlice
   | FaqsSlice
   | TableSlice
   | CalloutSlice
@@ -2456,6 +2459,17 @@ export interface PricingSectionSliceThreeTiersWithDividersPrimary {
   tier_3_features: prismic.GroupField<
     Simplify<PricingSectionSliceThreeTiersWithDividersPrimaryTier3FeaturesItem>
   >;
+
+  /**
+   * Price is pr month field in *PricingSection → Three tiers with dividers → Primary*
+   *
+   * - **Field Type**: Boolean
+   * - **Placeholder**: *None*
+   * - **Default Value**: false
+   * - **API ID Path**: pricing_section.threeTiersWithDividers.primary.price_is_pr_month
+   * - **Documentation**: https://prismic.io/docs/field#boolean
+   */
+  price_is_pr_month: prismic.BooleanField;
 }
 
 /**

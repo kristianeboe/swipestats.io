@@ -23,6 +23,7 @@ export const env = createEnv({
       process.env.VERCEL ? z.string() : z.string().url(),
     ),
     SLACK_WEBHOOK_INTERNAL: z.string().url(),
+    SLACK_WEBHOOK_INTERNAL_AI_MESSAGES: z.string().url(),
     PRISMIC_MASTER_TOKEN: z.string(),
 
     GOOGLE_DRIVE_SERVICE_ACCOUNT_PRIVATE_KEY: z.string(),
@@ -62,6 +63,8 @@ export const env = createEnv({
     NEXT_PUBLIC_IS_PROD: process.env.NEXT_PUBLIC_MANUAL_ENV === "production",
 
     SLACK_WEBHOOK_INTERNAL: process.env.SLACK_WEBHOOK_INTERNAL,
+    SLACK_WEBHOOK_INTERNAL_AI_MESSAGES:
+      process.env.SLACK_WEBHOOK_INTERNAL_AI_MESSAGES,
     PRISMIC_MASTER_TOKEN: process.env.PRISMIC_MASTER_TOKEN,
 
     GOOGLE_DRIVE_SERVICE_ACCOUNT_PRIVATE_KEY:
