@@ -1,6 +1,6 @@
 import { Button } from "@/app/_components/ui/button";
 
-export function AiDatingPhotosPurchasePage() {
+export default function AiDatingPhotosPurchasePage() {
   return (
     <div>
       <h1>AI Dating Photos Page</h1>
