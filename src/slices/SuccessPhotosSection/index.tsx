@@ -1,4 +1,5 @@
 import { Button } from "@/app/_components/ui/button";
+import LmnCheckoutButton from "@/app/ai-dating-photos/LmnCheckoutButton";
 import { getPrismicLinkUrl } from "@/lib/utils/prismic.utils";
 import { type Content } from "@prismicio/client";
 import { type SliceComponentProps } from "@prismicio/react";
@@ -41,6 +42,7 @@ const SuccessPhotosSection = ({
                   <span aria-hidden="true">&rarr;</span>
                 </Button>
               </Link>
+              <LmnCheckoutButton />
             </div>
           </div>
           <div className="flex flex-wrap items-start justify-end gap-6 sm:gap-8 lg:contents">
