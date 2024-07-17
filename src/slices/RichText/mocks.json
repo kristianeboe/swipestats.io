@@ -9,8 +9,18 @@
 					{
 						"type": "paragraph",
 						"content": {
-							"text": "Excepteur veniam tempor voluptate mollit et est adipisicing ipsum id. Aliquip laborum ad eu laboris duis nisi irure est exercitation cupidatat."
-						}
+							"text": "Excepteur veniam tempor voluptate mollit et est adipisicing ipsum \nasdf",
+							"spans": []
+						},
+						"direction": "ltr"
+					},
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "",
+							"spans": []
+						},
+						"direction": "ltr"
 					}
 				]
 			},

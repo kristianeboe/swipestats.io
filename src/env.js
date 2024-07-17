@@ -28,6 +28,8 @@ export const env = createEnv({
 
     GOOGLE_DRIVE_SERVICE_ACCOUNT_PRIVATE_KEY: z.string(),
     AI_PHOTOS_PROVIDER_EMAIL: z.string().email(),
+    LEMONSQUEEZY_API_KEY: z.string(),
+    LEMONSQUEEZY_WEBHOOK_SECRET: z.string(),
   },
 
   /**
@@ -70,6 +72,8 @@ export const env = createEnv({
     GOOGLE_DRIVE_SERVICE_ACCOUNT_PRIVATE_KEY:
       process.env.GOOGLE_DRIVE_SERVICE_ACCOUNT_PRIVATE_KEY,
     AI_PHOTOS_PROVIDER_EMAIL: process.env.AI_PHOTOS_PROVIDER_EMAIL,
+    LEMONSQUEEZY_API_KEY: process.env.LEMONSQUEEZY_API_KEY,
+    LEMONSQUEEZY_WEBHOOK_SECRET: process.env.LEMONSQUEEZY_WEBHOOK_SECRET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
