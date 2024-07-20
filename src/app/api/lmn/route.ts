@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     // const { productId, variantId } = body;
 
     // Create a checkout session
-    const checkoutSession = await createCheckout(97795, 453444);
+    const checkoutSession = await createCheckout(97795, 455719);
 
     // Return the checkout URL
     return NextResponse.json({

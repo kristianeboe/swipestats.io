@@ -36,6 +36,7 @@ export async function createFolder(
       fields: "id",
     });
     console.log(`Folder created successfully. ID: ${response.data.id}`);
+    
     return response.data.id!;
   } catch (error) {
     console.error("Error creating folder:", error);

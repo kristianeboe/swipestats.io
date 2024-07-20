@@ -90,6 +90,13 @@
 				"__TYPE__": "FieldContent",
 				"type": "Text",
 				"value": "Get the complete experience with 30 diverse, high-quality photos in various settings, ensuring you showcase your best self from every angle."
+			},
+			"cta_link": {
+				"__TYPE__": "LinkContent",
+				"value": {
+					"__TYPE__": "ExternalLink",
+					"url": "http://google.com"
+				}
 			}
 		},
 		"items": [

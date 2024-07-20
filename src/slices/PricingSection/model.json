@@ -72,6 +72,14 @@
             "label": "Price",
             "placeholder": ""
           }
+        },
+        "cta_link": {
+          "type": "Link",
+          "config": {
+            "label": "Cta Link",
+            "placeholder": "",
+            "select": null
+          }
         }
       },
       "items": {}

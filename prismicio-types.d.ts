@@ -2315,6 +2315,16 @@ export interface PricingSectionSliceSingleTierPrimary {
    * - **Documentation**: https://prismic.io/docs/field#number
    */
   price: prismic.NumberField;
+
+  /**
+   * Cta Link field in *PricingSection → Single Tier → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.singleTier.primary.cta_link
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  cta_link: prismic.LinkField;
 }
 
 /**

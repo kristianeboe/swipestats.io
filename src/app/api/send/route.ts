@@ -1,5 +1,6 @@
 import { EmailTemplate } from "@/app/_components/email-templates/BaseEmailTemplate";
 import GooglePlayPolicyUpdateEmail from "@/emails/google-play-policy-update";
+import WelcomeEmail from "@/emails/WelcomeEmail";
 import { env } from "@/env";
 import { Resend } from "resend";
 
@@ -11,7 +12,9 @@ export async function POST() {
       from: "Acme <onboarding@resend.dev>",
       to: ["delivered@resend.dev"],
       subject: "Hello world",
-      react: GooglePlayPolicyUpdateEmail(), // EmailTemplate({ firstName: "John" }),
+      react: WelcomeEmail({
+        username: "kristianeboe",
+      }), // EmailTemplate({ firstName: "John" }),
       text: "Backup text I assume",
       // headers: {
       //   'List-Unsubscribe': '<https://example.com/unsubscribe>',

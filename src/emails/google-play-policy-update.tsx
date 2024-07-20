@@ -54,7 +54,7 @@ export const GooglePlayPolicyUpdateEmail = () => (
             users.
           </Text>
           <Text style={paragraph}>
-            We've added clarifications to our{" "}
+            We&apos;ve added clarifications to our{" "}
             <Link href="https://notifications.google.com" style={link}>
               Target API Level policy
             </Link>
