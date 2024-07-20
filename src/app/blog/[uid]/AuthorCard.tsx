@@ -3,7 +3,6 @@ import { type Author } from "@/lib/utils/prismic.utils";
 import Link from "next/link";
 
 export function AuthorCard(props: { author: Author }) {
-  console.log("props.author", props.author);
   return (
     <Card.Container className="mx-auto w-full max-w-md">
       <Card.Header className="bg-muted/20 p-6">

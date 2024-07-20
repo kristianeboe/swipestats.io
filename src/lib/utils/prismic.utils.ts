@@ -44,7 +44,7 @@ export async function getBlogPostAndAuthor(uid: string) {
     graphQuery: blogPostGraphQuery,
   });
   // .catch(() => notFound());
-  console.log("page", page);
+  // console.log("page", page);
   const author = getAuthorFromBlog(page.data);
 
   return {
