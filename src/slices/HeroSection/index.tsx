@@ -71,7 +71,7 @@ const HeroSection = ({ slice }: HeroSectionProps): JSX.Element => {
                     {slice.primary.primaryctabuttontext}
                   </a>
                   <a
-                    href={getPrismicLinkUrl(slice.primary.ctabuttonhref)}
+                    href={getPrismicLinkUrl(slice.primary.ctalinkHref)}
                     className="text-sm font-semibold leading-6 text-gray-900"
                   >
                     {slice.primary.ctalinktext ?? "Learn more"}{" "}
