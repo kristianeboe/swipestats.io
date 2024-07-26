@@ -6,7 +6,8 @@ import {
   type AuthorDocumentData,
 } from "prismicio-types";
 
-export function getPrismicLinkUrl(linkField: LinkField): string {
+export function getPrismicLinkUrl(linkField?: LinkField): string {
+  if (!linkField) return "#"; // to not crash the site if the link is not defined on prismic
   if (linkField.link_type === "Web") {
     // @ts-expect-error - We know this is a FilledLinkToWebField
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return

@@ -1439,6 +1439,48 @@ export type CtaSectionSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Primary content in *Embed → Default → Primary*
+ */
+export interface EmbedSliceDefaultPrimary {
+  /**
+   * Embed field in *Embed → Default → Primary*
+   *
+   * - **Field Type**: Embed
+   * - **Placeholder**: *None*
+   * - **API ID Path**: embed.default.primary.embed
+   * - **Documentation**: https://prismic.io/docs/field#embed
+   */
+  embed: prismic.EmbedField;
+}
+
+/**
+ * Default variation for Embed Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type EmbedSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<EmbedSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *Embed*
+ */
+type EmbedSliceVariation = EmbedSliceDefault;
+
+/**
+ * Embed Shared Slice
+ *
+ * - **API ID**: `embed`
+ * - **Description**: Embed
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type EmbedSlice = prismic.SharedSlice<"embed", EmbedSliceVariation>;
+
+/**
  * Item in *Faq → Default → Primary → Questions And Answers*
  */
 export interface FaqsSliceDefaultPrimaryQuestionsAndAnswersItem {
@@ -3358,6 +3400,10 @@ declare module "@prismicio/client" {
       CtaSectionSliceVariation,
       CtaSectionSliceDefault,
       CtaSectionSliceSimpleCentered,
+      EmbedSlice,
+      EmbedSliceDefaultPrimary,
+      EmbedSliceVariation,
+      EmbedSliceDefault,
       FaqsSlice,
       FaqsSliceDefaultPrimaryQuestionsAndAnswersItem,
       FaqsSliceDefaultPrimary,

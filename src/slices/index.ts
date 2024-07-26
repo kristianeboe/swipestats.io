@@ -15,6 +15,7 @@ export const components = {
   ),
   cta_info: dynamic(() => import("./Cta")),
   cta_section: dynamic(() => import("./CtaSection")),
+  embed: dynamic(() => import("./Embed")),
   faqs: dynamic(() => import("./Faq")),
   features_section: dynamic(() => import("./FeaturesSection")),
   h1_with_sub_heading: dynamic(() => import("./HeadingWithSubHeading")),

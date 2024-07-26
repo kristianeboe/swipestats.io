@@ -1,0 +1,26 @@
+{
+  "id": "embed",
+  "type": "SharedSlice",
+  "name": "Embed",
+  "description": "Embed",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "embed": {
+          "type": "Embed",
+          "config": {
+            "label": "Embed",
+            "placeholder": ""
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}
