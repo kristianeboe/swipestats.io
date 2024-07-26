@@ -66,7 +66,7 @@ const PricingSection = ({ slice }: PricingSectionProps): JSX.Element => {
                   aria-describedby={"tier1"}
                   className="mt-10 block rounded-md bg-rose-600 px-3 py-2 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
                 >
-                  Buy plan
+                  Buy dataset
                 </a>
                 <p className="mt-10 text-sm font-semibold leading-6 text-gray-900">
                   Everything necessary to get started.
@@ -243,7 +243,7 @@ const PricingSection = ({ slice }: PricingSectionProps): JSX.Element => {
               <div className="h-full rounded-2xl bg-gray-50 py-10 text-center ring-1 ring-inset ring-gray-900/5 lg:flex lg:flex-col lg:justify-center lg:py-16">
                 <div className="mx-auto max-w-xs px-8">
                   <p className="text-base font-semibold text-gray-600">
-                    Pay once, own it forever
+                    {slice.primary.cta_title || "Pay once, own it forever"}
                   </p>
                   <p className="mt-6 flex items-baseline justify-center gap-x-2">
                     <span className="text-5xl font-bold tracking-tight text-gray-900">
@@ -257,11 +257,11 @@ const PricingSection = ({ slice }: PricingSectionProps): JSX.Element => {
                     href={getPrismicLinkUrl(slice.primary.cta_link)}
                     className="mt-10 block w-full rounded-md bg-rose-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
                   >
-                    Get access
+                    {slice.primary.cta_label || "Get access"}
                   </a>
                   <p className="mt-6 text-xs leading-5 text-gray-600">
-                    Invoices and receipts available for easy company
-                    reimbursement
+                    {slice.primary.cta_description ||
+                      "Invoices and receipts available for easy company reimbursement"}
                   </p>
                 </div>
               </div>

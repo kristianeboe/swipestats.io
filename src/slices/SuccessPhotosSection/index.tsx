@@ -38,11 +38,10 @@ const SuccessPhotosSection = ({
             <div className="mt-10 flex">
               <Link href={getPrismicLinkUrl(slice.primary.cta_href)}>
                 <Button>
-                  {slice.primary.cta_label}{" "}
-                  <span aria-hidden="true">&rarr;</span>
+                  {slice.primary.cta_label}
+                  {/* <span aria-hidden="true">&rarr;</span> */}
                 </Button>
               </Link>
-              <LmnCheckoutButton />
             </div>
           </div>
           <div className="flex flex-wrap items-start justify-end gap-6 sm:gap-8 lg:contents">

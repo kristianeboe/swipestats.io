@@ -20,6 +20,13 @@
             "placeholder_true": "true",
             "placeholder_false": "false"
           }
+        },
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": ""
+          }
         }
       },
       "items": {}

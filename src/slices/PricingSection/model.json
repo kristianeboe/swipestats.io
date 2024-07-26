@@ -66,6 +66,13 @@
             }
           }
         },
+        "cta_title": {
+          "type": "Text",
+          "config": {
+            "label": "Cta Title",
+            "placeholder": ""
+          }
+        },
         "price": {
           "type": "Number",
           "config": {
@@ -79,6 +86,20 @@
             "label": "Cta Link",
             "placeholder": "",
             "select": null
+          }
+        },
+        "cta_label": {
+          "type": "Text",
+          "config": {
+            "label": "Cta Label",
+            "placeholder": ""
+          }
+        },
+        "cta_description": {
+          "type": "Text",
+          "config": {
+            "label": "Cta Description",
+            "placeholder": ""
           }
         }
       },

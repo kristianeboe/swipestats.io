@@ -18,6 +18,8 @@ import { createMessagesAndMatches } from "../services/profile.messages.service";
 import { analyticsTrackServer } from "@/lib/analytics/analyticsTrackServer";
 import { expandAndAugmentProfileWithMissingDays } from "@/lib/profile.utils";
 import { sendInternalSlackMessage } from "../services/internal-slack.service";
+import { type FullTinderProfile } from "@/lib/interfaces/utilInterfaces";
+import { getRandomTinderProfileIds } from "../services/researchPurchase.service";
 
 const log = createSubLogger("profile.router");
 
@@ -78,18 +80,27 @@ export const profileRouter = createTRPCRouter({
           },
         },
         include: {
-          usage: {
-            where: {
-              dateStamp: {
-                gt: myProfile.firstDayOnApp,
-                lt: myProfile.lastDayOnApp,
-              },
-            },
-          },
+          profileMeta: true,
+          usage: true,
         },
       });
 
-      return tinderProfiles;
+      return tinderProfiles as FullTinderProfile[];
+    }),
+
+  compareRandom: publicProcedure
+    .input(
+      z.object({
+        excludeIds: z.string().array(),
+      }),
+    )
+    .mutation(async ({ input }) => {
+      const randomTinderProfile = await getRandomTinderProfileIds(
+        1,
+        input.excludeIds,
+      );
+
+      return randomTinderProfile[0]!;
     }),
 
   create: publicProcedure

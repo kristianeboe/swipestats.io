@@ -84,3 +84,5 @@ export const Card = {
   Content: CardContent,
   Footer: CardFooter,
 };
+
+export { CardHeader, CardContent };

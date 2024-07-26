@@ -6,6 +6,11 @@
 			"dark_background": {
 				"__TYPE__": "BooleanContent",
 				"value": true
+			},
+			"heading": {
+				"__TYPE__": "FieldContent",
+				"value": "luck",
+				"type": "Text"
 			}
 		},
 		"items": []

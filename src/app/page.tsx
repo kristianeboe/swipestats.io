@@ -19,6 +19,7 @@ import NewsletterCTA from "./NewsletterCTA";
 import { StarIcon } from "lucide-react";
 import { Blog } from "./blog/BlogSection";
 import { About } from "./AboutSection";
+import { Button } from "./_components/ui/button";
 
 const features = [
   {
@@ -46,23 +47,21 @@ const features = [
   },
 ];
 
-
-
 const tiers = [
   {
     name: "Small Sample",
     id: "small-sample",
-    href: "mailto:kristian.e.boe@gmail.com?subject=Swipestats%20Data%20Request%3A%20Sample&body=This%20tier%20is%20currently%20free%2C%20just%20write%20me%20what%20you%20are%20intending%20to%20use%20the%20data%20for%20and%20I'll%20reach%20out%20with%20the%20dataset.",
+    href: "https://swipestats.lemonsqueezy.com/buy/2c92db51-3b31-4571-ae37-ed7e8e98c937",
     price: "$15",
     description: "Get started",
-    features: ["3 profiles", "Perfect to test and learn about the data model"],
+    features: ["10 profiles", "Perfect to test and learn about the data model"],
     mostPopular: false,
   },
   {
     name: "Full package",
     id: "full-package",
-    href: "https://buy.stripe.com/fZe9BWdue9U59Nu4gi",
-    price: "$49",
+    href: "https://swipestats.lemonsqueezy.com/buy/2c92db51-3b31-4571-ae37-ed7e8e98c937", //  "https://buy.stripe.com/fZe9BWdue9U59Nu4gi",
+    price: "$50",
     description: "Scale your analysis and get access to future datasets",
     features: [
       "1,000 profiles",
@@ -77,7 +76,7 @@ const tiers = [
     id: "tier-enterprise",
     href: "mailto:kristian.e.boe@gmail.com?subject=University%20%2F%20Enterprise%20Plan%20Inquiry&body=Hello%2C%0D%0A%0D%0AI%27m%20interested%20in%20the%20University%20%2F%20Enterprise%20plan%20for%20%245000.%20I%20would%20like%20to%20know%20more%20about%20the%20following%3A%0D%0A%0D%0A-%20License%20to%20distribute%20datasets%20to%20students%0D%0A-%204k%2B%20profiles%0D%0A-%20Direct%20support%0D%0A%0D%0APlease%20provide%20me%20with%20additional%20information%20and%20the%20next%20steps%20to%20get%20started.%0D%0A%0D%0AThank%20you%2C%0D%0A%5BYour%20Name%5D",
 
-    price: "$5000",
+    price: "$1500",
     description: "Dedicated support and infrastructure for your company.",
     features: [
       "Licence to distribute datasets to students",
@@ -344,10 +343,34 @@ export default function HomePage() {
                     "mt-8 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600",
                   )}
                 >
-                  Buy plan
+                  Buy dataset
                 </a>
               </div>
             ))}
+          </div>
+          <div className="mt-10 flex flex-col items-start gap-x-8 gap-y-6 rounded-3xl p-8 ring-1 ring-gray-900/10 sm:gap-y-10 sm:p-10 lg:col-span-2 lg:flex-row lg:items-center">
+            <div className="lg:min-w-0 lg:flex-1">
+              <h3 className="text-lg font-semibold leading-8 tracking-tight text-rose-600">
+                Curious about the data model?
+              </h3>
+              <p className="mt-1 text-base leading-7 text-gray-600">
+                Download one demo profile for free, or explore the documentation
+              </p>
+            </div>
+            <Link
+              prefetch={false}
+              href={"/api/purchase/research/demo"}
+              target="_blank"
+            >
+              <Button variant={"ghost"}>Donwnload demo profile</Button>
+            </Link>
+            <a
+              href="https://github.com/kristianeboe/swipestats.io"
+              target="_blank"
+              className="rounded-md px-3.5 py-2 text-sm font-semibold leading-6 text-rose-600 ring-1 ring-inset ring-rose-200 hover:ring-rose-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
+            >
+              Explore the code <span aria-hidden="true">&rarr;</span>
+            </a>
           </div>
         </div>
       </div>

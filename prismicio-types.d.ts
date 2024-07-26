@@ -2145,6 +2145,16 @@ export interface LogoCloudSliceDefaultPrimary {
    * - **Documentation**: https://prismic.io/docs/field#boolean
    */
   dark_background: prismic.BooleanField;
+
+  /**
+   * Heading field in *LogoCloud → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: logo_cloud.default.primary.heading
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  heading: prismic.KeyTextField;
 }
 
 /**
@@ -2307,6 +2317,16 @@ export interface PricingSectionSliceSingleTierPrimary {
   >;
 
   /**
+   * Cta Title field in *PricingSection → Single Tier → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.singleTier.primary.cta_title
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  cta_title: prismic.KeyTextField;
+
+  /**
    * Price field in *PricingSection → Single Tier → Primary*
    *
    * - **Field Type**: Number
@@ -2325,6 +2345,26 @@ export interface PricingSectionSliceSingleTierPrimary {
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
   cta_link: prismic.LinkField;
+
+  /**
+   * Cta Label field in *PricingSection → Single Tier → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.singleTier.primary.cta_label
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  cta_label: prismic.KeyTextField;
+
+  /**
+   * Cta Description field in *PricingSection → Single Tier → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: pricing_section.singleTier.primary.cta_description
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  cta_description: prismic.KeyTextField;
 }
 
 /**

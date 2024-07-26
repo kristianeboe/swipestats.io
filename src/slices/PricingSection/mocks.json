@@ -97,6 +97,21 @@
 					"__TYPE__": "ExternalLink",
 					"url": "http://google.com"
 				}
+			},
+			"cta_label": {
+				"__TYPE__": "FieldContent",
+				"value": "threw",
+				"type": "Text"
+			},
+			"cta_description": {
+				"__TYPE__": "FieldContent",
+				"value": "detail",
+				"type": "Text"
+			},
+			"cta_title": {
+				"__TYPE__": "FieldContent",
+				"value": "still",
+				"type": "Text"
 			}
 		},
 		"items": [
