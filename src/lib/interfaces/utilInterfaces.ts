@@ -1,4 +1,8 @@
-import { type TinderUsage, type TinderProfile } from "@prisma/client";
+import {
+  type TinderUsage,
+  type TinderProfile,
+  type ProfileMeta,
+} from "@prisma/client";
 
 export type DateString = string; // YYYY-MM-DD
 
@@ -8,6 +12,7 @@ export type DateValueMap = Record<DateKeyString, number>;
 
 export type FullTinderProfile = TinderProfile & {
   usage: TinderUsage[];
+  profileMeta?: ProfileMeta;
 };
 export type ChartDataKey =
   | "appOpens"
@@ -16,8 +21,8 @@ export type ChartDataKey =
   | "messagesReceived"
   | "swipeLikes"
   | "swipePasses"
-  | "swipeSuperLikes"
-  | "matchRate";
+  | "swipeSuperLikes";
+// | "matchRate";
 
 export type ChartDataPoint = {
   xDataKey: string;

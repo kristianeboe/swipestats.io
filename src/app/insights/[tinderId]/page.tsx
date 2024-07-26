@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { TooltipWrapper } from "@/app/_components/ui/tooltip";
 import React from "react";
+import { ProfileGrid } from "./ProfileGrid";
 
 export default async function InsightsPage({
   params,
@@ -39,10 +40,17 @@ export default async function InsightsPage({
 
   return (
     <main className="container mx-auto px-6 pb-6 pt-12 md:pt-24">
-      <InsightsProvider myTinderProfile={swipestatsProfile}>
+      <InsightsProvider
+        myTinderProfile={{
+          ...swipestatsProfile,
+          profileMeta: swipestatsProfile.profileMeta!,
+        }}
+      >
         <h1 className="text-center text-6xl font-black">Insights</h1>
 
         <ComparisonForm tinderId={params.tinderId} />
+        <ProfileGrid />
+
         <div className="grid grid-cols-1 gap-10">
           {/* <GraphCardUsage chartDataKey="matchRate" title="Match Rate" /> */}
           <GraphCardUsage chartDataKey="matches" title="Matches" />

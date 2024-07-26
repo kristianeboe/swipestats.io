@@ -125,6 +125,11 @@ export function aggregateDataPoints(
   };
 }
 
+const chartKeyTo: Record<ChartDataKey, string> = {
+  appOpens: "averageAppOpensPerDay",
+  swipeLikes: "averageSwipeLikesPerDay",
+};
+
 export function GraphCardUsage(props: {
   chartDataKey: ChartDataKey;
   title: string;
@@ -224,6 +229,18 @@ export function GraphCardUsage(props: {
             {badges[0]?.peak?.value} peak on {badges[0]?.peak?.date}{" "}
           </Badge>
         </div>
+        {profiles.map((p) => (
+          <div key={p.tinderId}>
+            <Badge>{p.profileMeta?.[`${props.chartDataKey}Total`]} total</Badge>
+            <Badge variant={"secondary"}>
+              {p.profileMeta?.[`average${props.chartDataKey}PerDay`]} average pr{" "}
+              {active}
+            </Badge>
+            <Badge variant={"secondary"}>
+              {p.profileMeta?.averageAppOpensPerDay} average pr {active}
+            </Badge>
+          </div>
+        ))}
       </Card.Header>
       {/* <CardContent>
           <Chart.Line />

@@ -6,6 +6,7 @@ import { api } from "@/trpc/react";
 // import { type TinderUsage } from "@prisma/client";
 
 import { useSearchParams } from "next/navigation";
+import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
 
@@ -22,15 +23,17 @@ function InsightsProvider(props: {
   children: ReactNode;
   myTinderProfile: FullTinderProfile;
 }) {
-  const searchParams = useSearchParams();
-  const comparisonIds = searchParams.get("comparisonIds");
+  const [comparisonIds] = useQueryState(
+    "comparisonIds",
+    parseAsArrayOf(parseAsString, ",").withDefault([]),
+  );
 
   const [loading, setLoading] = useState(true);
 
   const comparisonData = api.profile.compare.useQuery(
     {
       tinderId: props.myTinderProfile.tinderId,
-      comparisonIds: comparisonIds ? comparisonIds.split(",") : [],
+      comparisonIds,
     },
     {
       enabled: !!comparisonIds?.length,

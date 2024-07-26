@@ -41,6 +41,8 @@ model User {
     events                  Event[]
 
     customData CustomData?
+
+    purchases Purchase[]
 }
 
 // Necessary for Next auth
@@ -377,6 +379,10 @@ model TinderProfile {
     profileMetaByYear  ProfileMeta[] @relation("profileMetaByYear")
 
     messages Message[]
+
+
+    originalAnonymizedFile OriginalAnonymizedFile? @relation(fields: [originalAnonymizedFileId], references: [id])
+    originalAnonymizedFileId String? @unique
 }
 
 model HingeProfile {
@@ -667,6 +673,9 @@ model OriginalAnonymizedFile {
     user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
     createdAt         DateTime          @default(now())
     updatedAt         DateTime          @default(now())
+
+
+    tinderProfile   TinderProfile? 
 }
 
 model Waitlist {
@@ -737,4 +746,53 @@ model Sequence {
 
     newsletterId String
     newsletter   Newsletter @relation(fields: [newsletterId], references: [id])
+}
+
+model Purchase {
+  id          String          @id @default(cuid()   )
+  userId      String
+  user        User         @relation(fields: [userId], references: [id])
+  type        PurchaseType
+  amount      Int?
+  token       String?
+  createdAt   DateTime     @default(now())
+  research    ResearchPurchase?
+  aiPhotos    AIDatingPhotoPurchase?
+  comparison  ComparisonPurchase?
+}
+
+model ResearchPurchase {
+  id           Int        @id @default(autoincrement())
+  purchaseId   String        @unique
+  purchase     Purchase   @relation(fields: [purchaseId], references: [id])
+  packageType  PackageType
+}
+
+model AIDatingPhotoPurchase {
+  id           Int        @id @default(autoincrement())
+  purchaseId   String        @unique
+  purchase     Purchase   @relation(fields: [purchaseId], references: [id])
+  photoCount   Int
+  token        String
+}
+
+model ComparisonPurchase {
+  id           Int        @id @default(autoincrement())
+  purchaseId   String        @unique
+  purchase     Purchase   @relation(fields: [purchaseId], references: [id])
+  comparisonType String
+  price        Float
+  subscription Boolean    @default(false)
+}
+
+enum PurchaseType {
+  RESEARCH
+  AI_PHOTOS
+  COMPARISON
+}
+
+enum PackageType {
+  SMALL
+  PRO
+  CUSTOM
 }
