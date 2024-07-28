@@ -17,7 +17,7 @@ const AiPhotosPurchaseEmail = (params: {
 
       <Section className="mt-6">
         <Text className="text-gray-700">
-          We're excited to confirm your purchase of AI Dating Photos. Your
+          We&apos;re excited to confirm your purchase of AI Dating Photos. Your
           journey to better dating profile pictures starts now!
         </Text>
       </Section>
@@ -51,14 +51,14 @@ const AiPhotosPurchaseEmail = (params: {
 
       <Section className="mt-8">
         <Text className="text-gray-700">
-          If you have any questions or need assistance, don't hesitate to reply
-          to this email or contact our support team.
+          If you have any questions or need assistance, don&apos;t hesitate to
+          reply to this email or contact our support team.
         </Text>
       </Section>
 
       <Section className="mt-8 text-center">
         <Text className="text-sm text-gray-600">
-          We can't wait to see your enhanced dating profile pictures!
+          We can&apos;t wait to see your enhanced dating profile pictures!
         </Text>
       </Section>
     </BaseEmailLayout>

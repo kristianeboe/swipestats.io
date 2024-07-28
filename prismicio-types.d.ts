@@ -403,6 +403,11 @@ export type BlogwithphotosDocument<Lang extends string = string> =
   >;
 
 type ProductPageDocumentDataSlicesSlice =
+  | TripplePhotoSlice
+  | BulletsSlice
+  | TestimonialSlice
+  | FaqsSlice
+  | EmbedSlice
   | ImageSectionSlice
   | SuccessPhotosSectionSlice
   | ValuesSectionSlice
@@ -1439,6 +1444,48 @@ export type CtaSectionSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Primary content in *Embed → Default → Primary*
+ */
+export interface EmbedSliceDefaultPrimary {
+  /**
+   * Embed field in *Embed → Default → Primary*
+   *
+   * - **Field Type**: Embed
+   * - **Placeholder**: *None*
+   * - **API ID Path**: embed.default.primary.embed
+   * - **Documentation**: https://prismic.io/docs/field#embed
+   */
+  embed: prismic.EmbedField;
+}
+
+/**
+ * Default variation for Embed Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type EmbedSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<EmbedSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *Embed*
+ */
+type EmbedSliceVariation = EmbedSliceDefault;
+
+/**
+ * Embed Shared Slice
+ *
+ * - **API ID**: `embed`
+ * - **Description**: Embed
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type EmbedSlice = prismic.SharedSlice<"embed", EmbedSliceVariation>;
+
+/**
  * Item in *Faq → Default → Primary → Questions And Answers*
  */
 export interface FaqsSliceDefaultPrimaryQuestionsAndAnswersItem {
@@ -2068,11 +2115,131 @@ export type HeroSectionSliceWithRichText = prismic.SharedSliceVariation<
 >;
 
 /**
+ * Primary content in *HeroSection → With angled image on right → Primary*
+ */
+export interface HeroSectionSliceWithAngledImageOnRightPrimary {
+  /**
+   * Title Eyebrow field in *HeroSection → With angled image on right → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withAngledImageOnRight.primary.title_eyebrow
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  title_eyebrow: prismic.KeyTextField;
+
+  /**
+   * Title Eyebrow Cta field in *HeroSection → With angled image on right → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withAngledImageOnRight.primary.title_eyebrow_cta
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  title_eyebrow_cta: prismic.KeyTextField;
+
+  /**
+   * Title Eyebrow Cta Link field in *HeroSection → With angled image on right → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withAngledImageOnRight.primary.title_eyebrow_cta_link
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  title_eyebrow_cta_link: prismic.LinkField;
+
+  /**
+   * Title field in *HeroSection → With angled image on right → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withAngledImageOnRight.primary.title
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * Rich Description field in *HeroSection → With angled image on right → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withAngledImageOnRight.primary.rich_description
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  rich_description: prismic.RichTextField;
+
+  /**
+   * PrimaryCtaButtonText field in *HeroSection → With angled image on right → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withAngledImageOnRight.primary.primaryctabuttontext
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  primaryctabuttontext: prismic.KeyTextField;
+
+  /**
+   * PrimaryCtaButtonHref field in *HeroSection → With angled image on right → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withAngledImageOnRight.primary.primaryctabuttonhref
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  primaryctabuttonhref: prismic.LinkField;
+
+  /**
+   * CtaLinkText field in *HeroSection → With angled image on right → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withAngledImageOnRight.primary.ctalinktext
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  ctalinktext: prismic.KeyTextField;
+
+  /**
+   * CtaLinkHref field in *HeroSection → With angled image on right → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withAngledImageOnRight.primary.ctalinkHref
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  ctalinkHref: prismic.LinkField;
+
+  /**
+   * Image field in *HeroSection → With angled image on right → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.withAngledImageOnRight.primary.image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+}
+
+/**
+ * With angled image on right variation for HeroSection Slice
+ *
+ * - **API ID**: `withAngledImageOnRight`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type HeroSectionSliceWithAngledImageOnRight =
+  prismic.SharedSliceVariation<
+    "withAngledImageOnRight",
+    Simplify<HeroSectionSliceWithAngledImageOnRightPrimary>,
+    never
+  >;
+
+/**
  * Slice variation for *HeroSection*
  */
 type HeroSectionSliceVariation =
   | HeroSectionSliceDefault
-  | HeroSectionSliceWithRichText;
+  | HeroSectionSliceWithRichText
+  | HeroSectionSliceWithAngledImageOnRight;
 
 /**
  * HeroSection Shared Slice
@@ -3358,6 +3525,10 @@ declare module "@prismicio/client" {
       CtaSectionSliceVariation,
       CtaSectionSliceDefault,
       CtaSectionSliceSimpleCentered,
+      EmbedSlice,
+      EmbedSliceDefaultPrimary,
+      EmbedSliceVariation,
+      EmbedSliceDefault,
       FaqsSlice,
       FaqsSliceDefaultPrimaryQuestionsAndAnswersItem,
       FaqsSliceDefaultPrimary,
@@ -3379,9 +3550,11 @@ declare module "@prismicio/client" {
       HeroSectionSlice,
       HeroSectionSliceDefaultPrimary,
       HeroSectionSliceWithRichTextPrimary,
+      HeroSectionSliceWithAngledImageOnRightPrimary,
       HeroSectionSliceVariation,
       HeroSectionSliceDefault,
       HeroSectionSliceWithRichText,
+      HeroSectionSliceWithAngledImageOnRight,
       ImageSectionSlice,
       ImageSectionSliceDefaultPrimary,
       ImageSectionSliceVariation,

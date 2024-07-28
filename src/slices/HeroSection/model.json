@@ -204,6 +204,94 @@
         }
       },
       "items": {}
+    },
+    {
+      "id": "withAngledImageOnRight",
+      "name": "With angled image on right",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "title_eyebrow": {
+          "type": "Text",
+          "config": {
+            "label": "Title Eyebrow",
+            "placeholder": ""
+          }
+        },
+        "title_eyebrow_cta": {
+          "type": "Text",
+          "config": {
+            "label": "Title Eyebrow Cta",
+            "placeholder": ""
+          }
+        },
+        "title_eyebrow_cta_link": {
+          "type": "Link",
+          "config": {
+            "label": "Title Eyebrow Cta Link",
+            "placeholder": "",
+            "select": null
+          }
+        },
+        "title": {
+          "type": "Text",
+          "config": {
+            "label": "Title",
+            "placeholder": ""
+          }
+        },
+        "rich_description": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Rich Description",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "primaryctabuttontext": {
+          "type": "Text",
+          "config": {
+            "label": "PrimaryCtaButtonText",
+            "placeholder": ""
+          }
+        },
+        "primaryctabuttonhref": {
+          "type": "Link",
+          "config": {
+            "label": "PrimaryCtaButtonHref",
+            "placeholder": "",
+            "select": null
+          }
+        },
+        "ctalinktext": {
+          "type": "Text",
+          "config": {
+            "label": "CtaLinkText",
+            "placeholder": ""
+          }
+        },
+        "ctalinkHref": {
+          "type": "Link",
+          "config": {
+            "label": "CtaLinkHref",
+            "placeholder": "",
+            "allowTargetBlank": false,
+            "select": null
+          }
+        },
+        "image": {
+          "type": "Image",
+          "config": {
+            "label": "Image",
+            "constraint": {},
+            "thumbnails": []
+          }
+        }
+      },
+      "items": {}
     }
   ]
 }

@@ -17,6 +17,21 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "tripple_photo": {
+              "type": "SharedSlice"
+            },
+            "bullets": {
+              "type": "SharedSlice"
+            },
+            "testimonial": {
+              "type": "SharedSlice"
+            },
+            "faqs": {
+              "type": "SharedSlice"
+            },
+            "embed": {
+              "type": "SharedSlice"
+            },
             "image_section": {
               "type": "SharedSlice"
             },
