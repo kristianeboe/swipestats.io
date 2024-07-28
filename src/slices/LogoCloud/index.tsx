@@ -16,7 +16,7 @@ const LogoCloud = ({ slice }: LogoCloudProps): JSX.Element => {
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
       className={cn(
-        "bg-white py-24 sm:py-32",
+        "bg-white py-24",
         slice.primary.dark_background && "bg-slate-900",
       )}
     >

@@ -16,7 +16,7 @@ const RichText = ({ slice }: RichTextProps): JSX.Element => {
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
       className={cn(
-        "prose mt-10 lg:prose-xl",
+        "prose mt-10 max-w-4xl lg:prose-xl",
         slice.primary.centered && "mx-auto",
       )}
     >

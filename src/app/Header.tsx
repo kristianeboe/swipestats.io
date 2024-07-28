@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { MobileNav } from "./MobileNav";
 import { Button } from "@/app/_components/ui/button";
 import { SwipestatsLogo } from "@/svg/logos/SwipestatsLogo";
 
 const navigation: { name: string; href: string }[] = [
   // { name: "Product", href: "#" },
+  { name: "AI Dating photos", href: "/ai-dating-photos" },
   { name: "How it works", href: "/#how-it-works" },
   { name: "Reserach and blog datasets", href: "/#pricing" },
   { name: "In the news", href: "/#blog" },

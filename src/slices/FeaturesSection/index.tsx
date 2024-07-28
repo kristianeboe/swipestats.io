@@ -39,7 +39,7 @@ const FeaturesSection = ({ slice }: FeaturesSectionProps): JSX.Element => {
       <section
         data-slice-type={slice.slice_type}
         data-slice-variation={slice.variation}
-        className="py-24 sm:py-32"
+        className="py-24"
       >
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="relative isolate overflow-hidden bg-gray-900 px-6 py-20 sm:rounded-3xl sm:px-10 sm:py-24 lg:py-24 xl:px-24">
@@ -102,7 +102,7 @@ const FeaturesSection = ({ slice }: FeaturesSectionProps): JSX.Element => {
     <section
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
-      className="py-24 sm:py-32"
+      className="py-24"
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:text-center">

@@ -17,7 +17,7 @@ export type PricingSectionProps =
 const PricingSection = ({ slice }: PricingSectionProps): JSX.Element => {
   if (slice.variation === "threeTiersWithDividers") {
     return (
-      <div className="bg-white py-24 sm:py-32">
+      <div className="bg-white py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-4xl sm:text-center">
             <h2 className="text-base font-semibold leading-7 text-rose-600">
@@ -200,7 +200,7 @@ const PricingSection = ({ slice }: PricingSectionProps): JSX.Element => {
 
   if (slice.variation === "singleTier")
     return (
-      <div className="bg-white py-24 sm:py-32">
+      <div className="bg-white py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl sm:text-center">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
