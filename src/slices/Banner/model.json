@@ -1,0 +1,88 @@
+{
+  "id": "banner",
+  "type": "SharedSlice",
+  "name": "Banner",
+  "description": "Banner",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "bold_part": {
+          "type": "Text",
+          "config": {
+            "label": "Bold Part",
+            "placeholder": ""
+          }
+        },
+        "plain_part": {
+          "type": "Text",
+          "config": {
+            "label": "Plain part",
+            "placeholder": ""
+          }
+        },
+        "cta_label": {
+          "type": "Text",
+          "config": {
+            "label": "Cta Label",
+            "placeholder": ""
+          }
+        },
+        "cta_link": {
+          "type": "Link",
+          "config": {
+            "label": "Cta Link",
+            "placeholder": "",
+            "select": null
+          }
+        }
+      },
+      "items": {}
+    },
+    {
+      "id": "onBrand",
+      "name": "On brand",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "bold_part": {
+          "type": "Text",
+          "config": {
+            "label": "Bold Part",
+            "placeholder": ""
+          }
+        },
+        "plain_part": {
+          "type": "Text",
+          "config": {
+            "label": "Plain part",
+            "placeholder": ""
+          }
+        },
+        "cta_label": {
+          "type": "Text",
+          "config": {
+            "label": "Cta Label",
+            "placeholder": ""
+          }
+        },
+        "cta_link": {
+          "type": "Link",
+          "config": {
+            "label": "Cta Link",
+            "placeholder": "",
+            "select": null
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}
