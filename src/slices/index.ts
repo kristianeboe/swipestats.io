@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 
 export const components = {
   author_box: dynamic(() => import("./AuthorBox")),
+  banner: dynamic(() => import("./Banner")),
   bullets: dynamic(() => import("./Bullets")),
   callout: dynamic(() => import("./Callout")),
   content_centered: dynamic(() => import("./ContentCentered")),

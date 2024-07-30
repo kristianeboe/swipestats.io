@@ -1,0 +1,33 @@
+{
+  "format": "custom",
+  "id": "price_group",
+  "label": "Price Group",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Main": {
+      "uid": {
+        "config": {
+          "label": "UID"
+        },
+        "type": "UID"
+      },
+      "features": {
+        "type": "Group",
+        "config": {
+          "label": "Features",
+          "repeat": true,
+          "fields": {
+            "feature": {
+              "type": "Text",
+              "config": {
+                "label": "Feature",
+                "placeholder": ""
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

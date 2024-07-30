@@ -402,7 +402,55 @@ export type BlogwithphotosDocument<Lang extends string = string> =
     Lang
   >;
 
+/**
+ * Item in *Price Group → Features*
+ */
+export interface PriceGroupDocumentDataFeaturesItem {
+  /**
+   * Feature field in *Price Group → Features*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: price_group.features[].feature
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  feature: prismic.KeyTextField;
+}
+
+/**
+ * Content for Price Group documents
+ */
+interface PriceGroupDocumentData {
+  /**
+   * Features field in *Price Group*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: price_group.features[]
+   * - **Tab**: Main
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  features: prismic.GroupField<Simplify<PriceGroupDocumentDataFeaturesItem>>;
+}
+
+/**
+ * Price Group document from Prismic
+ *
+ * - **API ID**: `price_group`
+ * - **Repeatable**: `true`
+ * - **Documentation**: https://prismic.io/docs/custom-types
+ *
+ * @typeParam Lang - Language API ID of the document.
+ */
+export type PriceGroupDocument<Lang extends string = string> =
+  prismic.PrismicDocumentWithUID<
+    Simplify<PriceGroupDocumentData>,
+    "price_group",
+    Lang
+  >;
+
 type ProductPageDocumentDataSlicesSlice =
+  | BannerSlice
   | TripplePhotoSlice
   | BulletsSlice
   | TestimonialSlice
@@ -489,6 +537,7 @@ export type AllDocumentTypes =
   | AuthorDocument
   | BlogPostDocument
   | BlogwithphotosDocument
+  | PriceGroupDocument
   | ProductPageDocument;
 
 /**
@@ -595,6 +644,136 @@ export type AuthorBoxSlice = prismic.SharedSlice<
   "author_box",
   AuthorBoxSliceVariation
 >;
+
+/**
+ * Primary content in *Banner → Default → Primary*
+ */
+export interface BannerSliceDefaultPrimary {
+  /**
+   * Bold Part field in *Banner → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: banner.default.primary.bold_part
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  bold_part: prismic.KeyTextField;
+
+  /**
+   * Plain part field in *Banner → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: banner.default.primary.plain_part
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  plain_part: prismic.KeyTextField;
+
+  /**
+   * Cta Label field in *Banner → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: banner.default.primary.cta_label
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  cta_label: prismic.KeyTextField;
+
+  /**
+   * Cta Link field in *Banner → Default → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: banner.default.primary.cta_link
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  cta_link: prismic.LinkField;
+}
+
+/**
+ * Default variation for Banner Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type BannerSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<BannerSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Primary content in *Banner → On brand → Primary*
+ */
+export interface BannerSliceOnBrandPrimary {
+  /**
+   * Bold Part field in *Banner → On brand → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: banner.onBrand.primary.bold_part
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  bold_part: prismic.KeyTextField;
+
+  /**
+   * Plain part field in *Banner → On brand → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: banner.onBrand.primary.plain_part
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  plain_part: prismic.KeyTextField;
+
+  /**
+   * Cta Label field in *Banner → On brand → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: banner.onBrand.primary.cta_label
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  cta_label: prismic.KeyTextField;
+
+  /**
+   * Cta Link field in *Banner → On brand → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: banner.onBrand.primary.cta_link
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  cta_link: prismic.LinkField;
+}
+
+/**
+ * On brand variation for Banner Slice
+ *
+ * - **API ID**: `onBrand`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type BannerSliceOnBrand = prismic.SharedSliceVariation<
+  "onBrand",
+  Simplify<BannerSliceOnBrandPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *Banner*
+ */
+type BannerSliceVariation = BannerSliceDefault | BannerSliceOnBrand;
+
+/**
+ * Banner Shared Slice
+ *
+ * - **API ID**: `banner`
+ * - **Description**: Banner
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type BannerSlice = prismic.SharedSlice<"banner", BannerSliceVariation>;
 
 /**
  * Item in *Bullets → Default → Primary → Bullets*
@@ -3482,6 +3661,9 @@ declare module "@prismicio/client" {
       BlogwithphotosDocumentData,
       BlogwithphotosDocumentDataTableItem,
       BlogwithphotosDocumentDataSlicesSlice,
+      PriceGroupDocument,
+      PriceGroupDocumentData,
+      PriceGroupDocumentDataFeaturesItem,
       ProductPageDocument,
       ProductPageDocumentData,
       ProductPageDocumentDataSlicesSlice,
@@ -3490,6 +3672,12 @@ declare module "@prismicio/client" {
       AuthorBoxSliceDefaultPrimary,
       AuthorBoxSliceVariation,
       AuthorBoxSliceDefault,
+      BannerSlice,
+      BannerSliceDefaultPrimary,
+      BannerSliceOnBrandPrimary,
+      BannerSliceVariation,
+      BannerSliceDefault,
+      BannerSliceOnBrand,
       BulletsSlice,
       BulletsSliceDefaultPrimaryBulletsItem,
       BulletsSliceDefaultPrimary,

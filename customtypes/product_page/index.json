@@ -17,6 +17,9 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "banner": {
+              "type": "SharedSlice"
+            },
             "tripple_photo": {
               "type": "SharedSlice"
             },

@@ -1,0 +1,65 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"bold_part": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "shorterasdfasdf"
+			},
+			"plain_part": {
+				"__TYPE__": "FieldContent",
+				"value": "party",
+				"type": "Text"
+			},
+			"cta_label": {
+				"__TYPE__": "FieldContent",
+				"value": "speak",
+				"type": "Text"
+			},
+			"cta_link": {
+				"__TYPE__": "LinkContent",
+				"value": {
+					"__TYPE__": "ExternalLink",
+					"url": "https://prismic.io"
+				}
+			}
+		},
+		"items": []
+	},
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "onBrand",
+		"primary": {
+			"bold_part": {
+				"__TYPE__": "FieldContent",
+				"value": "tent",
+				"type": "Text"
+			},
+			"plain_part": {
+				"__TYPE__": "FieldContent",
+				"value": "pitch",
+				"type": "Text"
+			},
+			"cta_label": {
+				"__TYPE__": "FieldContent",
+				"value": "discover",
+				"type": "Text"
+			},
+			"cta_link": {
+				"__TYPE__": "LinkContent",
+				"value": {
+					"__TYPE__": "ExternalLink",
+					"url": "https://prismic.io"
+				}
+			}
+		},
+		"items": [
+			{
+				"__TYPE__": "GroupItemContent",
+				"value": []
+			}
+		]
+	}
+]
