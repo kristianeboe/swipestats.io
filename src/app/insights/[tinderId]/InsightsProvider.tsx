@@ -27,6 +27,7 @@ function InsightsProvider(props: {
     "comparisonIds",
     parseAsArrayOf(parseAsString, ",").withDefault([]),
   );
+  console.log("comparisonIds", comparisonIds);
 
   const [loading, setLoading] = useState(true);
 

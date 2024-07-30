@@ -23,6 +23,7 @@ import { getLabelForTinderProfile } from "@/lib/utils";
 import { Badge } from "@/app/_components/ui/badge";
 import { Card } from "@/app/_components/ui/card";
 import { Tabs } from "@/app/_components/ui/tabs";
+import { capitalizeString } from "@/lib/utils/string";
 
 interface AggregateData {
   xDataKey: string;
@@ -213,6 +214,8 @@ export function GraphCardUsage(props: {
     return cd;
   }, [active, aggregateProfiles, profiles]);
 
+  const capitalizedChartKey = capitalizeString(props.chartDataKey);
+
   return (
     <Card.Container>
       <Card.Header>
@@ -233,11 +236,12 @@ export function GraphCardUsage(props: {
           <div key={p.tinderId}>
             <Badge>{p.profileMeta?.[`${props.chartDataKey}Total`]} total</Badge>
             <Badge variant={"secondary"}>
-              {p.profileMeta?.[`average${props.chartDataKey}PerDay`]} average pr{" "}
-              {active}
+              {p.profileMeta?.[`average${capitalizedChartKey}PerDay`]} average
+              pr {active}
             </Badge>
             <Badge variant={"secondary"}>
-              {p.profileMeta?.averageAppOpensPerDay} average pr {active}
+              {p.profileMeta?.[`average${capitalizedChartKey}PerDay`]} average
+              pr {active}
             </Badge>
           </div>
         ))}

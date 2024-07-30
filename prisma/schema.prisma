@@ -546,12 +546,12 @@ model ProfileMeta {
     messagesSentRatio         Float // messagesSent / messagesReceived 
 
     // averages and medians
-    averageMatchesPerDay          Int
-    averageAppOpensPerDay         Int
-    averageSwipeLikesPerDay       Int
-    averageSwipePassesPerDay      Int
-    averageMessagesSentPerDay     Int
-    averageMessagesReceivedPerDay Int
+    matchesAveragePerDay          Int
+    appOpensAveragePerDay         Int
+    swipeLikesAveragePerDay       Int
+    swipePassesAveragePerDay      Int
+    messagesSentAveragePerDay     Int
+    messagesReceivedAveragePerDay Int
 
     averageSwipesPerDay Int
     // TODO maybe expand with PerDayOnActiveDays
