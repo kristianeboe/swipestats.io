@@ -68,6 +68,7 @@
     "he": "^1.2.0",
     "langs": "^2.0.0",
     "lucide-react": "^0.395.0",
+    "natural": "^7.1.0",
     "next": "^14.2.5",
     "next-auth": "^4.24.7",
     "next-themes": "^0.3.0",

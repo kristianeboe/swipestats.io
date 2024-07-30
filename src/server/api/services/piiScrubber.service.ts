@@ -5,7 +5,7 @@ const lexicon = new natural.Lexicon("EN", "N");
 const ruleSet = new natural.RuleSet("EN");
 const tagger = new natural.BrillPOSTagger(lexicon, ruleSet);
 
-function scrub(text: string): string {
+export function scrub(text: string): string {
   // Combine all regex patterns
   const patterns = [
     { regex: /\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/g, replacement: "[PHONE_NUMBER]" },
@@ -20,24 +20,29 @@ function scrub(text: string): string {
       replacement: "[ADDRESS]",
     },
   ];
+  const replacements = patterns.map(({ regex, replacement }) => replacement);
 
   // Apply all regex patterns in one pass
   for (const { regex, replacement } of patterns) {
     text = text.replace(regex, replacement);
   }
 
-  console.log(text);
+  console.log("After regex replacements:", text);
 
   // Use NER to identify and redact names
   const tokens = tokenizer.tokenize(text);
   const taggedWords = tagger.tag(tokens);
 
-  const redactedTokens = taggedWords.taggedWords.map((taggedWord) => {
-    if (taggedWord.tag.startsWith("NNP")) {
-      // Proper noun (singular or plural)
-      return "[NAME]";
+  const redactedTokens = taggedWords.taggedWords.map(({ tag, token }) => {
+    // if (tag.startsWith("NNP")) {
+    //   // Proper noun (singular or plural)
+    //   return "[NAME]";
+    // }
+
+    if (replacements.some((r) => r.includes(token))) {
+      return "[" + token + "]";
     }
-    return taggedWord.tag;
+    return token;
   });
 
   return redactedTokens.join(" ");
@@ -48,4 +53,4 @@ function scrub(text: string): string {
 const sensitiveText =
   "John Doe's phone number is 123-456-7890 and his email is john@example.com. He lives at 123 Main St, Anytown, USA. Follow him @johndoe on Twitter.";
 const scrubbed = scrub(sensitiveText);
-console.log(scrubbed);
+console.log("Scrubbed text:", scrubbed);
