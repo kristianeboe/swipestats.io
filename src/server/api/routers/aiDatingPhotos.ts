@@ -10,7 +10,8 @@ import {
   lemonSqueezySetup,
 } from "@lemonsqueezy/lemonsqueezy.js";
 import { env } from "@/env";
-import { sendDynamicEmail } from "../services/email.service";
+import { sendReactEmail } from "../services/email.service";
+import AiPhotosPurchaseEmail from "@/emails/AiPhotosPurchaseEmail";
 
 lemonSqueezySetup({
   apiKey: env.LEMONSQUEEZY_API_KEY,
@@ -76,15 +77,17 @@ export const aiDatingPhotosRouter = createTRPCRouter({
 
         const { newCustomerFolderId } =
           await initializeAiDatingPhotosFolderForCustomer(input.customerEmail);
-
-        await sendDynamicEmail({
-          template: "aiPhotosPurchase",
-          templateData: {
+        await sendReactEmail(
+          AiPhotosPurchaseEmail,
+          {
             customerEmail: input.customerEmail,
             googleDriveFolderUrl: `https://drive.google.com/drive/folders/${newCustomerFolderId}`,
           },
-          to: input.customerEmail,
-        });
+          {
+            subject: "Time to upload your photos!",
+            to: input.customerEmail,
+          },
+        );
       } catch (error) {
         console.log("Error purchasing AI dating photos: ", error);
       }

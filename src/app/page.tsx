@@ -51,7 +51,7 @@ const tiers = [
   {
     name: "Small Sample",
     id: "small-sample",
-    href: "https://swipestats.lemonsqueezy.com/buy/2c92db51-3b31-4571-ae37-ed7e8e98c937",
+    href: "https://swipestats.lemonsqueezy.com/buy/d87295c0-c322-4fa9-88e0-0433426b223a?selected=470938",
     price: "$15",
     description: "Get started",
     features: ["10 profiles", "Perfect to test and learn about the data model"],
@@ -64,7 +64,7 @@ const tiers = [
     price: "$50",
     description: "Scale your analysis and get access to future datasets",
     features: [
-      "1,000 profiles",
+      "1,000 anonymous profiles",
       "Access to future datasets",
       "Analyze at scale",
       "Direct support",

@@ -1,4 +1,6 @@
+import DatasetPurchaseEmail from "@/emails/DatasetPurchaseEmail";
 import { env } from "@/env";
+import { sendReactEmail } from "@/server/api/services/email.service";
 import { api } from "@/trpc/server";
 import crypto from "crypto";
 import { NextResponse } from "next/server";
@@ -42,11 +44,47 @@ export async function POST(request: Request) {
   const attributes = data.data.attributes;
   const objId = data.data.id;
 
+  const samplePurchaseVariantId = 470938;
+  const fullPackagePurchaseVariantId = 456562;
+  const aiDatingPhotosPurchaseVariantId = 470939;
+
+  const dataPurchaseVariantIds = [
+    samplePurchaseVariantId,
+    fullPackagePurchaseVariantId,
+  ];
+
+  const purchaseVariantId = attributes.variant_id;
+
   switch (eventName) {
     case "order_created":
-      await api.aiDatingPhotosRouter.onPurchase({
-        customerEmail: attributes.user_email,
-      });
+      if (dataPurchaseVariantIds.includes(purchaseVariantId)) {
+        // Dataset purchase
+        // create purchase token // base it on LM licence key?
+        // send success email
+        await sendReactEmail(
+          DatasetPurchaseEmail,
+          {
+            customerEmail: attributes.user_email,
+            customerName: attributes.user_name,
+            datasetName:
+              purchaseVariantId === fullPackagePurchaseVariantId
+                ? "Full Package"
+                : "Sample",
+            downloadLink: "https://swipestats.io/", // Replace with actual download link
+          },
+          {
+            subject:
+              "Here is your data. Thank you for your Swipestats.io purchase!",
+            to: attributes.user_email,
+            bcc: ["kristian.e.boe@gmail.com", "kris@swipestats.io"],
+          },
+        );
+      } else if (purchaseVariantId === aiDatingPhotosPurchaseVariantId) {
+        // AI Dating Photos purchase
+        await api.aiDatingPhotosRouter.onPurchase({
+          customerEmail: attributes.user_email,
+        });
+      }
 
       break;
     default:
