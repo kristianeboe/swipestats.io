@@ -24,7 +24,7 @@ export async function GET(
   // const author = searchParams.get("author") ?? "John Doe";
   console.log("author", author);
   const avatarUrl =
-    author.profile_image.url! ?? "https://github.com/shadcn.png";
+    author?.profile_image?.url ?? "https://github.com/shadcn.png";
   const avatarResponse = await fetch(avatarUrl);
   const avatarData = await avatarResponse.arrayBuffer();
 
@@ -157,7 +157,7 @@ export async function GET(
               }}
             />
 
-            {author.name}
+            {author?.name}
           </div>
         </div>
       </div>
