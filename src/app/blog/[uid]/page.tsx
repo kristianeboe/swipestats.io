@@ -55,9 +55,11 @@ export default async function Page({ params }: { params: Params }) {
       </div>
       <div className="container max-w-3xl">
         <SliceZone slices={blog.data.slices} components={components} />
-        <div className="mt-20">
-          <AuthorCard author={author} />
-        </div>
+        {author && (
+          <div className="mt-20">
+            <AuthorCard author={author} />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -40,39 +40,42 @@ export default async function BlogPage() {
           More articles
         </h2>
         <div className="mt- mt-10 grid gap-10 md:grid-cols-2 lg:grid-cols-3">
-          {pages.map((post) => {
-            const publishedDate =
-              post.last_publication_date || new Date().toISOString();
-            const author = getAuthorFromBlog(post.data);
-            return (
-              <BlogArticleCard
-                key={post.id}
-                post={{
-                  id: post.id,
-                  title: post.data.title!,
-                  description: post.data.description!,
-                  date: publishedDate.toString(),
-                  readTime: "5 min read",
-                  datetime: publishedDate.toString(),
-                  href: post.url!,
-                  imageUrl:
-                    post.data.meta_image.url ??
-                    `${env.NEXT_PUBLIC_BASE_URL}/api/og/v0/${post.uid}` ??
-                    `${env.NEXT_PUBLIC_BASE_URL}/api/og/blog/${post.data.title}`,
-                  category: {
-                    title: "Article",
-                    href: "#",
-                  },
-                  author: {
-                    href: author.instagramurl!,
-                    imageUrl: author.profile_image.url!,
-                    name: author.name!,
-                    role: author.role!,
-                  },
-                }}
-              />
-            );
-          })}
+          {pages
+            .filter((p) => !!getAuthorFromBlog(p.data))
+            .map((post) => {
+              const publishedDate =
+                post.last_publication_date || new Date().toISOString();
+              const author = getAuthorFromBlog(post.data);
+              return (
+                <BlogArticleCard
+                  key={post.id}
+                  post={{
+                    id: post.id,
+                    title: post.data.title!,
+                    description: post.data.description!,
+                    date: publishedDate.toString(),
+                    readTime: "5 min read",
+                    datetime: publishedDate.toString(),
+                    href: post.url!,
+                    imageUrl:
+                      post.data.meta_image.url ??
+                      `${env.NEXT_PUBLIC_BASE_URL}/api/og/v0/${post.uid}` ??
+                      `${env.NEXT_PUBLIC_BASE_URL}/api/og/blog/${post.data.title}`,
+                    category: {
+                      title: "Article",
+                      href: "#",
+                    },
+                    author: {
+                      // posts wihtout auther are filtered out at the top
+                      href: author?.instagramurl ?? "#",
+                      imageUrl: author?.profile_image?.url ?? "#",
+                      name: author?.name ?? "John Doe",
+                      role: author?.role ?? "Content Creator",
+                    },
+                  }}
+                />
+              );
+            })}
         </div>
       </div>
     </div>

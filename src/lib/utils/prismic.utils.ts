@@ -36,7 +36,7 @@ export type Author = AuthorDocumentData;
 export function getAuthorFromBlog(blogPost: BlogPostDocumentData) {
   // @ts-expect-error supposes that the blogPostGraphQuery has been used in the original query
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  return blogPost.author.data as unknown as Author;
+  return blogPost.author.data as unknown as Author | undefined;
 }
 
 export async function getBlogPostAndAuthor(uid: string) {
