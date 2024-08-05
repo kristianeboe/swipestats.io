@@ -3,6 +3,7 @@
 import { createGenericContext } from "@/lib/hooks/useGenericContext";
 import { type FullTinderProfile } from "@/lib/interfaces/utilInterfaces";
 import { api } from "@/trpc/react";
+import { type CustomData } from "@prisma/client";
 // import { type TinderUsage } from "@prisma/client";
 
 import { useSearchParams } from "next/navigation";
@@ -12,6 +13,7 @@ import { useMemo, useState } from "react";
 const [useInsightsProvider, InsightsContextProvider] = createGenericContext<{
   myTinderId: string;
   myTinderProfile: FullTinderProfile;
+  myCustomData: CustomData;
   profiles: FullTinderProfile[];
   // usageByProfile: Record<string, Record<string, TinderUsage>>;
 
@@ -63,6 +65,7 @@ function InsightsProvider(props: {
       value={{
         myTinderId: props.myTinderProfile.tinderId,
         myTinderProfile: props.myTinderProfile,
+        myCustomData: props.myTinderProfile.customData,
         loading,
         profiles,
         // usageByProfile,

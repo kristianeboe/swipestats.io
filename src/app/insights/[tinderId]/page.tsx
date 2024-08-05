@@ -21,6 +21,8 @@ import {
 } from "lucide-react";
 import { TooltipWrapper } from "@/app/_components/ui/tooltip";
 import React from "react";
+import { UserFeedback } from "./UserFeedback";
+import { AddMetricCard } from "./AddMetricCard";
 
 export default async function InsightsPage({
   params,
@@ -40,89 +42,92 @@ export default async function InsightsPage({
   return (
     <main className="container mx-auto px-6 pb-6 pt-12 md:pt-24">
       <InsightsProvider myTinderProfile={swipestatsProfile}>
-        <h1 className="text-center text-6xl font-black">Insights</h1>
-
-        <ComparisonForm tinderId={params.tinderId} />
+        {/* <ComparisonForm tinderId={params.tinderId} /> */}
         <div className="grid grid-cols-1 gap-10">
           {/* <GraphCardUsage chartDataKey="matchRate" title="Match Rate" /> */}
           <GraphCardUsage chartDataKey="matches" title="Matches" />
           <div className="grid gap-10 md:grid-cols-2">
             <MatchRateCard title="Match Rate" />
+
             <GraphCardUsage chartDataKey="appOpens" title="App Opens" />
           </div>
-          <Card.Container>
-            <Card.Header>
-              <Card.Title>Messages meta</Card.Title>
-            </Card.Header>
-            <Card.Content className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              <MessagesMetaCard
-                title="# of conversations"
-                icon={MessagesSquare}
-                stat={swipestatsProfile.profileMeta?.nrOfConversations + ""}
-              />
+          <div className="flex gap-5">
+            <Card.Container>
+              <Card.Header>
+                <Card.Title>Messages meta</Card.Title>
+              </Card.Header>
+              <Card.Content className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                <MessagesMetaCard
+                  title="# of conversations"
+                  icon={MessagesSquare}
+                  stat={swipestatsProfile.profileMeta?.nrOfConversations + ""}
+                />
 
-              <MessagesMetaCard
-                title="Longest conversation"
-                icon={Calendar}
-                stat={
-                  <TooltipWrapper tooltipContent="That is 123 days">
-                    {swipestatsProfile.profileMeta?.longestConversationInDays +
-                      " days"}
-                  </TooltipWrapper>
-                }
-              />
+                <MessagesMetaCard
+                  title="Longest conversation"
+                  icon={Calendar}
+                  stat={
+                    <TooltipWrapper tooltipContent="That is 123 days">
+                      {swipestatsProfile.profileMeta
+                        ?.longestConversationInDays + " days"}
+                    </TooltipWrapper>
+                  }
+                />
 
-              <MessagesMetaCard
-                title="Median chat length"
-                icon={MessageCircle}
-                stat={
-                  swipestatsProfile.profileMeta
-                    ?.medianConversationMessageCount + ""
-                }
-              />
-              <MessagesMetaCard
-                title="Average chat length"
-                icon={MessageCircle}
-                stat={
-                  swipestatsProfile.profileMeta
-                    ?.averageConversationMessageCount + ""
-                }
-              />
+                <MessagesMetaCard
+                  title="Median chat length"
+                  icon={MessageCircle}
+                  stat={
+                    swipestatsProfile.profileMeta
+                      ?.medianConversationMessageCount + ""
+                  }
+                />
+                <MessagesMetaCard
+                  title="Average chat length"
+                  icon={MessageCircle}
+                  stat={
+                    swipestatsProfile.profileMeta
+                      ?.averageConversationMessageCount + ""
+                  }
+                />
 
-              <MessagesMetaCard
-                title="Longest chat"
-                icon={ScrollText}
-                stat={swipestatsProfile.profileMeta?.longestConversation + ""}
-              />
+                <MessagesMetaCard
+                  title="Longest chat"
+                  icon={ScrollText}
+                  stat={swipestatsProfile.profileMeta?.longestConversation + ""}
+                />
 
-              <MessagesMetaCard
-                title="# of no reply chats"
-                icon={CircleSlash}
-                stat={
-                  swipestatsProfile.profileMeta?.nrOfOneMessageConversations +
-                  ""
-                }
-              />
+                <MessagesMetaCard
+                  title="# of no reply chats"
+                  icon={CircleSlash}
+                  stat={
+                    swipestatsProfile.profileMeta?.nrOfOneMessageConversations +
+                    ""
+                  }
+                />
 
-              <MessagesMetaCard
-                title="# of times you ghosted"
-                icon={Ghost}
-                stat={
-                  swipestatsProfile.profileMeta
-                    ?.nrOfGhostingsAfterInitialMatch + ""
-                }
-              />
+                <MessagesMetaCard
+                  title="# of times you ghosted"
+                  icon={Ghost}
+                  stat={
+                    swipestatsProfile.profileMeta
+                      ?.nrOfGhostingsAfterInitialMatch + ""
+                  }
+                />
 
-              <MessagesMetaCard
-                title="% of no reply chats"
-                icon={CircleSlash}
-                stat={
-                  swipestatsProfile.profileMeta
-                    ?.percentOfOneMessageConversations + "%"
-                }
-              />
-            </Card.Content>
-          </Card.Container>
+                <MessagesMetaCard
+                  title="% of no reply chats"
+                  icon={CircleSlash}
+                  stat={
+                    swipestatsProfile.profileMeta
+                      ?.percentOfOneMessageConversations + "%"
+                  }
+                />
+                <AddMetricCard />
+              </Card.Content>
+            </Card.Container>
+            <UserFeedback />
+          </div>
           <div className="grid gap-10 md:grid-cols-2">
             <GraphCardUsage chartDataKey="messagesSent" title="Messages Sent" />
 
