@@ -31,6 +31,8 @@ export const env = createEnv({
     LEMONSQUEEZY_API_KEY: z.string(),
     LEMONSQUEEZY_WEBHOOK_SECRET: z.string(),
     RESEND_API_KEY: z.string(),
+
+    SENTRY_AUTH_TOKEN: z.string(),
   },
 
   /**
@@ -76,6 +78,8 @@ export const env = createEnv({
     LEMONSQUEEZY_API_KEY: process.env.LEMONSQUEEZY_API_KEY,
     LEMONSQUEEZY_WEBHOOK_SECRET: process.env.LEMONSQUEEZY_WEBHOOK_SECRET,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
+
+    SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

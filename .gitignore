@@ -50,3 +50,5 @@ ssMigrations
 scripts/migrateV2toV3.ts
 
 scripts/old_swipestats_profiles
+# Sentry Config File
+.env.sentry-build-plugin
