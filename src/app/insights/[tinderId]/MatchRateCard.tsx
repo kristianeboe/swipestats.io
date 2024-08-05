@@ -16,6 +16,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/app/_components/ui/tooltip";
+import { format, parse } from "date-fns";
+import { Info } from "lucide-react";
 
 export function MatchRateCard(props: {
   title: string;
@@ -144,8 +146,13 @@ export function MatchRateCard(props: {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
-                  <Badge variant={"secondary"}>
-                    {badges.peak.value.toFixed(1)}% peak on {badges.peak.date}{" "}
+                  <Badge variant={"secondary"} className="items-center">
+                    {badges.peak.value.toFixed(1)}% peak in{" "}
+                    {format(
+                      parse(badges.peak.date, "yyyy-MM", new Date()),
+                      "MMMM yyyy",
+                    )}
+                    <Info className="ml-1 h-3 w-3" />
                   </Badge>
                 </TooltipTrigger>
 
@@ -162,7 +169,11 @@ export function MatchRateCard(props: {
             </TooltipProvider>
           ) : (
             <Badge variant={"secondary"}>
-              {badges.peak?.value.toFixed(1)} peak on {badges.peak?.date}{" "}
+              {badges.peak!.value.toFixed(1)} peak on{" "}
+              {format(
+                parse(badges.peak!.date, "yyyy-MM", new Date()),
+                "MMMM yyyy",
+              )}
             </Badge>
           )}
         </div>
