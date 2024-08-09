@@ -29,11 +29,19 @@ const config = {
         permanent: false,
       },
       {
-        source:
-          "/insights?profileId=96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5",
+        source: "/insights",
+        has: [
+          {
+            type: "query",
+            key: "profileId",
+            value:
+              "96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5",
+          },
+        ],
         destination: "/insights/demo",
         permanent: false,
       },
+
       {
         source: "/research",
         destination: "/#pricing",

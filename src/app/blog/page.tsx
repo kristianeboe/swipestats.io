@@ -1,4 +1,4 @@
-import { createClient } from "@/prismicio";
+import { createPrismicClient } from "@/prismicio";
 
 import { posts, type BlogPost } from "./BlogSection";
 import { BlogArticleCard } from "./BlogArticleCard";
@@ -15,7 +15,7 @@ import { env } from "@/env";
 const externalPosts = [...posts];
 
 export default async function BlogPage() {
-  const client = createClient();
+  const client = createPrismicClient();
   const pages = await client.getAllByType("blog_post", {
     graphQuery: blogPostGraphQuery,
   });
