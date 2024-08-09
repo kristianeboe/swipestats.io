@@ -21,6 +21,26 @@ const config = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/insights",
+        destination: "/insights/demo",
+        permanent: false,
+      },
+      {
+        source:
+          "/insights?profileId=96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5",
+        destination: "/insights/demo",
+        permanent: false,
+      },
+      {
+        source: "/research",
+        destination: "/#pricing",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 // Injected content via Sentry wizard below
