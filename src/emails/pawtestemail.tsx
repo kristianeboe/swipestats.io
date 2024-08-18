@@ -11,16 +11,16 @@ const PawTestEmail = (params: {
     <BaseEmailLayout>
       <Section className="text-center">
         <Text className="text-2xl font-bold text-gray-800">
-          Your Pet's Appointment Confirmation,{" "}
+          Your Pet&apos;s Appointment Confirmation,{" "}
           {params.petOwnerName ? params.petOwnerName : "valued pet owner"}!
         </Text>
       </Section>
 
       <Section className="mt-6">
         <Text className="text-gray-700">
-          We're excited to confirm your pet's upcoming appointment at our
-          veterinary clinic. We look forward to providing the best care for your
-          furry friend!
+          We&apos;re excited to confirm your pet&apos;s upcoming appointment at
+          our veterinary clinic. We look forward to providing the best care for
+          your furry friend!
         </Text>
       </Section>
 
@@ -51,11 +51,11 @@ const PawTestEmail = (params: {
 
       <Section className="mt-8">
         <Text className="text-gray-700">
-          Look, we've laid out all the reasons why your pet care routine is a
-          trainwreck and how our resources can help you stop being such a
-          disaster. If you're still scrolling, you're either a masochist who
-          enjoys pet care failure, or you're overthinking this like you
-          overthink your pet's diet.
+          Look, we&apos;ve laid out all the reasons why your pet care routine is
+          a trainwreck and how our resources can help you stop being such a
+          disaster. If you&apos;re still scrolling, you&apos;re either a
+          masochist who enjoys pet care failure, or you&apos;re overthinking
+          this like you overthink your pet&apos;s diet.
         </Text>
         <Button
           href="#"
@@ -68,8 +68,8 @@ const PawTestEmail = (params: {
       <Section className="mt-8">
         <Text className="text-gray-700">
           If you have any questions or need to reach us before your appointment,
-          please don't hesitate to reply to this email or contact our clinic
-          directly.
+          please don&apos;t hesitate to reply to this email or contact our
+          clinic directly.
         </Text>
       </Section>
 
