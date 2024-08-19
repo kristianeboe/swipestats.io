@@ -8,6 +8,9 @@ const navigation: { name: string; href: string }[] = [
   { name: "How it works", href: "/#how-it-works" },
   { name: "Reserach and blog datasets", href: "/#pricing" },
   { name: "In the news", href: "/#blog" },
+  { name: "Blog", href: "/blog" },
+  { name: "AI Dating Photos", href: "/ai-dating-photos" },
+  // { name: "SwipeGuide", href: "/swipeguide" },
   // { name: "Company", href: "#" },
 ];
 

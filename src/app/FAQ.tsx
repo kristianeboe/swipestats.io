@@ -12,7 +12,7 @@ const faqs = [
     question:
       "Will my name, contact details, or other personal information be shared?",
     answer:
-      "No. SwipeStats.io does not collect or share any personal information such as names, contact details, or IP addresses. All data is fully anonymized and isn’t uploaded to a server.",
+      "No. SwipeStats.io does not collect or share any personal information such as names, contact details, or IP addresses. All data is fully anonymized and isn't uploaded to a server.",
   },
   {
     question: "Can I use SwipeStats.io for research or an article?",
@@ -48,11 +48,10 @@ const faqs = [
       "The entire time that you have had an active Tinder account, even if you started in 2012 when Tinder was launched.",
   },
   {
-    question:
-      "Can I see my entire history if I previously deleted my account? (need to verify)",
-    answer: `That depends on how long it has been deleted for. 
+    question: "Can I see my entire history if I previously deleted my account?",
+    answer: `That depends on how long it has been deleted for and whether it was closed or banned. 
 
-      Tinder and other dating apps are allowed to keep your data for up to three months and no longer. So if your account was deleted for shorter than 
+      Tinder keeps your data for 3 months if your account was deleted and 12 months if it was banned. So if your account was deleted for shorter than 3 months, you can see your entire history.
       
       Note that “deleting” means that you completely delete the account, not just removing the app from your phone or desktop.`,
   },
@@ -65,33 +64,16 @@ const faqs = [
   {
     question:
       "Does Swipestats work with data from other dating apps like Bumble or Hinge?",
-    answer:
-      "Yes, we do. At the moment it’s possible to upload and visualize data from Tinder, Hinge and Bumble. We’re working on adding other popular dating apps.",
+    answer: "Not yet, but it's coming soon!",
   },
   {
     question: "How often can I upload new data for analysis?",
     answer:
-      "Anytime you like! Every time you upload, you’ll be able to compare to your own previous data.",
+      "Anytime you like! Every time you upload, you'll be able to compare to your own previous data.",
   },
   {
-    question:
-      "How can I request my Tinder data? (the short version might be fine, people aren’t dumb)",
-    answer: `Retrieving your Tinder information is a breeze, simply follow these steps:
-
-    1. Head over to **https://account.gotinder.com/data** — think of it as your remote control for Tinder.
-    2. Log in using the same Facebook, Google account, or phone number that you use for Tinder.
-    3. Click on 'Download my information'.
-    4. Enter your email address twice for confirmation. This is where Tinder will send your information.
-    5. Hit 'Submit' to start the process.
-    6. Keep an eye on your email, you should receive your data within 48 hours (we know it’s a while, just hang in there)
-    
-    Once you’ve received your email, here’s what to do next:
-    
-    7. Click on the download link in Tinder's email within 24 hours.
-    
-    8. Sign back into Tinder, and your data will be ready to download on the spot.
-    
-    9. Bring the data.json file to the [SwipeStats.io upload area](https://www.swipestats.io/upload/tinder) without unpacking it, and let the data visualization begin!`,
+    question: "How can I request my Tinder data?",
+    answer: `Simple go https://account.gotinder.com/data to and follow the steps!`,
   },
   // More questions...
 ];

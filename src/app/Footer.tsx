@@ -30,7 +30,7 @@ const footerNavigation = {
 const navigation = {
   main: [
     { name: "About", href: "/#about" },
-    { name: "Blog", href: "/#blog" },
+    { name: "Blog", href: "/blog" },
     // { name: "Jobs", href: "#" },
     { name: "Press", href: "/#blog" },
     { name: "How it works", href: "/#how-it-works" },
