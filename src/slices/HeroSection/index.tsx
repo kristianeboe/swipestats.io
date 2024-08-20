@@ -43,7 +43,7 @@ const HeroSection = ({ slice }: HeroSectionProps): JSX.Element => {
                           href={getPrismicLinkUrl(
                             slice.primary.title_eyebrow_cta_link,
                           )}
-                          className="whitespace-nowrap font-semibold text-indigo-600"
+                          className="whitespace-nowrap font-semibold text-rose-600"
                         >
                           <span
                             aria-hidden="true"
@@ -66,7 +66,7 @@ const HeroSection = ({ slice }: HeroSectionProps): JSX.Element => {
                 <div className="mt-10 flex items-center gap-x-6">
                   <a
                     href={getPrismicLinkUrl(slice.primary.primaryctabuttonhref)}
-                    className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="rounded-md bg-rose-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
                   >
                     {slice.primary.primaryctabuttontext}
                   </a>
