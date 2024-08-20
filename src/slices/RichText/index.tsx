@@ -19,6 +19,7 @@ const RichText = ({ slice }: RichTextProps): JSX.Element => {
         "prose mt-10 lg:prose-xl",
         slice.primary.centered && "mx-auto",
       )}
+      id={slice.primary.section_id ?? undefined}
     >
       <PrismicRichText field={slice.primary.rich_text_block} />
     </section>

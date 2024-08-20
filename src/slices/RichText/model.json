@@ -29,6 +29,13 @@
             "placeholder_true": "true",
             "placeholder_false": "false"
           }
+        },
+        "section_id": {
+          "type": "Text",
+          "config": {
+            "label": "section_id",
+            "placeholder": ""
+          }
         }
       },
       "items": {}
