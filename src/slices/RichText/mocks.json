@@ -27,6 +27,11 @@
 			"centered": {
 				"__TYPE__": "BooleanContent",
 				"value": false
+			},
+			"section_id": {
+				"__TYPE__": "FieldContent",
+				"value": "highest",
+				"type": "Text"
 			}
 		},
 		"items": []

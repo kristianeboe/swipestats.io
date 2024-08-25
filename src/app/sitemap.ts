@@ -21,6 +21,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.5,
     },
     {
+      url: "https://www.swipestats.io/swipeguide",
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.4,
+    },
+    {
       url: "https://www.swipestats.io/ai-dating-photos",
       lastModified: new Date(),
       changeFrequency: "monthly",

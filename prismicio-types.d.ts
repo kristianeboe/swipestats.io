@@ -2926,6 +2926,16 @@ export interface RichTextSliceDefaultPrimary {
    * - **Documentation**: https://prismic.io/docs/field#boolean
    */
   centered: prismic.BooleanField;
+
+  /**
+   * section_id field in *RichText → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: rich_text.default.primary.section_id
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  section_id: prismic.KeyTextField;
 }
 
 /**
