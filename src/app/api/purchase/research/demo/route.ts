@@ -1,6 +1,8 @@
 import { db } from "@/server/db";
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const demoProfile = await db.tinderProfile.findUniqueOrThrow({
     where: {
