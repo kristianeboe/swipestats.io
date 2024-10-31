@@ -10,6 +10,11 @@ export async function GET() {
     include: {
       profileMeta: true,
       usage: true,
+      matches: {
+        include: {
+          messages: true,
+        },
+      },
     },
   });
 
