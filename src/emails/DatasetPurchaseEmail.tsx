@@ -30,8 +30,8 @@ const DatasetPurchaseEmail = (params: {
         </Text>
         <Button
           href={
-            "https://drive.google.com/drive/folders/1TbczEde5nPYbYK_VHPjc3y8rSNNKkt56?usp=sharing" ??
-            params.downloadLink
+            // params.downloadLink
+            "https://drive.google.com/drive/folders/1TbczEde5nPYbYK_VHPjc3y8rSNNKkt56?usp=sharing"
           }
           className="mx-auto mt-4 inline-flex h-10 w-full max-w-md items-center justify-center whitespace-nowrap rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-950 focus-visible:ring-offset-2"
         >

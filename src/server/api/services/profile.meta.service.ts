@@ -48,20 +48,20 @@ export function createProfileMeta(
       acc.messagesReceivedTotal += cur.messagesReceived;
 
       if (cur.swipeLikes > 0) {
-        acc.youSwipedOnXDays++;
+        acc.daysYouSwiped++;
       }
       if (cur.messagesSent > 0) {
-        acc.youMessagedOnXDays++;
+        acc.daysYouMessaged++;
       }
 
       if (cur.appOpens > 0 && cur.swipeLikes === 0) {
-        acc.onXDaysYouOpenedTheAppButDidNotSwipe++;
+        acc.daysAppOpenedNoSwipe++;
       }
       if (cur.appOpens > 0 && cur.messagesSent === 0) {
-        acc.onXDaysYouOpenedTheAppButDidNotMessage++;
+        acc.daysAppOpenedNoMessage++;
       }
       if (cur.appOpens > 0 && cur.swipeLikes === 0 && cur.messagesSent === 0) {
-        acc.onXDaysYouOpenedTheAppButDidNotSwipeOrMessage++;
+        acc.daysAppOpenedNoSwipeOrMessage++;
       }
 
       individualUsageArrays.appOpens.push(cur.appOpens);
@@ -143,12 +143,12 @@ export function createProfileMeta(
       messagesSentTotal: 0,
       messagesReceivedTotal: 0,
 
-      youSwipedOnXDays: 0,
-      youMessagedOnXDays: 0,
+      daysYouSwiped: 0,
+      daysYouMessaged: 0,
 
-      onXDaysYouOpenedTheAppButDidNotSwipe: 0,
-      onXDaysYouOpenedTheAppButDidNotMessage: 0,
-      onXDaysYouOpenedTheAppButDidNotSwipeOrMessage: 0,
+      daysAppOpenedNoSwipe: 0,
+      daysAppOpenedNoMessage: 0,
+      daysAppOpenedNoSwipeOrMessage: 0,
 
       peakMatches: 0,
       peakMatchesDate: options.from,
@@ -243,14 +243,11 @@ export function createProfileMeta(
     matchesTotal: usageReduced.matchesTotal, // profile.matches.length
     noMatchesTotal: noMatchesTotal,
 
-    youMessagedOnXDays: usageReduced.youMessagedOnXDays,
-    youSwipedOnXDays: usageReduced.youSwipedOnXDays,
-    onXDaysYouOpenedTheAppButDidNotSwipe:
-      usageReduced.onXDaysYouOpenedTheAppButDidNotSwipe,
-    onXDaysYouOpenedTheAppButDidNotMessage:
-      usageReduced.onXDaysYouOpenedTheAppButDidNotMessage,
-    onXDaysYouOpenedTheAppButDidNotSwipeOrMessage:
-      usageReduced.onXDaysYouOpenedTheAppButDidNotSwipeOrMessage,
+    daysYouSwiped: usageReduced.daysYouSwiped,
+    daysYouMessaged: usageReduced.daysYouMessaged,
+    daysAppOpenedNoSwipe: usageReduced.daysAppOpenedNoSwipe,
+    daysAppOpenedNoMessage: usageReduced.daysAppOpenedNoMessage,
+    daysAppOpenedNoSwipeOrMessage: usageReduced.daysAppOpenedNoSwipeOrMessage,
 
     matchRateForPeriod,
     likeRateForPeriod,
@@ -301,25 +298,27 @@ export function createProfileMeta(
     longestInactivePeriodInDays,
 
     // messages and matches meta
-    nrOfConversations: messagesMeta.nrOfConversations,
-    nrOfConversationsWithMessages: messagesMeta.nrOfConversationsWithMessages,
-    longestConversation: messagesMeta.longestConversation,
+    numberOfConversations: messagesMeta.numberOfConversations,
+    numberOfConversationsWithMessages:
+      messagesMeta.numberOfConversationsWithMessages,
+    maxConversationMessageCount: messagesMeta.maxConversationMessageCount,
     longestConversationInDays: messagesMeta.longestConversationInDays,
     messageCountInLongestConversationInDays:
       messagesMeta.messageCountInLongestConversationInDays,
-    longestConversationInDaysWithLessThan2WeeksBetweenMessages:
-      messagesMeta.longestConversationInDaysWithLessThan2WeeksBetweenMessages,
-    messageCountInLongestConversationInDaysWithLessThan2WeeksBetweenMessages:
-      messagesMeta.messageCountInLongestConversationInDaysWithLessThan2WeeksBetweenMessages,
+    longestConversationInDaysTwoWeekMax:
+      messagesMeta.longestConversationInDaysTwoWeekMax,
+    messageCountInConversationTwoWeekMax:
+      messagesMeta.messageCountInConversationTwoWeekMax,
     averageConversationMessageCount:
       messagesMeta.averageConversationMessageCount,
     averageConversationLengthInDays:
       messagesMeta.averageConversationLengthInDays,
     medianConversationMessageCount: messagesMeta.medianConversationMessageCount,
     medianConversationLengthInDays: messagesMeta.medianConversationLengthInDays,
-    nrOfOneMessageConversations: messagesMeta.nrOfOneMessageConversations,
-    percentOfOneMessageConversations:
-      messagesMeta.percentOfOneMessageConversations,
+    numberOfOneMessageConversations:
+      messagesMeta.numberOfOneMessageConversations,
+    percentageOfOneMessageConversations:
+      messagesMeta.percentageOfOneMessageConversations,
 
     nrOfGhostingsAfterInitialMatch: messagesMeta.nrOfGhostingsAfterInitialMatch,
   };

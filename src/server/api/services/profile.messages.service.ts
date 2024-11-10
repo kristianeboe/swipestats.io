@@ -162,20 +162,20 @@ function getMessageType(msg: TinderJsonMatch["messages"][number]): MessageType {
 
 export function getMessagesMeta(messagesRaw: TinderJsonMatch[]) {
   const meta = {
-    nrOfConversations: messagesRaw.length,
-    nrOfConversationsWithMessages: 0,
+    numberOfConversations: messagesRaw.length,
+    numberOfConversationsWithMessages: 0,
     messagesTotal: 0,
-    longestConversation: 0, // in messages
+    maxConversationMessageCount: 0, // in messages
     longestConversationInDays: 0, //days
     messageCountInLongestConversationInDays: 0,
-    longestConversationInDaysWithLessThan2WeeksBetweenMessages: 0, //days
-    messageCountInLongestConversationInDaysWithLessThan2WeeksBetweenMessages: 0,
+    longestConversationInDaysTwoWeekMax: 0, //days
+    messageCountInConversationTwoWeekMax: 0,
     averageConversationLength: 0,
     averageConversationLengthInDays: 0, //days
     medianConversationLength: 0,
     medianConversationLengthInDays: 0, // days
-    nrOfOneMessageConversations: 0, // times where you have sent 1 message, but never followed up. Don't know if you got a reply or not.
-    percentOfOneMessageConversations: 0,
+    numberOfOneMessageConversations: 0, // times where you have sent 1 message, but never followed up. Don't know if you got a reply or not.
+    percentageOfOneMessageConversations: 0,
     nrOfGhostingsAfterInitialMatch: 0, // you matched, and you either sent no messages, or you never replied to theirs
     //nrOfGhostings
   };
@@ -198,7 +198,7 @@ export function getMessagesMeta(messagesRaw: TinderJsonMatch[]) {
       });
     } else {
       if (messagesSent === 1) {
-        meta.nrOfOneMessageConversations += 1;
+        meta.numberOfOneMessageConversations += 1;
       }
 
       // "Tue, 30 Nov 2021 06:09:58 GMT" // new Date() parsing confirmed
@@ -230,13 +230,10 @@ export function getMessagesMeta(messagesRaw: TinderJsonMatch[]) {
 
       if (
         maxGap < 14 &&
-        conversationLengthInDays >
-          meta.longestConversationInDaysWithLessThan2WeeksBetweenMessages
+        conversationLengthInDays > meta.longestConversationInDaysTwoWeekMax
       ) {
-        meta.longestConversationInDaysWithLessThan2WeeksBetweenMessages =
-          conversationLengthInDays;
-        meta.messageCountInLongestConversationInDaysWithLessThan2WeeksBetweenMessages =
-          messagesSent;
+        meta.longestConversationInDaysTwoWeekMax = conversationLengthInDays;
+        meta.messageCountInConversationTwoWeekMax = messagesSent;
       }
 
       conversationLengths.push({
@@ -244,8 +241,8 @@ export function getMessagesMeta(messagesRaw: TinderJsonMatch[]) {
         messages: messagesSent,
       });
 
-      if (messagesSent > meta.longestConversation) {
-        meta.longestConversation = messagesSent;
+      if (messagesSent > meta.maxConversationMessageCount) {
+        meta.maxConversationMessageCount = messagesSent;
       }
 
       if (conversationLengthInDays > meta.longestConversationInDays) {
@@ -269,17 +266,17 @@ export function getMessagesMeta(messagesRaw: TinderJsonMatch[]) {
     meta.medianConversationLength = sortedByMessages[midIndex]!.messages;
 
     meta.averageConversationLength =
-      meta.averageConversationLength / meta.nrOfConversations;
+      meta.averageConversationLength / meta.numberOfConversations;
 
     meta.averageConversationLengthInDays =
-      meta.averageConversationLengthInDays / meta.nrOfConversations;
+      meta.averageConversationLengthInDays / meta.numberOfConversations;
 
-    meta.percentOfOneMessageConversations = Math.round(
-      (meta.nrOfOneMessageConversations / meta.nrOfConversations) * 100,
+    meta.percentageOfOneMessageConversations = Math.round(
+      (meta.numberOfOneMessageConversations / meta.numberOfConversations) * 100,
     );
   }
-  meta.nrOfConversationsWithMessages =
-    meta.nrOfConversations - meta.nrOfGhostingsAfterInitialMatch;
+  meta.numberOfConversationsWithMessages =
+    meta.numberOfConversations - meta.nrOfGhostingsAfterInitialMatch;
 
   return meta;
 }
@@ -290,20 +287,20 @@ export function getMessagesMetaFromMatches(
   })[],
 ) {
   const meta = {
-    nrOfConversations: matches.length,
-    nrOfConversationsWithMessages: 0,
+    numberOfConversations: matches.length,
+    numberOfConversationsWithMessages: 0,
     messagesTotal: 0,
-    longestConversation: 0, // in messages
+    maxConversationMessageCount: 0, // in messages
     longestConversationInDays: 0, //days
     messageCountInLongestConversationInDays: 0,
-    longestConversationInDaysWithLessThan2WeeksBetweenMessages: 0, //days
-    messageCountInLongestConversationInDaysWithLessThan2WeeksBetweenMessages: 0,
+    longestConversationInDaysTwoWeekMax: 0, //days
+    messageCountInConversationTwoWeekMax: 0,
     averageConversationMessageCount: 0,
     averageConversationLengthInDays: 0, //days
     medianConversationMessageCount: 0,
     medianConversationLengthInDays: 0, // days
-    nrOfOneMessageConversations: 0, // times where you have sent 1 message, but never followed up. Don't know if you got a reply or not.
-    percentOfOneMessageConversations: 0,
+    numberOfOneMessageConversations: 0, // times where you have sent 1 message, but never followed up. Don't know if you got a reply or not.
+    percentageOfOneMessageConversations: 0,
     nrOfGhostingsAfterInitialMatch: 0, // you matched, and you either sent no messages, or you never replied to theirs
     //nrOfGhostings
   };
@@ -326,7 +323,7 @@ export function getMessagesMetaFromMatches(
       });
     } else {
       if (messagesSent === 1) {
-        meta.nrOfOneMessageConversations += 1;
+        meta.numberOfOneMessageConversations += 1;
       }
 
       // "Tue, 30 Nov 2021 06:09:58 GMT" // new Date() parsing confirmed
@@ -356,13 +353,10 @@ export function getMessagesMetaFromMatches(
 
       if (
         maxGap < 14 &&
-        conversationLengthInDays >
-          meta.longestConversationInDaysWithLessThan2WeeksBetweenMessages
+        conversationLengthInDays > meta.longestConversationInDaysTwoWeekMax
       ) {
-        meta.longestConversationInDaysWithLessThan2WeeksBetweenMessages =
-          conversationLengthInDays;
-        meta.messageCountInLongestConversationInDaysWithLessThan2WeeksBetweenMessages =
-          messagesSent;
+        meta.longestConversationInDaysTwoWeekMax = conversationLengthInDays;
+        meta.messageCountInConversationTwoWeekMax = messagesSent;
       }
 
       conversationLengths.push({
@@ -370,8 +364,8 @@ export function getMessagesMetaFromMatches(
         messages: messagesSent,
       });
 
-      if (messagesSent > meta.longestConversation) {
-        meta.longestConversation = messagesSent;
+      if (messagesSent > meta.maxConversationMessageCount) {
+        meta.maxConversationMessageCount = messagesSent;
       }
 
       if (conversationLengthInDays > meta.longestConversationInDays) {
@@ -395,17 +389,17 @@ export function getMessagesMetaFromMatches(
     meta.medianConversationMessageCount = sortedByMessages[midIndex]!.messages;
 
     meta.averageConversationMessageCount =
-      meta.averageConversationMessageCount / meta.nrOfConversations;
+      meta.averageConversationMessageCount / meta.numberOfConversations;
 
     meta.averageConversationLengthInDays =
-      meta.averageConversationLengthInDays / meta.nrOfConversations;
+      meta.averageConversationLengthInDays / meta.numberOfConversations;
 
-    meta.percentOfOneMessageConversations = Math.round(
-      (meta.nrOfOneMessageConversations / meta.nrOfConversations) * 100,
+    meta.percentageOfOneMessageConversations = Math.round(
+      (meta.numberOfOneMessageConversations / meta.numberOfConversations) * 100,
     );
   }
-  meta.nrOfConversationsWithMessages =
-    meta.nrOfConversations - meta.nrOfGhostingsAfterInitialMatch;
+  meta.numberOfConversationsWithMessages =
+    meta.numberOfConversations - meta.nrOfGhostingsAfterInitialMatch;
 
   return meta;
 }
