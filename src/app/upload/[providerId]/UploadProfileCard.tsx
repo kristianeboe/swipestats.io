@@ -7,6 +7,7 @@ import { getGenderDisplay, isGenderDataUnknown } from "@/lib/utils";
 import { type Dispatch, type SetStateAction, useState } from "react";
 import { RadioGroup, RadioGroupItem } from "@/app/_components/ui/radio-group";
 import { Label } from "@/app/_components/ui/label";
+import he from "he";
 
 import { Button } from "@/app/_components/ui/button";
 import { Text } from "@/app/_components/ui/text";
@@ -52,7 +53,7 @@ export function UploadProfileCard({
         {/* <div className="w-full flex justify-center">
       <img className="w-48 p-4" :src="imgSrc" alt="Sunset in the mountains" />
     </div> */}
-        <div className="group flex justify-center rounded-lg bg-gradient-to-r from-rose-700 via-rose-500 to-rose-300 py-2 ">
+        <div className="group flex justify-center rounded-lg bg-gradient-to-r from-rose-700 via-rose-500 to-rose-300 py-2">
           {/* <Image
             src={
               isMale
@@ -71,6 +72,23 @@ export function UploadProfileCard({
           ) : (
             <FemaleAvatar />
           )}
+          {/* <Carousel>
+            <CarouselContent>
+              <CarouselItem>
+                {hasUnknownGender ? (
+                  <UnknownAvatar />
+                ) : userData.gender === "M" ? (
+                  <MaleAvatar />
+                ) : (
+                  <FemaleAvatar />
+                )}
+              </CarouselItem>
+              <CarouselItem>...</CarouselItem>
+              <CarouselItem>...</CarouselItem>
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel> */}
         </div>
         <div className="px-6 py-4">
           {showGenderForm ? (
@@ -113,30 +131,38 @@ export function UploadProfileCard({
                     new Date(userData.birth_date),
                   )}`}
                 </div>
+                {userData.city && (
+                  <p className="ml-auto text-base text-gray-700">
+                    {userData.city.name}, {userData.city.region}
+                    {/* ,{' '}{travelLocationInfo[0].country.long_name} */}
+                  </p>
+                )}
               </div>
-              {userData.city && (
-                <p className="text-base text-gray-700">
-                  {userData.city.name}, {userData.city.region}
-                  {/* ,{' '}{travelLocationInfo[0].country.long_name} */}
-                </p>
-              )}
 
-              <p className="text-base text-gray-700">
-                Looking for {userData.interested_in === "F" ? "women" : "men"}{" "}
-                ages {userData.age_filter_min}-{userData.age_filter_max}
-              </p>
               {/* <div>Education: {userData.education}</div> */}
 
               {/* <div>Gender filter {userData.gender_filter}</div> */}
-              <p className="text-base text-gray-700">
+              {/* <p className="text-base text-gray-700">
                 Account created: {format(userData.create_date, "MMMM d, yyyy")}
-              </p>
+              </p> */}
               {/* <p className="text-base text-gray-700">
               // a bit faulty since app_opens were not tracked by Tinder until 2014
                 First recorded date: {format(firstDayOnApp, "MMMM d, yyyy")}
               </p> */}
-              <p className="text-base text-gray-700">
+              {/* <p className="text-base text-gray-700">
                 Last recorded date: {format(lastDayOnApp, "MMMM d, yyyy")}
+              </p> */}
+
+              {userData.bio && (
+                <>
+                  {/* <Text.Lead>Bio</Text.Lead> */}
+                  <Text.Prose>{he.decode(userData.bio)}</Text.Prose>
+                </>
+              )}
+              <p className="border-b py-4 text-base text-gray-700">
+                <strong>Looking for</strong>{" "}
+                {userData.interested_in === "F" ? "women" : "men"} ages{" "}
+                {userData.age_filter_min}-{userData.age_filter_max}
               </p>
 
               {genderDataAutoUpdated ? (
@@ -177,17 +203,16 @@ export function UploadProfileCard({
                 </Alert>
               ) : null}
 
-              <br />
-              <p className="text-base text-gray-700">
-                Your unique id. Save it, or find it by uploading your file
-                again.
+              {/* <p className="text-base text-gray-700">
+                <strong>Your unique id.</strong> Save it, or find it by
+                uploading your file again.
               </p>
               <div className="mt-5">
                 <div className="rounded-md bg-gray-50 px-6 py-5 sm:flex sm:items-center sm:justify-between">
-                  <div className="overflow-x-scroll font-mono text-xs sm:flex sm:items-start md:overflow-auto ">
+                  <div className="overflow-x-scroll font-mono text-xs sm:flex sm:items-start md:overflow-auto">
                     {tinderId}
                   </div>
-                  <div className="mt-4 hidden hover:block sm:-ml-6 sm:mt-0  sm:flex-shrink-0 ">
+                  <div className="mt-4 hidden hover:block sm:-ml-6 sm:mt-0 sm:flex-shrink-0">
                     <button
                       type="button"
                       className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 sm:text-sm"
@@ -196,7 +221,12 @@ export function UploadProfileCard({
                     </button>
                   </div>
                 </div>
-              </div>
+              </div> */}
+
+              {/* <div>
+              todo
+                city and country select
+              </div> */}
 
               {userData.jobs?.length && (
                 <section className="mt-4">
@@ -288,6 +318,15 @@ export function UploadProfileCard({
               )}
             </>
           )}
+          <div className="mt-4 border-t pt-4">
+            <p className="text-muted-foreground text-xs">
+              Account created: November 12, 2013 • Last active: June 2, 2023
+            </p>
+            <p className="text-muted-foreground mt-2 font-mono text-xs">
+              ID:
+              96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5
+            </p>
+          </div>
         </div>
       </div>
 
@@ -328,6 +367,13 @@ import {
 import { ShieldAlert } from "lucide-react";
 
 import { analyticsTrackClient } from "@/lib/analytics/analyticsTrackClient";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/app/_components/ui/carousel";
 
 const FormSchema = z.object({
   gender: z.enum(TinderJsonGenderValues, {

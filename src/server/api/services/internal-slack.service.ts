@@ -3,6 +3,7 @@ import { env } from "@/env";
 const channels = {
   "bot-messages": env.SLACK_WEBHOOK_INTERNAL,
   "ai-photos": env.SLACK_WEBHOOK_INTERNAL_AI_MESSAGES,
+  "bot-developer": env.SLACK_WEBHOOK_INTERNAL_DEVELOPER,
 };
 
 type SlackMessageBody = Record<

@@ -16,7 +16,7 @@ export function createProfileMeta(
   // assume that above data has been filtered correctly to / from
   options: { from: Date; to: Date },
 ): Prisma.ProfileMetaCreateInput {
-  const daysInProfilePeriod = differenceInDays(options.to, options.from);
+  const daysInProfilePeriod = differenceInDays(options.to, options.from) + 1; // because we need to add the first day
   // should be the same as profile.usage.length
 
   const individualUsageArrays = {

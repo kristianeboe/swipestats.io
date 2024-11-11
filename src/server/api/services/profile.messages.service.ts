@@ -23,12 +23,12 @@ export function createMessagesAndMatches(
       const totalMessageCount = tjm.messages.length;
 
       const firstMessage = tjm.messages[0];
-      const firstMessageSentAt = firstMessage
+      const firstMessageSentAt = firstMessage?.sent_date
         ? new Date(firstMessage.sent_date)
         : undefined;
 
       const lastMessage = tjm.messages.at(-1);
-      const lastMessageSentAt = lastMessage
+      const lastMessageSentAt = lastMessage?.sent_date
         ? new Date(lastMessage.sent_date)
         : undefined;
 
@@ -83,48 +83,53 @@ export function createMessagesAndMatches(
   const messagesInput: Prisma.MessageCreateManyInput[] = sortedMatches.flatMap(
     (tjm, i) => {
       const match = matchesInput[i]!;
-      return tjm.messages.map((msg, i) => {
-        const lastMessage = tjm.messages[i - 1];
+      return tjm.messages
+        .filter((msg) => !!msg.sent_date) // Either this or // .filter((msg) => msg.message !== "platzhaltertext"
+        .map((msg, i) => {
+          const lastMessage = tjm.messages[i - 1];
 
-        const timestampOfCurrentMessage = new Date(msg.sent_date).getTime();
-        const timestampOfLastMessage = lastMessage
-          ? new Date(lastMessage.sent_date).getTime()
-          : undefined;
-        const timeSinceLastMessage = timestampOfLastMessage
-          ? timestampOfCurrentMessage - timestampOfLastMessage
-          : 0;
+          const timestampOfCurrentMessage = new Date(msg.sent_date).getTime();
+          const timestampOfLastMessage = lastMessage
+            ? new Date(lastMessage.sent_date).getTime()
+            : undefined;
+          const timeSinceLastMessage = timestampOfLastMessage
+            ? timestampOfCurrentMessage - timestampOfLastMessage
+            : 0;
 
-        const messageType = getMessageType(msg);
+          const messageType = getMessageType(msg);
 
-        const content = msg.message ? he.decode(msg.message) : "";
+          const content = msg.message ? he.decode(msg.message) : "";
 
-        // const { mostProbableLanguage, topTrigrams } =
-        //   getFrancLanguageContext(content);
+          // const { mostProbableLanguage, topTrigrams } =
+          //   getFrancLanguageContext(content);
 
-        return {
-          messageType,
-          to: msg.to,
-          sentDate: new Date(msg.sent_date),
-          sentDateRaw: msg.sent_date,
-          content,
-          charCount: content?.length ?? 0,
-          contentRaw: msg.message ?? "",
-          type: msg.type ? String(msg.type) : undefined,
-          // primaryLanguage: mostProbableLanguage,
-          // languagesSpoken: topTrigrams,
-          gifUrl: msg.fixed_height,
-          matchId: match.id!,
-          tinderProfileId,
-          order: i,
+          return {
+            messageType,
+            to: msg.to,
+            sentDate: new Date(msg.sent_date),
+            sentDateRaw: msg.sent_date,
+            content,
+            charCount: content?.length ?? 0,
+            contentRaw: msg.message ?? "",
+            type: msg.type ? String(msg.type) : undefined,
+            // primaryLanguage: mostProbableLanguage,
+            // languagesSpoken: topTrigrams,
+            gifUrl: msg.fixed_height,
+            matchId: match.id!,
+            tinderProfileId,
+            order: i,
 
-          timeSinceLastMessage: timeSinceLastMessage,
-          timeSinceLastMessageRelative: timestampOfLastMessage
-            ? formatDistance(timestampOfLastMessage, timestampOfCurrentMessage)
-            : null,
-          // language: "", // TODO
-          //emotionScore: 0
-        };
-      });
+            timeSinceLastMessage: timeSinceLastMessage,
+            timeSinceLastMessageRelative: timestampOfLastMessage
+              ? formatDistance(
+                  timestampOfLastMessage,
+                  timestampOfCurrentMessage,
+                )
+              : null,
+            // language: "", // TODO
+            //emotionScore: 0
+          };
+        });
     },
   );
 

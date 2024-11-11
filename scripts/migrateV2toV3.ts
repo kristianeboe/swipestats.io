@@ -1,120 +1,133 @@
-// import { PrismaClient } from "@prisma/client";
-// import { PrismaClient as SourceClient } from "../ssMigrations/prisma//generated/sourceClient";
-// import {
-//   createTinderProfileTxnInput,
-//   prismaCreateTinderProfileTxn,
-// } from "@/server/api/services/profile.service";
-// import { AnonymizedTinderDataJSON } from "@/lib/interfaces/TinderDataJSON";
-// import { createSwipestatsProfilePayloadFromJson } from "@/app/upload/[providerId]/extractAnonymizedData";
-// import { createSubLogger } from "@/lib/tslog";
+import { PrismaClient } from "@prisma/client";
+import { PrismaClient as SourceClient } from "../ssMigrations/prisma//generated/sourceClient";
+import {
+  createTinderProfileTxnInput,
+  prismaCreateTinderProfileTxn,
+} from "@/server/api/services/profile.service";
+import { type AnonymizedTinderDataJSON } from "@/lib/interfaces/TinderDataJSON";
+import { createSwipestatsProfilePayloadFromJson } from "@/app/upload/[providerId]/extractAnonymizedData";
+import { createSubLogger } from "@/lib/tslog";
 
-// const sourcePrisma = new SourceClient();
-// const targetPrisma = new PrismaClient();
+const sourcePrisma = new SourceClient();
+const targetPrisma = new PrismaClient();
 
-// const log = createSubLogger("migrateV2toV3");
+const log = createSubLogger("migrateV2toV3");
 
-// const counts = {
-//   skippedProfiles: 0,
-//   genderM: 0,
-//   genderF: 0,
-//   genderUnknown: 0,
-//   genderOther: 0,
-//   errors: 0,
-// };
+const counts = {
+  skippedProfiles: 0,
+  genderM: 0,
+  genderF: 0,
+  genderUnknown: 0,
+  genderOther: 0,
+  errors: 0,
+  profilesWithNoUsage: 0,
+  profilesParsedSuccessfully: 0,
+};
 
-// const errors = {} as Record<string, number>;
+const errorIds = new Set<string>();
 
-// async function main() {
-//   // const oldWaitlist = await sourcePrisma.waitlist.findMany();
-//   // const newWaitlist = await targetPrisma.waitlist.findMany();
+const errors = {} as Record<string, number>;
 
-//   // console.log("Old Waitlist", oldWaitlist.length);
-//   // console.log("New Waitlist", newWaitlist.length);
+async function main() {
+  let i = 0;
+  const BATCH_SIZE = 10;
+  let skip = 0;
+  const take = 200;
 
-//   let i = 0;
-//   let skip = i;
-//   const take = 200;
+  const totalFileCount = await sourcePrisma.originalAnonymizedFile.count();
+  log.info("Total Old File Count", totalFileCount);
 
-//   const totalFileCount = await sourcePrisma.originalAnonymizedFile.count();
+  const newProfiles = await targetPrisma.tinderProfile.findMany();
+  const newProfileIds = new Set(newProfiles.map((p) => p.tinderId));
+  log.info("New Profile Count", newProfiles.length);
 
-//   const newProfiles = await targetPrisma.tinderProfile.findMany();
-//   const newProfileIds = new Set(newProfiles.map((p) => p.tinderId));
+  while (true) {
+    const oldOriginalFiles = await sourcePrisma.originalAnonymizedFile.findMany(
+      {
+        skip: skip,
+        take: take,
+      },
+    );
 
-//   while (true) {
-//     const oldOriginalFiles = await sourcePrisma.originalAnonymizedFile.findMany(
-//       {
-//         skip: skip,
-//         take: take,
-//       },
-//     );
+    if (oldOriginalFiles.length === 0) break;
 
-//     if (oldOriginalFiles.length === 0) {
-//       break;
-//     }
+    for (let j = 0; j < oldOriginalFiles.length; j += BATCH_SIZE) {
+      const batch = oldOriginalFiles.slice(j, j + BATCH_SIZE);
 
-//     log.info("Old Original Files", oldOriginalFiles.length);
-//     for (const ogFile of oldOriginalFiles) {
-//       const tinderJson = ogFile.file as unknown as AnonymizedTinderDataJSON;
+      await Promise.all(
+        batch.map(async (ogFile) => {
+          const tinderJson = ogFile.file as unknown as AnonymizedTinderDataJSON;
+          const ssPayload = await createSwipestatsProfilePayloadFromJson(
+            JSON.stringify(tinderJson),
+            "TINDER",
+          );
 
-//       const ssPayload = await createSwipestatsProfilePayloadFromJson(
-//         JSON.stringify(tinderJson),
-//         "TINDER",
-//       );
-//       if (newProfileIds.has(ssPayload.tinderId)) {
-//         counts.skippedProfiles++;
-//         continue;
-//       }
+          if (newProfileIds.has(ssPayload.tinderId)) {
+            counts.skippedProfiles++;
+            return;
+          }
 
-//       try {
-//         await prismaCreateTinderProfileTxn({
-//           tinderId: ssPayload.tinderId,
-//           user: {
-//             userId: ssPayload.tinderId,
-//           },
-//           tinderJson: ssPayload.anonymizedTinderJson,
-//           swipestatsVersion: "SWIPESTATS_2",
-//         });
+          if (
+            Object.keys(ssPayload.anonymizedTinderJson.Usage.app_opens)
+              .length === 0
+          ) {
+            // we don't want to create profiles with missing data, they should never have been let in
+            counts.profilesWithNoUsage++;
+            return;
+          }
 
-//         log.info("New Input", {
-//           tinderId: ssPayload.tinderId,
-//           count: i,
-//           total: totalFileCount,
-//           user: {
-//             gender: tinderJson.User.gender,
-//             jobTitle: tinderJson.User.jobs?.[0]?.title?.name,
-//             jobTitleDisplayed: tinderJson.User.jobs?.[0]?.title?.displayed,
-//             company: tinderJson.User.jobs?.[0]?.company?.name,
-//             companyDisplayed: tinderJson.User.jobs?.[0]?.company?.displayed,
-//             school: tinderJson.User.schools?.[0]?.name,
-//           },
-//         });
-//       } catch (error) {
-//         log.error("Error", error);
-//         log.info("file user", tinderJson.User);
-//         if (error.message) {
-//           errors[error.message] = errors[error.message]
-//             ? errors[error.message] + 1
-//             : 1;
-//         }
-//         counts.errors++;
-//       }
-//       i++;
-//     }
-//     skip += take;
-//   }
+          try {
+            const startTime = performance.now();
+            const ssProfile = await prismaCreateTinderProfileTxn({
+              tinderId: ssPayload.tinderId,
+              user: { userId: ssPayload.tinderId },
+              tinderJson: ssPayload.anonymizedTinderJson,
+              swipestatsVersion: "SWIPESTATS_2",
+            });
+            const endTime = performance.now();
+            const durationInSeconds = ((endTime - startTime) / 1000).toFixed(2);
 
-//   log.error("Errors", errors);
-//   log.info("Counts", counts);
-// }
+            counts.profilesParsedSuccessfully++;
+            log.info("Parsed successfully", {
+              count: `${i++}/${totalFileCount}`,
+              tinderId: ssPayload.tinderId,
+              duration: `${durationInSeconds}s`,
+              user: `${ssProfile.gender}, ${ssProfile.ageAtUpload}, ${ssProfile.city}, ${ssProfile.region}`,
+              skippedProfileCount: counts.skippedProfiles,
+              profilesWithNoUsage: counts.profilesWithNoUsage,
+            });
 
-// main()
-//   .then(async () => {
-//     await sourcePrisma.$disconnect();
-//     await targetPrisma.$disconnect();
-//   })
-//   .catch(async (e) => {
-//     console.error(e);
-//     await sourcePrisma.$disconnect();
-//     await targetPrisma.$disconnect();
-//     process.exit(1);
-//   });
+            if (ssProfile.gender === "MALE") counts.genderM++;
+            else if (ssProfile.gender === "FEMALE") counts.genderF++;
+            else if (ssProfile.gender === "UNKNOWN") counts.genderUnknown++;
+            else counts.genderOther++;
+          } catch (error) {
+            log.error("Error", error);
+            errorIds.add(ssPayload.tinderId);
+            log.info("file user", tinderJson.User);
+            if (error instanceof Error) {
+              errors[error.message] = (errors[error.message] ?? 0) + 1;
+            }
+            counts.errors++;
+          }
+        }),
+      );
+    }
+    skip += take;
+  }
+
+  log.error("Errors", errors);
+  log.info("Counts", counts);
+}
+
+main()
+  .then(async () => {
+    await sourcePrisma.$disconnect();
+    await targetPrisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await sourcePrisma.$disconnect();
+    await targetPrisma.$disconnect();
+    process.exit(1);
+  });
