@@ -109,8 +109,8 @@ function Muted(props: { children: React.ReactNode }) {
   return <p className="text-muted-foreground text-sm">{props.children}</p>;
 }
 
-function Prose(props: { children: React.ReactNode }) {
-  return <div className="prose">{props.children}</div>;
+function Prose(props: { children: React.ReactNode; className?: string }) {
+  return <div className={cn("prose", props.className)}>{props.children}</div>;
 }
 
 export const Text = {
