@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
+export const maxDuration = 180; // 3 min max duration
+
 export async function GET() {
   const demoProfile = await db.tinderProfile.findUniqueOrThrow({
     where: {
