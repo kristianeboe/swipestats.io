@@ -40,7 +40,7 @@ export default async function InsightsPage({
   return (
     <main className="container mx-auto px-6 pb-6 pt-12 md:pt-24">
       <InsightsProvider myTinderProfile={swipestatsProfile}>
-        <h1 className="text-center text-6xl font-black">Insights</h1>
+        <h1 className="text-center text-6xl font-black">Swipestats</h1>
 
         <ComparisonForm tinderId={params.tinderId} />
         <div className="grid grid-cols-1 gap-10">
@@ -58,7 +58,7 @@ export default async function InsightsPage({
               <MessagesMetaCard
                 title="# of conversations"
                 icon={MessagesSquare}
-                stat={swipestatsProfile.profileMeta?.nrOfConversations + ""}
+                stat={swipestatsProfile.profileMeta?.numberOfConversations + ""}
               />
 
               <MessagesMetaCard
@@ -92,15 +92,18 @@ export default async function InsightsPage({
               <MessagesMetaCard
                 title="Longest chat"
                 icon={ScrollText}
-                stat={swipestatsProfile.profileMeta?.longestConversation + ""}
+                stat={
+                  swipestatsProfile.profileMeta?.maxConversationMessageCount +
+                  ""
+                }
               />
 
               <MessagesMetaCard
                 title="# of no reply chats"
                 icon={CircleSlash}
                 stat={
-                  swipestatsProfile.profileMeta?.nrOfOneMessageConversations +
-                  ""
+                  swipestatsProfile.profileMeta
+                    ?.numberOfOneMessageConversations + ""
                 }
               />
 
@@ -118,7 +121,7 @@ export default async function InsightsPage({
                 icon={CircleSlash}
                 stat={
                   swipestatsProfile.profileMeta
-                    ?.percentOfOneMessageConversations + "%"
+                    ?.percentageOfOneMessageConversations + "%"
                 }
               />
             </Card.Content>

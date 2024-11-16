@@ -7,6 +7,7 @@ import { getGenderDisplay, isGenderDataUnknown } from "@/lib/utils";
 import { type Dispatch, type SetStateAction, useState } from "react";
 import { RadioGroup, RadioGroupItem } from "@/app/_components/ui/radio-group";
 import { Label } from "@/app/_components/ui/label";
+import he from "he";
 
 import { Button } from "@/app/_components/ui/button";
 import { Text } from "@/app/_components/ui/text";
@@ -44,6 +45,10 @@ export function UploadProfileCard({
     swipestatsProfilePayload.anonymizedTinderJson.Usage.app_opens,
   );
 
+  // const regionIsState = !!(
+  //   userData.city?.region && US_STATES[userData.city.region]
+  // );
+
   return (
     <>
       {debug && <pre>{Object.keys(userData).join(", ")}</pre>}
@@ -52,7 +57,7 @@ export function UploadProfileCard({
         {/* <div className="w-full flex justify-center">
       <img className="w-48 p-4" :src="imgSrc" alt="Sunset in the mountains" />
     </div> */}
-        <div className="group flex justify-center rounded-lg bg-gradient-to-r from-rose-700 via-rose-500 to-rose-300 py-2 ">
+        <div className="group flex justify-center rounded-lg bg-gradient-to-r from-rose-700 via-rose-500 to-rose-300 py-2">
           {/* <Image
             src={
               isMale
@@ -71,7 +76,64 @@ export function UploadProfileCard({
           ) : (
             <FemaleAvatar />
           )}
+          {/* <Carousel>
+            <CarouselContent>
+              <CarouselItem>
+                {hasUnknownGender ? (
+                  <UnknownAvatar />
+                ) : userData.gender === "M" ? (
+                  <MaleAvatar />
+                ) : (
+                  <FemaleAvatar />
+                )}
+              </CarouselItem>
+              <CarouselItem>...</CarouselItem>
+              <CarouselItem>...</CarouselItem>
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel> */}
         </div>
+        {genderDataAutoUpdated ? (
+          <div className="p-4">
+            <Alert className="">
+              <ShieldAlert className="h-4 w-4" />
+              <AlertTitle>
+                Heads up! Some of your gender data has been automatically
+                updated
+              </AlertTitle>
+              <AlertDescription>
+                Don&apos;t worry, this happens sometimes. Basically your data
+                file said gender: &quot;Unknown&quot; and/or interested_in:
+                &quot;Unknown&quot;. We updated it to gender: &quot;M&quot;,
+                interested_in: &quot;F&quot;. If this is incorrect, please
+                update it.
+              </AlertDescription>
+              <AlertDescription className="mt-2 flex gap-2">
+                <Button
+                  onClick={() => {
+                    setGenderDataAutoUpdated(false);
+                    analyticsTrackClient("Profile Gender Data Confirmed");
+                  }}
+                >
+                  It&apos;s correct
+                </Button>
+                <Button
+                  variant={"outline"}
+                  onClick={() => {
+                    analyticsTrackClient(
+                      "Profile Gender Data Update Initiated",
+                    );
+                    setShowGenderForm(true);
+                  }}
+                >
+                  Update gender data
+                </Button>
+              </AlertDescription>
+            </Alert>
+          </div>
+        ) : null}
+
         <div className="px-6 py-4">
           {showGenderForm ? (
             <div className="">
@@ -106,101 +168,46 @@ export function UploadProfileCard({
             </div>
           ) : (
             <>
-              <div className="flex items-baseline">
-                <div className="text-xl font-bold">
-                  {`${getGenderDisplay(userData.gender)}, ${differenceInYears(
-                    new Date(),
-                    new Date(userData.birth_date),
-                  )}`}
+              <div className="flex items-start justify-between">
+                <div>
+                  <div className="text-xl font-bold">
+                    {`${getGenderDisplay(userData.gender)}, ${differenceInYears(
+                      new Date(),
+                      new Date(userData.birth_date),
+                    )}`}
+                  </div>
+                  {userData.city && (
+                    <p className="text-base text-gray-700">
+                      {userData.city.name}, {userData.city.region}
+                    </p>
+                  )}
+                </div>
+                <div className="text-muted-foreground text-right text-xs">
+                  <div>
+                    Account created:{" "}
+                    {format(userData.create_date, "MMM d, yyyy")}
+                  </div>
+                  <div>Last active: {format(lastDayOnApp, "MMM d, yyyy")}</div>
                 </div>
               </div>
-              {userData.city && (
-                <p className="text-base text-gray-700">
-                  {userData.city.name}, {userData.city.region}
-                  {/* ,{' '}{travelLocationInfo[0].country.long_name} */}
-                </p>
+              {userData.bio && (
+                <>
+                  {/* <Text.Lead>Bio</Text.Lead> */}
+                  <Text.Prose className="mt-4">
+                    {he.decode(userData.bio)}
+                  </Text.Prose>
+                </>
               )}
 
-              <p className="text-base text-gray-700">
-                Looking for {userData.interested_in === "F" ? "women" : "men"}{" "}
-                ages {userData.age_filter_min}-{userData.age_filter_max}
+              <p className="pt-4 text-base text-gray-700">
+                <strong>Looking for</strong>{" "}
+                {userData.interested_in === "F" ? "women" : "men"} ages{" "}
+                {userData.age_filter_min}-{userData.age_filter_max}
               </p>
-              {/* <div>Education: {userData.education}</div> */}
-
-              {/* <div>Gender filter {userData.gender_filter}</div> */}
-              <p className="text-base text-gray-700">
-                Account created: {format(userData.create_date, "MMMM d, yyyy")}
-              </p>
-              {/* <p className="text-base text-gray-700">
-              // a bit faulty since app_opens were not tracked by Tinder until 2014
-                First recorded date: {format(firstDayOnApp, "MMMM d, yyyy")}
-              </p> */}
-              <p className="text-base text-gray-700">
-                Last recorded date: {format(lastDayOnApp, "MMMM d, yyyy")}
-              </p>
-
-              {genderDataAutoUpdated ? (
-                <Alert className="mt-4">
-                  <ShieldAlert className="h-4 w-4" />
-                  <AlertTitle>
-                    Heads up! Some of your gender data has been automatically
-                    updated
-                  </AlertTitle>
-                  <AlertDescription>
-                    Don&apos;t worry, this happens sometimes. Basically your
-                    data file said gender: &quot;Unknown&quot; and/or
-                    interested_in: &quot;Unknown&quot;. We updated it to gender:
-                    &quot;M&quot;, interested_in: &quot;F&quot;. If this is
-                    incorrect, please update it.
-                  </AlertDescription>
-                  <AlertDescription className="mt-2 flex gap-2">
-                    <Button
-                      onClick={() => {
-                        setGenderDataAutoUpdated(false);
-                        analyticsTrackClient("Profile Gender Data Confirmed");
-                      }}
-                    >
-                      It&apos;s correct
-                    </Button>
-                    <Button
-                      variant={"outline"}
-                      onClick={() => {
-                        analyticsTrackClient(
-                          "Profile Gender Data Update Initiated",
-                        );
-                        setShowGenderForm(true);
-                      }}
-                    >
-                      Update gender data
-                    </Button>
-                  </AlertDescription>
-                </Alert>
-              ) : null}
-
-              <br />
-              <p className="text-base text-gray-700">
-                Your unique id. Save it, or find it by uploading your file
-                again.
-              </p>
-              <div className="mt-5">
-                <div className="rounded-md bg-gray-50 px-6 py-5 sm:flex sm:items-center sm:justify-between">
-                  <div className="overflow-x-scroll font-mono text-xs sm:flex sm:items-start md:overflow-auto ">
-                    {tinderId}
-                  </div>
-                  <div className="mt-4 hidden hover:block sm:-ml-6 sm:mt-0  sm:flex-shrink-0 ">
-                    <button
-                      type="button"
-                      className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-rose-500 focus:ring-offset-2 sm:text-sm"
-                    >
-                      Copy
-                    </button>
-                  </div>
-                </div>
-              </div>
 
               {userData.jobs?.length && (
                 <section className="mt-4">
-                  <h2 className="font-bold">Jobs data</h2>
+                  <h2 className="font-bold">Work</h2>
                   {userData.jobs?.map((job) => (
                     <div key={job.title?.name}>
                       {false && (
@@ -223,7 +230,7 @@ export function UploadProfileCard({
               )}
               {userData.schools?.length && (
                 <section className="mt-4">
-                  <h2 className="font-bold">School data</h2>
+                  <h2 className="font-bold">Education</h2>
                   {userData.schools.map((school) => (
                     <div key={school?.name}>
                       {false && (
@@ -246,27 +253,25 @@ export function UploadProfileCard({
               {userData?.user_interests?.length && (
                 <div className="mt-4">
                   <h2 className="mb-1 font-bold">Interests</h2>
-                  {userData?.user_interests?.map((interest: string) => (
-                    <span
-                      key={interest}
-                      className="mb-2 mr-2 inline-block rounded-full bg-purple-200 px-3 py-1 text-sm font-semibold text-gray-700"
-                    >
-                      {interest}
-                    </span>
-                  ))}
+                  <div className="flex flex-wrap gap-2">
+                    {userData?.user_interests?.map((interest: string) => (
+                      <Badge variant={"secondary"} key={interest}>
+                        {interest}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
               )}
               {userData?.descriptors?.length && (
                 <div className="mt-4">
                   <h2 className="mb-1 font-bold">Descriptors</h2>
-                  {userData?.descriptors?.map((descriptor, i) => (
-                    <span
-                      key={i}
-                      className="mb-2 mr-2 inline-block rounded-full bg-purple-200 px-3 py-1 text-sm font-semibold text-gray-700"
-                    >
-                      {descriptor.choices.join(", ")}
-                    </span>
-                  ))}
+                  <div className="flex flex-wrap gap-2">
+                    {userData?.descriptors?.map((descriptor, i) => (
+                      <Badge variant={"secondary"} key={i}>
+                        {descriptor.choices.join(", ")}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
               )}
 
@@ -325,9 +330,18 @@ import {
   AlertDescription,
   AlertTitle,
 } from "@/app/_components/ui/alert";
-import { ShieldAlert } from "lucide-react";
+import { FileTextIcon, ShieldAlert } from "lucide-react";
 
 import { analyticsTrackClient } from "@/lib/analytics/analyticsTrackClient";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/app/_components/ui/carousel";
+import { Badge } from "@/app/_components/ui/badge";
+import { US_STATES } from "@/lib/utils/usStates";
 
 const FormSchema = z.object({
   gender: z.enum(TinderJsonGenderValues, {

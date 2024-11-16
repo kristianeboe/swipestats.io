@@ -18,44 +18,48 @@ model User {
     accounts      Account[]
     sessions      Session[]
 
-    // bumbleProfile                   Json?
     createdAt DateTime @default(now())
-    updatedAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-    hingeProfile  HingeProfile?
-    tinderProfile TinderProfile?
+    activeOnTinder  Boolean  @default(false) // flip to true if a tinder profile is detected
+    activeOnHinge   Boolean  @default(false)
+    activeOnBumble  Boolean  @default(false)
+    activeOnHappen  Boolean  @default(false)
+    activeOnOther   Boolean  @default(false)
+    otherDatingApps String[]
 
-    activeOnTinder                    Boolean  @default(true)
-    activeOnHinge                     Boolean  @default(false)
-    activeOnBumble                    Boolean  @default(false)
-    activeOnHappen                    Boolean  @default(false)
-    activeOnOther                     Boolean  @default(false)
-    otherDatingApps                   String[]
-    howHotDoYouPerceiveYourselfToBe   Int?
-    howHappyDoYouPerceiveYourselfToBe Int?
+    currentHotness             Int?
+    currentHappiness           Int?
+    firstStartedWithDatingApps DateTime?
+
+    pastDatingApps      Json @default("[]")
+    hotnessHistory      Json @default("[]")
+    happinessHistory    Json @default("[]")
+    relationshipHistory Json @default("[]")
+    locationHistory     Json @default("[]")
 
     timeZone String? // timeZone and country at upload time / location
     country  String?
 
     originalAnonymizedFiles OriginalAnonymizedFile[]
     events                  Event[]
-
-    customData CustomData?
+    customData              CustomData?
+    tinderProfile           TinderProfile?
+    hingeProfile            HingeProfile?
 }
 
-// Necessary for Next auth
 model Account {
     id                String  @id @default(cuid())
     userId            String
     type              String
     provider          String
     providerAccountId String
-    refresh_token     String? // @db.Text
-    access_token      String? // @db.Text
+    refresh_token     String?
+    access_token      String?
     expires_at        Int?
     token_type        String?
     scope             String?
-    id_token          String? // @db.Text
+    id_token          String?
     session_state     String?
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -78,28 +82,21 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-// Happy with the above
-
-// self reported
-
-// some events like Covid will be hard coded with the same datatype
-// 
-
 enum EventType {
     RELATIONSHIP
     FRIENDS_WITH_BENEFITS
     TRIP
     SUBSCRIPTION
-    NEW_LOCATION // switched city
+    NEW_LOCATION
+    NEW_BIO
     NEW_PHOTOS
     NEW_FIRST_PHOTO
     NEW_JOB
     GRADUATION
-
-    // computed
-    JOINED_SWIPESTATS // NEEDED?
+    JOINED_SWIPESTATS
     JOINED_TINDER
     JOINED_HINGE
+    CUSTOM
 }
 
 model Event {
@@ -114,32 +111,30 @@ model Event {
     locationId String?
 
     createdAt DateTime @default(now())
-    updatedAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-    user   User?   @relation(fields: [userId], references: [id])
-    userId String?
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String
 }
 
 model Job {
-    jobId            String   @id @default(cuid())
+    jobId            String        @id @default(cuid())
     title            String
     titleDisplayed   Boolean
     company          String?
     companyDisplayed Boolean?
-
-    tinderProfileId String
-    tinderProfile   TinderProfile @relation(fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
+    tinderProfileId  String
+    tinderProfile    TinderProfile @relation(fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
 }
 
 model School {
-    schooldId   String  @id @default(cuid())
-    id          String?
-    displayed   Boolean
-    name        String
-    type        String?
-    year        String?
-    metadata_id String?
-
+    schoolId        String        @id @default(cuid())
+    id              String?
+    displayed       Boolean
+    name            String
+    type            String?
+    year            String?
+    metadata_id     String?
     // maybe turn into a many relation TinderProfile[]
     tinderProfileId String
     tinderProfile   TinderProfile @relation(fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
@@ -185,12 +180,9 @@ model TinderUsage {
 }
 
 model Match {
-    id String @id @default(cuid())
-
-    messages Message[]
-
-    order Int
-
+    id                    String    @id @default(cuid())
+    messages              Message[]
+    order                 Int
     totalMessageCount     Int
     textCount             Int
     gifCount              Int
@@ -222,18 +214,6 @@ model Match {
 
     @@unique([tinderProfileId, order])
     @@unique([hingeProfileId, order])
-}
-
-// maybe rename in the future
-model HingeBlock {
-    id String @id @default(cuid())
-
-    blockType    String // seems to only be remove
-    dateStamp    DateTime
-    dateStampRaw String
-
-    hingeId      String
-    hingeProfile HingeProfile @relation(fields: [hingeId], references: [hingeId], onDelete: Cascade)
 }
 
 enum MessageType {
@@ -300,6 +280,13 @@ enum Gender {
     OTHER
     MORE // Custom
     UNKNOWN
+}
+
+enum SwipestatsVersion {
+    SWIPESTATS_1
+    SWIPESTATS_2
+    SWIPESTATS_3
+    SWIPESTATS_4
 }
 
 model TinderProfile {
@@ -382,12 +369,11 @@ model TinderProfile {
 model HingeProfile {
     hingeId   String   @id @unique
     createdAt DateTime @default(now())
-    updatedAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-    birthDate   DateTime
-    ageAtUpload Int
-    createDate  DateTime
-
+    birthDate                 DateTime
+    ageAtUpload               Int
+    createDate                DateTime
     heightCentimeters         Int
     gender                    String
     genderIdentity            String
@@ -427,42 +413,48 @@ model HingeProfile {
     relationshipType          String
     relationshipTypeDisplayed Boolean
     selfieVerified            Boolean
-
     // preferences
-    distanceMilesMax     Int
-    ageMin               Int
-    ageMax               Int
-    ageDealbreaker       Boolean
-    heightMin            Int //?? 92
-    heightMax            Int //?? 214
-    heightDealbreaker    Boolean
-    genderPreference     String
-    ethnicityPreference  String[]
-    ethnicityDealbreaker Boolean
-    religionPreference   String[]
-    religionDealbreaker  Boolean
+    distanceMilesMax          Int
+    ageMin                    Int
+    ageMax                    Int
+    ageDealbreaker            Boolean
+    heightMin                 Int //?? 92
+    heightMax                 Int //?? 214
+    heightDealbreaker         Boolean
+    genderPreference          String
+    ethnicityPreference       String[]
+    ethnicityDealbreaker      Boolean
+    religionPreference        String[]
+    religionDealbreaker       Boolean
+    prompts                   HingePrompt[]
+    media                     Media[]
+    userId                    String        @unique
+    user                      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+    customData                CustomData?
+    messages                  Message[]
+    hingeBlocks               HingeBlock[]
+    hingeMatches              Match[]
+    profileMeta               ProfileMeta?
+}
 
-    prompts      HingePrompt[]
-    media        Media[]
-    userId       String        @unique
-    user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-    customData   CustomData?
-    messages     Message[]
-    hingeBlocks  HingeBlock[]
-    hingeMatches Match[]
-    profileMeta  ProfileMeta?
+model HingeBlock {
+    id           String       @id @default(cuid())
+    blockType    String
+    dateStamp    DateTime
+    dateStampRaw String
+    hingeId      String
+    hingeProfile HingeProfile @relation(fields: [hingeId], references: [hingeId], onDelete: Cascade)
 }
 
 model HingePrompt {
-    id              String   @id @default(cuid())
+    id              String        @id @default(cuid())
     type            String
     prompt          String
     answerText      String
     createdPromptAt DateTime
     updatedPromptAt DateTime
-
-    hingeProfile   HingeProfile? @relation(fields: [hingeProfileId], references: [hingeId], onDelete: Cascade)
-    hingeProfileId String?
+    hingeProfileId  String?
+    hingeProfile    HingeProfile? @relation(fields: [hingeProfileId], references: [hingeId], onDelete: Cascade)
 }
 
 model CustomData {
@@ -489,17 +481,15 @@ model CustomData {
     divorce               Int?
 
     createdAt DateTime @default(now())
-    updatedAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     tinderProfileId String?        @unique
     tinderProfile   TinderProfile? @relation(fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
-
-    hingeProfileId String?       @unique
-    hingeProfile   HingeProfile? @relation(fields: [hingeProfileId], references: [hingeId], onDelete: Cascade)
-
+    hingeProfileId  String?        @unique
+    hingeProfile    HingeProfile?  @relation(fields: [hingeProfileId], references: [hingeId], onDelete: Cascade)
     // self reported stats from outside the apps
-    userId String? @unique
-    user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId          String?        @unique
+    user            User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 // computed and added based on Usage data
@@ -526,11 +516,11 @@ model ProfileMeta {
     matchesTotal          Int
     noMatchesTotal        Int // swipeLikesTotal - matchesTotal
 
-    youSwipedOnXDays                              Int
-    youMessagedOnXDays                            Int
-    onXDaysYouOpenedTheAppButDidNotSwipe          Int
-    onXDaysYouOpenedTheAppButDidNotMessage        Int
-    onXDaysYouOpenedTheAppButDidNotSwipeOrMessage Int
+    daysYouSwiped                 Int
+    daysYouMessaged               Int
+    daysAppOpenedNoSwipe          Int
+    daysAppOpenedNoMessage        Int
+    daysAppOpenedNoSwipeOrMessage Int
 
     // rates
     matchRateForPeriod        Float // matches / swipeLikes
@@ -581,15 +571,15 @@ model ProfileMeta {
     longestActivePeriodInDays   Int
     longestInactivePeriodInDays Int
 
-    nrOfConversations             Int
-    nrOfConversationsWithMessages Int
+    numberOfConversations             Int
+    numberOfConversationsWithMessages Int
 
-    longestConversation                     Int // in messages
+    maxConversationMessageCount             Int
     longestConversationInDays               Int
     messageCountInLongestConversationInDays Int
 
-    longestConversationInDaysWithLessThan2WeeksBetweenMessages               Int
-    messageCountInLongestConversationInDaysWithLessThan2WeeksBetweenMessages Int
+    longestConversationInDaysTwoWeekMax  Int
+    messageCountInConversationTwoWeekMax Int
 
     averageConversationMessageCount Int
     averageConversationLengthInDays Int
@@ -597,8 +587,8 @@ model ProfileMeta {
     medianConversationMessageCount Int
     medianConversationLengthInDays Int
 
-    nrOfOneMessageConversations      Int
-    percentOfOneMessageConversations Int
+    numberOfOneMessageConversations     Int
+    percentageOfOneMessageConversations Int
 
     nrOfGhostingsAfterInitialMatch Int // consider renaming
 
@@ -658,37 +648,6 @@ model Location {
     // expand to tinderProfile and hingeProfile
 }
 
-model OriginalAnonymizedFile {
-    id                String            @id @default(cuid())
-    dataProvider      DataProvider
-    swipestatsVersion SwipestatsVersion
-    file              Json
-    userId            String
-    user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
-    createdAt         DateTime          @default(now())
-    updatedAt         DateTime          @default(now())
-}
-
-model Waitlist {
-    id           String       @id @default(cuid())
-    email        String
-    dataProvider DataProvider
-    createdAt    DateTime     @default(now())
-    updatedAt    DateTime     @default(now())
-}
-
-model EmailReminder {
-    id           String       @id @default(cuid())
-    email        String
-    dataProvider DataProvider
-    remindOn     DateTime
-
-    doubleOptedIn Boolean @default(false)
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @default(now())
-}
-
 enum DataProvider {
     TINDER
     HINGE
@@ -700,41 +659,57 @@ enum DataProvider {
     FEELD
 }
 
-enum SwipestatsVersion {
-    SWIPESTATS_1
-    SWIPESTATS_2
-    SWIPESTATS_3
+model OriginalAnonymizedFile {
+    id                String            @id @default(cuid())
+    dataProvider      DataProvider
+    swipestatsVersion SwipestatsVersion
+    file              Json
+    userId            String
+    user              User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+    createdAt         DateTime          @default(now())
+    updatedAt         DateTime          @updatedAt
+}
+
+model Waitlist {
+    id           String       @id @default(cuid())
+    email        String
+    dataProvider DataProvider
+    createdAt    DateTime     @default(now())
+    updatedAt    DateTime     @updatedAt
+}
+
+model EmailReminder {
+    id            String       @id @default(cuid())
+    email         String
+    dataProvider  DataProvider
+    remindOn      DateTime
+    doubleOptedIn Boolean      @default(false)
+    createdAt     DateTime     @default(now())
+    updatedAt     DateTime     @updatedAt
 }
 
 model Newsletter {
-    id                      String  @id @default(cuid())
-    email                   String  @db.VarChar(255)
-    emailHash               String  @unique
+    id                      String     @id @default(cuid())
+    email                   String     @db.VarChar(255)
+    emailHash               String     @unique
     threeDayReminder        Boolean
-    doubleOptInConfirmation Boolean @default(false)
-
-    globalUnsubscribe     Boolean @default(false)
-    receiveDatingTips     Boolean @default(true)
-    receiveProductUpdates Boolean @default(true)
-    receiveResearchNews   Boolean @default(true)
-
-    sequence Int @default(0)
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    sequences Sequence[]
+    doubleOptInConfirmation Boolean    @default(false)
+    globalUnsubscribe       Boolean    @default(false)
+    receiveDatingTips       Boolean    @default(true)
+    receiveProductUpdates   Boolean    @default(true)
+    receiveResearchNews     Boolean    @default(true)
+    sequence                Int        @default(0)
+    createdAt               DateTime   @default(now())
+    updatedAt               DateTime   @updatedAt
+    sequences               Sequence[]
 }
 
 model Sequence {
-    id   String @id @default(cuid())
-    name String
-
-    opened  DateTime?
-    clicked DateTime?
-
-    createdAt DateTime @default(now())
-
+    id           String     @id @default(cuid())
+    name         String
+    opened       DateTime?
+    clicked      DateTime?
+    createdAt    DateTime   @default(now())
     newsletterId String
     newsletter   Newsletter @relation(fields: [newsletterId], references: [id])
 }
