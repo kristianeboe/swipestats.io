@@ -89,7 +89,7 @@ export function UserFeedback() {
             <div className="grid gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="helpful">Was our service helpful?</Label>
-                <RadioGroup id="helpful" defaultValue="maybe">
+                {/* <RadioGroup id="helpful" defaultValue="maybe">
                   <div className="flex flex-wrap gap-2">
                     <Label
                       htmlFor="helpful-yes"
@@ -125,10 +125,10 @@ export function UserFeedback() {
                       Maybe
                     </Label>
                   </div>
-                </RadioGroup>
+                </RadioGroup> */}
               </div>
               <div className="grid gap-2">
-                <TagGroupFormField
+                {/* <TagGroupFormField
                   label="How do the results make you feel?"
                   name="howDoTheResultsMakeYouFeel"
                   options={[
@@ -138,13 +138,13 @@ export function UserFeedback() {
                     { label: "Surprised", value: "surprised" },
                     { label: "Disheartened", value: "disheartened" },
                   ]}
-                />
+                /> */}
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="recommend">
                   Would you recommend us to a friend?
                 </Label>
-                <RadioGroup id="recommend" defaultValue="maybe">
+                {/* <RadioGroup id="recommend" defaultValue="maybe">
                   <div className="flex flex-wrap gap-2">
                     <Label
                       htmlFor="recommend-yes"
@@ -180,11 +180,11 @@ export function UserFeedback() {
                       Maybe
                     </Label>
                   </div>
-                </RadioGroup>
+                </RadioGroup> */}
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="feedback">How can we improve?</Label>
-                <Textarea id="feedback" placeholder="Enter your feedback" />
+                {/* <Textarea id="feedback" placeholder="Enter your feedback" /> */}
               </div>
             </div>
             <div className="flex justify-end">

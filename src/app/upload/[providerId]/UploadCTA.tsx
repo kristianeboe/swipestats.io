@@ -231,10 +231,21 @@ export function UploadCTA(props: {
           <p className="mt-1 text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
             Ready
           </p>
-          <p className="mx-auto mt-5 max-w-lg text-xl text-gray-500">
+          <p className="mt-5 max-w-xl text-xl text-gray-500">
             Upload your data anonymously and compare it to demographics from
             around the world!
           </p>
+          <div className="">
+            <div className="bg-muted rounded-lg">
+              <p className="mx-auto mt-5 max-w-xl text-gray-500">
+                This is your Swipestats Id. Save it, or find it by uploading
+                your file again:
+              </p>
+              <p className="mt-2 inline-block rounded bg-slate-100 p-2 font-mono text-xs">
+                {props.swipestatsProfilePayload.tinderId}
+              </p>
+            </div>
+          </div>
           {existingProfileQuery.data && (
             <Alert className="mt-4">
               {/* <Terminal className="h-4 w-4" /> */}
@@ -280,7 +291,8 @@ export function UploadCTA(props: {
             checked={acceptedTerms}
             onChange={setAcceptedTerms}
           /> */}
-          <div className="mx-auto mt-4 flex max-w-md justify-center md:mx-0 md:mt-8 md:justify-start">
+
+          <div className="mx-auto mt-4 flex justify-center md:mx-0 md:mt-8 md:justify-start">
             <Button
               onClick={uploadProfile}
               loading={existingProfileQuery.isLoading || loading}
@@ -293,7 +305,9 @@ export function UploadCTA(props: {
                   ? "Confirm your data in the profile card"
                   : loading
                     ? "This can take upwards of 20 seconds"
-                    : "Upload"}
+                    : existingProfileQuery.data?.tinderId
+                      ? "Update"
+                      : "Upload"}
             </Button>
 
             {/* <Link href="/insights/" passHref={true}>

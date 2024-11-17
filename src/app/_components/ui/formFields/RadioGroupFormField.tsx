@@ -107,26 +107,25 @@ export const StarRatingFormField = <
         <FormItem className="space-y-3">
           <FormLabel>{label}</FormLabel>
           <FormControl>
-            {options.map((rating) => (
-              <FormItem key={rating}>
-                <FormControl>
-                  <StarIcon
-                    className={cn(
-                      `h-8 w-8 transition-colors`,
-                      rating <= field.value && "fill-rose-600",
-                      ` ${
-                        rating <= (hoverStarRating ?? field.value)
-                          ? "text-rose-600 hover:text-rose-200"
-                          : "text-gray-400"
-                      } cursor-pointer`,
-                    )}
-                    onMouseEnter={() => setHoverStarRating(rating)}
-                    onMouseLeave={() => setHoverStarRating(null)}
-                    onClick={() => field.onChange(rating)}
-                  />
-                </FormControl>
-              </FormItem>
-            ))}
+            <div className="flex gap-1">
+              {options.map((rating) => (
+                <StarIcon
+                  key={rating}
+                  className={cn(
+                    `h-8 w-8 transition-colors`,
+                    rating <= field.value && "fill-rose-600",
+                    ` ${
+                      rating <= (hoverStarRating ?? field.value)
+                        ? "text-rose-600 hover:text-rose-200"
+                        : "text-gray-400"
+                    } cursor-pointer`,
+                  )}
+                  onMouseEnter={() => setHoverStarRating(rating)}
+                  onMouseLeave={() => setHoverStarRating(null)}
+                  onClick={() => field.onChange(rating)}
+                />
+              ))}
+            </div>
           </FormControl>
           <FormMessage />
         </FormItem>

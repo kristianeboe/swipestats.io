@@ -20,6 +20,7 @@ import { expandAndAugmentProfileWithMissingDays } from "@/lib/profile.utils";
 import { sendInternalSlackMessage } from "../services/internal-slack.service";
 import { type FullTinderProfile } from "@/lib/interfaces/utilInterfaces";
 import { getRandomTinderProfileIds } from "../services/researchPurchase.service";
+import { env } from "@/env";
 
 const log = createSubLogger("profile.router");
 
@@ -161,17 +162,23 @@ export const profileRouter = createTRPCRouter({
         },
       );
 
-      void sendInternalSlackMessage("bot-messages", "Profile Created", {
-        tinderId: input.tinderId,
-        profileUrl: `https://swipestats.io/insights/${input.tinderId}`,
-        gender: swipestatsProfile.gender,
-        age: swipestatsProfile.ageAtUpload,
-        city: swipestatsProfile.city,
-        region: swipestatsProfile.region,
-        bio: swipestatsProfile.bio,
-        geoTimezone: input.timeZone,
-        geoCountry: input.country,
-      });
+      void sendInternalSlackMessage(
+        env.NEXT_PUBLIC_MANUAL_ENV === "production"
+          ? "bot-messages"
+          : "bot-developer",
+        "Profile Created",
+        {
+          tinderId: input.tinderId,
+          profileUrl: `https://swipestats.io/insights/${input.tinderId}`,
+          gender: swipestatsProfile.gender,
+          age: swipestatsProfile.ageAtUpload,
+          city: swipestatsProfile.city,
+          region: swipestatsProfile.region,
+          bio: swipestatsProfile.bio,
+          geoTimezone: input.timeZone,
+          geoCountry: input.country,
+        },
+      );
 
       return swipestatsProfile;
     }),

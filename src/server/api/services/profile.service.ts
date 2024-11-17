@@ -111,7 +111,7 @@ export async function prismaCreateTinderProfileTxn(params: {
           },
         },
       });
-      log.info("File uploaded", {
+      log.debug("File uploaded", {
         tinderId: params.tinderId,
         userId: params.user.userId,
       });
@@ -119,7 +119,7 @@ export async function prismaCreateTinderProfileTxn(params: {
       const tinderProfile = await txn.tinderProfile.create({
         data: tinderProfileInput,
       });
-      log.info("Profile created", {
+      log.debug("Profile created", {
         tinderId: params.tinderId,
       });
 
@@ -127,12 +127,12 @@ export async function prismaCreateTinderProfileTxn(params: {
         skipDuplicates: true,
         data: usageInput,
       });
-      log.info("Usage created", { usageCreateMany: usageCreateMany.count });
+      log.debug("Usage created", { usageCreateMany: usageCreateMany.count });
 
       const matchesCreateMany = await txn.match.createMany({
         data: matchesInput,
       });
-      log.info("Matches created", {
+      log.debug("Matches created", {
         matchesCreateManymatchesInput: matchesCreateMany.count,
       });
 
@@ -140,7 +140,7 @@ export async function prismaCreateTinderProfileTxn(params: {
         data: messagesInput,
       });
 
-      log.info("Messages created", {
+      log.debug("Messages created", {
         messagesCreateMany: messagesCreateMany.count,
       });
 
@@ -159,7 +159,7 @@ export async function prismaCreateTinderProfileTxn(params: {
           },
         });
 
-      log.info("Profile fetched", {
+      log.debug("Profile fetched", {
         tinderId: tinderProfileWithUsageAndMatches.tinderId,
         usageCount: tinderProfileWithUsageAndMatches.usage.length,
         matchesCount: tinderProfileWithUsageAndMatches.matches.length,
@@ -168,11 +168,22 @@ export async function prismaCreateTinderProfileTxn(params: {
       const meta = createAggregatedProfileMetas(
         tinderProfileWithUsageAndMatches,
       );
-      log.info("Meta created", {
+      log.debug("Meta created", {
         globalStart: meta.globalMeta.from,
         globalEnd: meta.globalMeta.to,
         byMonth: meta.metaByMonth.length,
         byYear: meta.metaByYear.length,
+      });
+
+      log.info("Profile transaction summary", {
+        tinderId: tinderProfileWithUsageAndMatches.tinderId,
+        usageCount: tinderProfileWithUsageAndMatches.usage.length,
+        matchesCount: tinderProfileWithUsageAndMatches.matches.length,
+        messages: messagesCreateMany.count,
+        metaGlobalPeriodFrom: meta.globalMeta.from,
+        metaGlobalPeriodTo: meta.globalMeta.to,
+        metaByMonthLength: meta.metaByMonth.length,
+        metaByYearLength: meta.metaByYear.length,
       });
 
       return await txn.tinderProfile.update({
@@ -197,12 +208,12 @@ export async function prismaCreateTinderProfileTxn(params: {
       });
     },
     {
-      maxWait: 20_000, // default 5000
-      timeout: 20_000,
+      maxWait: 120_000, // default 5000, increased to 2 minutes
+      timeout: 120_000, // increased to 2 minutes
     },
   );
 
-  log.info("Swipestats profile transaction complete");
+  log.silly("Swipestats profile transaction complete");
 
   return swipestatsProfile;
 }
@@ -304,10 +315,12 @@ export function createSwipestatsTinderProfileInput(
       })),
     },
     schools: {
-      create: tinderJson.User.schools?.map((s) => ({
-        name: s.name,
-        displayed: !!s.displayed,
-      })),
+      create: tinderJson.User.schools
+        ?.map((s) => ({
+          name: s.name,
+          displayed: !!s.displayed,
+        }))
+        .filter((s) => !!s.name),
     },
 
     rawUsage: {

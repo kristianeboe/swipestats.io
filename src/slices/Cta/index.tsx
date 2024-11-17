@@ -59,7 +59,7 @@ const CtaInfo = ({ slice }: CtaInfoProps): JSX.Element => {
       data-slice-variation={slice.variation}
       className="relative mt-10 max-w-4xl rounded-xl border-l-8 border-rose-600 bg-white p-6 shadow-lg ring-1 ring-gray-900/10"
     >
-      <div className="mr-52">
+      <div className="md:mr-52">
         <Text.H3>
           {emoji} {heading}
         </Text.H3>

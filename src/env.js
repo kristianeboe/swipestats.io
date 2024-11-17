@@ -24,6 +24,7 @@ export const env = createEnv({
     ),
     SLACK_WEBHOOK_INTERNAL: z.string().url(),
     SLACK_WEBHOOK_INTERNAL_AI_MESSAGES: z.string().url(),
+    SLACK_WEBHOOK_INTERNAL_DEVELOPER: z.string().url(),
     PRISMIC_MASTER_TOKEN: z.string(),
 
     GOOGLE_DRIVE_SERVICE_ACCOUNT_PRIVATE_KEY: z.string(),
@@ -31,6 +32,8 @@ export const env = createEnv({
     LEMONSQUEEZY_API_KEY: z.string(),
     LEMONSQUEEZY_WEBHOOK_SECRET: z.string(),
     RESEND_API_KEY: z.string(),
+
+    SENTRY_AUTH_TOKEN: z.string(),
   },
 
   /**
@@ -68,6 +71,8 @@ export const env = createEnv({
     SLACK_WEBHOOK_INTERNAL: process.env.SLACK_WEBHOOK_INTERNAL,
     SLACK_WEBHOOK_INTERNAL_AI_MESSAGES:
       process.env.SLACK_WEBHOOK_INTERNAL_AI_MESSAGES,
+    SLACK_WEBHOOK_INTERNAL_DEVELOPER:
+      process.env.SLACK_WEBHOOK_INTERNAL_DEVELOPER,
     PRISMIC_MASTER_TOKEN: process.env.PRISMIC_MASTER_TOKEN,
 
     GOOGLE_DRIVE_SERVICE_ACCOUNT_PRIVATE_KEY:
@@ -76,6 +81,8 @@ export const env = createEnv({
     LEMONSQUEEZY_API_KEY: process.env.LEMONSQUEEZY_API_KEY,
     LEMONSQUEEZY_WEBHOOK_SECRET: process.env.LEMONSQUEEZY_WEBHOOK_SECRET,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
+
+    SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

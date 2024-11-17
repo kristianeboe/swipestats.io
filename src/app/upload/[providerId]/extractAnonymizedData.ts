@@ -48,10 +48,21 @@ export function isValidTinderJson(
     };
   }
   if (!tinderJson.User.create_date) {
-    errors.user_create_date = {
-      message: "No create_date detected",
-      user: tinderJson.User,
-    };
+    const appOpens = Object.keys(tinderJson.Usage.app_opens).sort();
+    const earliestDate = appOpens[0];
+    if (earliestDate) {
+      tinderJson.User.create_date = earliestDate;
+    } else {
+      errors.user_create_date = {
+        message: "No create_date detected",
+        user: tinderJson.User,
+        usageDayCount: Object.keys(tinderJson.Usage.app_opens).length,
+        appOpens: Object.values(tinderJson.Usage.app_opens).reduce(
+          (sum, val) => sum + val,
+          0,
+        ),
+      };
+    }
   }
 
   if (Object.keys(errors).length === 0) {

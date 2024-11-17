@@ -1,4 +1,4 @@
-import { createClient } from "@/prismicio";
+import { createPrismicClient } from "@/prismicio";
 import { type LinkField } from "@prismicio/client";
 
 import {
@@ -40,7 +40,7 @@ export function getAuthorFromBlog(blogPost: BlogPostDocumentData) {
 }
 
 export async function getBlogPostAndAuthor(uid: string) {
-  const client = createClient();
+  const client = createPrismicClient();
   const page = await client.getByUID("blog_post", uid, {
     graphQuery: blogPostGraphQuery,
   });

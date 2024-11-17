@@ -23,6 +23,7 @@ import { TooltipWrapper } from "@/app/_components/ui/tooltip";
 import React from "react";
 import { UserFeedback } from "./UserFeedback";
 import { AddMetricCard } from "./AddMetricCard";
+import { db } from "@/server/db";
 
 export default async function InsightsPage({
   params,
@@ -42,7 +43,10 @@ export default async function InsightsPage({
   return (
     <main className="container mx-auto px-6 pb-6 pt-12 md:pt-24">
       <InsightsProvider myTinderProfile={swipestatsProfile}>
-        {/* <ComparisonForm tinderId={params.tinderId} /> */}
+        <h1 className="text-center text-6xl font-black">Swipestats</h1>
+
+        <ComparisonForm tinderId={params.tinderId} />
+
         <div className="grid grid-cols-1 gap-10">
           {/* <GraphCardUsage chartDataKey="matchRate" title="Match Rate" /> */}
           <GraphCardUsage chartDataKey="matches" title="Matches" />
@@ -51,6 +55,7 @@ export default async function InsightsPage({
 
             <GraphCardUsage chartDataKey="appOpens" title="App Opens" />
           </div>
+
           <div className="flex gap-5">
             <Card.Container>
               <Card.Header>
@@ -60,7 +65,9 @@ export default async function InsightsPage({
                 <MessagesMetaCard
                   title="# of conversations"
                   icon={MessagesSquare}
-                  stat={swipestatsProfile.profileMeta?.nrOfConversations + ""}
+                  stat={
+                    swipestatsProfile.profileMeta?.numberOfConversations + ""
+                  }
                 />
 
                 <MessagesMetaCard
@@ -94,15 +101,18 @@ export default async function InsightsPage({
                 <MessagesMetaCard
                   title="Longest chat"
                   icon={ScrollText}
-                  stat={swipestatsProfile.profileMeta?.longestConversation + ""}
+                  stat={
+                    swipestatsProfile.profileMeta?.maxConversationMessageCount +
+                    ""
+                  }
                 />
 
                 <MessagesMetaCard
                   title="# of no reply chats"
                   icon={CircleSlash}
                   stat={
-                    swipestatsProfile.profileMeta?.nrOfOneMessageConversations +
-                    ""
+                    swipestatsProfile.profileMeta
+                      ?.numberOfOneMessageConversations + ""
                   }
                 />
 
@@ -120,7 +130,7 @@ export default async function InsightsPage({
                   icon={CircleSlash}
                   stat={
                     swipestatsProfile.profileMeta
-                      ?.percentOfOneMessageConversations + "%"
+                      ?.percentageOfOneMessageConversations + "%"
                   }
                 />
                 <AddMetricCard />
@@ -128,6 +138,7 @@ export default async function InsightsPage({
             </Card.Container>
             <UserFeedback />
           </div>
+
           <div className="grid gap-10 md:grid-cols-2">
             <GraphCardUsage chartDataKey="messagesSent" title="Messages Sent" />
 
@@ -169,4 +180,12 @@ function MessagesMetaCard(props: {
       </Card.Content>
     </Card.Container>
   );
+}
+
+export async function generateStaticParams() {
+  const tinderProfiles = await db.tinderProfile.findMany();
+
+  return tinderProfiles.map((tinderProfile) => {
+    return { tinderId: tinderProfile.tinderId };
+  });
 }

@@ -1,4 +1,4 @@
-import { createClient } from "@/prismicio";
+import { createPrismicClient } from "@/prismicio";
 
 import { posts, type BlogPost } from "./BlogSection";
 import { BlogArticleCard } from "./BlogArticleCard";
@@ -15,7 +15,7 @@ import { env } from "@/env";
 const externalPosts = [...posts];
 
 export default async function BlogPage() {
-  const client = createClient();
+  const client = createPrismicClient();
   const pages = await client.getAllByType("blog_post", {
     graphQuery: blogPostGraphQuery,
   });
@@ -26,19 +26,19 @@ export default async function BlogPage() {
         Blog
       </Text.MarketingH1>
       {/* <FeaturedPost post={externalPosts[0]!} /> */}
-      <FeaturedArticle post={externalPosts[0]!} />
-      <div className="mt-20 grid items-center gap-4 md:grid-cols-3 lg:gap-20">
+      {/* <FeaturedArticle post={externalPosts[0]!} /> */}
+      {/* <div className="mt-20 grid items-center gap-4 md:grid-cols-3 lg:gap-20">
         <div className="md:col-span-2">
           <NewsletterCTA />
         </div>
 
         <SecondaryFeaturedPost post={externalPosts[1]!} />
-      </div>
+      </div> */}
 
-      <div className="mt-16">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+      <div className="">
+        {/* <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
           More articles
-        </h2>
+        </h2> */}
         <div className="mt- mt-10 grid gap-10 md:grid-cols-2 lg:grid-cols-3">
           {pages
             .filter((p) => !!getAuthorFromBlog(p.data))

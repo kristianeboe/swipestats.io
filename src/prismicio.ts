@@ -33,6 +33,10 @@ const routes: prismic.ClientConfig["routes"] = [
     type: "ai_dating_photos",
     path: "/ai-dating-photos",
   },
+  {
+    type: "product_page",
+    path: "/products/:uid",
+  },
 ];
 
 /**
@@ -41,7 +45,9 @@ const routes: prismic.ClientConfig["routes"] = [
  *
  * @param config - Configuration for the Prismic client.
  */
-export const createClient = (config: prismicNext.CreateClientConfig = {}) => {
+export const createPrismicClient = (
+  config: prismicNext.CreateClientConfig = {},
+) => {
   const client = prismic.createClient(repositoryName, {
     accessToken: env.PRISMIC_MASTER_TOKEN,
     routes,

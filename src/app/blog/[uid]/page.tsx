@@ -1,6 +1,6 @@
 import { type Metadata } from "next";
 
-import { createClient } from "@/prismicio";
+import { createPrismicClient } from "@/prismicio";
 import { components } from "@/slices";
 
 import {
@@ -85,7 +85,7 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  const client = createClient();
+  const client = createPrismicClient();
   console.log("generate static blog");
   const pages = await client.getAllByType("blog_post", {
     graphQuery: blogPostGraphQuery,

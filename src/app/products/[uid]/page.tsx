@@ -2,13 +2,13 @@ import { type Metadata } from "next";
 import { notFound } from "next/navigation";
 import { SliceZone } from "@prismicio/react";
 
-import { createClient } from "@/prismicio";
+import { createPrismicClient } from "@/prismicio";
 import { components } from "@/slices";
 
 type Params = { uid: string };
 
 export default async function Page({ params }: { params: Params }) {
-  const client = createClient();
+  const client = createPrismicClient();
   const page = await client
     .getByUID("product_page", params.uid)
     .catch(() => notFound());
@@ -21,7 +21,7 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const client = createClient();
+  const client = createPrismicClient();
   const page = await client
     .getByUID("product_page", params.uid)
     .catch(() => notFound());
@@ -33,7 +33,7 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  const client = createClient();
+  const client = createPrismicClient();
   const pages = await client.getAllByType("product_page");
 
   return pages.map((page) => {

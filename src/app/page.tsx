@@ -359,7 +359,8 @@ export default function HomePage() {
             </div>
             <Link
               prefetch={false}
-              href={"/api/purchase/research/demo"}
+              //href={"/api/purchase/research/demo"}
+              href="/downloads/swipestats-demo-profile.json.zip"
               target="_blank"
             >
               <Button variant={"ghost"}>Donwnload demo profile</Button>
