@@ -43,8 +43,8 @@ export const TagGroupFormField = <
       name={name}
       {...props}
       render={({ field }) => (
-        <FormItem className="space-y-3">
-          <div className="mb-4">
+        <FormItem className="space-y-2">
+          <div className="">
             <FormLabel className="text-base">{label}</FormLabel>
             {description && <FormDescription>{description}</FormDescription>}
           </div>

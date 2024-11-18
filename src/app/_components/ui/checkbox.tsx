@@ -43,6 +43,7 @@ const TagBadge = React.forwardRef<
     <div
       ref={ref}
       className={cn(
+        "text-sm",
         "inline-flex cursor-pointer select-none items-center justify-center rounded-full px-3 py-1",
         checked
           ? "bg-rose-500 text-rose-50 dark:bg-rose-50 dark:text-rose-900"
@@ -54,8 +55,8 @@ const TagBadge = React.forwardRef<
       onClick={handleClick}
       {...props}
     >
-      <span className="mr-1">{label}</span>
-      {checked && <Check className="h-4 w-4" />}
+      <span className="">{label}</span>
+      {/* {checked && <Check className="h-4 w-4" />} */}
     </div>
   );
 });

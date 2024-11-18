@@ -16,46 +16,89 @@ import { TagGroupFormField } from "@/app/_components/ui/formFields/TagGroupFormF
 import { Label } from "@/app/_components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/app/_components/ui/radio-group";
 import { Textarea } from "@/app/_components/ui/textarea";
+import useLocalStorage from "@/lib/hooks/useLocalStorage";
 import { cn } from "@/lib/utils";
+import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CheckCircleIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 const FormSchema = z.object({
-  starRating: z.number().min(1).max(5).nullish(),
+  experienceRating: z.number().min(1).max(5).nullable(),
   howDoTheResultsMakeYouFeel: z
     .enum(["happy", "sad", "neutral", "surprised", "disheartened"])
     .array(),
-  whichProductsWouldYouLikeToSee: z
-    .enum([
-      "more charts and stats",
-      "more comparisons",
-      "AI photos",
-      "dating tips",
-    ])
-    .array(),
+  // whichProductsWouldYouLikeToSee: z
+  //   .enum([
+  //     "more charts and stats",
+  //     "comparisons",
+  //     "AI photos",
+  //     "dating tips",
+  //     "hinge insights",
+  //     "bumble insights",
+  //   ])
+  //   .array(),
   wouldYouRecommend: z.enum(["yes", "no", "maybe"]).nullish(),
   otherTextFeedback: z.string(),
 });
 
-export function UserFeedback() {
+export function UserFeedback({ tinderId }: { tinderId: string }) {
+  const [feedbackSubmitted, setFeedbackSubmitted] = useLocalStorage(
+    "feedbackSubmitted",
+    false,
+  );
+
+  const submitFeedbackMutation = api.misc.submitFeedback.useMutation({
+    onSuccess: () => {
+      setFeedbackSubmitted(true);
+      toast.success("Feedback submitted");
+    },
+  });
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      starRating: null,
+      experienceRating: null,
       howDoTheResultsMakeYouFeel: [],
-      whichProductsWouldYouLikeToSee: [],
+      // whichProductsWouldYouLikeToSee: [],
       wouldYouRecommend: null,
       otherTextFeedback: "",
     },
   });
 
   const onSubmit = (values: z.infer<typeof FormSchema>) => {
-    console.log(values);
+    submitFeedbackMutation.mutate({
+      ...values,
+      tinderId: tinderId,
+    });
   };
 
+  if (false) {
+    return (
+      <Card.Container className="max-w-md">
+        <Card.Header>
+          <div className="mb-4 flex items-center justify-center">
+            <CheckCircleIcon className="text-primary h-16 w-16" />
+          </div>
+          <Card.Title className="text-center text-2xl sm:text-3xl">
+            Thank You for Your Feedback!
+          </Card.Title>
+        </Card.Header>
+        <Card.Content>
+          <p className="text-muted-foreground text-center">
+            We appreciate you taking the time to share your thoughts with us.
+            Your feedback is invaluable in helping us improve Swipestats.
+          </p>
+        </Card.Content>
+        <Card.Footer className="flex justify-center"></Card.Footer>
+      </Card.Container>
+    );
+  }
+
   return (
-    <Card.Container>
+    <Card.Container className="w-full max-w-md flex-shrink-0">
       <Card.Header>
         <Card.Title>How is your experience with Swipestats?</Card.Title>
         <Card.Description>
@@ -64,71 +107,16 @@ export function UserFeedback() {
       </Card.Header>
       <Card.Content>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <StarRatingFormField
-              label="How would you rate your experience with Swipestats?"
-              name="starRating"
-              options={[1, 2, 3, 4, 5]}
-            />
-            <div className="flex">
-              <div className="flex items-center gap-2">
-                <RadioGroupFormField
-                  label="Radio was your experience?"
-                  name="starRating"
-                  options={[
-                    { label: "", value: "1" },
-                    { label: "", value: "2" },
-                    { label: "", value: "3" },
-                    { label: "", value: "4" },
-                    { label: "", value: "5" },
-                  ]}
-                />
-              </div>
-            </div>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="">
+            <div className="mb-4 grid gap-4">
+              <StarRatingFormField
+                label="How would you rate your overall experience?"
+                name="experienceRating"
+                options={[1, 2, 3, 4, 5]}
+              />
 
-            <div className="grid gap-4">
               <div className="grid gap-2">
-                <Label htmlFor="helpful">Was our service helpful?</Label>
-                {/* <RadioGroup id="helpful" defaultValue="maybe">
-                  <div className="flex flex-wrap gap-2">
-                    <Label
-                      htmlFor="helpful-yes"
-                      className="bg-primary text-primary-foreground cursor-pointer rounded-full px-3 py-1"
-                    >
-                      <RadioGroupItem
-                        id="helpful-yes"
-                        value="yes"
-                        className="sr-only"
-                      />
-                      Yes
-                    </Label>
-                    <Label
-                      htmlFor="helpful-no"
-                      className="bg-primary text-primary-foreground cursor-pointer rounded-full px-3 py-1"
-                    >
-                      <RadioGroupItem
-                        id="helpful-no"
-                        value="no"
-                        className="sr-only"
-                      />
-                      No
-                    </Label>
-                    <Label
-                      htmlFor="helpful-maybe"
-                      className="bg-primary text-primary-foreground cursor-pointer rounded-full px-3 py-1"
-                    >
-                      <RadioGroupItem
-                        id="helpful-maybe"
-                        value="maybe"
-                        className="sr-only"
-                      />
-                      Maybe
-                    </Label>
-                  </div>
-                </RadioGroup> */}
-              </div>
-              <div className="grid gap-2">
-                {/* <TagGroupFormField
+                <TagGroupFormField
                   label="How do the results make you feel?"
                   name="howDoTheResultsMakeYouFeel"
                   options={[
@@ -138,57 +126,46 @@ export function UserFeedback() {
                     { label: "Surprised", value: "surprised" },
                     { label: "Disheartened", value: "disheartened" },
                   ]}
-                /> */}
+                />
               </div>
-              <div className="grid gap-2">
+
+              {/* Recommend */}
+              {/* <div className="space-y-2">
                 <Label htmlFor="recommend">
                   Would you recommend us to a friend?
                 </Label>
-                {/* <RadioGroup id="recommend" defaultValue="maybe">
-                  <div className="flex flex-wrap gap-2">
-                    <Label
-                      htmlFor="recommend-yes"
-                      className="bg-primary text-primary-foreground cursor-pointer rounded-full px-3 py-1"
-                    >
-                      <RadioGroupItem
-                        id="recommend-yes"
-                        value="yes"
-                        className="sr-only"
-                      />
-                      Yes
-                    </Label>
-                    <Label
-                      htmlFor="recommend-no"
-                      className="bg-primary text-primary-foreground cursor-pointer rounded-full px-3 py-1"
-                    >
-                      <RadioGroupItem
-                        id="recommend-no"
-                        value="no"
-                        className="sr-only"
-                      />
-                      No
-                    </Label>
-                    <Label
-                      htmlFor="recommend-maybe"
-                      className="bg-primary text-primary-foreground cursor-pointer rounded-full px-3 py-1"
-                    >
-                      <RadioGroupItem
-                        id="recommend-maybe"
-                        value="maybe"
-                        className="sr-only"
-                      />
-                      Maybe
-                    </Label>
+                <RadioGroup
+                  id="recommend"
+                  name="recommend"
+                  className="flex gap-4"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="yes" id="recommend-yes" />
+                    <Label htmlFor="recommend-yes">Yes</Label>
                   </div>
-                </RadioGroup> */}
-              </div>
-              <div className="grid gap-2">
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="no" id="recommend-no" />
+                    <Label htmlFor="recommend-no">No</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="maybe" id="recommend-maybe" />
+                    <Label htmlFor="recommend-maybe">Maybe</Label>
+                  </div>
+                </RadioGroup>
+              </div> */}
+
+              {/* <div className="grid gap-2">
                 <Label htmlFor="feedback">How can we improve?</Label>
-                {/* <Textarea id="feedback" placeholder="Enter your feedback" /> */}
-              </div>
+                <Textarea
+                  id="feedback"
+                  placeholder="Share your thoughts on how we can make Swipestats better..."
+                />
+              </div> */}
             </div>
-            <div className="flex justify-end">
-              <Button>Submit Feedback</Button>
+            <div className="flex">
+              <Button loading={submitFeedbackMutation.isPending}>
+                Submit Feedback
+              </Button>
             </div>
           </form>
         </Form>

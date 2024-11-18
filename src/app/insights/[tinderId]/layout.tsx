@@ -4,7 +4,7 @@ import {
   ToggleGroup,
   ToggleGroupItem,
 } from "@/app/_components/ui/toggle-group";
-import { ChartArea, ChartNetwork } from "lucide-react";
+import { ChartArea, ChartNetwork, MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -17,11 +17,11 @@ export default function InsightsLayout(props: {
   const activeTab = path.includes("flow") ? "flow" : "charts";
 
   return (
-    <div>
-      <h1 className="text-center text-6xl font-black">Insights</h1>
+    <div className="pt-12">
+      <h1 className="text-center text-5xl font-black">Swipestats</h1>
 
       <div className="mt-4">
-        <ToggleGroup value={activeTab} type="single">
+        <ToggleGroup value={activeTab} type="single" className="hidden">
           <Link href={`/insights/${props.params.tinderId}`}>
             <ToggleGroupItem
               value="charts"
@@ -38,6 +38,15 @@ export default function InsightsLayout(props: {
               className="flex gap-2"
             >
               <ChartNetwork className="h-4 w-4" /> <span>Flow</span>
+            </ToggleGroupItem>
+          </Link>
+          <Link href={`/insights/${props.params.tinderId}/messages`}>
+            <ToggleGroupItem
+              value="messages"
+              aria-label="Messages"
+              className="flex gap-2"
+            >
+              <MessageCircle className="h-4 w-4" /> <span>Messages</span>
             </ToggleGroupItem>
           </Link>
         </ToggleGroup>

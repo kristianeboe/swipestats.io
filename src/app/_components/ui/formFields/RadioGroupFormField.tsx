@@ -104,7 +104,7 @@ export const StarRatingFormField = <
       name={name}
       {...props}
       render={({ field }) => (
-        <FormItem className="space-y-3">
+        <FormItem className="space-y-2">
           <FormLabel>{label}</FormLabel>
           <FormControl>
             <div className="flex gap-1">

@@ -41,11 +41,11 @@ export default async function InsightsPage({
   }
 
   return (
-    <main className="container mx-auto px-6 pb-6 pt-12 md:pt-24">
+    <main className="container mx-auto px-6 pb-6 md:pt-12">
       <InsightsProvider myTinderProfile={swipestatsProfile}>
-        <h1 className="text-center text-6xl font-black">Swipestats</h1>
+        {/* <h1 className="text-center text-6xl font-black">Swipestats</h1>
 
-        <ComparisonForm tinderId={params.tinderId} />
+        <ComparisonForm tinderId={params.tinderId} /> */}
 
         <div className="grid grid-cols-1 gap-10">
           {/* <GraphCardUsage chartDataKey="matchRate" title="Match Rate" /> */}
@@ -56,8 +56,8 @@ export default async function InsightsPage({
             <GraphCardUsage chartDataKey="appOpens" title="App Opens" />
           </div>
 
-          <div className="flex gap-5">
-            <Card.Container>
+          <div className="flex flex-wrap gap-5 xl:flex-nowrap">
+            <Card.Container className="w-full">
               <Card.Header>
                 <Card.Title>Messages meta</Card.Title>
               </Card.Header>
@@ -133,10 +133,10 @@ export default async function InsightsPage({
                       ?.percentageOfOneMessageConversations + "%"
                   }
                 />
-                <AddMetricCard />
+                {/* <AddMetricCard /> */}
               </Card.Content>
             </Card.Container>
-            <UserFeedback />
+            <UserFeedback tinderId={params.tinderId} />
           </div>
 
           <div className="grid gap-10 md:grid-cols-2">
@@ -183,7 +183,17 @@ function MessagesMetaCard(props: {
 }
 
 export async function generateStaticParams() {
-  const tinderProfiles = await db.tinderProfile.findMany();
+  const tinderProfiles = await db.tinderProfile.findMany({
+    where: {
+      computed: false,
+      profileMeta: {
+        NOT: undefined,
+      },
+      customData: {
+        NOT: undefined,
+      },
+    },
+  });
 
   return tinderProfiles.map((tinderProfile) => {
     return { tinderId: tinderProfile.tinderId };
