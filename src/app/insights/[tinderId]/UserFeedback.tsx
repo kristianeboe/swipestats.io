@@ -84,7 +84,7 @@ export function UserFeedback({ tinderId }: { tinderId: string }) {
 
   if (feedbackSubmitted) {
     return (
-      <Card.Container className="max-w-md">
+      <Card.Container className="w-full flex-shrink-0 xl:max-w-md">
         <Card.Header>
           <div className="mb-4 flex items-center justify-center">
             <CheckCircleIcon className="text-primary h-16 w-16" />
@@ -105,7 +105,7 @@ export function UserFeedback({ tinderId }: { tinderId: string }) {
   }
 
   return (
-    <Card.Container className="w-full max-w-md flex-shrink-0">
+    <Card.Container className="w-full flex-shrink-0 xl:max-w-md">
       <Card.Header>
         <Card.Title>How is your experience with Swipestats?</Card.Title>
         <Card.Description>
