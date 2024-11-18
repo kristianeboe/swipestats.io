@@ -11,8 +11,8 @@ const FeedbackSchema = z.object({
   howDoTheResultsMakeYouFeel: z
     .enum(["happy", "sad", "neutral", "surprised", "disheartened"])
     .array(),
-  wouldYouRecommend: z.enum(["yes", "no", "maybe"]).nullish(),
-  otherTextFeedback: z.string(),
+  //   wouldYouRecommend: z.enum(["yes", "no", "maybe"]).nullish(),
+  //   otherTextFeedback: z.string(),
 });
 
 export const miscRouter = createTRPCRouter({
@@ -28,15 +28,15 @@ export const miscRouter = createTRPCRouter({
           {
             rating: input.experienceRating,
             feelings: input.howDoTheResultsMakeYouFeel.join(", "),
-            wouldRecommend: input.wouldYouRecommend,
-            feedback: input.otherTextFeedback,
+            // wouldRecommend: input.wouldYouRecommend,
+            // feedback: input.otherTextFeedback,
           },
         );
 
         void analyticsTrackServer(input.tinderId, "Feedback Submitted", {
           rating: input.experienceRating,
           feelings: input.howDoTheResultsMakeYouFeel,
-          wouldRecommend: input.wouldYouRecommend,
+          // wouldRecommend: input.wouldYouRecommend,
         });
 
         return { success: true };

@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircleIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -40,19 +41,25 @@ const FormSchema = z.object({
   //     "bumble insights",
   //   ])
   //   .array(),
-  wouldYouRecommend: z.enum(["yes", "no", "maybe"]).nullish(),
-  otherTextFeedback: z.string(),
+  // wouldYouRecommend: z.enum(["yes", "no", "maybe"]).nullish(),
+  // otherTextFeedback: z.string(),
 });
 
 export function UserFeedback({ tinderId }: { tinderId: string }) {
-  const [feedbackSubmitted, setFeedbackSubmitted] = useLocalStorage(
+  const [feedbackSubmittedLocal, setFeedbackSubmittedLocal] = useLocalStorage(
     "feedbackSubmitted",
     false,
   );
 
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+
+  useEffect(() => {
+    setFeedbackSubmitted(feedbackSubmittedLocal);
+  }, [feedbackSubmittedLocal]);
+
   const submitFeedbackMutation = api.misc.submitFeedback.useMutation({
     onSuccess: () => {
-      setFeedbackSubmitted(true);
+      setFeedbackSubmittedLocal(true);
       toast.success("Feedback submitted");
     },
   });
@@ -63,8 +70,8 @@ export function UserFeedback({ tinderId }: { tinderId: string }) {
       experienceRating: null,
       howDoTheResultsMakeYouFeel: [],
       // whichProductsWouldYouLikeToSee: [],
-      wouldYouRecommend: null,
-      otherTextFeedback: "",
+      // wouldYouRecommend: null,
+      // otherTextFeedback: "",
     },
   });
 
@@ -75,7 +82,7 @@ export function UserFeedback({ tinderId }: { tinderId: string }) {
     });
   };
 
-  if (false) {
+  if (feedbackSubmitted) {
     return (
       <Card.Container className="max-w-md">
         <Card.Header>
