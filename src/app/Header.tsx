@@ -6,7 +6,7 @@ import { SwipestatsLogo } from "@/svg/logos/SwipestatsLogo";
 const navigation: { name: string; href: string }[] = [
   // { name: "Product", href: "#" },
   { name: "How it works", href: "/#how-it-works" },
-  { name: "Reserach and blog datasets", href: "/#pricing" },
+  { name: "Research and blog datasets", href: "/#pricing" },
   { name: "In the news", href: "/#blog" },
   { name: "Blog", href: "/blog" },
   { name: "AI Dating Photos", href: "/ai-dating-photos" },
