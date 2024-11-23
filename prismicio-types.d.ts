@@ -2413,12 +2413,150 @@ export type HeroSectionSliceWithAngledImageOnRight =
   >;
 
 /**
+ * Primary content in *HeroSection → simple → Primary*
+ */
+export interface HeroSectionSliceSimplePrimary {
+  /**
+   * Title field in *HeroSection → simple → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.simple.primary.title
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * Rich Description field in *HeroSection → simple → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.simple.primary.rich_description
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  rich_description: prismic.RichTextField;
+
+  /**
+   * PrimaryCtaButtonText field in *HeroSection → simple → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.simple.primary.primaryctabuttontext
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  primaryctabuttontext: prismic.KeyTextField;
+
+  /**
+   * PrimaryCtaButtonHref field in *HeroSection → simple → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.simple.primary.primaryctabuttonhref
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  primaryctabuttonhref: prismic.LinkField;
+
+  /**
+   * Image1 field in *HeroSection → simple → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.simple.primary.image1
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image1: prismic.ImageField<never>;
+}
+
+/**
+ * simple variation for HeroSection Slice
+ *
+ * - **API ID**: `simple`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type HeroSectionSliceSimple = prismic.SharedSliceVariation<
+  "simple",
+  Simplify<HeroSectionSliceSimplePrimary>,
+  never
+>;
+
+/**
+ * Primary content in *HeroSection → simpleimageleft → Primary*
+ */
+export interface HeroSectionSliceSimpleimageleftPrimary {
+  /**
+   * Title field in *HeroSection → simpleimageleft → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.simpleimageleft.primary.title
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  title: prismic.KeyTextField;
+
+  /**
+   * Rich Description field in *HeroSection → simpleimageleft → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.simpleimageleft.primary.rich_description
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  rich_description: prismic.RichTextField;
+
+  /**
+   * PrimaryCtaButtonText field in *HeroSection → simpleimageleft → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.simpleimageleft.primary.primaryctabuttontext
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  primaryctabuttontext: prismic.KeyTextField;
+
+  /**
+   * PrimaryCtaButtonHref field in *HeroSection → simpleimageleft → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.simpleimageleft.primary.primaryctabuttonhref
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  primaryctabuttonhref: prismic.LinkField;
+
+  /**
+   * Image1 field in *HeroSection → simpleimageleft → Primary*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: hero_section.simpleimageleft.primary.image1
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image1: prismic.ImageField<never>;
+}
+
+/**
+ * simpleimageleft variation for HeroSection Slice
+ *
+ * - **API ID**: `simpleimageleft`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type HeroSectionSliceSimpleimageleft = prismic.SharedSliceVariation<
+  "simpleimageleft",
+  Simplify<HeroSectionSliceSimpleimageleftPrimary>,
+  never
+>;
+
+/**
  * Slice variation for *HeroSection*
  */
 type HeroSectionSliceVariation =
   | HeroSectionSliceDefault
   | HeroSectionSliceWithRichText
-  | HeroSectionSliceWithAngledImageOnRight;
+  | HeroSectionSliceWithAngledImageOnRight
+  | HeroSectionSliceSimple
+  | HeroSectionSliceSimpleimageleft;
 
 /**
  * HeroSection Shared Slice
@@ -3749,10 +3887,14 @@ declare module "@prismicio/client" {
       HeroSectionSliceDefaultPrimary,
       HeroSectionSliceWithRichTextPrimary,
       HeroSectionSliceWithAngledImageOnRightPrimary,
+      HeroSectionSliceSimplePrimary,
+      HeroSectionSliceSimpleimageleftPrimary,
       HeroSectionSliceVariation,
       HeroSectionSliceDefault,
       HeroSectionSliceWithRichText,
       HeroSectionSliceWithAngledImageOnRight,
+      HeroSectionSliceSimple,
+      HeroSectionSliceSimpleimageleft,
       ImageSectionSlice,
       ImageSectionSliceDefaultPrimary,
       ImageSectionSliceVariation,

@@ -1,5 +1,6 @@
 import { Button } from "@/app/_components/ui/button";
 import { SLink } from "@/app/_components/ui/SLink";
+import { cn } from "@/lib/utils";
 import { getPrismicLinkUrl } from "@/lib/utils/prismic.utils";
 import { type Content } from "@prismicio/client";
 import { PrismicRichText, type SliceComponentProps } from "@prismicio/react";
@@ -14,6 +15,47 @@ export type HeroSectionProps = SliceComponentProps<Content.HeroSectionSlice>;
  * Component for "HeroSection" Slices.
  */
 const HeroSection = ({ slice }: HeroSectionProps): JSX.Element => {
+  if (slice.variation === "simple" || slice.variation === "simpleimageleft") {
+    return (
+      <section
+        data-slice-type={slice.slice_type}
+        data-slice-variation={slice.variation}
+        className="relative isolate"
+      >
+        <div className="mx-auto max-w-7xl">
+          <div
+            className={cn("grid grid-cols-1 items-center gap-8 lg:grid-cols-2")}
+          >
+            <div className="relative h-full w-full">
+              <img
+                src={slice.primary.image1?.url ?? "/default-image.jpg"}
+                alt={slice.primary.image1?.alt ?? "Photographer with camera"}
+                className="h-full w-full rounded-lg object-cover"
+              />
+            </div>
+            <div className="flex flex-col py-16">
+              <h2 className="text-center text-3xl font-bold text-gray-900">
+                {slice.primary.title}
+              </h2>
+              <div className="prose mt-6 text-lg leading-8 sm:max-w-md lg:max-w-none">
+                <PrismicRichText field={slice.primary.rich_description} />
+              </div>
+              {slice.primary.primaryctabuttontext && (
+                <div className="flex justify-center">
+                  <SLink
+                    href={getPrismicLinkUrl(slice.primary.primaryctabuttonhref)}
+                    className="mt-6 inline-block rounded bg-rose-600 px-4 py-2 text-white hover:bg-rose-700"
+                  >
+                    {slice.primary.primaryctabuttontext}
+                  </SLink>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
   if (slice.variation === "withAngledImageOnRight") {
     return (
       <section
