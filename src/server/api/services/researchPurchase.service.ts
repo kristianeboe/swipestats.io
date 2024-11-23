@@ -14,7 +14,10 @@ export async function getRandomTinderProfileIds(
   return tinderIds.map((tinderId) => tinderId.tinderId);
 }
 
-export async function getRandomTinderProfiles(n: number, excludeIds: string[]) {
+export async function getRandomTinderProfiles(
+  n: number,
+  excludeIds: string[] = [],
+) {
   const tinderIds: string[] = await getRandomTinderProfileIds(n, excludeIds);
 
   const tinderProfiles = await db.tinderProfile.findMany({
@@ -25,6 +28,12 @@ export async function getRandomTinderProfiles(n: number, excludeIds: string[]) {
     },
     include: {
       profileMeta: true,
+      usage: true,
+      matches: {
+        include: {
+          messages: true,
+        },
+      },
     },
   });
 
