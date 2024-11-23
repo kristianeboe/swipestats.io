@@ -54,6 +54,7 @@ export const profileRouter = createTRPCRouter({
               dateStamp: "asc",
             },
           },
+          customData: true,
         },
       });
 
@@ -83,6 +84,7 @@ export const profileRouter = createTRPCRouter({
         include: {
           profileMeta: true,
           usage: true,
+          customData: true,
         },
       });
 
