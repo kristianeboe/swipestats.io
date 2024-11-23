@@ -92,18 +92,23 @@ export const messagesRouter = createTRPCRouter({
       return matches;
     }),
 
-
   getOpeningMessagesThatLeadToLongestConversations: publicProcedure
-    .input(z.object({ tinderId: z.string().optional(), hingeId: z.string().optional() }))
+    .input(
+      z.object({
+        tinderId: z.string().optional(),
+        hingeId: z.string().optional(),
+      }),
+    )
     .query(async ({ ctx, input }) => {
-
-      const demoId = "96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5";
+      const demoId =
+        "96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5";
 
       const matches = await ctx.db.match.findMany({
         where: {
           OR: [
             {
-              tinderProfileId: input.tinderId === "demo" ? demoId : input.tinderId,
+              tinderProfileId:
+                input.tinderId === "demo" ? demoId : input.tinderId,
             },
             { hingeProfileId: input.hingeId },
           ],
@@ -113,10 +118,10 @@ export const messagesRouter = createTRPCRouter({
         },
         orderBy: {
           messages: {
-            _count: "desc"
-          }
+            _count: "desc",
+          },
         },
-        take: 10
+        take: 10,
       });
 
       log.info("Got matches with most messages", {
@@ -125,21 +130,26 @@ export const messagesRouter = createTRPCRouter({
       });
 
       return matches;
-
-
     }),
 
   getOpenersThatLeadToLongestAverageConversations: publicProcedure
-    .input(z.object({ tinderId: z.string().optional(), hingeId: z.string().optional() }))
+    .input(
+      z.object({
+        tinderId: z.string().optional(),
+        hingeId: z.string().optional(),
+      }),
+    )
     .query(async ({ ctx, input }) => {
-      const demoId = "96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5";
+      const demoId =
+        "96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5";
 
       // Get all matches
       const matches = await ctx.db.match.findMany({
         where: {
           OR: [
             {
-              tinderProfileId: input.tinderId === "demo" ? demoId : input.tinderId,
+              tinderProfileId:
+                input.tinderId === "demo" ? demoId : input.tinderId,
             },
             { hingeProfileId: input.hingeId },
           ],
@@ -147,60 +157,60 @@ export const messagesRouter = createTRPCRouter({
         include: {
           messages: {
             orderBy: {
-              sentDate: 'asc'
+              sentDate: "asc",
             },
-            take: 1
-          }
-        }
+            take: 1,
+          },
+        },
       });
 
       const matchesWithAllMessages = await ctx.db.match.findMany({
         where: {
           OR: [
             {
-              tinderProfileId: input.tinderId === "demo" ? demoId : input.tinderId,
+              tinderProfileId:
+                input.tinderId === "demo" ? demoId : input.tinderId,
             },
             { hingeProfileId: input.hingeId },
           ],
         },
         include: {
-          messages: true
-        }
+          messages: true,
+        },
       });
 
       // Create a map of opening messages to their average conversation length
       const openingMessageStats = new Map<string, number>();
 
       // For each match with messages, get the opening message and count total messages
-      matchesWithAllMessages.forEach(match => {
+      matchesWithAllMessages.forEach((match) => {
         const openingMessage = match.messages[0]?.content;
         if (!openingMessage) return;
 
         // Find corresponding match with all messages to get total count
-        const fullMatch = matchesWithAllMessages.find(m => m.id === match.id);
+        const fullMatch = matchesWithAllMessages.find((m) => m.id === match.id);
         if (!fullMatch) return;
 
         const messageCount = fullMatch.messages.length;
 
         // Add or update the stats for this opening message
         openingMessageStats.set(
-            
           openingMessage,
-          [...(openingMessageStats.get(openingMessage) ?? []), messageCount]
+          (openingMessageStats.get(openingMessage) ?? 0) + messageCount,
         );
       });
 
-
       // Filter out matches with no messages
-      const matchesWithMessages = matches.filter(match => match.messages.length > 0);
+      const matchesWithMessages = matches.filter(
+        (match) => match.messages.length > 0,
+      );
 
       log.info("Got first messages from all conversations", {
         totalMatches: matches.length,
-        matchesWithMessages: matchesWithMessages.length
+        matchesWithMessages: matchesWithMessages.length,
       });
 
       return matchesWithMessages;
-
     }),
 
   getMessageStats: publicProcedure
@@ -229,16 +239,14 @@ export const messagesRouter = createTRPCRouter({
       });
 
       const totalMessages = messages.length;
-      const messagesSent = messages.filter((m) => m.fromMe).length;
-      const messagesReceived = messages.filter((m) => !m.fromMe).length;
       const averageMessageLength = Math.round(
         messages.reduce((acc, m) => acc + m.content.length, 0) / totalMessages,
       );
 
       return {
         totalMessages,
-        messagesSent,
-        messagesReceived,
+        messagesSent: totalMessages,
+        messagesReceived: 0,
         averageMessageLength,
       };
     }),

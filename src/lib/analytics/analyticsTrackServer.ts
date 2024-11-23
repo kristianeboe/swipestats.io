@@ -3,10 +3,9 @@ import { track } from "@vercel/analytics/server";
 import type {
   AnalyticsEventName,
   AnalyticsEventProperties,
+  VercelAllowedPropertyValues,
 } from "../interfaces/utilInterfaces";
 import PostHogClient from "./posthog";
-
-type VercelAllowedPropertyValues = string | number | boolean | null;
 
 export async function analyticsTrackServer(
   userId: string,

@@ -75,3 +75,5 @@ export type AnalyticsEventProperties = Record<
   string,
   string | number | boolean | null | string[] | undefined
 >;
+
+export type VercelAllowedPropertyValues = string | number | boolean | null;
