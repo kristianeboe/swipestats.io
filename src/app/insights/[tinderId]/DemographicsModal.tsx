@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent } from "@/app/_components/ui/card";
-import { Ghost, InfoIcon, PlusCircleIcon } from "lucide-react";
+import { Ghost, InfoIcon, LockIcon, PlusCircleIcon } from "lucide-react";
 import { Badge } from "@/app/_components/ui/badge";
 import { useState } from "react";
 import { Modal } from "@/app/_components/ui/Modal";
@@ -49,7 +49,7 @@ export default function DemographicsModal() {
 
 export function DemographicsSections() {
   const { profiles } = useInsightsProvider();
-  const purchasedLevel = null;
+  const purchasedLevel = "basic";
 
   return (
     <div className="space-y-6">
@@ -99,9 +99,11 @@ export function DemographicsSections() {
                       age: { min: 18, max: 100 },
                       interestedInAge: { min: 18, max: 100 },
                     }}
+                    accentColor="green"
                   />
                   <DemographicsCard
                     comparisonId="average-FEMALE-MALE-all-1"
+                    requiredTier="elite"
                     data={{
                       title: "Women interested in Men",
                       location: "Global",
@@ -110,6 +112,7 @@ export function DemographicsSections() {
                       age: { min: 18, max: 100 },
                       interestedInAge: { min: 18, max: 100 },
                     }}
+                    accentColor="pink"
                   />
                 </div>
               </div>
@@ -376,6 +379,7 @@ import {
   AlertTitle,
 } from "@/app/_components/ui/alert";
 import { Button } from "@/app/_components/ui/button";
+import Link from "next/link";
 
 function formatAge(age: number | { min: number; max: number }): string {
   if (typeof age === "number") {
@@ -399,17 +403,28 @@ export function DemographicsCard({
   data,
   accentColor = "blue",
   comparisonId,
+  requiredTier = "free",
 }: {
   data: DemographicData;
   accentColor?: string;
   comparisonId: string;
+  requiredTier?: "free" | "basic" | "premium" | "elite";
 }) {
   const [loading, setLoading] = useState(false);
   const { addComparisonId, removeComparisonId, profiles } =
     useInsightsProvider();
   const selected = profiles.some((p) => p.tinderId === comparisonId);
+  const purchasedLevel = null;
+
+  const hasAccess = purchasedLevel
+    ? getTierLevel(purchasedLevel) >= getTierLevel(requiredTier)
+    : requiredTier === "free";
 
   const handleClick = () => {
+    if (!hasAccess) {
+      return;
+    }
+
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
@@ -418,7 +433,7 @@ export function DemographicsCard({
       } else {
         addComparisonId({ comparisonId });
       }
-    }, 3000);
+    }, 1000);
   };
 
   return (
@@ -426,13 +441,13 @@ export function DemographicsCard({
       className={`relative w-full max-w-md cursor-pointer overflow-hidden bg-gray-50 shadow-lg transition-all duration-300 hover:shadow-xl dark:bg-gray-800 ${
         selected ? "scale-[1.02] ring-2 ring-blue-500" : "hover:scale-[1.01]"
       }`}
-      onClick={handleClick}
     >
       {loading && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/50 backdrop-blur-sm">
+        <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/50 backdrop-blur-sm">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-blue-500" />
         </div>
       )}
+
       <Card.Header className="flex flex-row items-center justify-between space-y-0 bg-gray-200 p-4 dark:bg-gray-700">
         <Card.Title className="text-xl font-bold text-gray-800 dark:text-gray-100">
           {data.title}
@@ -443,6 +458,7 @@ export function DemographicsCard({
           )}`}
         />
       </Card.Header>
+
       <Card.Content className="grid gap-3 p-4">
         <InfoItem
           icon={MapPin}
@@ -476,8 +492,44 @@ export function DemographicsCard({
           />
         </div>
       </Card.Content>
+
+      <Card.Footer className="p-4">
+        {!hasAccess ? (
+          <Link href="/pricing" className="block w-full">
+            <Button
+              variant="default"
+              className="w-full bg-gradient-to-br from-blue-500 to-blue-600"
+            >
+              <LockIcon className="mr-2 h-4 w-4" />
+              {requiredTier.charAt(0).toUpperCase() +
+                requiredTier.slice(1)}{" "}
+              Required - Upgrade Now
+            </Button>
+          </Link>
+        ) : (
+          <Button
+            className="w-full"
+            variant={selected ? "secondary" : "default"}
+            onClick={handleClick}
+            disabled={loading}
+          >
+            {selected ? "Remove Comparison" : "Apply Demographic"}
+          </Button>
+        )}
+      </Card.Footer>
     </Card.Container>
   );
+}
+
+// Helper function to compare tier levels
+function getTierLevel(tier: string): number {
+  const levels = {
+    free: 0,
+    basic: 1,
+    premium: 2,
+    elite: 3,
+  };
+  return levels[tier as keyof typeof levels] || 0;
 }
 
 function InfoItem({
