@@ -153,7 +153,7 @@ interface Coords {
   lon: number;
 }
 
-interface City {
+export interface City {
   name: string;
   region: string;
   coords: Coords;

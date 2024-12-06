@@ -45,7 +45,9 @@ export const TagGroupFormField = <
       render={({ field }) => (
         <FormItem className="space-y-2">
           <div className="">
-            <FormLabel className="text-base">{label}</FormLabel>
+            <FormLabel className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              {label}
+            </FormLabel>
             {description && <FormDescription>{description}</FormDescription>}
           </div>
           <div className="flex flex-wrap gap-2">

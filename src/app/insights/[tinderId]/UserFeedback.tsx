@@ -16,7 +16,7 @@ import { TagGroupFormField } from "@/app/_components/ui/formFields/TagGroupFormF
 import { Label } from "@/app/_components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/app/_components/ui/radio-group";
 import { Textarea } from "@/app/_components/ui/textarea";
-import useLocalStorage from "@/lib/hooks/useLocalStorage";
+import { useLocalStorage } from "@/lib/hooks/useLocalStorage";
 import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";

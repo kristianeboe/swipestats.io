@@ -1,26 +1,33 @@
-"use client";
-
 import {
   ToggleGroup,
   ToggleGroupItem,
 } from "@/app/_components/ui/toggle-group";
 import { ChartArea, ChartNetwork, MessageCircle } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { notFound, usePathname } from "next/navigation";
+import { InsightsProvider } from "./InsightsProvider";
+import { api } from "@/trpc/server";
+import Profiles from "./Profiles";
 
-export default function InsightsLayout(props: {
+export default async function InsightsLayout(props: {
   params: { tinderId: string };
   children: React.ReactNode;
 }) {
-  const path = usePathname();
+  const swipestatsProfile = await api.profile.get({
+    tinderId: props.params.tinderId,
+  });
 
-  const activeTab = path.includes("flow") ? "flow" : "charts";
+  if (!swipestatsProfile) {
+    notFound();
+  }
 
   return (
     <div className="pt-12">
       <h1 className="text-center text-5xl font-black">Swipestats</h1>
-
-      <div className="mt-4">
+      <div>Compare</div>
+      <InsightsProvider myTinderProfile={swipestatsProfile}>
+        
+        {/* <div className="mt-4">
         <ToggleGroup value={activeTab} type="single" className="hidden">
           <Link href={`/insights/${props.params.tinderId}`}>
             <ToggleGroupItem
@@ -50,8 +57,8 @@ export default function InsightsLayout(props: {
             </ToggleGroupItem>
           </Link>
         </ToggleGroup>
-      </div>
-      {/* <div>
+      </div> */}
+        {/* <div>
         <Tabs.Root value={activeTab} className="">
           <Tabs.List>
             <Link href={`/insights/${props.params.tinderId}`}>
@@ -60,10 +67,14 @@ export default function InsightsLayout(props: {
             <Link href={`/insights/${props.params.tinderId}/flow`}>
               <Tabs.Trigger value="flow">Flow</Tabs.Trigger>
             </Link>
+            <Link href={`/insights/${props.params.tinderId}/settings`}>
+              <Tabs.Trigger value="flow">Settings</Tabs.Trigger>
+            </Link>
           </Tabs.List>
         </Tabs.Root>
       </div> */}
-      <div>{props.children}</div>
+        <div>{props.children}</div>
+      </InsightsProvider>
     </div>
   );
 }

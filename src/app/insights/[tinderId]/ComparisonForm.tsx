@@ -3,59 +3,29 @@
 import { Button } from "@/app/_components/ui/button";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+
 import { z } from "zod";
+import { useInsightsProvider } from "./InsightsProvider";
 
 const FormSchema = z.object({
   comparisonId: z.string(),
 });
 
 export function ComparisonForm(props: { tinderId: string }) {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
+
+  const { addComparisonId } = useInsightsProvider();
 
   //   const comparisonProfilesQuery = api.profile.compare.useQuery({
   //     tinderId: props.tinderId,
   //     comparisonIds: [],
   //   });
 
-  function addComparisonId(data: { comparisonId: string }) {
-    // now you got a read/write object
-    const current = new URLSearchParams(Array.from(searchParams.entries())); // -> has to use this form
-    const comparisonIdsQueryParam = current.get("comparisonIds");
-    const existingComparisonIds = comparisonIdsQueryParam?.split(",");
-
-    if (data.comparisonId === props.tinderId) {
-      toast("You are trying to compare with yourself");
-      return;
-    }
-
-    if (existingComparisonIds?.includes(data.comparisonId)) {
-      toast("You are already comparing with this id");
-      return;
-    }
-
-    // update as necessary
-    const newComparisonIds = existingComparisonIds
-      ? `${existingComparisonIds.join(",")},${data.comparisonId}`
-      : data.comparisonId;
-
-    const query = `?comparisonIds=${newComparisonIds}`;
-    console.log({
-      existingComparisonIds,
-      newComparisonIds,
-      query,
-    });
-
-    // current.set("comparisonIds", newComparisonIds);
-
-    router.push(`${pathname}${query}`);
+  function handleAddComparisonId(data: { comparisonId: string }) {
+    addComparisonId(data);
     form.reset();
   }
 
@@ -63,7 +33,7 @@ export function ComparisonForm(props: { tinderId: string }) {
     <div>
       <form
         className="mx-auto my-6 flex w-full max-w-lg flex-col justify-center sm:flex-row"
-        onSubmit={form.handleSubmit(addComparisonId)}
+        onSubmit={form.handleSubmit(handleAddComparisonId)}
       >
         <label className="sr-only mb-1 text-gray-500" htmlFor="comparisonId">
           Compare with another Swipestats Id

@@ -6,9 +6,10 @@ import { api } from "@/trpc/react";
 import { type CustomData } from "@prisma/client";
 // import { type TinderUsage } from "@prisma/client";
 
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
+import { toast } from "sonner";
 
 const [useInsightsProvider, InsightsContextProvider] = createGenericContext<{
   myTinderId: string;
@@ -18,6 +19,8 @@ const [useInsightsProvider, InsightsContextProvider] = createGenericContext<{
   // usageByProfile: Record<string, Record<string, TinderUsage>>;
 
   loading: boolean;
+  addComparisonId: (data: { comparisonId: string }) => void;
+  removeComparisonId: (data: { comparisonId: string }) => void;
 }>();
 
 function InsightsProvider(props: {
@@ -60,6 +63,54 @@ function InsightsProvider(props: {
   //   );
   // }, [profiles]);
 
+  const router = useRouter();
+  const pathname = usePathname();
+  function addComparisonId(data: { comparisonId: string }) {
+    // now you got a read/write object
+    const current = new URLSearchParams(Array.from(searchParams.entries())); // -> has to use this form
+    const comparisonIdsQueryParam = current.get("comparisonIds");
+    const existingComparisonIds = comparisonIdsQueryParam?.split(",");
+
+    if (data.comparisonId === props.myTinderProfile.tinderId) {
+      toast("You are trying to compare with yourself");
+      return;
+    }
+
+    if (existingComparisonIds?.includes(data.comparisonId)) {
+      toast("You are already comparing with this id");
+      return;
+    }
+
+    // update as necessary
+    const newComparisonIds = existingComparisonIds
+      ? `${existingComparisonIds.join(",")},${data.comparisonId}`
+      : data.comparisonId;
+
+    const query = `?comparisonIds=${newComparisonIds}`;
+    console.log({
+      existingComparisonIds,
+      newComparisonIds,
+      query,
+    });
+
+    // current.set("comparisonIds", newComparisonIds);
+
+    router.push(`${pathname}${query}`);
+  }
+
+  function removeComparisonId(data: { comparisonId: string }) {
+    const current = new URLSearchParams(Array.from(searchParams.entries()));
+    const comparisonIdsQueryParam = current.get("comparisonIds");
+    const existingComparisonIds = comparisonIdsQueryParam?.split(",") ?? [];
+
+    const newComparisonIds = existingComparisonIds
+      .filter((id) => id !== data.comparisonId)
+      .join(",");
+
+    const query = newComparisonIds ? `?comparisonIds=${newComparisonIds}` : "";
+    router.push(`${pathname}${query}`);
+  }
+
   return (
     <InsightsContextProvider
       value={{
@@ -69,6 +120,8 @@ function InsightsProvider(props: {
         loading,
         profiles,
         // usageByProfile,
+        addComparisonId,
+        removeComparisonId,
       }}
     >
       {props.children}

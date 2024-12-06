@@ -41,7 +41,7 @@ async function main() {
         `Processing demographic: gender=${gender}, interestedIn=${interestedIn}`,
       );
       for (const ageRange of ageRanges) {
-        const demographicId = `average-${gender}-${interestedIn}-${ageRange.label}-1`;
+        const demographicId = `average-${gender}-${interestedIn}-${ageRange.label}`;
         log.debug(
           `Processing age range: ${ageRange.label} (${ageRange.min}-${ageRange.max})`,
           demographicId,
