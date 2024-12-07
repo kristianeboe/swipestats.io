@@ -1,9 +1,17 @@
 "use client";
 
 import { Card, CardContent } from "@/app/_components/ui/card";
-import { Ghost, InfoIcon, LockIcon, PlusCircleIcon } from "lucide-react";
+import {
+  CheckIcon,
+  Ghost,
+  InfoIcon,
+  LockIcon,
+  PlusCircleIcon,
+  RainbowIcon,
+  SearchIcon,
+} from "lucide-react";
 import { Badge } from "@/app/_components/ui/badge";
-import { useState } from "react";
+import { type SetStateAction, type Dispatch, useState } from "react";
 import { Modal } from "@/app/_components/ui/Modal";
 import { Globe2, Crown, MapPin, Calendar, Sparkles } from "lucide-react";
 import { Tabs } from "@/app/_components/ui/tabs";
@@ -40,6 +48,7 @@ export default function DemographicsModal() {
         onClose={() => setShowModal(false)}
         title="Demographics"
         size="lg"
+        scrollable
       >
         <DemographicsSections />
       </Modal>
@@ -49,18 +58,24 @@ export default function DemographicsModal() {
 
 export function DemographicsSections() {
   const { profiles } = useInsightsProvider();
-  const purchasedLevel = "basic";
+  const purchasedLevel = null;
+  const [selectedTab, setSelectedTab] = useState("free");
 
   return (
     <div className="space-y-6">
-      <Tabs.Root defaultValue="free" className="w-full">
+      <Tabs.Root
+        defaultValue="free"
+        value={selectedTab}
+        onValueChange={setSelectedTab}
+        className="w-full"
+      >
         <Tabs.List className="grid grid-cols-5">
           <Tabs.Trigger value="free" className="flex items-center gap-2">
             <Globe2 className="h-4 w-4" />
             Free
           </Tabs.Trigger>
           <Tabs.Trigger value="premium" className="flex items-center gap-2">
-            <Crown className="h-4 w-4" />
+            <Sparkles className="h-4 w-4" />
             Premium
           </Tabs.Trigger>
           <Tabs.Trigger value="location" className="flex items-center gap-2">
@@ -72,7 +87,7 @@ export function DemographicsSections() {
             Age
           </Tabs.Trigger>
           <Tabs.Trigger value="plus" className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4" />
+            <Crown className="h-4 w-4" />
             Swipestats+
           </Tabs.Trigger>
         </Tabs.List>
@@ -88,7 +103,7 @@ export function DemographicsSections() {
             <div className="grid gap-4">
               <div className="space-y-2">
                 <h3 className="font-medium">Global averages</h3>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <DemographicsCard
                     comparisonId="average-MALE-FEMALE-all-1"
                     data={{
@@ -100,6 +115,7 @@ export function DemographicsSections() {
                       interestedInAge: { min: 18, max: 100 },
                     }}
                     accentColor="green"
+                    selectTab={setSelectedTab}
                   />
                   <DemographicsCard
                     comparisonId="average-FEMALE-MALE-all-1"
@@ -113,10 +129,19 @@ export function DemographicsSections() {
                       interestedInAge: { min: 18, max: 100 },
                     }}
                     accentColor="pink"
+                    selectTab={setSelectedTab}
                   />
                 </div>
               </div>
             </div>
+            <Alert>
+              <RainbowIcon className="h-4 w-4" />
+              <AlertTitle>About LGTBQ+ Demographics</AlertTitle>
+              <AlertDescription>
+                LGTBQ+ demographics are not available yet due to limited data.
+                Spread the word about Swipestats and help us change that!
+              </AlertDescription>
+            </Alert>
           </div>
         </Tabs.Content>
 
@@ -247,116 +272,18 @@ export function DemographicsSections() {
         </Tabs.Content>
 
         <Tabs.Content value="plus" className="space-y-4">
-          {!purchasedLevel ? (
-            <Card.Container>
-              <Card.Header>
-                <Card.Title>Available Profile Upgrades</Card.Title>
-                <Card.Description>
-                  One-time purchases to permanently upgrade your profile
-                </Card.Description>
-              </Card.Header>
-              <Card.Content className="grid gap-4">
-                <div className="grid grid-cols-3 gap-4">
-                  <Card.Container>
-                    <Card.Header>
-                      <Card.Title className="text-lg">Basic</Card.Title>
-                      <Badge>$9.99</Badge>
-                    </Card.Header>
-                    <Card.Content className="space-y-4">
-                      <p className="text-2xl font-bold">Level 1</p>
-                      <ul className="space-y-2 text-sm">
-                        <li>✓ Verified Badge</li>
-                        <li>✓ Priority Support</li>
-                      </ul>
-                      <button className="btn-primary w-full">Purchase</button>
-                    </Card.Content>
-                  </Card.Container>
-
-                  <Card.Container className="border-primary">
-                    <Card.Header>
-                      <Card.Title className="text-lg">Premium</Card.Title>
-                      <Badge variant="secondary">$19.99</Badge>
-                    </Card.Header>
-                    <Card.Content className="space-y-4">
-                      <p className="text-2xl font-bold">Level 2</p>
-                      <ul className="space-y-2 text-sm">
-                        <li>✓ All Basic features</li>
-                        <li>✓ Enhanced Visibility</li>
-                        <li>✓ Custom Badge</li>
-                      </ul>
-                      <button className="btn-primary w-full">Purchase</button>
-                    </Card.Content>
-                  </Card.Container>
-
-                  <Card.Container>
-                    <Card.Header>
-                      <Card.Title className="text-lg">Elite</Card.Title>
-                      <Badge variant="secondary">$29.99</Badge>
-                    </Card.Header>
-                    <Card.Content className="space-y-4">
-                      <p className="text-2xl font-bold">Level 3</p>
-                      <ul className="space-y-2 text-sm">
-                        <li>✓ All Premium features</li>
-                        <li>✓ Priority Matching</li>
-                        <li>✓ Elite Badge</li>
-                        <li>✓ Advanced Analytics</li>
-                      </ul>
-                      <button className="btn-primary w-full">Purchase</button>
-                    </Card.Content>
-                  </Card.Container>
-                </div>
-              </Card.Content>
-            </Card.Container>
-          ) : (
-            <Card.Container>
-              <Card.Header>
-                <Card.Title>Your Profile Level</Card.Title>
-                <Card.Description>
-                  Current profile status and available upgrades
-                </Card.Description>
-              </Card.Header>
-              <Card.Content className="space-y-6">
-                <div className="flex items-center gap-4">
-                  <Badge variant="outline" className="px-4 py-2 text-lg">
-                    Level{" "}
-                    {purchasedLevel === "basic"
-                      ? "1"
-                      : purchasedLevel === "premium"
-                        ? "2"
-                        : "3"}
-                  </Badge>
-                  <div>
-                    <h3 className="font-semibold">
-                      {purchasedLevel.charAt(0).toUpperCase() +
-                        purchasedLevel.slice(1)}{" "}
-                      Profile
-                    </h3>
-                    <p className="text-muted-foreground">Purchased on [date]</p>
-                  </div>
-                </div>
-
-                {purchasedLevel !== "elite" && (
-                  <div className="border-t pt-4">
-                    <h3 className="mb-4 font-medium">Available Upgrades</h3>
-                    <Card.Container>
-                      <Card.Header>
-                        <Card.Title className="text-lg">
-                          {purchasedLevel === "basic" ? "Premium" : "Elite"}{" "}
-                          Upgrade
-                        </Card.Title>
-                        <Badge variant="secondary">
-                          ${purchasedLevel === "basic" ? "19.99" : "29.99"}
-                        </Badge>
-                      </Card.Header>
-                      <Card.Content>
-                        <button className="btn-primary">Upgrade Now</button>
-                      </Card.Content>
-                    </Card.Container>
-                  </div>
-                )}
-              </Card.Content>
-            </Card.Container>
-          )}
+          <SwipestatsPlusCard />
+          {/* <Card.Container>
+            <Card.Header>
+              <Card.Title>Available Profile Upgrades</Card.Title>
+              <Card.Description>
+                One-time purchases to permanently upgrade your profile
+              </Card.Description>
+            </Card.Header>
+            <Card.Content className="grid gap-4">
+              <TierSelect />
+            </Card.Content>
+          </Card.Container> */}
         </Tabs.Content>
       </Tabs.Root>
     </div>
@@ -380,6 +307,8 @@ import {
 } from "@/app/_components/ui/alert";
 import { Button } from "@/app/_components/ui/button";
 import Link from "next/link";
+import { TierSelect } from "./TierSelect";
+import { SwipestatsPlusCard } from "./SwipestatsPlusCard";
 
 function formatAge(age: number | { min: number; max: number }): string {
   if (typeof age === "number") {
@@ -404,11 +333,13 @@ export function DemographicsCard({
   accentColor = "blue",
   comparisonId,
   requiredTier = "free",
+  selectTab,
 }: {
   data: DemographicData;
   accentColor?: string;
   comparisonId: string;
   requiredTier?: "free" | "basic" | "premium" | "elite";
+  selectTab: Dispatch<SetStateAction<string>>;
 }) {
   const [loading, setLoading] = useState(false);
   const { addComparisonId, removeComparisonId, profiles } =
@@ -485,7 +416,7 @@ export function DemographicsCard({
             accentColor={accentColor}
           />
           <InfoItem
-            icon={HeartIcon}
+            icon={SearchIcon}
             label="Looking for"
             value={formatAge(data.interestedInAge)}
             accentColor={accentColor}
@@ -495,17 +426,18 @@ export function DemographicsCard({
 
       <Card.Footer className="p-4">
         {!hasAccess ? (
-          <Link href="/pricing" className="block w-full">
-            <Button
-              variant="default"
-              className="w-full bg-gradient-to-br from-blue-500 to-blue-600"
-            >
-              <LockIcon className="mr-2 h-4 w-4" />
-              {requiredTier.charAt(0).toUpperCase() +
-                requiredTier.slice(1)}{" "}
-              Required - Upgrade Now
-            </Button>
-          </Link>
+          <Button
+            type="button"
+            variant="default"
+            className="w-full bg-gradient-to-br from-blue-500 to-blue-600"
+            onClick={() => {
+              console.log("onClick");
+              selectTab?.("plus");
+            }}
+          >
+            <LockIcon className="mr-2 h-4 w-4" />
+            Swipestats+ Required - Upgrade Now
+          </Button>
         ) : (
           <Button
             className="w-full"

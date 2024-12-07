@@ -55,6 +55,11 @@ export const profileRouter = createTRPCRouter({
             },
           },
           customData: true,
+          user: {
+            // include: {
+            //   purchases: true,
+            // }
+          },
         },
       });
 

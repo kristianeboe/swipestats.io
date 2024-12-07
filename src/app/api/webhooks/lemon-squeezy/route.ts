@@ -6,7 +6,13 @@ import crypto from "crypto";
 import { NextResponse } from "next/server";
 
 interface WebhookData {
-  meta: { event_name: string };
+  meta: {
+    event_name: string;
+    custom_data: {
+      tinderId: string;
+      [key: string]: string;
+    };
+  };
   data: {
     attributes: {
       order_id: number;
@@ -18,11 +24,20 @@ interface WebhookData {
       //   renews_at: string; // ?
       //   ends_at: string; // ?
       //   trial_ends_at: string; // ?
-      custom_data: Record<string, unknown>;
     };
     id: string;
   };
 }
+
+const productToVariantId = {
+  // test mode
+  dataset: {
+    sample: 470938,
+    full: 456562,
+  },
+  swipestatsPlus: 624661,
+  aiDatingPhotos: 470939,
+};
 
 export async function POST(request: Request) {
   const rawBody = await request.text();
@@ -43,10 +58,6 @@ export async function POST(request: Request) {
   const eventName = data.meta.event_name;
   const attributes = data.data.attributes;
   const objId = data.data.id;
-
-  const samplePurchaseVariantId = 470938;
-  const fullPackagePurchaseVariantId = 456562;
-  const aiDatingPhotosPurchaseVariantId = 470939;
 
   const dataPurchaseVariantIds = [
     samplePurchaseVariantId,

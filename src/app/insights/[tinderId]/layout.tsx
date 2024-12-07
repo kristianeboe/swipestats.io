@@ -24,9 +24,8 @@ export default async function InsightsLayout(props: {
   return (
     <div className="pt-12">
       <h1 className="text-center text-5xl font-black">Swipestats</h1>
-      <div>Compare</div>
+
       <InsightsProvider myTinderProfile={swipestatsProfile}>
-        
         {/* <div className="mt-4">
         <ToggleGroup value={activeTab} type="single" className="hidden">
           <Link href={`/insights/${props.params.tinderId}`}>

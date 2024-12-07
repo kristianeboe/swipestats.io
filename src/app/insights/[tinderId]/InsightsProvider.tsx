@@ -27,6 +27,8 @@ function InsightsProvider(props: {
   children: ReactNode;
   myTinderProfile: FullTinderProfile;
 }) {
+  const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const comparisonIds = searchParams.get("comparisonIds");
 
@@ -63,12 +65,10 @@ function InsightsProvider(props: {
   //   );
   // }, [profiles]);
 
-  const router = useRouter();
-  const pathname = usePathname();
   function addComparisonId(data: { comparisonId: string }) {
     // now you got a read/write object
-    const current = new URLSearchParams(Array.from(searchParams.entries())); // -> has to use this form
-    const comparisonIdsQueryParam = current.get("comparisonIds");
+
+    const comparisonIdsQueryParam = searchParams.get("comparisonIds");
     const existingComparisonIds = comparisonIdsQueryParam?.split(",");
 
     if (data.comparisonId === props.myTinderProfile.tinderId) {

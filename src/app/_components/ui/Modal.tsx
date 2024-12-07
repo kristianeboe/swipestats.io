@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from "./dialog";
 import { X } from "lucide-react";
+import { ScrollArea } from "./scroll-area";
 
 interface ModalProps {
   isOpen: boolean;
@@ -18,6 +19,8 @@ interface ModalProps {
   description?: string;
   children: React.ReactNode;
   footer?: React.ReactNode;
+  scrollable?: boolean;
+  size?: "sm" | "md" | "lg" | "xl" | "full";
 }
 
 export function Modal({
@@ -28,9 +31,8 @@ export function Modal({
   children,
   footer,
   size = "sm",
-}: ModalProps & {
-  size?: "sm" | "md" | "lg" | "xl" | "full";
-}) {
+  scrollable = false,
+}: ModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   const handleKeyDown = useCallback(
@@ -63,7 +65,10 @@ export function Modal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className={`bg-white ${sizeClasses[size]}`}>
+      <DialogContent
+        className={`bg-white ${sizeClasses[size]} `}
+        scrollable={scrollable}
+      >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}
