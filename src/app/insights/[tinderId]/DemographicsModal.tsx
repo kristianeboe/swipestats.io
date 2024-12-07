@@ -64,15 +64,15 @@ export function DemographicsSections() {
   return (
     <div className="space-y-6">
       <Tabs.Root
-        defaultValue="free"
+        defaultValue="global"
         value={selectedTab}
         onValueChange={setSelectedTab}
         className="w-full"
       >
         <Tabs.List className="grid grid-cols-5">
-          <Tabs.Trigger value="free" className="flex items-center gap-2">
+          <Tabs.Trigger value="global" className="flex items-center gap-2">
             <Globe2 className="h-4 w-4" />
-            Free
+            Global
           </Tabs.Trigger>
           <Tabs.Trigger value="premium" className="flex items-center gap-2">
             <Sparkles className="h-4 w-4" />
@@ -92,17 +92,17 @@ export function DemographicsSections() {
           </Tabs.Trigger>
         </Tabs.List>
 
-        <Tabs.Content value="free" className="space-y-4">
+        <Tabs.Content value="global" className="space-y-4">
           <div className="space-y-4">
             <div>
-              <h2 className="text-xl font-semibold">Free Demographics</h2>
-              <p className="text-muted-foreground">
+              <h2 className="text-xl font-semibold">Global Demographics</h2>
+              {/* <p className="text-muted-foreground">
                 Basic demographic information available to all users
-              </p>
+              </p> */}
             </div>
             <div className="grid gap-4">
               <div className="space-y-2">
-                <h3 className="font-medium">Global averages</h3>
+                {/* <h3 className="font-medium">Global averages</h3> */}
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <DemographicsCard
                     comparisonId="average-MALE-FEMALE-all-1"
