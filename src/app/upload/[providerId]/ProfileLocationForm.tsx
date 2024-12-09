@@ -26,7 +26,6 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { getCountryFromBrowserTimeZone } from "@/lib/utils/getCountryFromTimeZone";
-import { useEffect } from "react";
 
 const locationFormSchema = z.object({
   city: z.string().min(1, "City is required"),
@@ -59,15 +58,15 @@ export function ProfileLocationForm({
   onSave,
   onCancel,
 }: ProfileLocationFormProps) {
-  const isState = !!US_STATES[profileLocation?.region ?? ""];
-
   const countryFromRegion = regionToCountryMap[profileLocation?.region ?? ""];
 
   const userCountryFromBrowser = getCountryFromBrowserTimeZone();
 
   const initialCountry =
     profileLocation?.country ?? countryFromRegion ?? userCountryFromBrowser;
-  const initialContinent = getContinent(initialCountry);
+  const initialContinent = initialCountry
+    ? getContinent(initialCountry)
+    : undefined;
 
   const form = useForm<LocationFormValues>({
     resolver: zodResolver(locationFormSchema),
@@ -82,7 +81,7 @@ export function ProfileLocationForm({
 
   const handleCityChange = (newCity: string) => {
     const detectedCountry = getCountryForCity(newCity);
-    if (detectedCountry && detectedCountry !== "Unknown") {
+    if (detectedCountry) {
       form.setValue("country", detectedCountry);
 
       const continent = getContinent(detectedCountry);

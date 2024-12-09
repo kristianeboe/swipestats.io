@@ -159,6 +159,6 @@ export const cityToCountryMap = {
   Lagos: "NG",
 } as const;
 
-export function getCountryForCity(city: string): CountryCode {
-  return cityToCountryMap[city as keyof typeof cityToCountryMap] || "Unknown";
+export function getCountryForCity(city: string): CountryCode | undefined {
+  return cityToCountryMap[city as keyof typeof cityToCountryMap];
 }

@@ -1,4 +1,6 @@
-export const regionToCountryMap = {
+import { type CountryCode } from "./countryToContinent";
+
+export const regionToCountryMap: Record<string, CountryCode> = {
   // United States regions
   FL: "US",
   CA: "US",
