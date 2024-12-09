@@ -190,20 +190,24 @@ function MessagesMetaCard(props: {
   );
 }
 
-export async function generateStaticParams() {
-  const tinderProfiles = await db.tinderProfile.findMany({
-    where: {
-      computed: false,
-      profileMeta: {
-        NOT: undefined,
-      },
-      customData: {
-        NOT: undefined,
-      },
-    },
-  });
+export const generateStaticParams = () => {
+  return [{ tinderId: "demo" }];
+};
 
-  return tinderProfiles.map((tinderProfile) => {
-    return { tinderId: tinderProfile.tinderId };
-  });
-}
+// export async function generateStaticParams() {
+//   const tinderProfiles = await db.tinderProfile.findMany({
+//     where: {
+//       computed: false,
+//       profileMeta: {
+//         NOT: undefined,
+//       },
+//       customData: {
+//         NOT: undefined,
+//       },
+//     },
+//   });
+
+//   return tinderProfiles.map((tinderProfile) => {
+//     return { tinderId: tinderProfile.tinderId };
+//   });
+// }
