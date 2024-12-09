@@ -22,7 +22,7 @@ export default async function InsightsLayout(props: {
   }
 
   return (
-    <div className="pt-12">
+    <div className="">
       <h1 className="text-center text-5xl font-black">Swipestats</h1>
 
       <InsightsProvider myTinderProfile={swipestatsProfile}>

@@ -2,6 +2,7 @@
 
 import { Card, CardContent } from "@/app/_components/ui/card";
 import {
+  CakeIcon,
   CheckIcon,
   Ghost,
   InfoIcon,
@@ -9,103 +10,141 @@ import {
   PlusCircleIcon,
   RainbowIcon,
   SearchIcon,
+  UserIcon,
 } from "lucide-react";
 import { Badge } from "@/app/_components/ui/badge";
-import { type SetStateAction, type Dispatch, useState } from "react";
+import { type SetStateAction, type Dispatch, useState, useMemo } from "react";
 import { Modal } from "@/app/_components/ui/Modal";
 import { Globe2, Crown, MapPin, Calendar, Sparkles } from "lucide-react";
 import { Tabs } from "@/app/_components/ui/tabs";
 import { useInsightsProvider } from "./InsightsProvider";
 
 export default function DemographicsModal() {
-  const [showModal, setShowModal] = useState(false);
-
   return (
     <>
-      <Card.Container
-        onClick={() => setShowModal(true)}
-        className="w-full max-w-sm cursor-pointer overflow-hidden border-dashed bg-white/50 backdrop-blur-sm transition-colors hover:bg-white/70"
-      >
-        <div className="flex items-center">
-          <div className="h-full w-3 bg-gradient-to-b from-gray-100 to-gray-50" />
-          <div className="flex flex-1 items-center gap-4 p-6">
-            <div className="rounded-full bg-gray-100 p-3">
-              <UsersIcon className="h-6 w-6 text-gray-400" />
+      <DrawerDialog
+        trigger={
+          <Card.Container className="w-56 cursor-pointer overflow-hidden border-dashed bg-white/50 backdrop-blur-sm transition-colors hover:bg-white/70">
+            <div className="flex items-center">
+              <div className="h-full w-3 bg-gradient-to-b from-gray-100 to-gray-50" />
+              <div className="flex flex-1 items-center gap-4 p-6">
+                <div className="flex flex-col items-center text-center">
+                  <div className="rounded-full bg-gray-100 p-3">
+                    <UsersIcon className="h-6 w-6 text-gray-400" />
+                  </div>
+                  <h3 className="text-lg font-medium text-gray-600">
+                    Add Comparison
+                  </h3>
+                  <p className="text-sm text-gray-500">
+                    Compare your stats with other individuals and demographics
+                  </p>
+                </div>
+              </div>
             </div>
-            <div>
-              <h3 className="text-lg font-medium text-gray-600">
-                Add Comparison
-              </h3>
-              <p className="text-sm text-gray-500">
-                Compare your stats with different demographics
-              </p>
-            </div>
-          </div>
-        </div>
-      </Card.Container>
-      <Modal
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
+          </Card.Container>
+        }
         title="Demographics"
-        size="lg"
-        scrollable
+        description="Compare your stats with other individuals and demographics"
       >
         <DemographicsSections />
-      </Modal>
+      </DrawerDialog>
     </>
   );
 }
 
 export function DemographicsSections() {
-  const { profiles } = useInsightsProvider();
-  const purchasedLevel = null;
-  const [selectedTab, setSelectedTab] = useState("free");
+  const [selectedTab, setSelectedTab] = useState("individual");
 
   return (
     <div className="space-y-6">
       <Tabs.Root
-        defaultValue="global"
         value={selectedTab}
         onValueChange={setSelectedTab}
         className="w-full"
       >
-        <Tabs.List className="grid grid-cols-5">
+        <Tabs.List className="mb-4 grid grid-cols-3">
+          <Tabs.Trigger value="individual" className="flex items-center gap-2">
+            <UserIcon className="h-4 w-4" />
+            Individual
+          </Tabs.Trigger>
           <Tabs.Trigger value="global" className="flex items-center gap-2">
             <Globe2 className="h-4 w-4" />
             Global
           </Tabs.Trigger>
-          <Tabs.Trigger value="premium" className="flex items-center gap-2">
+          {/* <Tabs.Trigger value="premium" className="flex items-center gap-2">
             <Sparkles className="h-4 w-4" />
             Premium
-          </Tabs.Trigger>
-          <Tabs.Trigger value="location" className="flex items-center gap-2">
+          </Tabs.Trigger> */}
+          {/* <Tabs.Trigger value="location" className="flex items-center gap-2">
             <MapPin className="h-4 w-4" />
             Location
           </Tabs.Trigger>
           <Tabs.Trigger value="age" className="flex items-center gap-2">
             <Calendar className="h-4 w-4" />
             Age
-          </Tabs.Trigger>
+          </Tabs.Trigger> */}
           <Tabs.Trigger value="plus" className="flex items-center gap-2">
             <Crown className="h-4 w-4" />
             Swipestats+
           </Tabs.Trigger>
         </Tabs.List>
 
+        <Tabs.Content value="individual" className="flex gap-4">
+          <DemographicsCard
+            comparisonId="96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5"
+            data={{
+              title: "The creator of Swipestats",
+              location: "Norway",
+              gender: "Man",
+              interestedInGender: "Women",
+              age: 32,
+              interestedInAge: { min: 24, max: 32 },
+            }}
+            accentColor="blue"
+            selectTab={setSelectedTab}
+          />
+          {/* <ComparisonForm /> */}
+          <Card.Container className="w-full max-w-sm">
+            <Card.Header>
+              <Card.Title>Swipestats User</Card.Title>
+              <Card.Description>
+                Add a Swipestats ID to compare
+              </Card.Description>
+            </Card.Header>
+            <Card.Content>
+              <form className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="tinderId">Swipestats ID</Label>
+                  <Input
+                    id="tinderId"
+                    name="tinderId"
+                    placeholder="Enter your Swipestats ID"
+                    required
+                  />
+                </div>
+                <Button type="submit" className="w-full">
+                  Add Profile
+                </Button>
+              </form>
+            </Card.Content>
+          </Card.Container>
+        </Tabs.Content>
+
         <Tabs.Content value="global" className="space-y-4">
           <div className="space-y-4">
-            <div>
-              <h2 className="text-xl font-semibold">Global Demographics</h2>
-              {/* <p className="text-muted-foreground">
+            {/*<div>
+               <h2 className="text-xl font-semibold">Global Demographics</h2> */}
+            {/* <p className="text-muted-foreground">
                 Basic demographic information available to all users
-              </p> */}
-            </div>
+              </p> 
+            </div>*/}
             <div className="grid gap-4">
               <div className="space-y-2">
                 {/* <h3 className="font-medium">Global averages</h3> */}
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <DemographicsCard
                     comparisonId="average-MALE-FEMALE-all-1"
+                    requiredTier="PLUS"
                     data={{
                       title: "Men interested in Women",
                       location: "Global",
@@ -119,7 +158,7 @@ export function DemographicsSections() {
                   />
                   <DemographicsCard
                     comparisonId="average-FEMALE-MALE-all-1"
-                    requiredTier="elite"
+                    requiredTier="PLUS"
                     data={{
                       title: "Women interested in Men",
                       location: "Global",
@@ -293,7 +332,7 @@ export function DemographicsSections() {
 interface DemographicData {
   title: string;
   location: string;
-  gender: "Men" | "Women" | "Other" | "Mixed";
+  gender: "Men" | "Man" | "Women" | "Woman" | "Other" | "Mixed";
   interestedInGender: "Men" | "Women" | "Other" | "Mixed";
   age: number | { min: number; max: number };
   interestedInAge: number | { min: number; max: number };
@@ -309,6 +348,12 @@ import { Button } from "@/app/_components/ui/button";
 import Link from "next/link";
 import { TierSelect } from "./TierSelect";
 import { SwipestatsPlusCard } from "./SwipestatsPlusCard";
+import { DrawerDialog } from "@/app/_components/ui/DrawerDialog";
+import { ComparisonForm } from "./ComparisonForm";
+import { Label } from "@/app/_components/ui/label";
+import { Input } from "@/app/_components/ui/input";
+import { useParams, useSearchParams } from "next/navigation";
+import { type SwipestatsTier } from "@prisma/client";
 
 function formatAge(age: number | { min: number; max: number }): string {
   if (typeof age === "number") {
@@ -332,24 +377,28 @@ export function DemographicsCard({
   data,
   accentColor = "blue",
   comparisonId,
-  requiredTier = "free",
+  requiredTier = "FREE",
   selectTab,
 }: {
   data: DemographicData;
   accentColor?: string;
   comparisonId: string;
-  requiredTier?: "free" | "basic" | "premium" | "elite";
+  requiredTier?: SwipestatsTier;
   selectTab: Dispatch<SetStateAction<string>>;
 }) {
+  const params = useParams();
   const [loading, setLoading] = useState(false);
+  const searchParams = useSearchParams();
+  const comparisonIds = searchParams.get("comparisonIds")?.split(",") ?? [];
   const { addComparisonId, removeComparisonId, profiles } =
     useInsightsProvider();
   const selected = profiles.some((p) => p.tinderId === comparisonId);
-  const purchasedLevel = null;
 
-  const hasAccess = purchasedLevel
-    ? getTierLevel(purchasedLevel) >= getTierLevel(requiredTier)
-    : requiredTier === "free";
+  const { swipestatsTier } = useInsightsProvider();
+
+  const hasAccess = swipestatsTier
+    ? getTierLevel(swipestatsTier) >= getTierLevel(requiredTier)
+    : requiredTier === "FREE";
 
   const handleClick = () => {
     if (!hasAccess) {
@@ -367,13 +416,24 @@ export function DemographicsCard({
     }, 1000);
   };
 
+  const onDemoProfile = params.tinderId === "demo";
+
+  const isLoading = useMemo(() => {
+    if (loading) return true;
+    const comparisonIdsInUrl = searchParams.get("comparisonIds");
+    const profileIdInParamsButNotInArray =
+      comparisonIdsInUrl?.includes(comparisonId) &&
+      profiles.every((p) => p.tinderId !== comparisonId);
+    return profileIdInParamsButNotInArray;
+  }, [loading, searchParams, comparisonId, profiles]);
+
   return (
     <Card.Container
       className={`relative w-full max-w-md cursor-pointer overflow-hidden bg-gray-50 shadow-lg transition-all duration-300 hover:shadow-xl dark:bg-gray-800 ${
         selected ? "scale-[1.02] ring-2 ring-blue-500" : "hover:scale-[1.01]"
       }`}
     >
-      {loading && (
+      {isLoading && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/50 backdrop-blur-sm">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-blue-500" />
         </div>
@@ -391,12 +451,17 @@ export function DemographicsCard({
       </Card.Header>
 
       <Card.Content className="grid gap-3 p-4">
-        <InfoItem
-          icon={MapPin}
-          value={data.location}
-          accentColor={accentColor}
-        />
         <div className="grid grid-cols-2 gap-3">
+          <InfoItem
+            icon={MapPin}
+            value={data.location}
+            accentColor={accentColor}
+          />
+          <InfoItem
+            icon={CalendarIcon}
+            value={"Nov 2014 - Dec 2024"}
+            accentColor={accentColor}
+          />
           <InfoItem
             icon={UsersIcon}
             label="Gender"
@@ -410,7 +475,7 @@ export function DemographicsCard({
             accentColor={accentColor}
           />
           <InfoItem
-            icon={CalendarIcon}
+            icon={CakeIcon}
             label="Age"
             value={formatAge(data.age)}
             accentColor={accentColor}
@@ -443,9 +508,13 @@ export function DemographicsCard({
             className="w-full"
             variant={selected ? "secondary" : "default"}
             onClick={handleClick}
-            disabled={loading}
+            disabled={isLoading ?? onDemoProfile}
           >
-            {selected ? "Remove Comparison" : "Apply Demographic"}
+            {onDemoProfile
+              ? "Already viewing"
+              : selected
+                ? "Remove Comparison"
+                : "Apply Demographic"}
           </Button>
         )}
       </Card.Footer>
@@ -454,12 +523,11 @@ export function DemographicsCard({
 }
 
 // Helper function to compare tier levels
-function getTierLevel(tier: string): number {
+function getTierLevel(tier: SwipestatsTier): number {
   const levels = {
-    free: 0,
-    basic: 1,
-    premium: 2,
-    elite: 3,
+    FREE: 0,
+    PLUS: 1,
+    ELITE: 2,
   };
   return levels[tier as keyof typeof levels] || 0;
 }

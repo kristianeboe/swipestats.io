@@ -1,114 +1,228 @@
-type Uppercase = string;
-type CountryCode = `${Uppercase}${Uppercase}`;
-type Continent =
-  | "North America"
-  | "South America"
-  | "Europe"
-  | "Asia"
-  | "Africa"
-  | "Oceania"
-  | "Antarctica";
+type Continent = "NA" | "SA" | "EU" | "AS" | "AF" | "OC" | "AN";
 
-const countryCodeToContinentMap: Record<string, Continent> = {
-  // North America
-  US: "North America",
-  CA: "North America",
-  MX: "North America",
-  // ... existing code ...
-
-  // South America
-  AR: "South America",
-  BR: "South America",
-  CL: "South America",
-  EC: "South America",
-  UY: "South America",
-  VE: "South America",
-
-  // Europe
-  AT: "Europe", // Austria
-  BE: "Europe", // Belgium
-  BG: "Europe", // Bulgaria
-  CH: "Europe", // Switzerland
-  CY: "Europe", // Cyprus
-  CZ: "Europe", // Czech Republic
-  DE: "Europe", // Germany
-  DK: "Europe", // Denmark
-  EE: "Europe", // Estonia
-  ES: "Europe", // Spain
-  FI: "Europe", // Finland
-  FR: "Europe", // France
-  GB: "Europe", // United Kingdom
-  GR: "Europe", // Greece
-  HR: "Europe", // Croatia
-  HU: "Europe", // Hungary
-  IE: "Europe", // Ireland
-  IS: "Europe", // Iceland
-  IT: "Europe", // Italy
-  LT: "Europe", // Lithuania
-  LU: "Europe", // Luxembourg
-  LV: "Europe", // Latvia
-  MT: "Europe", // Malta
-  NL: "Europe", // Netherlands
-  NO: "Europe", // Norway
-  PL: "Europe", // Poland
-  PT: "Europe", // Portugal
-  RO: "Europe", // Romania
-  SE: "Europe", // Sweden
-  SI: "Europe", // Slovenia
-  SK: "Europe", // Slovakia
-
-  // Asia
-  CN: "Asia", // China
-  HK: "Asia", // Hong Kong
-  ID: "Asia", // Indonesia
-  IN: "Asia", // India
-  JP: "Asia", // Japan
-  KH: "Asia", // Cambodia
-  KR: "Asia", // South Korea
-  LA: "Asia", // Laos
-  MM: "Asia", // Myanmar
-  MY: "Asia", // Malaysia
-  PH: "Asia", // Philippines
-  SG: "Asia", // Singapore
-  TH: "Asia", // Thailand
-  TW: "Asia", // Taiwan
-  VN: "Asia", // Vietnam
-  BN: "Asia", // Brunei
-  KZ: "Asia", // Kazakhstan
-  KG: "Asia", // Kyrgyzstan
-  MN: "Asia", // Mongolia
-  NP: "Asia", // Nepal
-  PK: "Asia", // Pakistan
-  LK: "Asia", // Sri Lanka
-  TJ: "Asia", // Tajikistan
-  TM: "Asia", // Turkmenistan
-  UZ: "Asia", // Uzbekistan
-  AE: "Asia", // United Arab Emirates
-  BH: "Asia", // Bahrain
-  IL: "Asia", // Israel
-  IQ: "Asia", // Iraq
-  IR: "Asia", // Iran
-  JO: "Asia", // Jordan
-  KW: "Asia", // Kuwait
-  LB: "Asia", // Lebanon
-  OM: "Asia", // Oman
-  QA: "Asia", // Qatar
-  SA: "Asia", // Saudi Arabia
-  SY: "Asia", // Syria
-  TR: "Asia", // Turkey
-  YE: "Asia", // Yemen
-
-  // Oceania
-  AU: "Oceania",
-  NZ: "Oceania",
-
-  // Africa
-  EG: "Africa",
-  ET: "Africa",
-  KE: "Africa",
-  NG: "Africa",
-  ZA: "Africa",
+export const continentMap: Record<Continent, string> = {
+  NA: "North America",
+  SA: "South America",
+  EU: "Europe",
+  AS: "Asia",
+  AF: "Africa",
+  OC: "Oceania",
+  AN: "Antarctica",
 };
+
+const countryCodeToContinentMap = {
+  // Africa (AF)
+  DZ: "AF", // Algeria
+  AO: "AF", // Angola
+  BJ: "AF", // Benin
+  BW: "AF", // Botswana
+  BF: "AF", // Burkina Faso
+  BI: "AF", // Burundi
+  CV: "AF", // Cabo Verde
+  CM: "AF", // Cameroon
+  CF: "AF", // Central African Republic
+  TD: "AF", // Chad
+  KM: "AF", // Comoros
+  CG: "AF", // Congo (Republic of)
+  CD: "AF", // Congo (Democratic Republic of)
+  CI: "AF", // Côte d'Ivoire
+  DJ: "AF", // Djibouti
+  EG: "AF", // Egypt
+  GQ: "AF", // Equatorial Guinea
+  ER: "AF", // Eritrea
+  SZ: "AF", // Eswatini
+  ET: "AF", // Ethiopia
+  GA: "AF", // Gabon
+  GM: "AF", // Gambia
+  GH: "AF", // Ghana
+  GN: "AF", // Guinea
+  GW: "AF", // Guinea-Bissau
+  KE: "AF", // Kenya
+  LS: "AF", // Lesotho
+  LR: "AF", // Liberia
+  LY: "AF", // Libya
+  MG: "AF", // Madagascar
+  MW: "AF", // Malawi
+  ML: "AF", // Mali
+  MR: "AF", // Mauritania
+  MU: "AF", // Mauritius
+  MA: "AF", // Morocco
+  MZ: "AF", // Mozambique
+  NA: "AF", // Namibia
+  NE: "AF", // Niger
+  NG: "AF", // Nigeria
+  RW: "AF", // Rwanda
+  ST: "AF", // Sao Tome and Principe
+  SN: "AF", // Senegal
+  SC: "AF", // Seychelles
+  SL: "AF", // Sierra Leone
+  SO: "AF", // Somalia
+  ZA: "AF", // South Africa
+  SS: "AF", // South Sudan
+  SD: "AF", // Sudan
+  TZ: "AF", // Tanzania
+  TG: "AF", // Togo
+  TN: "AF", // Tunisia
+  UG: "AF", // Uganda
+  ZM: "AF", // Zambia
+  ZW: "AF", // Zimbabwe
+
+  // Asia (AS)
+  AF: "AS", // Afghanistan
+  AM: "AS", // Armenia
+  AZ: "AS", // Azerbaijan
+  BH: "AS", // Bahrain
+  BD: "AS", // Bangladesh
+  BT: "AS", // Bhutan
+  BN: "AS", // Brunei
+  KH: "AS", // Cambodia
+  CN: "AS", // China
+  GE: "AS", // Georgia
+  HK: "AS", // Hong Kong (SAR China)
+  IN: "AS", // India
+  ID: "AS", // Indonesia
+  IR: "AS", // Iran
+  IQ: "AS", // Iraq
+  IL: "AS", // Israel
+  JP: "AS", // Japan
+  JO: "AS", // Jordan
+  KZ: "AS", // Kazakhstan
+  KW: "AS", // Kuwait
+  KG: "AS", // Kyrgyzstan
+  LA: "AS", // Laos
+  LB: "AS", // Lebanon
+  MO: "AS", // Macau (SAR China)
+  MY: "AS", // Malaysia
+  MV: "AS", // Maldives
+  MN: "AS", // Mongolia
+  MM: "AS", // Myanmar
+  NP: "AS", // Nepal
+  KP: "AS", // North Korea
+  OM: "AS", // Oman
+  PK: "AS", // Pakistan
+  PS: "AS", // Palestine
+  PH: "AS", // Philippines
+  QA: "AS", // Qatar
+  SA: "AS", // Saudi Arabia
+  SG: "AS", // Singapore
+  KR: "AS", // South Korea
+  LK: "AS", // Sri Lanka
+  SY: "AS", // Syria
+  TW: "AS", // Taiwan
+  TJ: "AS", // Tajikistan
+  TH: "AS", // Thailand
+  TL: "AS", // Timor-Leste
+  TR: "AS", // Turkey
+  TM: "AS", // Turkmenistan
+  AE: "AS", // United Arab Emirates
+  UZ: "AS", // Uzbekistan
+  VN: "AS", // Vietnam
+  YE: "AS", // Yemen
+
+  // Europe (EU)
+  AL: "EU", // Albania
+  AD: "EU", // Andorra
+  AT: "EU", // Austria
+  BY: "EU", // Belarus
+  BE: "EU", // Belgium
+  BA: "EU", // Bosnia and Herzegovina
+  BG: "EU", // Bulgaria
+  HR: "EU", // Croatia
+  CY: "EU", // Cyprus
+  CZ: "EU", // Czech Republic
+  DK: "EU", // Denmark
+  EE: "EU", // Estonia
+  FI: "EU", // Finland
+  FR: "EU", // France
+  DE: "EU", // Germany
+  GR: "EU", // Greece
+  HU: "EU", // Hungary
+  IS: "EU", // Iceland
+  IE: "EU", // Ireland
+  IT: "EU", // Italy
+  XK: "EU", // Kosovo (partially recognized, unofficial ISO code)
+  LV: "EU", // Latvia
+  LI: "EU", // Liechtenstein
+  LT: "EU", // Lithuania
+  LU: "EU", // Luxembourg
+  MT: "EU", // Malta
+  MD: "EU", // Moldova
+  MC: "EU", // Monaco
+  ME: "EU", // Montenegro
+  NL: "EU", // Netherlands
+  MK: "EU", // North Macedonia
+  NO: "EU", // Norway
+  PL: "EU", // Poland
+  PT: "EU", // Portugal
+  RO: "EU", // Romania
+  RU: "EU", // Russia (transcontinental, typically considered Europe for political/cultural reasons)
+  SM: "EU", // San Marino
+  RS: "EU", // Serbia
+  SK: "EU", // Slovakia
+  SI: "EU", // Slovenia
+  ES: "EU", // Spain
+  SE: "EU", // Sweden
+  CH: "EU", // Switzerland
+  UA: "EU", // Ukraine
+  GB: "EU", // United Kingdom
+  VA: "EU", // Vatican City
+
+  // North America (NA)
+  AG: "NA", // Antigua and Barbuda
+  BS: "NA", // Bahamas
+  BB: "NA", // Barbados
+  BZ: "NA", // Belize
+  CA: "NA", // Canada
+  CR: "NA", // Costa Rica
+  CU: "NA", // Cuba
+  DM: "NA", // Dominica
+  DO: "NA", // Dominican Republic
+  SV: "NA", // El Salvador
+  GD: "NA", // Grenada
+  GT: "NA", // Guatemala
+  HT: "NA", // Haiti
+  HN: "NA", // Honduras
+  JM: "NA", // Jamaica
+  MX: "NA", // Mexico
+  NI: "NA", // Nicaragua
+  PA: "NA", // Panama
+  KN: "NA", // Saint Kitts and Nevis
+  LC: "NA", // Saint Lucia
+  VC: "NA", // Saint Vincent and the Grenadines
+  TT: "NA", // Trinidad and Tobago
+  US: "NA", // United States
+
+  // Oceania (OC)
+  AU: "OC", // Australia
+  FJ: "OC", // Fiji
+  KI: "OC", // Kiribati
+  MH: "OC", // Marshall Islands
+  FM: "OC", // Micronesia
+  NR: "OC", // Nauru
+  NZ: "OC", // New Zealand
+  PW: "OC", // Palau
+  PG: "OC", // Papua New Guinea
+  WS: "OC", // Samoa
+  SB: "OC", // Solomon Islands
+  TO: "OC", // Tonga
+  TV: "OC", // Tuvalu
+  VU: "OC", // Vanuatu
+
+  // South America (SA)
+  AR: "SA", // Argentina
+  BO: "SA", // Bolivia
+  BR: "SA", // Brazil
+  CL: "SA", // Chile
+  CO: "SA", // Colombia
+  EC: "SA", // Ecuador
+  GY: "SA", // Guyana
+  PY: "SA", // Paraguay
+  PE: "SA", // Peru
+  SR: "SA", // Suriname
+  UY: "SA", // Uruguay
+  VE: "SA", // Venezuela
+} as const;
+export type CountryCode = keyof typeof countryCodeToContinentMap;
 
 // caters for country names in different languages
 const countryNameToCodeMap: Record<string, CountryCode> = {
@@ -171,14 +285,15 @@ const countryNameToCodeMap: Record<string, CountryCode> = {
   Nigeria: "NG",
   "South Africa": "ZA",
 };
-
-export function getContinent(country: CountryCode): string | undefined {
-  // First check if the input is a country code
-  if (countryCodeToContinentMap[country]) {
-    return countryCodeToContinentMap[country];
+export function getContinent(country: string): Continent | undefined {
+  if (countryCodeToContinentMap[country as CountryCode]) {
+    return countryCodeToContinentMap[country as CountryCode];
   }
 
-  // If not found, check if it's a country name and convert to code
   const countryCode = countryNameToCodeMap[country];
-  return countryCode ? countryCodeToContinentMap[countryCode] : undefined;
+  if (countryCode) {
+    return countryCodeToContinentMap[countryCode];
+  }
+
+  return undefined;
 }

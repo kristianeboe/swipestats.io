@@ -114,7 +114,7 @@ export function SwipestatsPlusCard() {
     </p> */}
         <div className="mt-10 flex items-center gap-x-4">
           <h4 className="flex-none text-sm/6 font-semibold text-rose-600">
-            What’s included
+            What&apos;s included
           </h4>
           <div className="h-px flex-auto bg-gray-100" />
         </div>
@@ -148,7 +148,7 @@ export function SwipestatsPlusCard() {
               </span>
             </p>
             <a
-              href={`https://swipestats.lemonsqueezy.com/buy/594b73d2-8988-4886-ba0a-5e5bf61e752a?checkout[custom][tinderId]=${myTinderId}`}
+              href={`https://swipestats.lemonsqueezy.com/buy/e362e7c3-5fba-4e46-8134-ead1e9da8847?checkout[custom][tinderId]=${myTinderId}`}
               className="mt-10 block w-full rounded-md bg-rose-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
             >
               Get access

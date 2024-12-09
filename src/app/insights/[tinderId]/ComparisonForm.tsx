@@ -12,12 +12,12 @@ const FormSchema = z.object({
   comparisonId: z.string(),
 });
 
-export function ComparisonForm(props: { tinderId: string }) {
+export function ComparisonForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
 
-  const { addComparisonId } = useInsightsProvider();
+  const { myTinderId, addComparisonId } = useInsightsProvider();
 
   //   const comparisonProfilesQuery = api.profile.compare.useQuery({
   //     tinderId: props.tinderId,

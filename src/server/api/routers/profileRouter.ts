@@ -55,11 +55,7 @@ export const profileRouter = createTRPCRouter({
             },
           },
           customData: true,
-          user: {
-            // include: {
-            //   purchases: true,
-            // }
-          },
+          user: true,
         },
       });
 
@@ -638,5 +634,28 @@ export const profileRouter = createTRPCRouter({
         top5Openers: openers.slice(0, 5),
         worstOpener: openers[openers.length - 1],
       };
+    }),
+
+  updateLocation: publicProcedure
+    .input(
+      z.object({
+        tinderId: z.string(),
+        location: z.object({
+          city: z.string().nullish(),
+          region: z.string().nullish(),
+          country: z.string().nullish(),
+          continent: z.string().nullish(),
+        }),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.tinderProfile.update({
+        where: { tinderId: input.tinderId },
+        data: {
+          city: input.location.city,
+          region: input.location.region,
+          country: input.location.country,
+        },
+      });
     }),
 });

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, type FormEvent } from "react";
+import { useState, useEffect, type FormEvent, useCallback } from "react";
 
 import { UploadArea } from "./UploadArea";
 
@@ -59,6 +59,22 @@ export default function UploadPage({
   const posthog = usePostHog();
   const [swipestatsProfilePayload, setSwipestatsProfilePayload] =
     useState<SwipestatsProfilePayload | null>(null);
+
+  function updateProfilePayload(
+    partialProfile: Partial<SwipestatsProfilePayload["anonymizedTinderJson"]>,
+  ) {
+    if (!swipestatsProfilePayload) {
+      console.error("Profile not initialized yet");
+      return;
+    }
+    setSwipestatsProfilePayload({
+      tinderId: swipestatsProfilePayload.tinderId,
+      anonymizedTinderJson: {
+        ...swipestatsProfilePayload.anonymizedTinderJson,
+        ...partialProfile,
+      },
+    });
+  }
 
   const routerProvider = dataProviders.find(
     (p) => p.id === (params.providerId.toUpperCase() as DataProvider),
@@ -212,7 +228,7 @@ export default function UploadPage({
               {swipestatsProfilePayload ? (
                 <UploadCTA
                   swipestatsProfilePayload={swipestatsProfilePayload}
-                  updatePayload={setSwipestatsProfilePayload}
+                  updateProfilePayload={updateProfilePayload}
                 />
               ) : (
                 <>
@@ -267,7 +283,7 @@ function WaitlistCTA({
 
   return (
     <div className="bg-white">
-      <div className="mx-auto max-w-7xl px-4  sm:px-6  lg:px-8">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="rounded-3xl bg-rose-700 px-6 py-10 sm:px-12 sm:py-16 lg:flex lg:items-center lg:p-20">
           <div className="lg:w-0 lg:flex-1">
             <h2 className="text-3xl font-extrabold tracking-tight text-white">

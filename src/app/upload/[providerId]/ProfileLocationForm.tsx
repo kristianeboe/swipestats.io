@@ -17,76 +17,157 @@ import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/app/_components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { getCountryFromBrowserTimeZone } from "@/lib/utils/getCountryFromTimeZone";
+import { useEffect } from "react";
+
+const locationFormSchema = z.object({
+  city: z.string().min(1, "City is required"),
+  region: z.string().min(1, "Region is required"),
+  state: z.string().optional(),
+  country: z
+    .string()
+    .min(2, "Country code is required")
+    .max(2, "Must be a 2-letter country code"),
+  continent: z.enum(["NA", "SA", "EU", "AS", "AF", "OC", "AN"], {
+    required_error: "Please select a continent",
+  }),
+});
 
 interface ProfileLocationFormProps {
   profileLocation?: {
     city: string;
     region: string;
-    country: string;
+    country?: string;
+    continent?: string;
   };
-  onSave: (location: any) => void;
+  onSave: (location: z.infer<typeof locationFormSchema>) => void;
+  onCancel?: () => void;
 }
-
-const locationFormSchema = z.object({
-  city: z.string().min(1, "City is required"),
-  region: z.string(),
-  country: z.string().min(1, "Country is required"),
-  continent: z.string().min(1, "Continent is required"),
-});
 
 type LocationFormValues = z.infer<typeof locationFormSchema>;
 
 export function ProfileLocationForm({
   profileLocation,
   onSave,
+  onCancel,
 }: ProfileLocationFormProps) {
   const isState = !!US_STATES[profileLocation?.region ?? ""];
+
   const countryFromRegion = regionToCountryMap[profileLocation?.region ?? ""];
+
+  const userCountryFromBrowser = getCountryFromBrowserTimeZone();
+
+  const initialCountry =
+    profileLocation?.country ?? countryFromRegion ?? userCountryFromBrowser;
+  const initialContinent = getContinent(initialCountry);
 
   const form = useForm<LocationFormValues>({
     resolver: zodResolver(locationFormSchema),
     defaultValues: {
       city: profileLocation?.city ?? "",
       region: profileLocation?.region ?? "",
-      country: profileLocation?.country ?? "",
-      continent: getContinent(profileLocation?.country ?? "") ?? "",
+      country: initialCountry,
+      continent: initialContinent,
     },
   });
-
-  const country = form.watch("country");
-  const isUS = country === "US";
+  const formValues = form.watch();
 
   const handleCityChange = (newCity: string) => {
-    form.setValue("city", newCity);
     const detectedCountry = getCountryForCity(newCity);
-    if (detectedCountry !== "Unknown") {
+    if (detectedCountry && detectedCountry !== "Unknown") {
       form.setValue("country", detectedCountry);
+
+      const continent = getContinent(detectedCountry);
+      if (continent) {
+        form.setValue("continent", continent);
+      }
+
+      if (formValues.region) {
+        const regionCountry = regionToCountryMap[formValues.region];
+        console.log("region", {
+          detectedCountry,
+          region: formValues.region,
+          regionCountry,
+          formState: formValues.state,
+        });
+        if (regionCountry !== detectedCountry) {
+          form.setValue("region", "");
+        }
+        if (detectedCountry === "US") {
+          form.setValue("state", formValues.region);
+        }
+      }
     }
   };
 
+  const handleRegionBlur = (region: string) => {
+    const country = regionToCountryMap[region];
+    if (country) {
+      if (country === "US" && US_STATES[region]) {
+        form.setValue("state", region);
+      }
+      form.setValue("country", country);
+      const continent = getContinent(country);
+      if (continent) {
+        form.setValue("continent", continent);
+      }
+    }
+  };
+
+  const handleStateChange = (state: string) => {
+    if (!formValues.region) {
+      form.setValue("region", state);
+    }
+  };
+
+  const handleCountryBlur = (country: string) => {
+    const continent = getContinent(country);
+    if (continent) {
+      form.setValue("continent", continent);
+    }
+  };
+
+  const region = formValues.region;
+  const country = formValues.country;
+  const isUS = country === "US";
+
+  const disableCountry =
+    !!regionToCountryMap[formValues.region] && formValues.region !== "";
+  const disableContinent = !!getContinent(formValues.country);
+
+  const onSubmit = form.handleSubmit((data) => {
+    console.log(data);
+    onSave(data);
+  });
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSave)} className="space-y-4">
-        <div className="grid gap-4 py-4">
+      <form onSubmit={onSubmit} className="space-y-4">
+        <div className="space-y-4">
           <FormField
             control={form.control}
             name="city"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">City</FormLabel>
+              <FormItem>
+                <FormLabel>City</FormLabel>
                 <FormControl>
                   <Input
                     {...field}
-                    onChange={(e) => handleCityChange(e.target.value)}
-                    className="col-span-3"
+                    onChange={(e) => {
+                      field.onChange(e);
+                      handleCityChange(e.target.value);
+                    }}
                   />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -95,17 +176,40 @@ export function ProfileLocationForm({
             control={form.control}
             name="region"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">
-                  {isUS ? "State" : "Region"}
-                </FormLabel>
+              <FormItem>
+                <FormLabel>Region</FormLabel>
                 <FormControl>
-                  {isUS ? (
+                  <Input
+                    {...field}
+                    onBlur={(e) => {
+                      field.onBlur();
+                      handleRegionBlur(e.target.value);
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {isUS && (
+            <FormField
+              control={form.control}
+              name="state"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>State</FormLabel>
+                  <FormControl>
                     <Select
-                      onValueChange={field.onChange}
+                      value={field.value}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        handleStateChange(value);
+                      }}
                       defaultValue={field.value}
+                      disabled={!!formValues.region}
                     >
-                      <SelectTrigger className="col-span-3">
+                      <SelectTrigger>
                         <SelectValue placeholder="Select state" />
                       </SelectTrigger>
                       <SelectContent>
@@ -116,23 +220,32 @@ export function ProfileLocationForm({
                         ))}
                       </SelectContent>
                     </Select>
-                  ) : (
-                    <Input {...field} className="col-span-3" />
-                  )}
-                </FormControl>
-              </FormItem>
-            )}
-          />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
 
           <FormField
             control={form.control}
             name="country"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Country</FormLabel>
+              <FormItem>
+                <FormLabel>Country</FormLabel>
                 <FormControl>
-                  <Input {...field} className="col-span-3" />
+                  <Input
+                    {...field}
+                    maxLength={2}
+                    className="uppercase"
+                    disabled={disableCountry}
+                    onBlur={(e) => {
+                      field.onBlur();
+                      handleCountryBlur(e.target.value);
+                    }}
+                  />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -141,32 +254,42 @@ export function ProfileLocationForm({
             control={form.control}
             name="continent"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Continent</FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <SelectTrigger className="col-span-3">
+              <FormItem>
+                <FormLabel>Continent</FormLabel>
+
+                <Select
+                  value={field.value}
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  disabled={disableContinent}
+                >
+                  <FormControl>
+                    <SelectTrigger>
                       <SelectValue placeholder="Select continent" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="NA">North America</SelectItem>
-                      <SelectItem value="SA">South America</SelectItem>
-                      <SelectItem value="EU">Europe</SelectItem>
-                      <SelectItem value="AS">Asia</SelectItem>
-                      <SelectItem value="AF">Africa</SelectItem>
-                      <SelectItem value="OC">Oceania</SelectItem>
-                      <SelectItem value="AN">Antarctica</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="NA">North America</SelectItem>
+                    <SelectItem value="SA">South America</SelectItem>
+                    <SelectItem value="EU">Europe</SelectItem>
+                    <SelectItem value="AS">Asia</SelectItem>
+                    <SelectItem value="AF">Africa</SelectItem>
+                    <SelectItem value="OC">Oceania</SelectItem>
+                    <SelectItem value="AN">Antarctica</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+                <FormDescription>Inferred by country</FormDescription>
               </FormItem>
             )}
           />
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-between">
+          {onCancel && (
+            <Button variant="outline" onClick={onCancel}>
+              Cancel
+            </Button>
+          )}
           <Button type="submit">Save</Button>
         </div>
       </form>

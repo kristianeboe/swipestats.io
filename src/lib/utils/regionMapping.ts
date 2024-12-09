@@ -240,4 +240,6 @@ export const regionToCountryMap = {
   Olomouc: "CZ",
   "City of Zagreb": "HR",
   "Zagreb County": "HR",
+
+  Norway: "NO",
 } as const;

@@ -156,7 +156,7 @@ interface Coords {
 export interface City {
   name: string;
   region: string;
-  coords: Coords;
+  coords?: Coords;
 }
 
 interface Photo {

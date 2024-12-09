@@ -3,7 +3,12 @@
 import { createGenericContext } from "@/lib/hooks/useGenericContext";
 import { type FullTinderProfile } from "@/lib/interfaces/utilInterfaces";
 import { api } from "@/trpc/react";
-import { type CustomData } from "@prisma/client";
+import {
+  type User,
+  type CustomData,
+  type SwipestatsTier,
+} from "@prisma/client";
+import AppRouter from "next/dist/client/components/app-router";
 // import { type TinderUsage } from "@prisma/client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -13,7 +18,9 @@ import { toast } from "sonner";
 
 const [useInsightsProvider, InsightsContextProvider] = createGenericContext<{
   myTinderId: string;
-  myTinderProfile: FullTinderProfile;
+  myTinderProfile: FullTinderProfile & {
+    user: User;
+  };
   myCustomData: CustomData;
   profiles: FullTinderProfile[];
   // usageByProfile: Record<string, Record<string, TinderUsage>>;
@@ -21,11 +28,14 @@ const [useInsightsProvider, InsightsContextProvider] = createGenericContext<{
   loading: boolean;
   addComparisonId: (data: { comparisonId: string }) => void;
   removeComparisonId: (data: { comparisonId: string }) => void;
+  swipestatsTier: SwipestatsTier;
 }>();
 
 function InsightsProvider(props: {
   children: ReactNode;
-  myTinderProfile: FullTinderProfile;
+  myTinderProfile: FullTinderProfile & {
+    user: User;
+  };
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -111,6 +121,7 @@ function InsightsProvider(props: {
     router.push(`${pathname}${query}`);
   }
 
+  const swipestatsTier = props.myTinderProfile.user.swipestatsTier;
   return (
     <InsightsContextProvider
       value={{
@@ -122,6 +133,7 @@ function InsightsProvider(props: {
         // usageByProfile,
         addComparisonId,
         removeComparisonId,
+        swipestatsTier,
       }}
     >
       {props.children}

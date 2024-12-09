@@ -1,3 +1,5 @@
+import { type CountryCode } from "./countryToContinent";
+
 export const cityToCountryMap = {
   // North America
   "New York": "US",
@@ -157,6 +159,6 @@ export const cityToCountryMap = {
   Lagos: "NG",
 } as const;
 
-export function getCountryForCity(city: string): string {
+export function getCountryForCity(city: string): CountryCode {
   return cityToCountryMap[city as keyof typeof cityToCountryMap] || "Unknown";
 }
