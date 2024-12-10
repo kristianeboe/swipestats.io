@@ -6,7 +6,6 @@ import { Card } from "@/app/_components/ui/card";
 import { DrawerDialog } from "@/app/_components/ui/DrawerDialog";
 import { Modal } from "@/app/_components/ui/Modal";
 import { ProfileLocationForm } from "@/app/upload/[providerId]/ProfileLocationForm";
-import { ProfileLocationModal } from "@/app/upload/[providerId]/ProfileLocationModal";
 import { toTitleCase } from "@/lib/utils/string";
 import { api } from "@/trpc/react";
 import { format } from "date-fns";

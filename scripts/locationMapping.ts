@@ -128,7 +128,7 @@ function getCountryAndContinentForRegion(
 
   // If no mapping found, return current country if available
   return {
-    country: currentCountry || "Unknown",
+    country: currentCountry ?? "Unknown",
     continent: undefined,
   };
 }
@@ -146,7 +146,7 @@ function getCountryForCity(
     // Add more mappings as needed
   };
 
-  const country = cityMappings[city] || currentCountry;
+  const country = cityMappings[city] ?? currentCountry;
 
   if (!cityMappings[city]) {
     unmappedLocations.cities.add(city);
@@ -191,7 +191,7 @@ await processDemographics(true, async (params) => {
       // Map region to continent and country
       const { country, continent } = getCountryAndContinentForRegion(
         profile.region,
-        profile.country,
+        profile.country ?? undefined,
       );
 
       locationCounts.regions[profile.region] =
@@ -204,7 +204,10 @@ await processDemographics(true, async (params) => {
     }
 
     if (profile.city) {
-      const country = getCountryForCity(profile.city, profile.country);
+      const country = getCountryForCity(
+        profile.city,
+        profile.country ?? undefined,
+      );
       if (country) {
         locationCounts.countries[country] =
           (locationCounts.countries[country] ?? 0) + 1;
@@ -248,7 +251,7 @@ await processDemographics(true, async (params) => {
   // Calculate percentages
   const totalProfiles = profiles.length;
   const profilesWithLocation = profiles.filter(
-    (p) => p.country || p.region || p.city,
+    (p) => p.country ?? p.region ?? p.city,
   ).length;
 
   console.log(`\nTotal profiles: ${totalProfiles}`);

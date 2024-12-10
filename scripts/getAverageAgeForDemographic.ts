@@ -47,8 +47,10 @@ await processDemographics(true, async (params) => {
       }
 
       descriptor.choices.forEach((choice) => {
-        descriptorCounts[descriptor.name][choice] =
-          (descriptorCounts[descriptor.name][choice] || 0) + 1;
+        // We can remove the if check since we already initialized the object above
+        const count = descriptorCounts[descriptor.name]?.[choice] ?? 0;
+        // @ts-expect-error this is fine
+        descriptorCounts[descriptor.name][choice] = count + 1;
       });
     });
   });

@@ -5,25 +5,23 @@ type LocationType = "city" | "region" | "country";
 type FullLocation = {
   city?: string;
   state?: string;
-  country: string;
+  country?: string;
   region?: string;
-  continent: string;
-}
+  continent?: string;
+};
 export function expandLocation(
   location: string,
   type: LocationType,
 ): FullLocation {
-
   if (type === "city") {
     const country = getCountryForCity(location);
-    const continent = getContinent(country);
+    const continent = country ? getContinent(country) : undefined;
     return {
       city: location,
       country,
       continent,
     };
   }
-  
+
   return {} as FullLocation;
 }
-

@@ -25,7 +25,10 @@ export default async function InsightsLayout(props: {
     <div className="">
       <h1 className="text-center text-5xl font-black">Swipestats</h1>
 
-      <InsightsProvider myTinderProfile={swipestatsProfile}>
+      <InsightsProvider
+        // @ts-expect-error todo figure this out
+        myTinderProfile={swipestatsProfile}
+      >
         {/* <div className="mt-4">
         <ToggleGroup value={activeTab} type="single" className="hidden">
           <Link href={`/insights/${props.params.tinderId}`}>
