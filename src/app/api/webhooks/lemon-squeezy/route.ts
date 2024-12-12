@@ -19,6 +19,12 @@ interface WebhookData {
   };
   data: {
     attributes: {
+      // license_key_created
+      key?: string;
+      disabled?: boolean;
+
+      ///
+
       order_id: number;
       user_name: string;
       user_email: string;
@@ -111,12 +117,18 @@ export async function POST(request: Request) {
   const purchaseVariantId =
     attributes.variant_id ?? attributes.first_order_item.variant_id;
 
-  if (!purchaseVariantId) {
-    throw new Error("No purchase variant id found");
-  }
-
   switch (eventName) {
+    case "license_key_created":
+      const key = attributes.key;
+      log.info("Processing license_key_created event", {
+        key,
+        disabled: attributes.disabled,
+      });
+      break;
     case "order_created":
+      if (!purchaseVariantId) {
+        throw new Error("No purchase variant id found");
+      }
       log.info("Processing order_created event", { purchaseVariantId });
 
       if (dataPurchaseVariantIds.includes(purchaseVariantId)) {
