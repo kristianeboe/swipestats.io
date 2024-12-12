@@ -25,6 +25,7 @@
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
+    "preview": "next build && next start",
     "typecheck": "tsc --noEmit",
     "slicemachine": "start-slicemachine",
     "reset-cache": "rm -rf .next && rm -rf node_modules && rm -rf package-lock.json && bun install"

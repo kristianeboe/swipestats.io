@@ -89,45 +89,47 @@ export function DemographicsSections() {
           </Tabs.Trigger>
         </Tabs.List>
 
-        <Tabs.Content value="individual" className="flex gap-4">
-          <DemographicsCard
-            comparisonId="96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5"
-            data={{
-              title: "The creator of Swipestats",
-              location: "Norway",
-              gender: "Man",
-              interestedInGender: "Women",
-              age: 32,
-              interestedInAge: { min: 24, max: 32 },
-            }}
-            accentColor="blue"
-            selectTab={setSelectedTab}
-          />
-          {/* <ComparisonForm /> */}
-          <Card.Container className="w-full max-w-sm">
-            <Card.Header>
-              <Card.Title>Swipestats User</Card.Title>
-              <Card.Description>
-                Add a Swipestats ID to compare
-              </Card.Description>
-            </Card.Header>
-            <Card.Content>
-              <form className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="tinderId">Swipestats ID</Label>
-                  <Input
-                    id="tinderId"
-                    name="tinderId"
-                    placeholder="Enter your Swipestats ID"
-                    required
-                  />
-                </div>
-                <Button type="submit" className="w-full">
-                  Add Profile
-                </Button>
-              </form>
-            </Card.Content>
-          </Card.Container>
+        <Tabs.Content value="individual">
+          <div className="flex gap-4">
+            <DemographicsCard
+              comparisonId="96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5"
+              data={{
+                title: "The creator of Swipestats",
+                location: "Norway",
+                gender: "Man",
+                interestedInGender: "Women",
+                age: 32,
+                interestedInAge: { min: 24, max: 32 },
+              }}
+              accentColor="blue"
+              selectTab={setSelectedTab}
+            />
+            {/* <ComparisonForm /> */}
+            <Card.Container className="flex h-full w-full max-w-sm flex-col">
+              <Card.Header>
+                <Card.Title>Swipestats User</Card.Title>
+                <Card.Description>
+                  Add a Swipestats ID to compare
+                </Card.Description>
+              </Card.Header>
+              <Card.Content className="flex flex-1 flex-col justify-end">
+                <form className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="tinderId">Swipestats ID</Label>
+                    <Input
+                      id="tinderId"
+                      name="tinderId"
+                      placeholder="Enter your Swipestats ID"
+                      required
+                    />
+                  </div>
+                  <Button type="submit" className="w-full">
+                    Add Profile
+                  </Button>
+                </form>
+              </Card.Content>
+            </Card.Container>
+          </div>
         </Tabs.Content>
 
         <Tabs.Content value="global" className="space-y-4">
@@ -388,9 +390,8 @@ export function DemographicsCard({
 }) {
   const params = useParams();
   const [loading, setLoading] = useState(false);
-  const searchParams = useSearchParams();
-  const comparisonIds = searchParams.get("comparisonIds")?.split(",") ?? [];
-  const { addComparisonId, removeComparisonId, profiles } =
+
+  const { addComparisonId, removeComparisonId, profiles, comparisonIdsArray } =
     useInsightsProvider();
   const selected = profiles.some((p) => p.tinderId === comparisonId);
 
@@ -420,12 +421,11 @@ export function DemographicsCard({
 
   const isLoading = useMemo(() => {
     if (loading) return true;
-    const comparisonIdsInUrl = searchParams.get("comparisonIds");
     const profileIdInParamsButNotInArray =
-      comparisonIdsInUrl?.includes(comparisonId) &&
+      comparisonIdsArray.includes(comparisonId) &&
       profiles.every((p) => p.tinderId !== comparisonId);
     return profileIdInParamsButNotInArray;
-  }, [loading, searchParams, comparisonId, profiles]);
+  }, [loading, comparisonId, profiles, comparisonIdsArray]);
 
   return (
     <Card.Container

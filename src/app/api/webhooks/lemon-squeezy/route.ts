@@ -28,22 +28,49 @@ interface WebhookData {
       //   renews_at: string; // ?
       //   ends_at: string; // ?
       //   trial_ends_at: string; // ?
+      first_order_item: {
+        id: number;
+        price: number;
+        order_id: number;
+        price_id: number;
+        quantity: number;
+        test_mode: boolean;
+        created_at: string;
+        product_id: number;
+        updated_at: string;
+        variant_id: number;
+        product_name: string;
+        variant_name: string;
+      };
     };
     id: string;
   };
 }
 
-const productToVariantId = {
+type ProductId =
+  | "datasetSample"
+  | "datasetFull"
+  | "swipestatsPlus"
+  | "aiDatingPhotos";
+const productToVariantId: Record<ProductId, Record<"test" | "prod", number>> = {
   // test mode
-  dataset: {
-    sample: 470938,
-    full: 456562,
+  datasetSample: {
+    test: 537493,
+    prod: 470938,
   },
-  swipestatsPlus: 624661,
-  aiDatingPhotos: 470939,
-};
+  datasetFull: {
+    test: 537493,
+    prod: 456562,
+  },
+  swipestatsPlus: {
+    test: 624661,
+    prod: 624630,
+  },
+  aiDatingPhotos: { test: 453444, prod: 314518 },
+} as const;
 
 export async function POST(request: Request) {
+  const keyEnv = env.NEXT_PUBLIC_IS_PROD ? "prod" : "test";
   log.info("Received Lemon Squeezy webhook");
 
   const rawBody = await request.text();
@@ -64,10 +91,11 @@ export async function POST(request: Request) {
   const data = JSON.parse(rawBody) as WebhookData;
   log.info("Processing webhook event", {
     eventName: data.meta.event_name,
-    customData: data.meta?.custom_data,
+    custom_data: data.meta?.custom_data,
     orderId: data.data.attributes.order_id,
     variantId: data.data.attributes.variant_id,
     customerEmail: data.data.attributes.user_email,
+    first_order_item: data.data.attributes.first_order_item,
   });
 
   const meta = data.meta;
@@ -76,11 +104,16 @@ export async function POST(request: Request) {
   const objId = data.data.id;
 
   const dataPurchaseVariantIds = [
-    productToVariantId.dataset.sample,
-    productToVariantId.dataset.full,
+    productToVariantId.datasetSample[keyEnv],
+    productToVariantId.datasetFull[keyEnv],
   ];
 
-  const purchaseVariantId = attributes.variant_id;
+  const purchaseVariantId =
+    attributes.variant_id ?? attributes.first_order_item.variant_id;
+
+  if (!purchaseVariantId) {
+    throw new Error("No purchase variant id found");
+  }
 
   switch (eventName) {
     case "order_created":
@@ -89,7 +122,7 @@ export async function POST(request: Request) {
       if (dataPurchaseVariantIds.includes(purchaseVariantId)) {
         log.info("Processing dataset purchase", {
           type:
-            purchaseVariantId === productToVariantId.dataset.full
+            purchaseVariantId === productToVariantId.datasetFull[keyEnv]
               ? "full"
               : "sample",
           customerEmail: attributes.user_email,
@@ -101,7 +134,7 @@ export async function POST(request: Request) {
             customerEmail: attributes.user_email,
             customerName: attributes.user_name,
             datasetName:
-              purchaseVariantId === productToVariantId.dataset.full
+              purchaseVariantId === productToVariantId.datasetFull[keyEnv]
                 ? "Full Package"
                 : "Sample",
             downloadLink: "https://swipestats.io/", // Replace with actual download link
@@ -114,7 +147,9 @@ export async function POST(request: Request) {
           },
         );
         log.info("Sent dataset purchase confirmation email");
-      } else if (purchaseVariantId === productToVariantId.aiDatingPhotos) {
+      } else if (
+        purchaseVariantId === productToVariantId.aiDatingPhotos[keyEnv]
+      ) {
         log.info("Processing AI Dating Photos purchase", {
           customerEmail: attributes.user_email,
         });
@@ -123,7 +158,9 @@ export async function POST(request: Request) {
           customerEmail: attributes.user_email,
         });
         log.info("Completed AI Dating Photos purchase processing");
-      } else if (purchaseVariantId === productToVariantId.swipestatsPlus) {
+      } else if (
+        purchaseVariantId === productToVariantId.swipestatsPlus[keyEnv]
+      ) {
         log.info("Processing Swipestats Plus purchase", {
           tinderId: data.meta.custom_data.tinderId,
           customerEmail: attributes.user_email,

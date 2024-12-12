@@ -29,6 +29,7 @@ const [useInsightsProvider, InsightsContextProvider] = createGenericContext<{
   addComparisonId: (data: { comparisonId: string }) => void;
   removeComparisonId: (data: { comparisonId: string }) => void;
   swipestatsTier: SwipestatsTier;
+  comparisonIdsArray: string[];
 }>();
 
 function InsightsProvider(props: {
@@ -41,16 +42,17 @@ function InsightsProvider(props: {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const comparisonIds = searchParams.get("comparisonIds");
+  const comparisonIdsArray = comparisonIds ? comparisonIds.split(",") : [];
 
   const [loading, setLoading] = useState(true);
 
   const comparisonData = api.profile.compare.useQuery(
     {
       tinderId: props.myTinderProfile.tinderId,
-      comparisonIds: comparisonIds ? comparisonIds.split(",") : [],
+      comparisonIds: comparisonIdsArray,
     },
     {
-      enabled: !!comparisonIds?.length,
+      enabled: !!comparisonIdsArray.length,
       refetchOnWindowFocus: false,
     },
   );
@@ -78,8 +80,7 @@ function InsightsProvider(props: {
   function addComparisonId(data: { comparisonId: string }) {
     // now you got a read/write object
 
-    const comparisonIdsQueryParam = searchParams.get("comparisonIds");
-    const existingComparisonIds = comparisonIdsQueryParam?.split(",");
+    const existingComparisonIds = comparisonIdsArray;
 
     if (data.comparisonId === props.myTinderProfile.tinderId) {
       toast("You are trying to compare with yourself");
@@ -93,10 +94,10 @@ function InsightsProvider(props: {
 
     // update as necessary
     const newComparisonIds = existingComparisonIds
-      ? `${existingComparisonIds.join(",")},${data.comparisonId}`
-      : data.comparisonId;
+      ? [...existingComparisonIds, data.comparisonId]
+      : [data.comparisonId];
 
-    const query = `?comparisonIds=${newComparisonIds}`;
+    const query = `?comparisonIds=${newComparisonIds.join(",")}`;
     console.log({
       existingComparisonIds,
       newComparisonIds,
@@ -109,9 +110,7 @@ function InsightsProvider(props: {
   }
 
   function removeComparisonId(data: { comparisonId: string }) {
-    const current = new URLSearchParams(Array.from(searchParams.entries()));
-    const comparisonIdsQueryParam = current.get("comparisonIds");
-    const existingComparisonIds = comparisonIdsQueryParam?.split(",") ?? [];
+    const existingComparisonIds = comparisonIdsArray;
 
     const newComparisonIds = existingComparisonIds
       .filter((id) => id !== data.comparisonId)
@@ -122,6 +121,7 @@ function InsightsProvider(props: {
   }
 
   const swipestatsTier = props.myTinderProfile.user.swipestatsTier;
+
   return (
     <InsightsContextProvider
       value={{
@@ -134,6 +134,7 @@ function InsightsProvider(props: {
         addComparisonId,
         removeComparisonId,
         swipestatsTier,
+        comparisonIdsArray,
       }}
     >
       {props.children}
