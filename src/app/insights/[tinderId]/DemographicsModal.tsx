@@ -23,6 +23,7 @@ export default function DemographicsModal() {
   return (
     <>
       <DrawerDialog
+        size="7xl"
         trigger={
           <Card.Container className="w-56 cursor-pointer overflow-hidden border-dashed bg-white/50 backdrop-blur-sm transition-colors hover:bg-white/70">
             <div className="flex items-center">
@@ -53,7 +54,7 @@ export default function DemographicsModal() {
 }
 
 export function DemographicsSections() {
-  const [selectedTab, setSelectedTab] = useState("individual");
+  const [selectedTab, setSelectedTab] = useState("demographics");
 
   return (
     <div className="space-y-6">
@@ -63,13 +64,16 @@ export function DemographicsSections() {
         className="w-full"
       >
         <Tabs.List className="mb-4 grid grid-cols-3">
+          <Tabs.Trigger
+            value="demographics"
+            className="flex items-center gap-2"
+          >
+            <Globe2 className="h-4 w-4" />
+            Demographics
+          </Tabs.Trigger>
           <Tabs.Trigger value="individual" className="flex items-center gap-2">
             <UserIcon className="h-4 w-4" />
             Individual
-          </Tabs.Trigger>
-          <Tabs.Trigger value="global" className="flex items-center gap-2">
-            <Globe2 className="h-4 w-4" />
-            Global
           </Tabs.Trigger>
           {/* <Tabs.Trigger value="premium" className="flex items-center gap-2">
             <Sparkles className="h-4 w-4" />
@@ -89,50 +93,7 @@ export function DemographicsSections() {
           </Tabs.Trigger>
         </Tabs.List>
 
-        <Tabs.Content value="individual">
-          <div className="flex gap-4">
-            <DemographicsCard
-              comparisonId="96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5"
-              data={{
-                title: "The creator of Swipestats",
-                location: "Norway",
-                gender: "Man",
-                interestedInGender: "Women",
-                age: 32,
-                interestedInAge: { min: 24, max: 32 },
-              }}
-              accentColor="blue"
-              selectTab={setSelectedTab}
-            />
-            {/* <ComparisonForm /> */}
-            <Card.Container className="flex h-full w-full max-w-sm flex-col">
-              <Card.Header>
-                <Card.Title>Swipestats User</Card.Title>
-                <Card.Description>
-                  Add a Swipestats ID to compare
-                </Card.Description>
-              </Card.Header>
-              <Card.Content className="flex flex-1 flex-col justify-end">
-                <form className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="tinderId">Swipestats ID</Label>
-                    <Input
-                      id="tinderId"
-                      name="tinderId"
-                      placeholder="Enter your Swipestats ID"
-                      required
-                    />
-                  </div>
-                  <Button type="submit" className="w-full">
-                    Add Profile
-                  </Button>
-                </form>
-              </Card.Content>
-            </Card.Container>
-          </div>
-        </Tabs.Content>
-
-        <Tabs.Content value="global" className="space-y-4">
+        <Tabs.Content value="demographics" className="space-y-4">
           <div className="space-y-4">
             {/*<div>
                <h2 className="text-xl font-semibold">Global Demographics</h2> */}
@@ -143,7 +104,20 @@ export function DemographicsSections() {
             <div className="grid gap-4">
               <div className="space-y-2">
                 {/* <h3 className="font-medium">Global averages</h3> */}
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  <DemographicsCard
+                    comparisonId="96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5"
+                    data={{
+                      title: "The creator of Swipestats",
+                      location: "Norway",
+                      gender: "Man",
+                      interestedInGender: "Women",
+                      age: 32,
+                      interestedInAge: { min: 24, max: 32 },
+                    }}
+                    accentColor="blue"
+                    selectTab={setSelectedTab}
+                  />
                   <DemographicsCard
                     comparisonId="average-MALE-FEMALE-all-1"
                     requiredTier="PLUS"
@@ -184,6 +158,23 @@ export function DemographicsSections() {
               </AlertDescription>
             </Alert>
           </div>
+        </Tabs.Content>
+
+        <Tabs.Content value="individual">
+          <form className="mt-auto space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="tinderId">Swipestats ID</Label>
+              <Input
+                id="tinderId"
+                name="tinderId"
+                placeholder="Enter your Swipestats ID"
+                required
+              />
+            </div>
+            <Button type="submit" className="w-full">
+              Add Profile
+            </Button>
+          </form>
         </Tabs.Content>
 
         <Tabs.Content value="premium" className="space-y-4">
@@ -490,7 +481,10 @@ export function DemographicsCard({
       </Card.Content>
 
       <Card.Footer className="p-4">
-        {!hasAccess ? (
+        {!hasAccess ||
+        (onDemoProfile &&
+          comparisonId !==
+            "96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5") ? (
           <Button
             type="button"
             variant="default"
@@ -501,7 +495,8 @@ export function DemographicsCard({
             }}
           >
             <LockIcon className="mr-2 h-4 w-4" />
-            Swipestats+ Required - Upgrade Now
+            Swipestats+ Required -{" "}
+            {onDemoProfile ? "Not available in demo" : "Upgrade Now"}
           </Button>
         ) : (
           <Button
@@ -511,7 +506,10 @@ export function DemographicsCard({
             disabled={isLoading ?? onDemoProfile}
           >
             {onDemoProfile
-              ? "Already viewing"
+              ? comparisonId ===
+                "96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5"
+                ? "Already viewing"
+                : "Not available in demo"
               : selected
                 ? "Remove Comparison"
                 : "Apply Demographic"}

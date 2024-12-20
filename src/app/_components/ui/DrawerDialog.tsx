@@ -27,7 +27,17 @@ export function DrawerDialog(props: {
   children: React.ReactNode;
   title: string;
   description?: string;
-  size?: "sm" | "md" | "lg";
+  size?:
+    | "sm"
+    | "md"
+    | "lg"
+    | "xl"
+    | "2xl"
+    | "3xl"
+    | "4xl"
+    | "5xl"
+    | "6xl"
+    | "7xl";
 }) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
@@ -41,6 +51,12 @@ export function DrawerDialog(props: {
             "max-w-sm": props.size === "sm",
             "max-w-md": props.size === "md",
             "max-w-lg": props.size === "lg",
+            "max-w-2xl": props.size === "2xl",
+            "max-w-3xl": props.size === "3xl",
+            "max-w-4xl": props.size === "4xl",
+            "max-w-5xl": props.size === "5xl",
+            "max-w-6xl": props.size === "6xl",
+            "max-w-7xl": props.size === "7xl",
           })}
         >
           <DialogHeader>

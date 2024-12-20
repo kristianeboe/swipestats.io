@@ -244,7 +244,6 @@ export default function UploadPage({
           <WaitlistCTA dataProvider={selectedDataProvider} />
         )}
       </div>
-      <DataRequestSupport />
     </div>
   );
 }

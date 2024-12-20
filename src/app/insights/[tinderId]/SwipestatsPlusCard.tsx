@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { useInsightsProvider } from "./InsightsProvider";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 const includedFeatures = [
   {
@@ -186,7 +187,11 @@ const TierSelect = () => (
 export function SwipestatsPlusCard() {
   const { myTinderId, myTinderProfile, swipestatsTier } = useInsightsProvider();
 
-  if (swipestatsTier === "PLUS") {
+  if (
+    swipestatsTier === "PLUS" &&
+    myTinderId !==
+      "96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5"
+  ) {
     return (
       <Card.Container className="w-full">
         <Card.Header className="space-y-2 text-center">
@@ -272,12 +277,31 @@ export function SwipestatsPlusCard() {
                 USD
               </span>
             </p>
-            <a
-              href={`https://swipestats.lemonsqueezy.com/buy/e362e7c3-5fba-4e46-8134-ead1e9da8847?checkout[custom][tinderId]=${myTinderId}`}
-              className="mt-10 block w-full rounded-md bg-rose-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
-            >
-              Get access
-            </a>
+            {myTinderId ===
+            "96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5" ? (
+              <button
+                disabled
+                className="mt-10 block w-full rounded-md bg-gray-400 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm"
+              >
+                Not available in demo
+              </button>
+            ) : (
+              <a
+                href={`https://swipestats.lemonsqueezy.com/buy/e362e7c3-5fba-4e46-8134-ead1e9da8847?checkout[custom][tinderId]=${myTinderId}`}
+                className="mt-10 block w-full rounded-md bg-rose-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
+              >
+                Get access
+              </a>
+            )}
+            {myTinderId ===
+              "96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5" && (
+              <Link
+                href="/upload/tinder"
+                className="mt-4 block w-full rounded-md bg-rose-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-rose-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-rose-600"
+              >
+                Upload your own data now
+              </Link>
+            )}
             {/* <p className="mt-6 text-xs/5 text-gray-600">
           Invoices and receipts available for easy company
           reimbursement

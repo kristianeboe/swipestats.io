@@ -6,6 +6,7 @@ import { XCircleIcon } from "@heroicons/react/24/solid";
 import { Alert } from "@/app/_components/tw/Alert";
 import type { DataProvider } from "@prisma/client";
 import { analyticsTrackClient } from "@/lib/analytics/analyticsTrackClient";
+import Link from "next/link";
 
 export function UploadArea({
   dataProviderId,
@@ -79,8 +80,8 @@ export function UploadArea({
   return (
     <div className="space-y-8">
       <div
-        className={`mx-auto w-full max-w-6xl cursor-pointer rounded-md transition-all hover:bg-rose-50  ${
-          isDragActive ? "bg-rose-100  p-2" : ""
+        className={`mx-auto w-full max-w-6xl cursor-pointer rounded-md transition-all hover:bg-rose-50 ${
+          isDragActive ? "bg-rose-100 p-2" : ""
         }`}
         {...getRootProps()}
       >
@@ -93,7 +94,7 @@ export function UploadArea({
         <div
           className={`drop-area transition-color flex justify-center border-2 px-6 pb-6 pt-5 ${
             isDragActive ? "border-rose-500" : "border-gray-300"
-          }   rounded-md border-dashed`}
+          } rounded-md border-dashed`}
         >
           <div className="space-y-1 text-center">
             <svg
@@ -140,6 +141,18 @@ export function UploadArea({
       {fileRejections.length > 0 && (
         <Alert title="Unsupported file" category="danger" />
       )}
+      <Alert
+        title="Don't have your data.json file yet?"
+        category="info"
+        description={
+          <Link
+            href={"/#data-request-support"}
+            className="underline hover:text-rose-500"
+          >
+            Learn how to get it here
+          </Link>
+        }
+      />
     </div>
   );
 }
