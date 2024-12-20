@@ -20,6 +20,8 @@ import { Tabs } from "@/app/_components/ui/tabs";
 import { useInsightsProvider } from "./InsightsProvider";
 
 export default function DemographicsModal() {
+  const [demographicsModalOpen, setDemographicsModalOpen] = useState(false);
+
   return (
     <>
       <DrawerDialog
@@ -46,15 +48,35 @@ export default function DemographicsModal() {
         }
         title="Demographics"
         description="Compare your stats with other individuals and demographics"
+        
       >
-        <DemographicsSections />
+        <DemographicsSections
+          closeModal={() => setDemographicsModalOpen(false)}
+        />
       </DrawerDialog>
     </>
   );
 }
 
-export function DemographicsSections() {
+export function DemographicsSections(props: { closeModal: () => void }) {
+  const { myTinderId, addComparisonId } = useInsightsProvider();
   const [selectedTab, setSelectedTab] = useState("demographics");
+
+  const form = useForm({
+    resolver: zodResolver(
+      z.object({
+        tinderId: z.string().min(1),
+      }),
+    ),
+    defaultValues: {
+      tinderId: "",
+    },
+  });
+
+  const onSubmit = form.handleSubmit((data) => {
+    addComparisonId({ comparisonId: data.tinderId });
+    props.closeModal();
+  });
 
   return (
     <div className="space-y-6">
@@ -117,6 +139,7 @@ export function DemographicsSections() {
                     }}
                     accentColor="blue"
                     selectTab={setSelectedTab}
+                    closeModal={props.closeModal}
                   />
                   <DemographicsCard
                     comparisonId="average-MALE-FEMALE-all-1"
@@ -131,6 +154,7 @@ export function DemographicsSections() {
                     }}
                     accentColor="green"
                     selectTab={setSelectedTab}
+                    closeModal={props.closeModal}
                   />
                   <DemographicsCard
                     comparisonId="average-FEMALE-MALE-all-1"
@@ -145,6 +169,7 @@ export function DemographicsSections() {
                     }}
                     accentColor="pink"
                     selectTab={setSelectedTab}
+                    closeModal={props.closeModal}
                   />
                 </div>
               </div>
@@ -161,20 +186,23 @@ export function DemographicsSections() {
         </Tabs.Content>
 
         <Tabs.Content value="individual">
-          <form className="mt-auto space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="tinderId">Swipestats ID</Label>
-              <Input
-                id="tinderId"
-                name="tinderId"
-                placeholder="Enter your Swipestats ID"
-                required
-              />
-            </div>
-            <Button type="submit" className="w-full">
-              Add Profile
-            </Button>
-          </form>
+          <Form {...form}>
+            <form className="mt-auto space-y-4" onSubmit={onSubmit}>
+              <div className="space-y-2">
+                <Label htmlFor="tinderId">Swipestats ID</Label>
+                <Input
+                  id="tinderId"
+                  name="tinderId"
+                  placeholder="Enter your Swipestats ID"
+                  required
+                  {...form.register("tinderId")}
+                />
+              </div>
+              <Button type="submit" className="w-full">
+                Add Profile
+              </Button>
+            </form>
+          </Form>
         </Tabs.Content>
 
         <Tabs.Content value="premium" className="space-y-4">
@@ -347,6 +375,10 @@ import { Label } from "@/app/_components/ui/label";
 import { Input } from "@/app/_components/ui/input";
 import { useParams, useSearchParams } from "next/navigation";
 import { type SwipestatsTier } from "@prisma/client";
+import { Form } from "@/app/_components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 function formatAge(age: number | { min: number; max: number }): string {
   if (typeof age === "number") {
@@ -372,12 +404,14 @@ export function DemographicsCard({
   comparisonId,
   requiredTier = "FREE",
   selectTab,
+  closeModal,
 }: {
   data: DemographicData;
   accentColor?: string;
   comparisonId: string;
   requiredTier?: SwipestatsTier;
   selectTab: Dispatch<SetStateAction<string>>;
+  closeModal?: () => void;
 }) {
   const params = useParams();
   const [loading, setLoading] = useState(false);
@@ -396,16 +430,13 @@ export function DemographicsCard({
     if (!hasAccess) {
       return;
     }
-
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      if (selected) {
-        removeComparisonId({ comparisonId });
-      } else {
-        addComparisonId({ comparisonId });
-      }
-    }, 1000);
+    if (selected) {
+      removeComparisonId({ comparisonId });
+    } else {
+      addComparisonId({ comparisonId });
+    }
+    closeModal?.();
   };
 
   const onDemoProfile = params.tinderId === "demo";
