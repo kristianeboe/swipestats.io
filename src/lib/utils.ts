@@ -1,4 +1,4 @@
-import type { TinderProfile } from "@prisma/client";
+import type { Gender, TinderProfile } from "@prisma/client";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { type TinderJsonGender } from "./interfaces/TinderDataJSON";
@@ -99,6 +99,17 @@ export function getGenderDisplay(gender: TinderJsonGender) {
       return "Other";
     default:
       return "Unknown";
+  }
+}
+
+export function getInterestedInDisplay(interestedIn: Gender) {
+  switch (interestedIn) {
+    case "MALE":
+      return "men";
+    case "FEMALE":
+      return "women";
+    default:
+      return "unknown";
   }
 }
 

@@ -18,6 +18,7 @@ export function UploadProfileCard({
   updateProfileGenderData,
   genderDataAutoUpdated,
   setGenderDataAutoUpdated,
+  updateProfileLocationData,
 }: {
   // dataJSON: FullTinderDataJSON;
   swipestatsProfilePayload: SwipestatsProfilePayload;
@@ -25,6 +26,12 @@ export function UploadProfileCard({
     gender: TinderJsonGender;
     genderFilter: TinderJsonGender;
     interestedIn: TinderJsonGender;
+  }) => void;
+  updateProfileLocationData: (params: {
+    city: string;
+    region: string;
+    country: string;
+    continent: string;
   }) => void;
   genderDataAutoUpdated: boolean;
   setGenderDataAutoUpdated: Dispatch<SetStateAction<boolean>>;
@@ -34,6 +41,7 @@ export function UploadProfileCard({
   const travelLocationInfo = userData.travel_location_info;
 
   const [showGenderForm, setShowGenderForm] = useState(false);
+  const [showLocationForm, setShowLocationForm] = useState(false);
 
   // <pre>{Object.keys(dataJSON).join(", ")}</pre>;
   // const { Messages, Usage, ...json } = dataJSON;
@@ -94,7 +102,7 @@ export function UploadProfileCard({
             <CarouselNext />
           </Carousel> */}
         </div>
-        {genderDataAutoUpdated ? (
+        {genderDataAutoUpdated && !showGenderForm ? (
           <div className="p-4">
             <Alert className="">
               <ShieldAlert className="h-4 w-4" />
@@ -166,6 +174,20 @@ export function UploadProfileCard({
                 }}
               />
             </div>
+          ) : showLocationForm ? (
+            <div>
+              <ProfileLocationForm
+                profileLocation={{
+                  city: userData.city?.name ?? "",
+                  region: userData.city?.region ?? "",
+                }}
+                onSave={(data) => {
+                  updateProfileLocationData(data);
+                  setShowLocationForm(false);
+                }}
+                onCancel={() => setShowLocationForm(false)}
+              />
+            </div>
           ) : (
             <>
               <div className="flex items-start justify-between">
@@ -177,7 +199,10 @@ export function UploadProfileCard({
                     )}`}
                   </div>
                   {userData.city && (
-                    <p className="text-base text-gray-700">
+                    <p
+                      className="cursor-pointer text-base text-gray-700"
+                      onClick={() => setShowLocationForm(true)}
+                    >
                       {userData.city.name}, {userData.city.region}
                     </p>
                   )}
@@ -342,6 +367,7 @@ import {
 } from "@/app/_components/ui/carousel";
 import { Badge } from "@/app/_components/ui/badge";
 import { US_STATES } from "@/lib/utils/usStates";
+import { ProfileLocationForm } from "./ProfileLocationForm";
 
 const FormSchema = z.object({
   gender: z.enum(TinderJsonGenderValues, {

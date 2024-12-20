@@ -1,14 +1,30 @@
 import DatasetPurchaseEmail from "@/emails/DatasetPurchaseEmail";
 import { env } from "@/env";
+import { createSubLogger } from "@/lib/tslog";
 import { sendReactEmail } from "@/server/api/services/email.service";
+import { db } from "@/server/db";
 import { api } from "@/trpc/server";
 import crypto from "crypto";
 import { NextResponse } from "next/server";
 
+const log = createSubLogger("lemon-squeezy");
+
 interface WebhookData {
-  meta: { event_name: string };
+  meta: {
+    event_name: string;
+    custom_data: {
+      tinderId: string;
+      [key: string]: string;
+    };
+  };
   data: {
     attributes: {
+      // license_key_created
+      key?: string;
+      disabled?: boolean;
+
+      ///
+
       order_id: number;
       user_name: string;
       user_email: string;
@@ -18,14 +34,53 @@ interface WebhookData {
       //   renews_at: string; // ?
       //   ends_at: string; // ?
       //   trial_ends_at: string; // ?
-      custom_data: Record<string, unknown>;
+      first_order_item: {
+        id: number;
+        price: number;
+        order_id: number;
+        price_id: number;
+        quantity: number;
+        test_mode: boolean;
+        created_at: string;
+        product_id: number;
+        updated_at: string;
+        variant_id: number;
+        product_name: string;
+        variant_name: string;
+      };
     };
     id: string;
   };
 }
 
+type ProductId =
+  | "datasetSample"
+  | "datasetFull"
+  | "swipestatsPlus"
+  | "aiDatingPhotos";
+const productToVariantId: Record<ProductId, Record<"test" | "prod", number>> = {
+  // test mode
+  datasetSample: {
+    test: 537493,
+    prod: 470938,
+  },
+  datasetFull: {
+    test: 537493,
+    prod: 456562,
+  },
+  swipestatsPlus: {
+    test: 624661,
+    prod: 624630,
+  },
+  aiDatingPhotos: { test: 453444, prod: 314518 },
+} as const;
+
 export async function POST(request: Request) {
+  const keyEnv = env.NEXT_PUBLIC_IS_PROD ? "prod" : "test";
+  log.info("Received Lemon Squeezy webhook");
+
   const rawBody = await request.text();
+  log.debug("Raw webhook payload", { rawBody });
 
   const secret = env.LEMONSQUEEZY_WEBHOOK_SECRET;
   const hmac = crypto.createHmac("sha256", secret);
@@ -40,34 +95,58 @@ export async function POST(request: Request) {
   }
 
   const data = JSON.parse(rawBody) as WebhookData;
-  const eventName = data.meta.event_name;
+  log.info("Processing webhook event", {
+    eventName: data.meta.event_name,
+    custom_data: data.meta?.custom_data,
+    orderId: data.data.attributes.order_id,
+    variantId: data.data.attributes.variant_id,
+    customerEmail: data.data.attributes.user_email,
+    first_order_item: data.data.attributes.first_order_item,
+  });
+
+  const meta = data.meta;
+  const eventName = meta.event_name;
   const attributes = data.data.attributes;
   const objId = data.data.id;
 
-  const samplePurchaseVariantId = 470938;
-  const fullPackagePurchaseVariantId = 456562;
-  const aiDatingPhotosPurchaseVariantId = 470939;
-
   const dataPurchaseVariantIds = [
-    samplePurchaseVariantId,
-    fullPackagePurchaseVariantId,
+    productToVariantId.datasetSample[keyEnv],
+    productToVariantId.datasetFull[keyEnv],
   ];
 
-  const purchaseVariantId = attributes.variant_id;
+  const purchaseVariantId =
+    attributes.variant_id ?? attributes.first_order_item.variant_id;
 
   switch (eventName) {
+    case "license_key_created":
+      const key = attributes.key;
+      log.info("Processing license_key_created event", {
+        key,
+        disabled: attributes.disabled,
+      });
+      break;
     case "order_created":
+      if (!purchaseVariantId) {
+        throw new Error("No purchase variant id found");
+      }
+      log.info("Processing order_created event", { purchaseVariantId });
+
       if (dataPurchaseVariantIds.includes(purchaseVariantId)) {
-        // Dataset purchase
-        // create purchase token // base it on LM licence key?
-        // send success email
+        log.info("Processing dataset purchase", {
+          type:
+            purchaseVariantId === productToVariantId.datasetFull[keyEnv]
+              ? "full"
+              : "sample",
+          customerEmail: attributes.user_email,
+        });
+
         await sendReactEmail(
           DatasetPurchaseEmail,
           {
             customerEmail: attributes.user_email,
             customerName: attributes.user_name,
             datasetName:
-              purchaseVariantId === fullPackagePurchaseVariantId
+              purchaseVariantId === productToVariantId.datasetFull[keyEnv]
                 ? "Full Package"
                 : "Sample",
             downloadLink: "https://swipestats.io/", // Replace with actual download link
@@ -79,18 +158,39 @@ export async function POST(request: Request) {
             bcc: ["kristian.e.boe@gmail.com", "kris@swipestats.io"],
           },
         );
-      } else if (purchaseVariantId === aiDatingPhotosPurchaseVariantId) {
-        // AI Dating Photos purchase
+        log.info("Sent dataset purchase confirmation email");
+      } else if (
+        purchaseVariantId === productToVariantId.aiDatingPhotos[keyEnv]
+      ) {
+        log.info("Processing AI Dating Photos purchase", {
+          customerEmail: attributes.user_email,
+        });
+
         await api.aiDatingPhotosRouter.onPurchase({
           customerEmail: attributes.user_email,
         });
+        log.info("Completed AI Dating Photos purchase processing");
+      } else if (
+        purchaseVariantId === productToVariantId.swipestatsPlus[keyEnv]
+      ) {
+        log.info("Processing Swipestats Plus purchase", {
+          tinderId: data.meta.custom_data.tinderId,
+          customerEmail: attributes.user_email,
+        });
+
+        await db.tinderProfile.update({
+          where: { tinderId: data.meta.custom_data.tinderId },
+          data: { user: { update: { swipestatsTier: "PLUS" } } },
+        });
+        log.info("Updated user tier to PLUS");
       }
 
       break;
     default:
-      console.log("Unknown event name:", eventName);
+      log.warn("Received unknown event type", { eventName });
       break;
   }
 
+  log.info("Webhook processing completed successfully");
   return NextResponse.json({ success: true });
 }

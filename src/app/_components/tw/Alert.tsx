@@ -4,73 +4,98 @@ import {
   XCircleIcon,
   ExclamationTriangleIcon,
 } from "@heroicons/react/20/solid";
+import { cn } from "@/lib/utils";
 import React from "react";
 
-export function Alert(props: {
+type AlertColor = {
+  background: string;
+  border: string;
+  text: string;
+  icon: string;
+};
+
+type AlertCategory = "success" | "danger" | "warning" | "info";
+const alertColors: Record<AlertCategory, AlertColor> = {
+  success: {
+    background: "bg-green-50",
+    border: "border-green-400",
+    text: "text-green-800",
+    icon: "text-green-400",
+  },
+  danger: {
+    background: "bg-red-50",
+    border: "border-red-400",
+    text: "text-red-800",
+    icon: "text-red-400",
+  },
+  warning: {
+    background: "bg-yellow-50",
+    border: "border-yellow-400",
+    text: "text-yellow-800",
+    icon: "text-yellow-400",
+  },
+  info: {
+    background: "bg-blue-50",
+    border: "border-blue-400",
+    text: "text-blue-800",
+    icon: "text-blue-400",
+  },
+} as const;
+
+export function Alert({
+  title,
+  category,
+  description,
+  descriptionList,
+}: {
   title: string;
-  category: "danger" | "success" | "warning" | "info";
-  description?: string;
+  category: AlertCategory;
+  description?: React.ReactNode;
   descriptionList?: string[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  actions?: any[];
 }) {
-  // const icon = props.category === 'success' ?  <CheckCircleIcon className="h-5 w-5 text-green-400" aria-hidden="true" /> : props.category === 'error' ?
-  let icon: JSX.Element;
-  let color: string;
+  const colors = alertColors[category];
 
-  switch (props.category) {
-    case "success":
-      icon = <CheckCircleIcon className="h-5 w-5 text-green-400" />;
-      color = "green";
-      break;
-    case "danger":
-      icon = (
-        <XCircleIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
-      );
-      color = "red";
-      break;
-    case "warning":
-      icon = (
-        <ExclamationTriangleIcon
-          className="h-5 w-5 text-yellow-400"
-          aria-hidden="true"
-        />
-      );
-      color = "yellow";
-      break;
-    default:
-      // info
-      icon = (
-        <InformationCircleIcon
-          className="h-5 w-5 text-blue-400"
-          aria-hidden="true"
-        />
-      );
-      color = "blue";
-  }
-
-  console.log("alert", { c: props.category, col: color });
+  const icon = {
+    success: <CheckCircleIcon className={cn("h-5 w-5", colors.icon)} />,
+    danger: (
+      <XCircleIcon className={cn("h-5 w-5", colors.icon)} aria-hidden="true" />
+    ),
+    warning: (
+      <ExclamationTriangleIcon
+        className={cn("h-5 w-5", colors.icon)}
+        aria-hidden="true"
+      />
+    ),
+    info: (
+      <InformationCircleIcon
+        className={cn("h-5 w-5", colors.icon)}
+        aria-hidden="true"
+      />
+    ),
+  }[category];
 
   return (
     <div
-      className={`rounded-md bg-${color}-50 border-l-4 p-4 border-${color}-400`}
+      className={cn(
+        "rounded-md border-l-4 p-4",
+        colors.background,
+        colors.border,
+      )}
     >
       <div className="flex">
         <div className="flex-shrink-0">{icon}</div>
         <div className="ml-3">
-          <h3 className={`text-sm font-medium text-${color}-800`}>
-            {props.title}
-          </h3>
-          {props.description && (
-            <div className={`mt-2 text-sm text-${color}-700`}>
-              <p>{props.description}</p>
+          <h3 className={cn("text-sm font-medium", colors.text)}>{title}</h3>
+          {description && (
+            <div className={cn("mt-2 text-sm", colors.text)}>
+              <p>{description}</p>
             </div>
           )}
 
-          {props.descriptionList && (
-            <div className={`mt-2 text-sm text-${color}-700`}>
+          {descriptionList && (
+            <div className={cn("mt-2 text-sm", colors.text)}>
               <ul role="list" className="list-disc space-y-1 pl-5">
-                {props.descriptionList.map((item) => (
+                {descriptionList.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
