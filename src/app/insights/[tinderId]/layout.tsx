@@ -1,13 +1,6 @@
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/app/_components/ui/toggle-group";
-import { ChartArea, ChartNetwork, MessageCircle } from "lucide-react";
-import Link from "next/link";
-import { notFound, usePathname } from "next/navigation";
+import { notFound } from "next/navigation";
 import { InsightsProvider } from "./InsightsProvider";
 import { api } from "@/trpc/server";
-import Profiles from "./Profiles";
 
 export default async function InsightsLayout(props: {
   params: { tinderId: string };
@@ -23,7 +16,7 @@ export default async function InsightsLayout(props: {
 
   return (
     <div className="">
-      <h1 className="text-center text-5xl font-black">Swipestats</h1>
+      <h1 className="text-center text-5xl font-black">Your Swipestats</h1>
 
       <InsightsProvider
         // @ts-expect-error todo figure this out

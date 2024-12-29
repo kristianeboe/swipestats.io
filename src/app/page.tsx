@@ -20,6 +20,7 @@ import { StarIcon } from "lucide-react";
 import { Blog } from "./blog/BlogSection";
 import { About } from "./AboutSection";
 import { Button } from "./_components/ui/button";
+import { getProductData } from "@/lib/constants/lemonSqueezy.constants";
 
 const features = [
   {
@@ -51,7 +52,7 @@ const tiers = [
   {
     name: "Small Sample",
     id: "small-sample",
-    href: "https://swipestats.lemonsqueezy.com/buy/d87295c0-c322-4fa9-88e0-0433426b223a?selected=470938",
+    href: getProductData("datasetSample").checkoutUrl,
     price: "$15",
     description: "Get started",
     features: ["10 profiles", "Perfect to test and learn about the data model"],
@@ -60,7 +61,7 @@ const tiers = [
   {
     name: "Full package",
     id: "full-package",
-    href: "https://swipestats.lemonsqueezy.com/buy/2c92db51-3b31-4571-ae37-ed7e8e98c937", //  "https://buy.stripe.com/fZe9BWdue9U59Nu4gi",
+    href: getProductData("datasetFull").checkoutUrl,
     price: "$50",
     description: "Scale your analysis and get access to future datasets",
     features: [
@@ -74,7 +75,7 @@ const tiers = [
   {
     name: "University / Enterprise",
     id: "tier-enterprise",
-    href: "mailto:kristian.e.boe@gmail.com?subject=University%20%2F%20Enterprise%20Plan%20Inquiry&body=Hello%2C%0D%0A%0D%0AI%27m%20interested%20in%20the%20University%20%2F%20Enterprise%20plan%20for%20%245000.%20I%20would%20like%20to%20know%20more%20about%20the%20following%3A%0D%0A%0D%0A-%20License%20to%20distribute%20datasets%20to%20students%0D%0A-%204k%2B%20profiles%0D%0A-%20Direct%20support%0D%0A%0D%0APlease%20provide%20me%20with%20additional%20information%20and%20the%20next%20steps%20to%20get%20started.%0D%0A%0D%0AThank%20you%2C%0D%0A%5BYour%20Name%5D",
+    href: "mailto:kristian@swipestats.io?subject=University%20%2F%20Enterprise%20Plan%20Inquiry&body=Hello%2C%0D%0A%0D%0AI%27m%20interested%20in%20the%20University%20%2F%20Enterprise%20plan%20for%20%245000.%20I%20would%20like%20to%20know%20more%20about%20the%20following%3A%0D%0A%0D%0A-%20License%20to%20distribute%20datasets%20to%20students%0D%0A-%204k%2B%20profiles%0D%0A-%20Direct%20support%0D%0A%0D%0APlease%20provide%20me%20with%20additional%20information%20and%20the%20next%20steps%20to%20get%20started.%0D%0A%0D%0AThank%20you%2C%0D%0A%5BYour%20Name%5D",
 
     price: "$1500",
     description: "Dedicated support and infrastructure for your company.",
@@ -85,15 +86,6 @@ const tiers = [
     ],
     mostPopular: false,
   },
-];
-const faqs = [
-  {
-    id: 1,
-    question: "What's the best thing about Switzerland?",
-    answer:
-      "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
-  },
-  // More questions...
 ];
 
 export default function HomePage() {

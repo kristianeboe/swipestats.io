@@ -1,12 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { createCheckout } from "@lemonsqueezy/lemonsqueezy.js";
-
-const productToVariantId = {
-  basic: 624630,
-  plus: 624661,
-  premium: 624632,
-} as const;
+import { getProductData } from "@/lib/constants/lemonSqueezy.constants";
 
 export const purchasesRouter = createTRPCRouter({
   getPurchases: publicProcedure
@@ -21,13 +16,13 @@ export const purchasesRouter = createTRPCRouter({
     .input(
       z.object({
         tinderId: z.string(),
-        product: z.enum(["basic", "plus", "premium"]),
+        product: z.enum(["swipestatsPlus"]),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       const checkoutSession = await createCheckout(
         97795,
-        productToVariantId[input.product],
+        getProductData(input.product).variantId,
         {
           checkoutData: {
             custom: {

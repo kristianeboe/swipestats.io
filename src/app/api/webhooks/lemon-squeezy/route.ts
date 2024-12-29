@@ -1,5 +1,6 @@
 import DatasetPurchaseEmail from "@/emails/DatasetPurchaseEmail";
 import { env } from "@/env";
+import { getProductData } from "@/lib/constants/lemonSqueezy.constants";
 import { createSubLogger } from "@/lib/tslog";
 import { sendReactEmail } from "@/server/api/services/email.service";
 import { db } from "@/server/db";
@@ -53,28 +54,6 @@ interface WebhookData {
   };
 }
 
-type ProductId =
-  | "datasetSample"
-  | "datasetFull"
-  | "swipestatsPlus"
-  | "aiDatingPhotos";
-const productToVariantId: Record<ProductId, Record<"test" | "prod", number>> = {
-  // test mode
-  datasetSample: {
-    test: 537493,
-    prod: 470938,
-  },
-  datasetFull: {
-    test: 537493,
-    prod: 456562,
-  },
-  swipestatsPlus: {
-    test: 624661,
-    prod: 624630,
-  },
-  aiDatingPhotos: { test: 453444, prod: 314518 },
-} as const;
-
 export async function POST(request: Request) {
   const keyEnv = env.NEXT_PUBLIC_IS_PROD ? "prod" : "test";
   log.info("Received Lemon Squeezy webhook");
@@ -109,9 +88,13 @@ export async function POST(request: Request) {
   const attributes = data.data.attributes;
   const objId = data.data.id;
 
+  const sampleProductData = getProductData("datasetSample");
+  const fullProductData = getProductData("datasetFull");
+  const aiDatingPhotosProductData = getProductData("aiDatingPhotos");
+  const swipestatsPlusProductData = getProductData("swipestatsPlus");
   const dataPurchaseVariantIds = [
-    productToVariantId.datasetSample[keyEnv],
-    productToVariantId.datasetFull[keyEnv],
+    sampleProductData.variantId,
+    fullProductData.variantId,
   ];
 
   const purchaseVariantId =
@@ -134,9 +117,7 @@ export async function POST(request: Request) {
       if (dataPurchaseVariantIds.includes(purchaseVariantId)) {
         log.info("Processing dataset purchase", {
           type:
-            purchaseVariantId === productToVariantId.datasetFull[keyEnv]
-              ? "full"
-              : "sample",
+            purchaseVariantId === fullProductData.variantId ? "full" : "sample",
           customerEmail: attributes.user_email,
         });
 
@@ -146,7 +127,7 @@ export async function POST(request: Request) {
             customerEmail: attributes.user_email,
             customerName: attributes.user_name,
             datasetName:
-              purchaseVariantId === productToVariantId.datasetFull[keyEnv]
+              purchaseVariantId === fullProductData.variantId
                 ? "Full Package"
                 : "Sample",
             downloadLink: "https://swipestats.io/", // Replace with actual download link
@@ -159,9 +140,7 @@ export async function POST(request: Request) {
           },
         );
         log.info("Sent dataset purchase confirmation email");
-      } else if (
-        purchaseVariantId === productToVariantId.aiDatingPhotos[keyEnv]
-      ) {
+      } else if (purchaseVariantId === aiDatingPhotosProductData.variantId) {
         log.info("Processing AI Dating Photos purchase", {
           customerEmail: attributes.user_email,
         });
@@ -170,9 +149,7 @@ export async function POST(request: Request) {
           customerEmail: attributes.user_email,
         });
         log.info("Completed AI Dating Photos purchase processing");
-      } else if (
-        purchaseVariantId === productToVariantId.swipestatsPlus[keyEnv]
-      ) {
+      } else if (purchaseVariantId === swipestatsPlusProductData.variantId) {
         log.info("Processing Swipestats Plus purchase", {
           tinderId: data.meta.custom_data.tinderId,
           customerEmail: attributes.user_email,

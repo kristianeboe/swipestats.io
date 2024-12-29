@@ -151,7 +151,7 @@ const PricingCard = ({
             setLoading(true);
             createCheckout.mutate({
               tinderId: myTinderId,
-              product: title.toLowerCase() as "basic" | "plus" | "premium",
+              product: "swipestatsPlus",
             });
           }}
         >

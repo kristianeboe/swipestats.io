@@ -461,11 +461,11 @@ export function DemographicsCard({
         <Card.Title className="text-xl font-bold text-gray-800 dark:text-gray-100">
           {data.title}
         </Card.Title>
-        <div
+        {/* <div
           className={`h-7 w-7 rounded-full bg-gradient-to-br ${getGradientClasses(
             accentColor,
           )}`}
-        />
+        /> */}
       </Card.Header>
 
       <Card.Content className="grid gap-3 p-4">
