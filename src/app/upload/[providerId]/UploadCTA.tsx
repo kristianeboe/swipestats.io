@@ -31,14 +31,19 @@ import { toast } from "sonner";
 import { getISODayKey, isGenderDataUnknown } from "@/lib/utils";
 import { getFirstAndLastDayOnApp } from "@/lib/profile.utils";
 import { formatDistanceToNow } from "date-fns";
-import { IANA_TIME_ZONE_TO_COUNTRY } from "@/lib/timeZoneToCountry";
 import { analyticsTrackClient } from "@/lib/analytics/analyticsTrackClient";
 import { env } from "@/env";
+import {
+  getCountryFromBrowserTimeZone,
+  getTimeZoneFromBrowser,
+} from "@/lib/utils/getCountryFromTimeZone";
 
 export function UploadCTA(props: {
   swipestatsProfilePayload: SwipestatsProfilePayload;
   // jsonProfile: FullTinderDataJSON;
-  updatePayload: Dispatch<SetStateAction<SwipestatsProfilePayload | null>>;
+  updateProfilePayload: (
+    partialProfile: Partial<SwipestatsProfilePayload["anonymizedTinderJson"]>,
+  ) => void;
 }) {
   const log = logger.getSubLogger({ name: "upload-cta" });
   const router = useRouter();
@@ -46,11 +51,8 @@ export function UploadCTA(props: {
   const [acceptedTerms, _setAcceptedTerms] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  const country =
-    IANA_TIME_ZONE_TO_COUNTRY[
-      timeZone as keyof typeof IANA_TIME_ZONE_TO_COUNTRY
-    ];
+  const [timeZone, setTimeZone] = useState(() => getTimeZoneFromBrowser());
+  const [country, setCountry] = useState(() => getCountryFromBrowserTimeZone());
 
   const existingProfileQuery = api.profile.get.useQuery(
     {
@@ -151,18 +153,38 @@ export function UploadCTA(props: {
       genderFilter: TinderJsonGender;
       interestedIn: TinderJsonGender;
     }) => {
-      props.updatePayload({
-        tinderId: props.swipestatsProfilePayload.tinderId,
-        anonymizedTinderJson: {
-          ...props.swipestatsProfilePayload.anonymizedTinderJson,
-          User: {
-            ...userData,
-            gender: params.gender,
-            gender_filter: params.genderFilter,
-            interested_in: params.interestedIn,
+      props.updateProfilePayload({
+        User: {
+          ...userData,
+          gender: params.gender,
+          gender_filter: params.genderFilter,
+          interested_in: params.interestedIn,
+        },
+      });
+    },
+    [props, userData],
+  );
+
+  const updateProfileLocationData = useCallback(
+    (params: {
+      city: string;
+      region: string;
+      country: string;
+      continent: string;
+    }) => {
+      props.updateProfilePayload({
+        User: {
+          ...userData,
+          city: {
+            coords: userData.city?.coords,
+            name: params.city,
+            region: params.region,
           },
         },
       });
+      if (params.country) {
+        setCountry(params.country);
+      }
     },
     [props, userData],
   );
@@ -349,6 +371,7 @@ export function UploadCTA(props: {
             updateProfileGenderData={updateProfileGenderData}
             genderDataAutoUpdated={genderDataAutoUpdated}
             setGenderDataAutoUpdated={setGenderDataAutoUpdated}
+            updateProfileLocationData={updateProfileLocationData}
 
             // dataJSON={props.jsonProfile}
           />
