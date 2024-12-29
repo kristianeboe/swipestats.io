@@ -169,7 +169,7 @@ async function main() {
           {
             demographic: `${gender}-${interestedIn}`,
             ageRange: ageRange.label,
-            resultCount: averagedUsageByDay.length,
+            averagedUsageByDay: averagedUsageByDay.length,
           },
         );
 

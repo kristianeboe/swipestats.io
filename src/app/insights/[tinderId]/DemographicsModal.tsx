@@ -189,7 +189,7 @@ export function DemographicsSections(props: { closeModal: () => void }) {
                 <Label htmlFor="tinderId">Swipestats ID</Label>
                 <Input
                   id="tinderId"
-                  placeholder="Enter your Swipestats ID"
+                  placeholder="Enter a Swipestats ID"
                   required
                   {...form.register("tinderId")}
                 />
@@ -469,17 +469,17 @@ export function DemographicsCard({
       </Card.Header>
 
       <Card.Content className="grid gap-3 p-4">
+        <InfoItem
+          icon={MapPin}
+          value={data.location}
+          accentColor={accentColor}
+        />
         <div className="grid grid-cols-2 gap-3">
-          <InfoItem
-            icon={MapPin}
-            value={data.location}
-            accentColor={accentColor}
-          />
-          <InfoItem
+          {/* <InfoItem
             icon={CalendarIcon}
             value={"Nov 2014 - Dec 2024"}
             accentColor={accentColor}
-          />
+          /> */}
           <InfoItem
             icon={UsersIcon}
             label="Gender"
