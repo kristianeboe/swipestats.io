@@ -8,7 +8,8 @@ import {
   type CustomData,
   type SwipestatsTier,
 } from "@prisma/client";
-import AppRouter from "next/dist/client/components/app-router";
+
+import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 // import { type TinderUsage } from "@prisma/client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -38,21 +39,20 @@ function InsightsProvider(props: {
     user: User;
   };
 }) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const comparisonIds = searchParams.get("comparisonIds");
-  const comparisonIdsArray = comparisonIds ? comparisonIds.split(",") : [];
+  const [comparisonIds, setComparisonIds] = useQueryState(
+    "comparisonIds",
+    parseAsArrayOf(parseAsString).withDefault([]),
+  );
 
   const [loading, setLoading] = useState(true);
 
   const comparisonData = api.profile.compare.useQuery(
     {
       tinderId: props.myTinderProfile.tinderId,
-      comparisonIds: comparisonIdsArray,
+      comparisonIds: comparisonIds,
     },
     {
-      enabled: !!comparisonIdsArray.length,
+      enabled: !!comparisonIds.length,
       refetchOnWindowFocus: false,
     },
   );
@@ -80,7 +80,7 @@ function InsightsProvider(props: {
   function addComparisonId(data: { comparisonId: string }) {
     // now you got a read/write object
 
-    const existingComparisonIds = comparisonIdsArray;
+    const existingComparisonIds = comparisonIds;
 
     if (data.comparisonId === props.myTinderProfile.tinderId) {
       toast("You are trying to compare with yourself");
@@ -97,27 +97,25 @@ function InsightsProvider(props: {
       ? [...existingComparisonIds, data.comparisonId]
       : [data.comparisonId];
 
-    const query = `?comparisonIds=${newComparisonIds.join(",")}`;
-    console.log({
-      existingComparisonIds,
-      newComparisonIds,
-      query,
-    });
+    void setComparisonIds(newComparisonIds);
 
     // current.set("comparisonIds", newComparisonIds);
 
-    router.push(`${pathname}${query}`);
+    // router.push(`${pathname}${query}`);
   }
 
   function removeComparisonId(data: { comparisonId: string }) {
-    const existingComparisonIds = comparisonIdsArray;
+    const existingComparisonIds = comparisonIds;
 
-    const newComparisonIds = existingComparisonIds
-      .filter((id) => id !== data.comparisonId)
-      .join(",");
+    const newComparisonIds = existingComparisonIds.filter(
+      (id) => id !== data.comparisonId,
+    );
+    // .join(",");
 
-    const query = newComparisonIds ? `?comparisonIds=${newComparisonIds}` : "";
-    router.push(`${pathname}${query}`);
+    void setComparisonIds(newComparisonIds);
+
+    // const query = newComparisonIds ? `?comparisonIds=${newComparisonIds}` : "";
+    // router.push(`${pathname}${query}`);
   }
 
   const swipestatsTier = props.myTinderProfile.user.swipestatsTier;
@@ -134,7 +132,7 @@ function InsightsProvider(props: {
         addComparisonId,
         removeComparisonId,
         swipestatsTier,
-        comparisonIdsArray,
+        comparisonIdsArray: comparisonIds,
       }}
     >
       {props.children}

@@ -14,6 +14,7 @@ const inter = Inter({
 });
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { PHProvider } from "./_components/PostHogProvider";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import dynamic from "next/dynamic";
 import { PrismicPreview } from "@prismicio/next";
@@ -61,11 +62,13 @@ export default function RootLayout({
       <body className={`font-sans ${inter.variable} bg-white`}>
         <TRPCReactProvider>
           <PHProvider>
-            <Header />
-            <main className="mt-12">{children}</main>
-            <Footer />
-            <PostHogPageView />
-            <PrismicPreview repositoryName={"swipestats"} />
+            <NuqsAdapter>
+              <Header />
+              <main className="mt-12">{children}</main>
+              <Footer />
+              <PostHogPageView />
+              <PrismicPreview repositoryName={"swipestats"} />
+            </NuqsAdapter>
           </PHProvider>
         </TRPCReactProvider>
         <Analytics />

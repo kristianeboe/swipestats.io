@@ -1,5 +1,4 @@
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
-import { useState } from "react";
 import {
   Dialog,
   DialogDescription,
@@ -23,6 +22,8 @@ import { ScrollArea } from "./scroll-area";
 import { cn } from "@/lib/utils";
 
 export function DrawerDialog(props: {
+  open: boolean;
+  setOpen: (open: boolean) => void;
   trigger: React.ReactNode;
   children: React.ReactNode;
   title: string;
@@ -39,12 +40,11 @@ export function DrawerDialog(props: {
     | "6xl"
     | "7xl";
 }) {
-  const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   if (isDesktop) {
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={props.open} onOpenChange={props.setOpen}>
         <DialogTrigger asChild>{props.trigger}</DialogTrigger>
         <DialogContent
           className={cn("bg-white", {
@@ -70,7 +70,7 @@ export function DrawerDialog(props: {
   }
 
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
+    <Drawer open={props.open} onOpenChange={props.setOpen}>
       <DrawerTrigger asChild>{props.trigger}</DrawerTrigger>
       <DrawerContent
         className={cn("h-full max-h-[90vh] bg-white", {

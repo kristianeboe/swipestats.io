@@ -3,19 +3,15 @@
 import { Card, CardContent } from "@/app/_components/ui/card";
 import {
   CakeIcon,
-  CheckIcon,
-  Ghost,
-  InfoIcon,
   LockIcon,
-  PlusCircleIcon,
   RainbowIcon,
   SearchIcon,
   UserIcon,
 } from "lucide-react";
 import { Badge } from "@/app/_components/ui/badge";
 import { type SetStateAction, type Dispatch, useState, useMemo } from "react";
-import { Modal } from "@/app/_components/ui/Modal";
-import { Globe2, Crown, MapPin, Calendar, Sparkles } from "lucide-react";
+
+import { Globe2, Crown, MapPin } from "lucide-react";
 import { Tabs } from "@/app/_components/ui/tabs";
 import { useInsightsProvider } from "./InsightsProvider";
 
@@ -26,6 +22,8 @@ export default function DemographicsModal() {
     <>
       <DrawerDialog
         size="7xl"
+        open={demographicsModalOpen}
+        setOpen={setDemographicsModalOpen}
         trigger={
           <Card.Container className="w-56 cursor-pointer overflow-hidden border-dashed bg-white/50 backdrop-blur-sm transition-colors hover:bg-white/70">
             <div className="flex items-center">
@@ -48,7 +46,6 @@ export default function DemographicsModal() {
         }
         title="Demographics"
         description="Compare your stats with other individuals and demographics"
-        
       >
         <DemographicsSections
           closeModal={() => setDemographicsModalOpen(false)}
@@ -192,7 +189,6 @@ export function DemographicsSections(props: { closeModal: () => void }) {
                 <Label htmlFor="tinderId">Swipestats ID</Label>
                 <Input
                   id="tinderId"
-                  name="tinderId"
                   placeholder="Enter your Swipestats ID"
                   required
                   {...form.register("tinderId")}

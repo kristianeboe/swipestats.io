@@ -4,7 +4,7 @@ import { Badge } from "@/app/_components/ui/badge";
 import { Button } from "@/app/_components/ui/button";
 import { Card } from "@/app/_components/ui/card";
 import { DrawerDialog } from "@/app/_components/ui/DrawerDialog";
-import { Modal } from "@/app/_components/ui/Modal";
+
 import { ProfileLocationForm } from "@/app/upload/[providerId]/ProfileLocationForm";
 import { toTitleCase } from "@/lib/utils/string";
 import { api } from "@/trpc/react";
@@ -12,8 +12,6 @@ import { format } from "date-fns";
 import {
   BriefcaseIcon,
   CrownIcon,
-  Globe2,
-  Instagram,
   MapPin,
   SearchIcon,
   XCircleIcon,
@@ -31,7 +29,7 @@ export default function MiniProfileCard(props: {
   const { myTinderId, swipestatsTier, removeComparisonId } =
     useInsightsProvider();
 
-  const [openLocationModal, setOpenLocationModal] = useState(false);
+  const [locationModalOpen, setLocationModalOpen] = useState(false);
 
   const locationDisplay = [
     props.fullTinderProfile.city,
@@ -86,6 +84,8 @@ export default function MiniProfileCard(props: {
             <div className="text-muted-foreground flex items-center text-sm">
               <DrawerDialog
                 size="sm"
+                open={locationModalOpen}
+                setOpen={setLocationModalOpen}
                 trigger={
                   <div
                     className={cn(

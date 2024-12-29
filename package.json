@@ -80,7 +80,7 @@
     "next": "^14.2.5",
     "next-auth": "^4.24.7",
     "next-themes": "^0.3.0",
-    "nuqs": "^1.17.5",
+    "nuqs": "^2.2.3",
     "posthog-js": "^1.141.4",
     "posthog-node": "^4.0.1",
     "radash": "^12.1.0",
