@@ -132,7 +132,7 @@ export function GraphCardUsage(props: {
   footer?: string;
 }) {
   const [active, setActive] = useState<"year" | "month" | "day">("month");
-  const { profiles } = useInsightsProvider();
+  const { myTinderProfile, profiles } = useInsightsProvider();
 
   const aggregateProfiles = useMemo(
     () =>
@@ -143,12 +143,14 @@ export function GraphCardUsage(props: {
         ...aggregateDataPoints(
           props.chartDataKey,
           p.usage,
-          p.firstDayOnApp,
-          p.lastDayOnApp,
+          myTinderProfile.firstDayOnApp,
+          myTinderProfile.lastDayOnApp,
         ),
       })),
-    [profiles, props.chartDataKey],
+    [profiles, props.chartDataKey, myTinderProfile],
   );
+
+  console.log("aggregateProfiles", props.chartDataKey, aggregateProfiles);
 
   //? I used to think this belongs on the backend, but because of the aggregate nature, I think at least it can wait til later
   const badges = useMemo(() => {

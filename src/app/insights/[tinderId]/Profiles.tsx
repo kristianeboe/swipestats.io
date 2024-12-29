@@ -18,6 +18,11 @@ export default function Profiles() {
   }, [comparisonIdsArray, profiles]);
 
   console.log("my tinder profile", myTinderProfile);
+  console.log("usage", myTinderProfile.usage);
+  console.log(
+    "profiles",
+    profiles.map((profile) => profile.usage),
+  );
 
   return (
     <div className="flex w-full flex-wrap justify-center gap-4 pb-12">

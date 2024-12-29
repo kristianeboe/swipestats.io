@@ -2,9 +2,6 @@ import { api } from "@/trpc/server";
 
 import { notFound } from "next/navigation";
 
-import { InsightsProvider } from "./InsightsProvider";
-import { ComparisonForm } from "./ComparisonForm";
-
 import { GraphCardUsage } from "./GraphCardUsage";
 import RoastBanner from "@/app/_components/RoastBanner";
 import DataRequestCTA from "@/app/_components/DataRequestCTA";
@@ -16,19 +13,12 @@ import {
   Ghost,
   MessageCircle,
   MessagesSquare,
-  PlusCircleIcon,
   ScrollText,
-  UsersIcon,
   type LucideIcon,
 } from "lucide-react";
 import { TooltipWrapper } from "@/app/_components/ui/tooltip";
 import React from "react";
 import { UserFeedback } from "./UserFeedback";
-import { AddMetricCard } from "./AddMetricCard";
-import { db } from "@/server/db";
-import MiniProfileCard from "./MiniProfileCard";
-import DemographicsModal from "./DemographicsModal";
-import { Button } from "@/app/_components/ui/button";
 import Profiles from "./Profiles";
 
 export default async function InsightsPage({

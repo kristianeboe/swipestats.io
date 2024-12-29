@@ -84,7 +84,17 @@ export const profileRouter = createTRPCRouter({
         },
         include: {
           profileMeta: true,
-          usage: true,
+          usage: {
+            orderBy: {
+              dateStamp: "asc",
+            },
+            where: {
+              dateStamp: {
+                gte: myProfile.firstDayOnApp,
+                lte: myProfile.lastDayOnApp,
+              },
+            },
+          },
           customData: true,
         },
       });

@@ -25,7 +25,7 @@ export function MatchRateCard(props: {
   footer?: string;
 }) {
   const [active, setActive] = useState<"year" | "month" | "day">("month");
-  const { myTinderId, profiles } = useInsightsProvider();
+  const { myTinderProfile, profiles } = useInsightsProvider();
 
   const aggregateProfileMatches = useMemo(
     () =>
@@ -36,11 +36,11 @@ export function MatchRateCard(props: {
         ...aggregateDataPoints(
           "matches",
           p.usage,
-          p.firstDayOnApp,
-          p.lastDayOnApp,
+          myTinderProfile.firstDayOnApp,
+          myTinderProfile.lastDayOnApp,
         ),
       })),
-    [profiles],
+    [profiles, myTinderProfile],
   );
 
   const aggregateProfileSwipeLikes = useMemo(
@@ -52,11 +52,11 @@ export function MatchRateCard(props: {
         ...aggregateDataPoints(
           "swipeLikes",
           p.usage,
-          p.firstDayOnApp,
-          p.lastDayOnApp,
+          myTinderProfile.firstDayOnApp,
+          myTinderProfile.lastDayOnApp,
         ),
       })),
-    [profiles],
+    [profiles, myTinderProfile],
   );
 
   // console.log("aggregateProfiles", aggregateProfiles);
@@ -117,7 +117,7 @@ export function MatchRateCard(props: {
   const badges = useMemo(() => {
     const timeSeries = chartData.map((dp) => ({
       xDataKey: dp.xDataKey,
-      value: dp[myTinderId]!,
+      value: dp[myTinderProfile.tinderId]!,
     }));
 
     const peak = findPeak(timeSeries);
@@ -129,7 +129,7 @@ export function MatchRateCard(props: {
       peak,
       average,
     };
-  }, [chartData, myTinderId]);
+  }, [chartData, myTinderProfile]);
 
   return (
     <Card.Container>
