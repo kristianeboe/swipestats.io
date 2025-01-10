@@ -49,11 +49,11 @@ export const profileRouter = createTRPCRouter({
         },
         include: {
           profileMeta: true,
-          usage: {
-            orderBy: {
-              dateStamp: "asc",
-            },
-          },
+          // usage: {
+          //   orderBy: {
+          //     dateStamp: "asc",
+          //   },
+          // },
           customData: true,
           user: true,
         },
@@ -79,7 +79,7 @@ export const profileRouter = createTRPCRouter({
       const tinderProfiles = await ctx.db.tinderProfile.findMany({
         where: {
           tinderId: {
-            in: input.comparisonIds,
+            in: [input.tinderId, ...input.comparisonIds],
           },
         },
         include: {

@@ -186,7 +186,7 @@ const TierSelect = () => (
 );
 
 export function SwipestatsPlusCard() {
-  const { myTinderId, myTinderProfile, swipestatsTier } = useInsightsProvider();
+  const { myTinderId, swipestatsTier } = useInsightsProvider();
 
   if (
     swipestatsTier === "PLUS" &&

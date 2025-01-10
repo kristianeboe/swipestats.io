@@ -7,20 +7,21 @@ import {
   type User,
   type CustomData,
   type SwipestatsTier,
+  type TinderProfile,
 } from "@prisma/client";
 
 import { parseAsArrayOf, parseAsString, useQueryState } from "nuqs";
 // import { type TinderUsage } from "@prisma/client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
 const [useInsightsProvider, InsightsContextProvider] = createGenericContext<{
   myTinderId: string;
-  myTinderProfile: FullTinderProfile & {
+  myTinderProfile: TinderProfile & {
     user: User;
+    customData: CustomData;
   };
   myCustomData: CustomData;
   profiles: FullTinderProfile[];
@@ -35,8 +36,9 @@ const [useInsightsProvider, InsightsContextProvider] = createGenericContext<{
 
 function InsightsProvider(props: {
   children: ReactNode;
-  myTinderProfile: FullTinderProfile & {
+  myTinderProfile: TinderProfile & {
     user: User;
+    customData: CustomData;
   };
 }) {
   const [comparisonIds, setComparisonIds] = useQueryState(
@@ -46,20 +48,19 @@ function InsightsProvider(props: {
 
   const [loading, setLoading] = useState(true);
 
-  const comparisonData = api.profile.compare.useQuery(
+  const profilesWithUsageData = api.profile.compare.useQuery(
     {
       tinderId: props.myTinderProfile.tinderId,
       comparisonIds: comparisonIds,
     },
     {
-      enabled: !!comparisonIds.length,
       refetchOnWindowFocus: false,
     },
   );
 
   const profiles = useMemo(() => {
-    return [props.myTinderProfile, ...(comparisonData.data ?? [])];
-  }, [comparisonData.data, props.myTinderProfile]);
+    return profilesWithUsageData.data ?? [];
+  }, [profilesWithUsageData.data]);
 
   // const usageByProfile = useMemo(() => {
   //   return profiles.reduce(
@@ -135,9 +136,105 @@ function InsightsProvider(props: {
         comparisonIdsArray: comparisonIds,
       }}
     >
-      {props.children}
+      {profiles.length ? props.children : <LoadingSkeleton />}
     </InsightsContextProvider>
   );
 }
 
 export { InsightsProvider, useInsightsProvider };
+
+export default function LoadingSkeleton() {
+  return (
+    <div className="mx-auto w-full max-w-7xl space-y-8 px-4 py-8">
+      {/* Title and Stats Overview */}
+      <div className="space-y-6">
+        <div className="mx-auto h-8 w-48 animate-pulse rounded-md bg-gray-200" />
+        <div className="flex justify-center gap-4">
+          <div className="h-24 w-48 animate-pulse rounded-lg bg-gray-200" />
+          <div className="h-24 w-48 animate-pulse rounded-lg bg-gray-200" />
+        </div>
+      </div>
+
+      {/* Main Chart */}
+      <div className="space-y-4">
+        <div className="h-6 w-32 animate-pulse rounded-md bg-gray-200" />
+        <div className="h-[300px] w-full animate-pulse rounded-lg bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200" />
+        <div className="mt-2 flex justify-center gap-4">
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="h-6 w-16 animate-pulse rounded-md bg-gray-200"
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+        {[1, 2].map((section) => (
+          <div key={section} className="space-y-4">
+            <div className="h-6 w-32 animate-pulse rounded-md bg-gray-200" />
+            <div className="h-[200px] w-full animate-pulse rounded-lg bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200" />
+          </div>
+        ))}
+      </div>
+
+      {/* Messages Meta Section */}
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="space-y-2">
+            <div className="h-4 w-24 animate-pulse rounded-md bg-gray-200" />
+            <div className="h-8 w-16 animate-pulse rounded-md bg-gray-200" />
+          </div>
+        ))}
+      </div>
+
+      {/* Feedback Section */}
+      <div className="space-y-4">
+        <div className="h-6 w-48 animate-pulse rounded-md bg-gray-200" />
+        <div className="flex gap-2">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div
+              key={i}
+              className="h-8 w-8 animate-pulse rounded-full bg-gray-200"
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Promotional Banner */}
+      <div className="h-[200px] w-full animate-pulse rounded-xl bg-gradient-to-r from-rose-100 via-rose-200 to-rose-100" />
+
+      {/* Additional Charts */}
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+        {[1, 2].map((chart) => (
+          <div key={chart} className="space-y-4">
+            <div className="h-6 w-32 animate-pulse rounded-md bg-gray-200" />
+            <div className="h-[200px] w-full animate-pulse rounded-lg bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200" />
+            <div className="flex justify-center gap-4">
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="h-6 w-16 animate-pulse rounded-md bg-gray-200"
+                />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Bottom Banner */}
+      <div className="h-[150px] w-full animate-pulse rounded-xl bg-gradient-to-r from-rose-100 via-rose-200 to-rose-100" />
+
+      {/* Footer */}
+      <div className="flex justify-center space-x-4 pt-8">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <div
+            key={i}
+            className="h-4 w-16 animate-pulse rounded-md bg-gray-200"
+          />
+        ))}
+      </div>
+    </div>
+  );
+}

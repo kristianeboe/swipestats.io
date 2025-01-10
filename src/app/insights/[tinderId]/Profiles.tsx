@@ -18,7 +18,6 @@ export default function Profiles() {
   }, [comparisonIdsArray, profiles]);
 
   console.log("my tinder profile", myTinderProfile);
-  console.log("usage", myTinderProfile.usage);
   console.log(
     "profiles",
     profiles.map((profile) => profile.usage),

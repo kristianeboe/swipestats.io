@@ -122,8 +122,9 @@ export function MatchRateCard(props: {
 
     const peak = findPeak(timeSeries);
 
-    const average =
-      timeSeries.reduce((acc, dp) => acc + dp.value, 0) / timeSeries.length;
+    const average = !timeSeries.length
+      ? 0
+      : timeSeries.reduce((acc, dp) => acc + dp.value, 0) / timeSeries.length;
 
     return {
       peak,
@@ -142,7 +143,7 @@ export function MatchRateCard(props: {
           <Badge variant={"secondary"}>
             {badges.average.toFixed(1)}% average pr {active}
           </Badge>
-          {badges.peak && badges.peak.value > 1 ? (
+          {!badges.peak ? null : badges.peak.value > 1 ? (
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
@@ -169,9 +170,9 @@ export function MatchRateCard(props: {
             </TooltipProvider>
           ) : (
             <Badge variant={"secondary"}>
-              {badges.peak!.value.toFixed(1)} peak on{" "}
+              {badges.peak.value.toFixed(1)} peak on{" "}
               {format(
-                parse(badges.peak!.date, "yyyy-MM", new Date()),
+                parse(badges.peak.date, "yyyy-MM", new Date()),
                 "MMMM yyyy",
               )}
             </Badge>
