@@ -18,7 +18,7 @@ export function Header() {
   return (
     <header className="">
       <nav
-        className="flex items-center justify-center p-4 lg:px-8"
+        className="relative z-10 flex items-center justify-center p-4 lg:px-8"
         aria-label="Global"
       >
         <div className="flex lg:flex-1">

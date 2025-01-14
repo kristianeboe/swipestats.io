@@ -21,6 +21,7 @@
     "db:migrate-rollback": "prisma migrate resolve --rolled-back",
     "db:migrate-reset-migrations": "rm -rf prisma/migrations && bun run db:migrate-reset && bun run db:migrate-dev && bun run dev",
     "dev": "next dev",
+    "dev:turbo": "next dev --turbo",
     "email:dev": "email dev -d src/emails -p 2000",
     "postinstall": "prisma generate",
     "lint": "next lint",
