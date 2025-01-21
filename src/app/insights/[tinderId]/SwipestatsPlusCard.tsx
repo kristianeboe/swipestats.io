@@ -1,10 +1,11 @@
+"use client";
+
 import { Card } from "@/app/_components/ui/card";
 import {
   Book,
   Check,
   CheckIcon,
   CrownIcon,
-  Lock,
   MessageCircle,
   Users,
 } from "lucide-react";
@@ -13,7 +14,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { getProductData } from "@/lib/constants/lemonSqueezy.constants";
 
-const includedFeatures = [
+export const includedSwipestatsPlusFeatures = [
   {
     title: "All demographic comparisons",
     description: "Access detailed demographic insights and trends",
@@ -185,7 +186,7 @@ const TierSelect = () => (
   </div>
 );
 
-export function SwipestatsPlusCard() {
+export function SwipestatsPlusCard({ className }: { className?: string }) {
   const { myTinderId, swipestatsTier } = useInsightsProvider();
 
   if (
@@ -194,7 +195,7 @@ export function SwipestatsPlusCard() {
       "96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5"
   ) {
     return (
-      <Card.Container className="w-full">
+      <Card.Container className={cn("w-full flex-1 flex-shrink-0", className)}>
         <Card.Header className="space-y-2 text-center">
           <div className="bg-primary/10 mx-auto flex h-12 w-12 items-center justify-center rounded-full">
             <CrownIcon className="text-primary h-6 w-6" />
@@ -208,7 +209,7 @@ export function SwipestatsPlusCard() {
         </Card.Header>
         <Card.Content className="space-y-6">
           <div className="grid gap-4 md:grid-cols-2">
-            {includedFeatures.map((feature) => (
+            {includedSwipestatsPlusFeatures.map((feature) => (
               <div
                 key={feature.title}
                 className="bg-card flex items-start gap-3 rounded-lg border p-4"
@@ -233,7 +234,7 @@ export function SwipestatsPlusCard() {
   // return <TierSelect />;
 
   return (
-    <Card.Container className="lg:flex">
+    <Card.Container className={cn("lg:flex", className)}>
       <div className="p-8 sm:p-10 lg:flex-auto">
         <h3 className="text-3xl font-semibold tracking-tight text-gray-900">
           Swipestats+
@@ -253,7 +254,7 @@ export function SwipestatsPlusCard() {
           role="list"
           className="mt-8 grid grid-cols-1 gap-4 text-sm/6 text-gray-600 sm:grid-cols-2 sm:gap-6"
         >
-          {includedFeatures.map((feature) => (
+          {includedSwipestatsPlusFeatures.map((feature) => (
             <li key={feature.title} className="flex gap-x-3">
               <feature.icon
                 aria-hidden="true"
