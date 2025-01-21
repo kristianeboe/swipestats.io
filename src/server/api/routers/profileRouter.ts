@@ -70,10 +70,21 @@ export const profileRouter = createTRPCRouter({
       }),
     )
     .query(async ({ ctx, input }) => {
+      log.info("Starting profile comparison", {
+        tinderId: input.tinderId,
+        comparisonIds: input.comparisonIds,
+      });
+
       const myProfile = await ctx.db.tinderProfile.findUniqueOrThrow({
         where: {
           tinderId: input.tinderId,
         },
+      });
+
+      log.info("Fetched my profile", {
+        tinderId: input.tinderId,
+        firstDayOnApp: myProfile.firstDayOnApp,
+        lastDayOnApp: myProfile.lastDayOnApp,
       });
 
       const tinderProfiles = await ctx.db.tinderProfile.findMany({
@@ -99,7 +110,18 @@ export const profileRouter = createTRPCRouter({
         },
       });
 
-      return tinderProfiles as FullTinderProfile[];
+      // Sort profiles to ensure input.tinderId is first
+      const sortedProfiles = tinderProfiles.sort((a, b) => {
+        if (a.tinderId === input.tinderId) return -1;
+        if (b.tinderId === input.tinderId) return 1;
+        return 0; // maintain stable order for other profiles
+      });
+
+      log.info("Fetched comparison profiles", {
+        profileCount: sortedProfiles.length,
+      });
+
+      return sortedProfiles as FullTinderProfile[];
     }),
 
   compareRandom: publicProcedure

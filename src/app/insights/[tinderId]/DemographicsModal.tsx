@@ -139,7 +139,7 @@ export function DemographicsSections(props: { closeModal: () => void }) {
                     closeModal={props.closeModal}
                   />
                   <DemographicsCard
-                    comparisonId="average-MALE-FEMALE-all-1"
+                    comparisonId="average-MALE-FEMALE-all"
                     requiredTier="PLUS"
                     data={{
                       title: "Men interested in Women",
@@ -154,7 +154,7 @@ export function DemographicsSections(props: { closeModal: () => void }) {
                     closeModal={props.closeModal}
                   />
                   <DemographicsCard
-                    comparisonId="average-FEMALE-MALE-all-1"
+                    comparisonId="average-FEMALE-MALE-all"
                     requiredTier="PLUS"
                     data={{
                       title: "Women interested in Men",
