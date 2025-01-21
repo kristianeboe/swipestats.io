@@ -272,7 +272,7 @@ export function SwipestatsPlusCard() {
             </p>
             <p className="mt-6 flex items-baseline justify-center gap-x-2">
               <span className="text-5xl font-semibold tracking-tight text-gray-900">
-                $25
+                $10
               </span>
               <span className="text-sm/6 font-semibold tracking-wide text-gray-600">
                 USD
