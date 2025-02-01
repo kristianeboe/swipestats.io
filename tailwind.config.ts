@@ -6,7 +6,7 @@ export default {
   content: ["./src/**/*.tsx"],
   safelist: [
     // Main profile gradients
-    "from-rose-600",
+    "from-rose-500",
     "to-rose-300",
     "from-blue-500",
     "to-blue-300",
