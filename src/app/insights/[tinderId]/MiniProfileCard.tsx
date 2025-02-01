@@ -22,9 +22,11 @@ import { cn, getInterestedInDisplay } from "@/lib/utils";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { type FullTinderProfile } from "@/lib/interfaces/utilInterfaces";
+import { getTailwindGradientClasses, getProfileTitle } from "./insightUtils";
 
 export default function MiniProfileCard(props: {
   fullTinderProfile: FullTinderProfile;
+  index: number;
 }) {
   const { myTinderId, swipestatsTier, removeComparisonId } =
     useInsightsProvider();
@@ -39,6 +41,12 @@ export default function MiniProfileCard(props: {
     .filter(Boolean)
     .join(", ");
 
+  // If it's a special profile (has a title) and no location, show Global
+  const displayLocation =
+    getProfileTitle(props.fullTinderProfile.tinderId) && !locationDisplay
+      ? "Global"
+      : locationDisplay || "Unknown";
+
   const router = useRouter();
   const updateLocationMutation = api.profile.updateLocation.useMutation({
     onSuccess: () => {
@@ -48,10 +56,19 @@ export default function MiniProfileCard(props: {
   });
 
   const allowRemoveComparison = myTinderId !== props.fullTinderProfile.tinderId;
+  const specialTitle = getProfileTitle(props.fullTinderProfile.tinderId);
 
   return (
     <Card.Container className="w-full max-w-sm overflow-hidden">
-      <div className="relative h-12 bg-gradient-to-r from-rose-500 to-rose-300">
+      <div
+        className={cn(
+          "relative h-12 bg-gradient-to-r",
+          getTailwindGradientClasses(
+            props.fullTinderProfile.tinderId,
+            props.index,
+          ),
+        )}
+      >
         {allowRemoveComparison && (
           <div className="absolute right-1 top-1">
             <Button
@@ -73,7 +90,8 @@ export default function MiniProfileCard(props: {
         <div className="flex items-start justify-between">
           <div>
             <h2 className="flex items-center gap-1 text-lg font-semibold">
-              {`${toTitleCase(props.fullTinderProfile.gender)}, ${props.fullTinderProfile.ageAtUpload}`}{" "}
+              {specialTitle ??
+                `${toTitleCase(props.fullTinderProfile.gender)}, ${props.fullTinderProfile.ageAtUpload}`}{" "}
               {myTinderId === props.fullTinderProfile.tinderId &&
                 swipestatsTier !== "FREE" && (
                   <Badge className="h-5 rounded-full p-2">
@@ -95,7 +113,7 @@ export default function MiniProfileCard(props: {
                     )}
                   >
                     <MapPin className="mr-1 h-3 w-3" />
-                    {!locationDisplay ? "Unknown" : locationDisplay}
+                    {displayLocation}
                   </div>
                 }
                 title="Location"

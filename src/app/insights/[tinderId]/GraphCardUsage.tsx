@@ -19,10 +19,11 @@ import {
   type FullTinderProfile,
 } from "@/lib/interfaces/utilInterfaces";
 
-import { getLabelForTinderProfile } from "@/lib/utils";
 import { Badge } from "@/app/_components/ui/badge";
 import { Card } from "@/app/_components/ui/card";
 import { Tabs } from "@/app/_components/ui/tabs";
+import { getProfileTitle, getChartColors } from "./insightUtils";
+import { toTitleCase } from "@/lib/utils/string";
 
 interface AggregateData {
   xDataKey: string;
@@ -287,9 +288,6 @@ export function MultiAChart2Combined(props: {
 }) {
   const mode = props.mode ?? "month";
   const { profiles } = useInsightsProvider();
-  const lineColors = ["#e51c23", "#34a853", "#4285F4", "#FBBC05", "#EA4335"];
-
-  const areaColors = ["#ff8a9a", "#a6f2c3", "#a1c4fd", "#ffecb3", "#fed3d3"];
 
   return (
     <ResponsiveContainer width="100%" height={300}>
@@ -299,7 +297,7 @@ export function MultiAChart2Combined(props: {
       >
         <defs>
           {profiles.map((p, index) => {
-            const color = lineColors[index % lineColors.length]; // More vibrant colors
+            const colors = getChartColors(p.tinderId, index);
             return (
               <linearGradient
                 key={p.tinderId}
@@ -309,8 +307,8 @@ export function MultiAChart2Combined(props: {
                 x2="0"
                 y2="1"
               >
-                <stop offset="5%" stopColor={color} stopOpacity={0.8} />
-                <stop offset="95%" stopColor={color} stopOpacity={0} />
+                <stop offset="5%" stopColor={colors.area} stopOpacity={0.8} />
+                <stop offset="95%" stopColor={colors.area} stopOpacity={0} />
               </linearGradient>
             );
           })}
@@ -318,27 +316,23 @@ export function MultiAChart2Combined(props: {
         <XAxis
           dataKey="xDataKey"
           domain={["auto", "auto"]}
-          tickLine={false} // Simplify X-axis
-          // angle={-45}
-
+          tickLine={false}
           tickFormatter={(value: string, i) => {
             switch (mode) {
               case "year":
-                return format(new Date(value), "yyyy"); // Formatting to display only the year
+                return format(new Date(value), "yyyy");
               case "month":
-                return format(new Date(value), "MMM yyyy"); // Formatting to display year and month
+                return format(new Date(value), "MMM yyyy");
               case "day":
-                return format(new Date(value), "MMM d, yyyy"); // Formatting to display full date
+                return format(new Date(value), "MMM d, yyyy");
               default:
-                return value; // Default to raw value if no mode matches
+                return value;
             }
           }}
         />
         <YAxis
-          axisLine={false} // Hide Y-axis line
-          tickLine={false} // Simplify Y-axis
-          // tick={(v) => <span>{`${v}%`}</span>}
-
+          axisLine={false}
+          tickLine={false}
           tickFormatter={props.yPercent ? (v) => `${v}%` : undefined}
         />
         <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
@@ -349,17 +343,17 @@ export function MultiAChart2Combined(props: {
           }
         />
         {profiles.map((p, index) => {
-          const color = areaColors[index % areaColors.length];
+          const colors = getChartColors(p.tinderId, index);
 
           return (
             <Area
               key={p.tinderId}
               type="monotone"
               dataKey={p.tinderId}
-              stroke={color}
+              stroke={colors.line}
               strokeWidth={3}
               fillOpacity={1}
-              fill={`url(#gradient-${p.tinderId})`} // Referencing gradient ID with a prefix
+              fill={`url(#gradient-${p.tinderId})`}
             />
           );
         })}
@@ -377,9 +371,9 @@ const CustomTooltip = ({
   profiles: FullTinderProfile[];
   payload: {
     name: string;
-    dataKey: string; // same as name?
+    dataKey: string;
     value: number;
-    payload: { xDataKey: string }; // same in all payloads
+    payload: { xDataKey: string };
   }[];
   label: string;
   active: boolean;
@@ -389,9 +383,15 @@ const CustomTooltip = ({
       <div className="rounded-lg border bg-white p-2 text-sm shadow-lg">
         <p className="font-bold text-gray-800">{label}</p>
         {payload.map((pld, i) => {
-          const profile = profiles[i]!;
+          const profile = profiles[i];
+          if (!profile) return null;
+
+          const specialTitle = getProfileTitle(profile.tinderId);
           const profileLabel =
-            i === 0 ? "You" : getLabelForTinderProfile(profile);
+            i === 0
+              ? "You"
+              : (specialTitle ??
+                `${toTitleCase(profile.gender)}, ${profile.ageAtUpload}`);
 
           return (
             <p key={i} className="text-gray-600">

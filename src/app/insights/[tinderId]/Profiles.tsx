@@ -4,7 +4,6 @@ import DemographicsModal from "./DemographicsModal";
 import { useInsightsProvider } from "./InsightsProvider";
 import MiniProfileCard from "./MiniProfileCard";
 import { useMemo } from "react";
-import { Loader2 } from "lucide-react";
 import { Card } from "@/app/_components/ui/card";
 
 export default function Profiles() {
@@ -25,15 +24,19 @@ export default function Profiles() {
 
   return (
     <div className="flex w-full flex-wrap justify-center gap-4 pb-12">
-      {profiles.map((profile) => (
-        <MiniProfileCard fullTinderProfile={profile} key={profile.tinderId} />
+      {profiles.map((profile, index) => (
+        <MiniProfileCard
+          fullTinderProfile={profile}
+          key={profile.tinderId}
+          index={index}
+        />
       ))}
       {comparisonIdsNotYetLoaded.map((comparisonId) => (
         <Card.Container
           key={comparisonId}
           className="w-full max-w-sm overflow-hidden"
         >
-          <div className="relative h-12 bg-gradient-to-r from-rose-400 to-rose-300 p-4"></div>
+          <div className="relative h-12 bg-gradient-to-r from-gray-300 to-gray-200 p-4"></div>
           <Card.Content className="space-y-6 p-6">
             {/* Gender and age */}
             <div className="h-8 w-40 animate-pulse rounded bg-gray-200" />

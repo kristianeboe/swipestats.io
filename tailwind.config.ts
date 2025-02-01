@@ -4,6 +4,26 @@ import { fontFamily } from "tailwindcss/defaultTheme";
 export default {
   darkMode: ["class"],
   content: ["./src/**/*.tsx"],
+  safelist: [
+    // Main profile gradients
+    "from-rose-600",
+    "to-rose-300",
+    "from-blue-500",
+    "to-blue-300",
+    "from-pink-500",
+    "to-pink-300",
+    // Fallback gradients
+    "from-teal-400",
+    "to-teal-200",
+    "from-purple-600",
+    "to-purple-300",
+    "from-fuchsia-500",
+    "to-fuchsia-300",
+    "from-cyan-500",
+    "to-cyan-300",
+    "from-orange-500",
+    "to-orange-300",
+  ],
   theme: {
     extend: {
       fontFamily: {

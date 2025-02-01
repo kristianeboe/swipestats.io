@@ -14,6 +14,7 @@ import { type SetStateAction, type Dispatch, useState, useMemo } from "react";
 import { Globe2, Crown, MapPin } from "lucide-react";
 import { Tabs } from "@/app/_components/ui/tabs";
 import { useInsightsProvider } from "./InsightsProvider";
+import { getProfileGradientClasses, getProfileIconColor } from "./insightUtils";
 
 export default function DemographicsModal() {
   const [demographicsModalOpen, setDemographicsModalOpen] = useState(false);
@@ -375,23 +376,13 @@ import { Form } from "@/app/_components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { cn } from "@/lib/utils";
 
 function formatAge(age: number | { min: number; max: number }): string {
   if (typeof age === "number") {
     return age.toString();
   }
   return `${age.min} - ${age.max}`;
-}
-
-function getGradientClasses(color: string): string {
-  switch (color) {
-    case "pink":
-      return "from-pink-400 to-pink-600";
-    case "green":
-      return "from-green-400 to-green-600";
-    default:
-      return "from-blue-400 to-blue-600";
-  }
 }
 
 export function DemographicsCard({
@@ -445,6 +436,8 @@ export function DemographicsCard({
     return profileIdInParamsButNotInArray;
   }, [loading, comparisonId, profiles, comparisonIdsArray]);
 
+  const gradientClasses = getProfileGradientClasses(comparisonId);
+
   return (
     <Card.Container
       className={`relative w-full max-w-md cursor-pointer overflow-hidden bg-gray-50 shadow-lg transition-all duration-300 hover:shadow-xl dark:bg-gray-800 ${
@@ -457,52 +450,47 @@ export function DemographicsCard({
         </div>
       )}
 
-      <Card.Header className="flex flex-row items-center justify-between space-y-0 bg-gray-200 p-4 dark:bg-gray-700">
-        <Card.Title className="text-xl font-bold text-gray-800 dark:text-gray-100">
+      <Card.Header
+        className={cn(
+          "flex flex-row items-center justify-between space-y-0 bg-gradient-to-br p-4",
+          gradientClasses,
+        )}
+      >
+        <Card.Title className="text-xl font-bold text-white dark:text-white">
           {data.title}
         </Card.Title>
-        {/* <div
-          className={`h-7 w-7 rounded-full bg-gradient-to-br ${getGradientClasses(
-            accentColor,
-          )}`}
-        /> */}
       </Card.Header>
 
       <Card.Content className="grid gap-3 p-4">
         <InfoItem
           icon={MapPin}
           value={data.location}
-          accentColor={accentColor}
+          comparisonId={comparisonId}
         />
         <div className="grid grid-cols-2 gap-3">
-          {/* <InfoItem
-            icon={CalendarIcon}
-            value={"Nov 2014 - Dec 2024"}
-            accentColor={accentColor}
-          /> */}
           <InfoItem
             icon={UsersIcon}
             label="Gender"
             value={data.gender}
-            accentColor={accentColor}
+            comparisonId={comparisonId}
           />
           <InfoItem
             icon={HeartIcon}
             label="Interested in"
             value={data.interestedInGender}
-            accentColor={accentColor}
+            comparisonId={comparisonId}
           />
           <InfoItem
             icon={CakeIcon}
             label="Age"
             value={formatAge(data.age)}
-            accentColor={accentColor}
+            comparisonId={comparisonId}
           />
           <InfoItem
             icon={SearchIcon}
             label="Looking for"
             value={formatAge(data.interestedInAge)}
-            accentColor={accentColor}
+            comparisonId={comparisonId}
           />
         </div>
       </Card.Content>
@@ -515,7 +503,7 @@ export function DemographicsCard({
           <Button
             type="button"
             variant="default"
-            className="w-full bg-gradient-to-br from-blue-500 to-blue-600"
+            className="w-full"
             onClick={() => {
               console.log("onClick");
               selectTab?.("plus");
@@ -547,30 +535,22 @@ export function DemographicsCard({
   );
 }
 
-// Helper function to compare tier levels
-function getTierLevel(tier: SwipestatsTier): number {
-  const levels = {
-    FREE: 0,
-    PLUS: 1,
-    ELITE: 2,
-  };
-  return levels[tier as keyof typeof levels] || 0;
-}
-
 function InfoItem({
   icon: Icon,
   label,
   value,
-  accentColor,
+  comparisonId,
 }: {
   icon: React.ElementType;
   label?: string;
   value: string;
-  accentColor: string;
+  comparisonId: string;
 }) {
+  const iconColor = getProfileIconColor(comparisonId);
+
   return (
     <div className="flex items-center space-x-2 rounded-md bg-white p-2 shadow dark:bg-gray-900">
-      <Icon className={`h-4 w-4 text-${accentColor}-500`} />
+      <Icon style={{ color: iconColor }} className="h-4 w-4" />
       {label && (
         <span className="text-xs text-gray-500 dark:text-gray-400">
           {label}:
@@ -581,4 +561,14 @@ function InfoItem({
       </span>
     </div>
   );
+}
+
+// Helper function to compare tier levels
+function getTierLevel(tier: SwipestatsTier): number {
+  const levels = {
+    FREE: 0,
+    PLUS: 1,
+    ELITE: 2,
+  };
+  return levels[tier as keyof typeof levels] || 0;
 }
