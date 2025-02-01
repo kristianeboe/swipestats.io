@@ -14,7 +14,14 @@ import { type SetStateAction, type Dispatch, useState, useMemo } from "react";
 import { Globe2, Crown, MapPin } from "lucide-react";
 import { Tabs } from "@/app/_components/ui/tabs";
 import { useInsightsProvider } from "./InsightsProvider";
-import { getProfileGradientClasses, getProfileIconColor } from "./insightUtils";
+import {
+  getProfileGradientClasses,
+  getProfileIconColor,
+  CREATOR_ID,
+  AVERAGE_MALE_ID,
+  AVERAGE_FEMALE_ID,
+  BRAND_COLORS,
+} from "./insightUtils";
 
 export default function DemographicsModal() {
   const [demographicsModalOpen, setDemographicsModalOpen] = useState(false);
@@ -126,7 +133,7 @@ export function DemographicsSections(props: { closeModal: () => void }) {
                 {/* <h3 className="font-medium">Global averages</h3> */}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                   <DemographicsCard
-                    comparisonId="96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5"
+                    comparisonId={CREATOR_ID}
                     data={{
                       title: "The creator of Swipestats",
                       location: "Norway",
@@ -135,12 +142,11 @@ export function DemographicsSections(props: { closeModal: () => void }) {
                       age: 32,
                       interestedInAge: { min: 24, max: 32 },
                     }}
-                    accentColor="blue"
                     selectTab={setSelectedTab}
                     closeModal={props.closeModal}
                   />
                   <DemographicsCard
-                    comparisonId="average-MALE-FEMALE-all"
+                    comparisonId={AVERAGE_MALE_ID}
                     requiredTier="PLUS"
                     data={{
                       title: "Men interested in Women",
@@ -150,12 +156,11 @@ export function DemographicsSections(props: { closeModal: () => void }) {
                       age: { min: 18, max: 100 },
                       interestedInAge: { min: 18, max: 100 },
                     }}
-                    accentColor="green"
                     selectTab={setSelectedTab}
                     closeModal={props.closeModal}
                   />
                   <DemographicsCard
-                    comparisonId="average-FEMALE-MALE-all"
+                    comparisonId={AVERAGE_FEMALE_ID}
                     requiredTier="PLUS"
                     data={{
                       title: "Women interested in Men",
@@ -165,7 +170,6 @@ export function DemographicsSections(props: { closeModal: () => void }) {
                       age: { min: 18, max: 100 },
                       interestedInAge: { min: 18, max: 100 },
                     }}
-                    accentColor="pink"
                     selectTab={setSelectedTab}
                     closeModal={props.closeModal}
                   />
@@ -387,14 +391,12 @@ function formatAge(age: number | { min: number; max: number }): string {
 
 export function DemographicsCard({
   data,
-  accentColor = "blue",
   comparisonId,
   requiredTier = "FREE",
   selectTab,
   closeModal,
 }: {
   data: DemographicData;
-  accentColor?: string;
   comparisonId: string;
   requiredTier?: SwipestatsTier;
   selectTab: Dispatch<SetStateAction<string>>;
@@ -436,7 +438,9 @@ export function DemographicsCard({
     return profileIdInParamsButNotInArray;
   }, [loading, comparisonId, profiles, comparisonIdsArray]);
 
-  const gradientClasses = getProfileGradientClasses(comparisonId);
+  // Get the index based on whether this profile is selected
+  const index = profiles.findIndex((p) => p.tinderId === comparisonId);
+  const gradientClasses = getProfileGradientClasses(comparisonId, index);
 
   return (
     <Card.Container
@@ -466,6 +470,7 @@ export function DemographicsCard({
           icon={MapPin}
           value={data.location}
           comparisonId={comparisonId}
+          index={index}
         />
         <div className="grid grid-cols-2 gap-3">
           <InfoItem
@@ -473,33 +478,34 @@ export function DemographicsCard({
             label="Gender"
             value={data.gender}
             comparisonId={comparisonId}
+            index={index}
           />
           <InfoItem
             icon={HeartIcon}
             label="Interested in"
             value={data.interestedInGender}
             comparisonId={comparisonId}
+            index={index}
           />
           <InfoItem
             icon={CakeIcon}
             label="Age"
             value={formatAge(data.age)}
             comparisonId={comparisonId}
+            index={index}
           />
           <InfoItem
             icon={SearchIcon}
             label="Looking for"
             value={formatAge(data.interestedInAge)}
             comparisonId={comparisonId}
+            index={index}
           />
         </div>
       </Card.Content>
 
       <Card.Footer className="p-4">
-        {!hasAccess ||
-        (onDemoProfile &&
-          comparisonId !==
-            "96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5") ? (
+        {!hasAccess || (onDemoProfile && comparisonId !== CREATOR_ID) ? (
           <Button
             type="button"
             variant="default"
@@ -521,8 +527,7 @@ export function DemographicsCard({
             disabled={isLoading ?? onDemoProfile}
           >
             {onDemoProfile
-              ? comparisonId ===
-                "96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5"
+              ? comparisonId === CREATOR_ID
                 ? "Already viewing"
                 : "Not available in demo"
               : selected
@@ -540,13 +545,15 @@ function InfoItem({
   label,
   value,
   comparisonId,
+  index,
 }: {
   icon: React.ElementType;
   label?: string;
   value: string;
   comparisonId: string;
+  index: number;
 }) {
-  const iconColor = getProfileIconColor(comparisonId);
+  const iconColor = getProfileIconColor(comparisonId, index);
 
   return (
     <div className="flex items-center space-x-2 rounded-md bg-white p-2 shadow dark:bg-gray-900">
