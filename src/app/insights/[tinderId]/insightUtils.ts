@@ -83,16 +83,24 @@ export const FALLBACK_COLORS = {
 } as const;
 
 export function getChartColors(profileId: string, index = 0) {
-  // If this is the first profile (index 0), always use brand colors
+  // Check if it's a special profile first
+  const specialColors = CHART_COLORS[profileId as keyof typeof CHART_COLORS];
+
+  // If this is the first profile (index 0)
   if (index === 0) {
+    // For demographic profiles (average man/woman), always use their colors
+    if (profileId === AVERAGE_MALE_ID || profileId === AVERAGE_FEMALE_ID) {
+      return specialColors;
+    }
+    // For creator or regular profiles, use brand colors
     return {
       line: BRAND_COLORS.primary,
       area: BRAND_COLORS.secondary,
     };
   }
 
-  const colors = CHART_COLORS[profileId as keyof typeof CHART_COLORS];
-  if (colors) return colors;
+  // If it's a special profile, return its colors
+  if (specialColors) return specialColors;
 
   // Fallback to cycling through fallback colors
   return {
@@ -110,8 +118,13 @@ export function getProfileColors(profileId: string, index = 0) {
   const specialColors =
     PROFILE_COLORS[profileId as keyof typeof PROFILE_COLORS];
 
-  // If this is the first profile (index 0), use brand colors but keep special title if it exists
+  // If this is the first profile (index 0)
   if (index === 0) {
+    // For demographic profiles (average man/woman), always use their colors
+    if (profileId === AVERAGE_MALE_ID || profileId === AVERAGE_FEMALE_ID) {
+      return specialColors;
+    }
+    // For creator or regular profiles, use brand colors (but keep special title)
     return {
       primary: BRAND_COLORS.primary,
       secondary: BRAND_COLORS.secondary,
