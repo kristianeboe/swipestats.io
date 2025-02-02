@@ -106,18 +106,22 @@ export function getChartColors(profileId: string, index = 0) {
 }
 
 export function getProfileColors(profileId: string, index = 0) {
-  // If this is the first profile (index 0), always use brand colors
+  // Check if it's a special profile first
+  const specialColors =
+    PROFILE_COLORS[profileId as keyof typeof PROFILE_COLORS];
+
+  // If this is the first profile (index 0), use brand colors but keep special title if it exists
   if (index === 0) {
     return {
       primary: BRAND_COLORS.primary,
       secondary: BRAND_COLORS.secondary,
       gradient: BRAND_COLORS.gradient,
-      title: profileId === CREATOR_ID ? "Creator of Swipestats" : undefined,
+      title: specialColors?.title,
     };
   }
 
-  const colors = PROFILE_COLORS[profileId as keyof typeof PROFILE_COLORS];
-  if (colors) return colors;
+  // If it's a special profile, return its colors
+  if (specialColors) return specialColors;
 
   // Fallback to cycling through fallback colors
   return {
