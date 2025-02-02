@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useInsightsProvider } from "./InsightsProvider";
-import { cn, getInterestedInDisplay } from "@/lib/utils";
+import { cn, getAgeFromBirthdate, getInterestedInDisplay } from "@/lib/utils";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { type FullTinderProfile } from "@/lib/interfaces/utilInterfaces";
@@ -90,8 +90,13 @@ export default function MiniProfileCard(props: {
         <div className="flex items-start justify-between">
           <div>
             <h2 className="flex items-center gap-1 text-lg font-semibold">
-              {specialTitle ??
-                `${toTitleCase(props.fullTinderProfile.gender)}, ${props.fullTinderProfile.ageAtUpload}`}{" "}
+              {specialTitle
+                ? `${specialTitle}, ${getAgeFromBirthdate(
+                    props.fullTinderProfile.birthDate,
+                  )}`
+                : `${toTitleCase(props.fullTinderProfile.gender)}, ${getAgeFromBirthdate(
+                    props.fullTinderProfile.birthDate,
+                  )}`}{" "}
               {myTinderId === props.fullTinderProfile.tinderId &&
                 swipestatsTier !== "FREE" && (
                   <Badge className="h-5 rounded-full p-2">

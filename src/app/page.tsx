@@ -21,6 +21,7 @@ import { Blog } from "./blog/BlogSection";
 import { About } from "./AboutSection";
 import { Button } from "./_components/ui/button";
 import { getProductData } from "@/lib/constants/lemonSqueezy.constants";
+import LiveDemoLink from "./LiveDemoLink";
 
 const features = [
   {
@@ -120,12 +121,13 @@ export default function HomePage() {
                 >
                   Get started
                 </Link>
-                <Link
+                <LiveDemoLink />
+                {/* <Link
                   href="/insights/demo"
                   className="text-sm font-semibold leading-6 text-gray-900"
                 >
                   Live demo <span aria-hidden="true">→</span>
-                </Link>
+                </Link> */}
               </div>
               <StarRating />
             </div>
@@ -518,12 +520,13 @@ export default function HomePage() {
             >
               Get started
             </Link>
-            <Link
+            <LiveDemoLink />
+            {/* <Link
               href="/insights/demo"
               className="text-sm font-semibold leading-6 text-gray-900"
             >
               Live demo <span aria-hidden="true">→</span>
-            </Link>
+            </Link> */}
           </div>
         </div>
         <div

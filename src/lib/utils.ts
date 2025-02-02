@@ -38,9 +38,7 @@ export function getISODayKey(date: Date): string {
 
 export function getLabelForTinderProfile(tinderProfile: TinderProfile) {
   return (
-    tinderProfile.gender +
-    ", " +
-    differenceInYears(new Date(), new Date(tinderProfile.birthDate))
+    tinderProfile.gender + ", " + getAgeFromBirthdate(tinderProfile.birthDate)
   );
 }
 
@@ -111,6 +109,11 @@ export function getInterestedInDisplay(interestedIn: Gender) {
     default:
       return "unknown";
   }
+}
+
+export function getAgeFromBirthdate(birthdate: Date): number {
+  const today = new Date();
+  return differenceInYears(today, birthdate);
 }
 
 export function formatDate(input: string | Date, showTime = false): string {
