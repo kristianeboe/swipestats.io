@@ -55,7 +55,6 @@ interface WebhookData {
 }
 
 export async function POST(request: Request) {
-  const keyEnv = env.NEXT_PUBLIC_IS_PROD ? "prod" : "test";
   log.info("Received Lemon Squeezy webhook");
 
   const rawBody = await request.text();
@@ -169,5 +168,22 @@ export async function POST(request: Request) {
   }
 
   log.info("Webhook processing completed successfully");
-  return NextResponse.json({ success: true });
+  return NextResponse.json({
+    success: true,
+    processed: {
+      eventName,
+      orderId: attributes.order_id,
+      variantId: purchaseVariantId,
+      customerEmail: attributes.user_email,
+      timestamp: new Date().toISOString(),
+      objectId: objId,
+      productType: dataPurchaseVariantIds.includes(purchaseVariantId)
+        ? "dataset"
+        : purchaseVariantId === aiDatingPhotosProductData.variantId
+          ? "aiDatingPhotos"
+          : purchaseVariantId === swipestatsPlusProductData.variantId
+            ? "swipestatsPlus"
+            : "unknown",
+    },
+  });
 }

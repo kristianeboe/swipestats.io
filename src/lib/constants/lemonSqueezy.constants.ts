@@ -52,7 +52,7 @@ const product: Record<
         "https://swipestats.lemonsqueezy.com/buy/e362e7c3-5fba-4e46-8134-ead1e9da8847",
     },
     prod: {
-      variantId: 624630,
+      variantId: 645425,
       checkoutUrl:
         "https://swipestats.lemonsqueezy.com/buy/267432c5-fef7-4bfc-9738-ff9523b03d87",
     },
