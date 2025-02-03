@@ -16,7 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/app/_components/ui/tooltip";
-import { format, parse } from "date-fns";
+import { format } from "date-fns";
 import { Info } from "lucide-react";
 
 export function MatchRateCard(props: {
@@ -24,7 +24,7 @@ export function MatchRateCard(props: {
   description?: string;
   footer?: string;
 }) {
-  const [active, setActive] = useState<"year" | "month" | "day">("month");
+  const [active, setActive] = useState<"year" | "month">("month");
   const { myTinderProfile, profiles } = useInsightsProvider();
 
   const aggregateProfileMatches = useMemo(
@@ -132,6 +132,8 @@ export function MatchRateCard(props: {
     };
   }, [chartData, myTinderProfile]);
 
+  console.log("matchRateCard", badges);
+
   return (
     <Card.Container>
       <Card.Header>
@@ -149,10 +151,7 @@ export function MatchRateCard(props: {
                 <TooltipTrigger>
                   <Badge variant={"secondary"} className="items-center">
                     {badges.peak.value.toFixed(1)}% peak in{" "}
-                    {format(
-                      parse(badges.peak.date, "yyyy-MM", new Date()),
-                      "MMMM yyyy",
-                    )}
+                    {format(new Date(badges.peak.date), "MMMM yyyy")}
                     <Info className="ml-1 h-3 w-3" />
                   </Badge>
                 </TooltipTrigger>
@@ -171,10 +170,7 @@ export function MatchRateCard(props: {
           ) : (
             <Badge variant={"secondary"}>
               {badges.peak.value.toFixed(1)} peak on{" "}
-              {format(
-                parse(badges.peak.date, "yyyy-MM", new Date()),
-                "MMMM yyyy",
-              )}
+              {format(new Date(badges.peak.date), "MMMM yyyy")}
             </Badge>
           )}
         </div>

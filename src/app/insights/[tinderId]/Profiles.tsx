@@ -7,20 +7,13 @@ import { useMemo } from "react";
 import { Card } from "@/app/_components/ui/card";
 
 export default function Profiles() {
-  const { myTinderProfile, profiles, comparisonIdsArray } =
-    useInsightsProvider();
+  const { profiles, comparisonIdsArray } = useInsightsProvider();
 
   const comparisonIdsNotYetLoaded = useMemo(() => {
     return comparisonIdsArray.filter((comparisonId) => {
       return !profiles.some((profile) => profile.tinderId === comparisonId);
     });
   }, [comparisonIdsArray, profiles]);
-
-  console.log("my tinder profile", myTinderProfile);
-  console.log(
-    "profiles",
-    profiles.map((profile) => profile.usage),
-  );
 
   return (
     <div className="flex w-full flex-wrap justify-center gap-4 pb-12">

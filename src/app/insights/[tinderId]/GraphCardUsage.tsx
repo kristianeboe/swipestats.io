@@ -151,8 +151,6 @@ export function GraphCardUsage(props: {
     [profiles, props.chartDataKey, myTinderProfile],
   );
 
-  console.log("aggregateProfiles", props.chartDataKey, aggregateProfiles);
-
   //? I used to think this belongs on the backend, but because of the aggregate nature, I think at least it can wait til later
   const badges = useMemo(() => {
     return aggregateProfiles.map((p) => {
