@@ -59,8 +59,6 @@ export function MatchRateCard(props: {
     [profiles, myTinderProfile],
   );
 
-  // console.log("aggregateProfiles", aggregateProfiles);
-
   const chartData = useMemo(() => {
     const tinderIdTemplate = profiles.reduce(
       (acc, profile) => {
@@ -89,7 +87,6 @@ export function MatchRateCard(props: {
           : active === "month"
             ? aggregateMatches.byMonth
             : aggregateMatches.byDay;
-      //   //console.log("timeSeries", timeSeries);
 
       timeSeriesSwipeLikes.forEach((dp, i) => {
         const existingCdp = cd.find((c) => c.xDataKey === dp.xDataKey);
@@ -97,7 +94,6 @@ export function MatchRateCard(props: {
 
         const value = dp.value ? (matchCountThisDay.value / dp.value) * 100 : 0; // made into %
 
-        //     //console.log("existingCdp", existingCdp);
         if (!existingCdp) {
           cd.push({
             xDataKey: dp.xDataKey,
@@ -131,8 +127,6 @@ export function MatchRateCard(props: {
       average,
     };
   }, [chartData, myTinderProfile]);
-
-  console.log("matchRateCard", badges);
 
   return (
     <Card.Container>
