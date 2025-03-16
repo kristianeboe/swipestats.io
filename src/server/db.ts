@@ -2,9 +2,15 @@ import { PrismaClient } from "@prisma/client";
 
 import { env } from "@/env";
 
+const override = true;
+
 const createPrismaClient = () =>
   new PrismaClient({
-    log: env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
+    log: override
+      ? ["info", "query", "error", "warn"]
+      : env.NODE_ENV === "development"
+        ? ["error", "warn"]
+        : ["error"],
   });
 
 const globalForPrisma = globalThis as unknown as {

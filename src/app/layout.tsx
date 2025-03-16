@@ -19,8 +19,10 @@ import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { PrismicPreview } from "@prismicio/next";
 import { type Metadata } from "next";
 import { PostHogProvider } from "./_components/PostHogProvider";
+import { getBaseUrl } from "@/lib/utils/getBaseUrl";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getBaseUrl()),
   title: "Swipestats | Visualize your Tinder data",
   description:
     "Upload your dating data anonymously and compare it to demographics from around the world!",
