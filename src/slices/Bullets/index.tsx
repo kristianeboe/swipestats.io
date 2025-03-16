@@ -1,6 +1,7 @@
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
 import { type Content } from "@prismicio/client";
 import { type SliceComponentProps } from "@prismicio/react";
+import { type JSX } from "react";
 
 /**
  * Props for `Bullets`.

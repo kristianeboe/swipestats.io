@@ -1,7 +1,7 @@
 import { Card } from "@/app/_components/ui/card";
 import { type Content } from "@prismicio/client";
 import { PrismicRichText, type SliceComponentProps } from "@prismicio/react";
-
+import { type JSX } from "react";
 /**
  * Props for `TldrBox`.
  */

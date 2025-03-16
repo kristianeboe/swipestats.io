@@ -1,6 +1,6 @@
 import { type Content } from "@prismicio/client";
 import { type SliceComponentProps } from "@prismicio/react";
-
+import { type JSX } from "react";
 /**
  * Props for `ContentWithStatsOnRight`.
  */

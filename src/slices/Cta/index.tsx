@@ -2,7 +2,7 @@ import { Button } from "@/app/_components/ui/button";
 import { Text } from "@/app/_components/ui/text";
 import { getPrismicLinkUrl } from "@/lib/utils/prismic.utils";
 import { type Content } from "@prismicio/client";
-
+import { type JSX } from "react";
 import { type SliceComponentProps } from "@prismicio/react";
 import Image from "next/image";
 import Link from "next/link";

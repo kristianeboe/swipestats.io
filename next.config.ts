@@ -3,10 +3,11 @@ import { withSentryConfig } from "@sentry/nextjs";
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
  * for Docker builds.
  */
-await import("./src/env.js");
+import "./src/env.js";
 
-/** @type {import("next").NextConfig} */
-const config = {
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
   trailingSlash: false,
   images: {
     remotePatterns: [
@@ -49,19 +50,34 @@ const config = {
       },
     ];
   },
+  async rewrites() {
+    return [
+      {
+        source: "/ingest/static/:path*",
+        destination: "https://eu-assets.i.posthog.com/static/:path*",
+      },
+      {
+        source: "/ingest/:path*",
+        destination: "https://eu.i.posthog.com/:path*",
+      },
+      {
+        source: "/ingest/decide",
+        destination: "https://eu.i.posthog.com/decide",
+      },
+    ];
+  },
+  skipTrailingSlashRedirect: true,
 };
 
-// Injected content via Sentry wizard below
-
-export default withSentryConfig(config, {
+export default withSentryConfig(nextConfig, {
   // For all available options, see:
-  // https://github.com/getsentry/sentry-webpack-plugin#options
+  // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
   org: "boe-ventures",
   project: "swipestats",
 
   // Only print logs for uploading source maps in CI
-  silent: !process.env.CI,
+  silent: true, // overwhelems build logs with source map logs if false !process.env.CI,
 
   // For all available options, see:
   // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
@@ -79,9 +95,6 @@ export default withSentryConfig(config, {
   // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
   // side errors will fail.
   tunnelRoute: "/monitoring",
-
-  // Hides source maps from generated client bundles
-  hideSourceMaps: true,
 
   // Automatically tree-shake Sentry logger statements to reduce bundle size
   disableLogger: true,

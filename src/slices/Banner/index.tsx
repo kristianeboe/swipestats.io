@@ -2,6 +2,7 @@ import { type Content } from "@prismicio/client";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { type SliceComponentProps } from "@prismicio/react";
 import { cn } from "@/lib/utils";
+import { type JSX } from "react";
 
 /**
  * Props for `Banner`.

@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { type Content } from "@prismicio/client";
 import { type SliceComponentProps } from "@prismicio/react";
-
+import { type JSX } from "react";
 /**
  * Props for `LogoCloud`.
  */

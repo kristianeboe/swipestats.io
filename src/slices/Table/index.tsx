@@ -9,7 +9,7 @@ import {
 } from "@/app/_components/ui/table";
 import { type Content } from "@prismicio/client";
 import { type SliceComponentProps } from "@prismicio/react";
-
+import { type JSX } from "react";
 /**
  * Props for `Table`.
  */

@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "../form";
 
-import { Checkbox, CheckboxTag, TagBadge } from "../checkbox";
+import { TagBadge } from "../checkbox";
 
 export const TagGroupFormField = <
   TFieldValues extends FieldValues = FieldValues,
@@ -66,8 +66,7 @@ export const TagGroupFormField = <
                         className="flex flex-row items-start space-x-3 space-y-0"
                       >
                         <FormControl>
-                          <>
-                            {/* <CheckboxTag
+                          {/* <CheckboxTag
                         checked={value.includes(option.value)}
                         onCheckedChange={(checked) => {
                           return checked
@@ -79,20 +78,19 @@ export const TagGroupFormField = <
                               );
                         }}
                       /> */}
-                            <TagBadge
-                              label={option.label}
-                              checked={value.includes(option.value)}
-                              onChange={(checked) => {
-                                return checked
-                                  ? field.onChange([...value, option.value])
-                                  : field.onChange(
-                                      value.filter(
-                                        (value) => value !== option.value,
-                                      ),
-                                    );
-                              }}
-                            />
-                          </>
+                          <TagBadge
+                            label={option.label}
+                            checked={value.includes(option.value)}
+                            onChange={(checked) => {
+                              return checked
+                                ? field.onChange([...value, option.value])
+                                : field.onChange(
+                                    value.filter(
+                                      (value) => value !== option.value,
+                                    ),
+                                  );
+                            }}
+                          />
                         </FormControl>
                         {/* <FormLabel className="font-normal">
                     {option.label}

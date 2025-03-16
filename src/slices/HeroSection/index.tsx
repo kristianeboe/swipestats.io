@@ -5,7 +5,7 @@ import { getPrismicLinkUrl } from "@/lib/utils/prismic.utils";
 import { type Content } from "@prismicio/client";
 import { PrismicRichText, type SliceComponentProps } from "@prismicio/react";
 import Link from "next/link";
-
+import { type JSX } from "react";
 /**
  * Props for `HeroSection`.
  */

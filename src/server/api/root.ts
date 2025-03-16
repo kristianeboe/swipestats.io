@@ -1,17 +1,20 @@
+import { postRouter } from "@/server/api/routers/post";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 import { profileRouter } from "./routers/profileRouter";
 import { aggregationRouter } from "./routers/aggregationRouter";
 import { newsletterRouter } from "./routers/newsletterRouter";
-import { aiDatingPhotosRouter } from "./routers/aiDatingPhotos";
 import { messagesRouter } from "./routers/messagesRouter";
 import { miscRouter } from "./routers/miscRouter";
 import { purchasesRouter } from "./routers/purchasesRouter";
+import { aiDatingPhotosRouter } from "./routers/aiDatingPhotos";
+
 /**
  * This is the primary router for your server.
  *
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
+  post: postRouter,
   profile: profileRouter,
   aggregation: aggregationRouter,
   newsletter: newsletterRouter,

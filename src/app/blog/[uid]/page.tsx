@@ -13,7 +13,8 @@ import { env } from "@/env";
 
 type Params = { uid: string };
 
-export default async function Page({ params }: { params: Params }) {
+export default async function Page(props: { params: Promise<Params> }) {
+  const params = await props.params;
   const { blog, author } = await getBlogPostAndAuthor(params.uid);
   return (
     <div>
@@ -65,11 +66,12 @@ export default async function Page({ params }: { params: Params }) {
   );
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Params;
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<Params>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
   const { blog } = await getBlogPostAndAuthor(params.uid);
 
   return {

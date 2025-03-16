@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, type FormEvent, useCallback } from "react";
+import { useState, useEffect, type FormEvent, use } from "react";
 
 import { UploadArea } from "./UploadArea";
 
@@ -51,11 +51,10 @@ const dataProviders = [
 //   }));
 // }
 
-export default function UploadPage({
-  params,
-}: {
-  params: { providerId: "tinder" | "hinge" | "bumble" };
+export default function UploadPage(props: {
+  params: Promise<{ providerId: "tinder" | "hinge" | "bumble" }>;
 }) {
+  const params = use(props.params);
   const posthog = usePostHog();
   const [swipestatsProfilePayload, setSwipestatsProfilePayload] =
     useState<SwipestatsProfilePayload | null>(null);

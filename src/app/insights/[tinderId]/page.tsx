@@ -22,13 +22,14 @@ import { UserFeedback } from "./UserFeedback";
 import Profiles from "./Profiles";
 import { SwipestatsPlusCard } from "./SwipestatsPlusCard";
 
-export default async function InsightsPage({
-  params,
-}: {
-  params: {
-    tinderId: string;
-  };
-}) {
+export default async function InsightsPage(
+  props: {
+    params: Promise<{
+      tinderId: string;
+    }>;
+  }
+) {
+  const params = await props.params;
   const swipestatsProfile = await api.profile.get({
     tinderId: params.tinderId,
   });

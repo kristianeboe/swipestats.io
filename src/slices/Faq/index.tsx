@@ -9,7 +9,7 @@ import {
   AccordionTrigger,
 } from "@/app/_components/ui/accordion";
 import { analyticsTrackClient } from "@/lib/analytics/analyticsTrackClient";
-
+import { type JSX } from "react";
 /**
  * Props for `Faqs`.
  */

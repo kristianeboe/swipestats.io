@@ -2,6 +2,7 @@ import AiPhotosPurchaseEmail from "@/emails/AiPhotosPurchaseEmail";
 import DatasetPurchaseEmail from "@/emails/DatasetPurchaseEmail";
 import { env } from "@/env";
 import { Resend } from "resend";
+import { type JSX } from "react";
 
 const resend = new Resend(env.RESEND_API_KEY);
 

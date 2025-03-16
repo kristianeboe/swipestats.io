@@ -13,18 +13,16 @@ const inter = Inter({
   variable: "--font-inter",
 });
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { PHProvider } from "./_components/PostHogProvider";
+
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
-import dynamic from "next/dynamic";
 import { PrismicPreview } from "@prismicio/next";
 import { type Metadata } from "next";
-
-const PostHogPageView = dynamic(() => import("./PostHogPageView"), {
-  ssr: false,
-});
+import { PostHogProvider } from "./_components/PostHogProvider";
+import { getBaseUrl } from "@/lib/utils/getBaseUrl";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getBaseUrl()),
   title: "Swipestats | Visualize your Tinder data",
   description:
     "Upload your dating data anonymously and compare it to demographics from around the world!",
@@ -61,15 +59,14 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans ${inter.variable} bg-white`}>
         <TRPCReactProvider>
-          <PHProvider>
+          <PostHogProvider>
             <NuqsAdapter>
               <Header />
               <main className="mt-12">{children}</main>
               <Footer />
-              <PostHogPageView />
               <PrismicPreview repositoryName={"swipestats"} />
             </NuqsAdapter>
-          </PHProvider>
+          </PostHogProvider>
         </TRPCReactProvider>
         <Analytics />
         <SpeedInsights />

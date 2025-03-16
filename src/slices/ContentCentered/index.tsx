@@ -4,7 +4,7 @@ import {
 } from "@heroicons/react/20/solid";
 import { type Content } from "@prismicio/client";
 import { type SliceComponentProps, PrismicRichText } from "@prismicio/react";
-
+import { type JSX } from "react";
 /**
  * Props for `ContentCentered`.
  */

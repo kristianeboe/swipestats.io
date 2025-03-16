@@ -1,17 +1,14 @@
 import { execSync } from "child_process";
 
-const branchLevel = process.env.GIT_BRANCH_LEVEL!;
-const nodeEnv = process.env.NODE_ENV;
+const prodDbIdentifier = "ep-mute-glitter-a2z460s2";
 
 if (
-  nodeEnv === "production" &&
-  (branchLevel === "staging" || branchLevel === "production")
+  process.env.DATABASE_URL?.includes(prodDbIdentifier) &&
+  process.env.VERCEL_ENV !== "production"
 ) {
-  console.log("deploying migrations");
-  execSync("npx prisma migrate deploy", { stdio: "inherit" });
-} else {
-  console.log(
-    "Skipping migration deploy because this is not a staging or production branch. BranchLevel: ",
-    branchLevel,
+  throw new Error(
+    "You are trying to deploy to production database from non-production environment. This is not allowed.",
   );
 }
+
+execSync("npx prisma migrate deploy", { stdio: "inherit" });

@@ -12,7 +12,7 @@ import {
   AdjustmentsHorizontalIcon,
   BellAlertIcon,
 } from "@heroicons/react/20/solid";
-
+import { type JSX } from "react";
 /**
  * Props for `FeaturesSection`.
  */

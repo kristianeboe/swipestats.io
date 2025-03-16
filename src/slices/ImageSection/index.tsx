@@ -1,7 +1,7 @@
 import { type Content } from "@prismicio/client";
 import { type SliceComponentProps } from "@prismicio/react";
 import Image from "next/image";
-
+import { type JSX } from "react";
 /**
  * Props for `ImageSection`.
  */

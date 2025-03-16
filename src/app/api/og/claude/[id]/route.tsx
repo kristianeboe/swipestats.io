@@ -5,8 +5,9 @@ export const runtime = "edge";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } },
+  props: { params: Promise<{ id: string }> },
 ) {
+  const params = await props.params;
   const id = params.id;
   const { searchParams } = req.nextUrl;
   const blogSlug = searchParams.get("slug") ?? "Your Blog Name";

@@ -13,8 +13,9 @@ BigInt.prototype.toJSON = function () {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { tinderId: string } },
+  props: { params: Promise<{ tinderId: string }> },
 ) {
+  const params = await props.params;
   try {
     const { tinderId } = params;
     const query = Object.fromEntries(request.nextUrl.searchParams);
