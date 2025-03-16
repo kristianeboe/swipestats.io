@@ -1,10 +1,10 @@
 import { Button } from "@/app/_components/ui/button";
-import LmnCheckoutButton from "@/app/ai-dating-photos/LmnCheckoutButton";
+
 import { getPrismicLinkUrl } from "@/lib/utils/prismic.utils";
 import { type Content } from "@prismicio/client";
 import { type SliceComponentProps } from "@prismicio/react";
 import Link from "next/link";
-
+import { type JSX } from "react";
 /**
  * Props for `SuccessPhotosSection`.
  */

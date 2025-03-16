@@ -1,7 +1,7 @@
 import { Text } from "@/app/_components/ui/text";
 import { type Content } from "@prismicio/client";
 import { type SliceComponentProps } from "@prismicio/react";
-
+import { type JSX } from "react";
 /**
  * Props for `H1WithSubHeading`.
  */

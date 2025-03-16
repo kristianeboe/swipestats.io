@@ -1,6 +1,6 @@
 import { type Content } from "@prismicio/client";
 import { CheckCircleIcon, CheckIcon } from "@heroicons/react/20/solid";
-
+import { type JSX } from "react";
 import { type SliceComponentProps } from "@prismicio/react";
 import { annualPriceWithTwoMonthsFree } from "@/lib/utils";
 import { getPrismicLinkUrl } from "@/lib/utils/prismic.utils";
