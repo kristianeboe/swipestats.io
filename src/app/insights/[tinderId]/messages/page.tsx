@@ -3,11 +3,12 @@ import { notFound } from "next/navigation";
 import { Card } from "@/app/_components/ui/card";
 import { InsightsProvider } from "../InsightsProvider";
 
-export default async function MessagesPage({
-  params,
-}: {
-  params: { tinderId: string };
-}) {
+export default async function MessagesPage(
+  props: {
+    params: Promise<{ tinderId: string }>;
+  }
+) {
+  const params = await props.params;
   const swipestatsProfile = await api.profile.get({
     tinderId: params.tinderId,
   });

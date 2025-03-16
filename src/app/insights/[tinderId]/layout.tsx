@@ -3,11 +3,12 @@ import { InsightsProvider } from "./InsightsProvider";
 import { api } from "@/trpc/server";
 
 export default async function InsightsLayout(props: {
-  params: { tinderId: string };
+  params: Promise<{ tinderId: string }>;
   children: React.ReactNode;
 }) {
+  const tinderId = (await props.params).tinderId;
   const swipestatsProfile = await api.profile.get({
-    tinderId: props.params.tinderId,
+    tinderId,
   });
 
   if (!swipestatsProfile) {

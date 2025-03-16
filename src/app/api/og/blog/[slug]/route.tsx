@@ -5,8 +5,9 @@ import { type NextRequest } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { slug: string } },
+  props: { params: Promise<{ slug: string }> },
 ) {
+  const params = await props.params;
   const searchParams = req.nextUrl.searchParams;
 
   console.log("og", {
