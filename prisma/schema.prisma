@@ -267,7 +267,7 @@ model Message {
 
     language String?
 
-    timeSinceLastMessage         BigInt // 0 indicates it's an opener // distance in unix milliseconds
+    timeSinceLastMessage         Int // 0 indicates it's an opener // distance in seconds
     timeSinceLastMessageRelative String? // null indicates it's an opener // distance in human readable format
     emotionScore                 Int? // todo future implement
 
