@@ -93,7 +93,9 @@ export function createMessagesAndMatches(
             ? new Date(lastMessage.sent_date).getTime()
             : undefined;
           const timeSinceLastMessage = timestampOfLastMessage
-            ? timestampOfCurrentMessage - timestampOfLastMessage
+            ? Math.floor(
+                (timestampOfCurrentMessage - timestampOfLastMessage) / 1000,
+              ) // Convert to seconds
             : 0;
 
           const messageType = getMessageType(msg);
