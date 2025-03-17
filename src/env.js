@@ -38,6 +38,7 @@ export const env = createEnv({
     OPENAI_API_KEY: z.string().optional(),
     DEEPSEEK_API_KEY: z.string().optional(),
     OPEN_PANEL_SECRET: z.string(),
+    ADMIN_PASSWORD: z.string(),
   },
 
   /**
@@ -93,6 +94,7 @@ export const env = createEnv({
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY,
     OPEN_PANEL_SECRET: process.env.OPEN_PANEL_SECRET,
+    ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

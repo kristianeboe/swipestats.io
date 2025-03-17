@@ -230,7 +230,7 @@ export function UploadProfileCard({
                 {userData.age_filter_min}-{userData.age_filter_max}
               </p>
 
-              {userData.jobs?.length && (
+              {userData.jobs?.length ? (
                 <section className="mt-4">
                   <h2 className="font-bold">Work</h2>
                   {userData.jobs?.map((job) => (
@@ -247,13 +247,15 @@ export function UploadProfileCard({
 
                       <div>
                         {job.title?.name}{" "}
-                        {job.company?.displayed ? "@ " + job.company?.name : ""}{" "}
+                        {job.company?.displayed
+                          ? "@ " + job.company?.name
+                          : ""}{" "}
                       </div>
                     </div>
                   ))}
                 </section>
-              )}
-              {userData.schools?.length && (
+              ) : null}
+              {userData.schools?.length ? (
                 <section className="mt-4">
                   <h2 className="font-bold">Education</h2>
                   {userData.schools.map((school) => (
@@ -273,9 +275,9 @@ export function UploadProfileCard({
                     </div>
                   ))}
                 </section>
-              )}
+              ) : null}
 
-              {userData?.user_interests?.length && (
+              {userData?.user_interests?.length ? (
                 <div className="mt-4">
                   <h2 className="mb-1 font-bold">Interests</h2>
                   <div className="flex flex-wrap gap-2">
@@ -286,8 +288,8 @@ export function UploadProfileCard({
                     ))}
                   </div>
                 </div>
-              )}
-              {userData?.descriptors?.length && (
+              ) : null}
+              {userData?.descriptors?.length ? (
                 <div className="mt-4">
                   <h2 className="mb-1 font-bold">Descriptors</h2>
                   <div className="flex flex-wrap gap-2">
@@ -298,7 +300,7 @@ export function UploadProfileCard({
                     ))}
                   </div>
                 </div>
-              )}
+              ) : null}
 
               {(userData?.instagram || userData?.spotify) && (
                 <div className="mt-4">
@@ -355,18 +357,12 @@ import {
   AlertDescription,
   AlertTitle,
 } from "@/app/_components/ui/alert";
-import { FileTextIcon, ShieldAlert } from "lucide-react";
+import { ShieldAlert } from "lucide-react";
 
 import { analyticsTrackClient } from "@/lib/analytics/analyticsTrackClient";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/app/_components/ui/carousel";
+
 import { Badge } from "@/app/_components/ui/badge";
-import { US_STATES } from "@/lib/utils/usStates";
+
 import { ProfileLocationForm } from "./ProfileLocationForm";
 
 const FormSchema = z.object({

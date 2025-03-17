@@ -219,7 +219,7 @@ export function GraphCardUsage(props: {
         <div className="flex flex-wrap gap-2">
           <Badge>{badges[0]?.total} total</Badge>
           <Badge variant={"secondary"}>
-            {badges[0]?.average?.toFixed(1)} average pr {active}
+            {badges[0]?.average?.toFixed(1)} average per {active}
           </Badge>
           <Badge variant={"secondary"}>
             {badges[0]?.peak?.value} peak on {badges[0]?.peak?.date}{" "}
@@ -275,7 +275,7 @@ export function findPeak(data: AggregateData[]):
       }
       return peak;
     },
-    { value: 0, date: "" },
+    { value: 0, date: data.at(0)!.xDataKey },
   );
 }
 

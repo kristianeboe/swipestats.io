@@ -137,7 +137,7 @@ export function MatchRateCard(props: {
         )}
         <div className="flex flex-wrap gap-2">
           <Badge variant={"secondary"}>
-            {badges.average.toFixed(1)}% average pr {active}
+            {badges.average.toFixed(1)}% average per {active}
           </Badge>
           {!badges.peak ? null : badges.peak.value > 1 ? (
             <TooltipProvider>
