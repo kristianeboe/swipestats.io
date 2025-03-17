@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 import { env } from "@/env";
 
-const override = true;
+const override = false;
 
 const createPrismaClient = () =>
   new PrismaClient({
