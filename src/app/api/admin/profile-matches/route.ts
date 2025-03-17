@@ -27,6 +27,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    console.log("getting tinder profile", tinderId);
     // Find the tinder profile with matches and messages
     const tinderProfile = await db.tinderProfile.findUnique({
       where: {
@@ -78,14 +79,20 @@ export async function GET(request: NextRequest) {
     //   });
     // }
 
-    // Return the matches and messages
-    return NextResponse.json({
-      matches: tinderProfile.matches,
+    const meta = {
       matchCount: tinderProfile.matches.length,
       messageCount: tinderProfile.matches.reduce(
         (acc, match) => acc + match.messages.length,
         0,
       ),
+    };
+
+    console.log("meta", meta);
+
+    // Return the matches and messages
+    return NextResponse.json({
+      matches: tinderProfile.matches,
+      meta,
     });
   } catch (error) {
     console.error("Error retrieving profile matches:", error);
