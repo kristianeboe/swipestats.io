@@ -44,6 +44,7 @@
     "@hookform/resolvers": "^3.6.0",
     "@lemonsqueezy/lemonsqueezy.js": "^3.2.0",
     "@neondatabase/serverless": "^0.9.3",
+    "@openpanel/nextjs": "^1.0.7",
     "@prisma/adapter-neon": "^5.15.0",
     "@prisma/client": "^6.0.1",
     "@prismicio/api-renderer": "^3.2.1",

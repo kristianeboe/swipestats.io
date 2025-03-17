@@ -51,21 +51,13 @@ export const aiDatingPhotosRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       try {
-        void sendInternalSlackMessage(
-          "ai-photos",
-          "AI Dating Photos Purchase",
-          {
-            customerEmail: input.customerEmail,
-          },
-        );
+        sendInternalSlackMessage("ai-photos", "AI Dating Photos Purchase", {
+          customerEmail: input.customerEmail,
+        });
 
-        void analyticsTrackServer(
-          input.customerEmail,
-          "AI Dating Photos Purchase",
-          {
-            customerEmail: input.customerEmail,
-          },
-        );
+        analyticsTrackServer(input.customerEmail, "AI Dating Photos Purchase", {
+          customerEmail: input.customerEmail,
+        });
 
         // await ctx.db.aiDatingPhotos.create({
         //     data: {

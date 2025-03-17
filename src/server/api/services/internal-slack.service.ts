@@ -1,4 +1,5 @@
 import { env } from "@/env";
+import { waitUntil } from "@vercel/functions";
 
 const channels = {
   "bot-messages": env.SLACK_WEBHOOK_INTERNAL,
@@ -26,7 +27,7 @@ function formatSlackMessage(data: SlackMessageBody): string {
   return formattedMessage;
 }
 
-export function sendInternalSlackError(params: {
+export async function sendInternalSlackError(params: {
   message: string;
   error: unknown;
   extraProperties?: Record<string, unknown>;
@@ -53,8 +54,8 @@ export function sendInternalSlackMessage(
 
   const textMessage = formatSlackMessage(body);
   console.log("Sending slack message", textMessage);
-  try {
-    void fetch(channels[to], {
+  waitUntil(
+    fetch(channels[to], {
       headers: {
         "Content-Type": "application/json",
       },
@@ -62,8 +63,6 @@ export function sendInternalSlackMessage(
       body: JSON.stringify({
         text: `${title}\n${textMessage}`,
       }),
-    });
-  } catch (error) {
-    console.error("Failed to send slack message", textMessage, error);
-  }
+    }),
+  );
 }

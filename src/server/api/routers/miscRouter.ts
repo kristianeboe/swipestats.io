@@ -20,7 +20,7 @@ export const miscRouter = createTRPCRouter({
     .input(FeedbackSchema)
     .mutation(async ({ input }) => {
       try {
-        void sendInternalSlackMessage(
+        sendInternalSlackMessage(
           env.NEXT_PUBLIC_MANUAL_ENV === "production"
             ? "bot-messages"
             : "bot-developer",
@@ -33,7 +33,7 @@ export const miscRouter = createTRPCRouter({
           },
         );
 
-        void analyticsTrackServer(input.tinderId, "Feedback Submitted", {
+        analyticsTrackServer(input.tinderId, "Feedback Submitted", {
           rating: input.experienceRating,
           feelings: input.howDoTheResultsMakeYouFeel,
           // wouldRecommend: input.wouldYouRecommend,

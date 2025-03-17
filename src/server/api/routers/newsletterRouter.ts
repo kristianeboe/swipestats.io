@@ -13,11 +13,11 @@ export const newsletterRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       try {
-        void sendInternalSlackMessage("bot-messages", "Nesletter Signup", {
+        sendInternalSlackMessage("bot-messages", "Nesletter Signup", {
           email: input.email,
         });
 
-        void analyticsTrackServer(input.email, "Newsletter Signup", {
+        analyticsTrackServer(input.email, "Newsletter Signup", {
           email: input.email,
         });
 

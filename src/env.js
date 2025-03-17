@@ -37,6 +37,7 @@ export const env = createEnv({
 
     OPENAI_API_KEY: z.string().optional(),
     DEEPSEEK_API_KEY: z.string().optional(),
+    OPEN_PANEL_SECRET: z.string(),
   },
 
   /**
@@ -48,6 +49,7 @@ export const env = createEnv({
     NEXT_PUBLIC_BASE_URL: z.string().url().default("https://swipestats.io"),
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
     NEXT_PUBLIC_POSTHOG_KEY: z.string(),
+    NEXT_PUBLIC_OPEN_PANEL_CLIENT_ID: z.string(),
 
     NEXT_PUBLIC_IS_DEV: z.boolean(),
     NEXT_PUBLIC_IS_PROD: z.boolean(),
@@ -66,7 +68,8 @@ export const env = createEnv({
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
 
     NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
-
+    NEXT_PUBLIC_OPEN_PANEL_CLIENT_ID:
+      process.env.NEXT_PUBLIC_OPEN_PANEL_CLIENT_ID,
     NEXT_PUBLIC_MANUAL_ENV: process.env.NEXT_PUBLIC_MANUAL_ENV,
     NEXT_PUBLIC_IS_DEV: process.env.NODE_ENV === "development",
     NEXT_PUBLIC_IS_PROD: process.env.NEXT_PUBLIC_MANUAL_ENV === "production",
@@ -89,6 +92,7 @@ export const env = createEnv({
 
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
     DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY,
+    OPEN_PANEL_SECRET: process.env.OPEN_PANEL_SECRET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

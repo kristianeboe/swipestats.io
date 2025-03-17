@@ -178,24 +178,17 @@ export const profileRouter = createTRPCRouter({
         tinderJson,
       });
 
-      await analyticsTrackServer(
-        userId,
-        "Profile Created",
-        {
-          tinderId: input.tinderId,
-          gender: swipestatsProfile.gender,
-          age: swipestatsProfile.ageAtUpload,
-          city: swipestatsProfile.city,
-          region: swipestatsProfile.region,
-          timeZone: input.timeZone ?? null,
-          country: input.country ?? null,
-        },
-        {
-          awaitTrack: true,
-        },
-      );
+      analyticsTrackServer(userId, "Profile Created", {
+        tinderId: input.tinderId,
+        gender: swipestatsProfile.gender,
+        age: swipestatsProfile.ageAtUpload,
+        city: swipestatsProfile.city,
+        region: swipestatsProfile.region,
+        timeZone: input.timeZone ?? null,
+        country: input.country ?? null,
+      });
 
-      void sendInternalSlackMessage(
+      sendInternalSlackMessage(
         env.NEXT_PUBLIC_MANUAL_ENV === "production"
           ? "bot-messages"
           : "bot-developer",
@@ -529,7 +522,7 @@ export const profileRouter = createTRPCRouter({
         },
       });
 
-      void analyticsTrackServer(input.email, "Waitlist Signup", {
+      analyticsTrackServer(input.email, "Waitlist Signup", {
         email: input.email,
         dataProvider: input.dataProviderId,
       });
@@ -556,7 +549,7 @@ export const profileRouter = createTRPCRouter({
         country: input.country,
       });
 
-      void analyticsTrackServer(
+      analyticsTrackServer(
         input.tinderId, // using tinderId instead of normal userId here
         "Profile Upload Simulated",
         {
