@@ -15,13 +15,13 @@ export default function LiveDemoLink() {
     >
       Live demo{" "}
       {isPending ? (
-        <span className="inline-block transform transition-transform duration-200 group-hover:translate-x-1">
+        <span className="inline-block translate-x-1 transform transition-transform duration-200">
           <Loader2 className="inline-block h-3 w-3 animate-spin" />
         </span>
       ) : (
         <span
           aria-hidden="true"
-          className="inline-block transform transition-transform duration-200 group-hover:translate-x-1"
+          className="inline-block w-3 transform transition-transform duration-200 group-hover:translate-x-1"
         >
           →
         </span>

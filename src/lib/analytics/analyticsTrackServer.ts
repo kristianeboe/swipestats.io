@@ -6,14 +6,13 @@ import type {
   VercelAllowedPropertyValues,
 } from "../interfaces/utilInterfaces";
 import PostHogClient from "./posthog";
+import { openpanel } from "./openpanel";
+import { waitUntil } from "@vercel/functions";
 
-export async function analyticsTrackServer(
+async function analyticsTrackServerWait(
   userId: string,
   eventName: AnalyticsEventName,
   properties: AnalyticsEventProperties = {},
-  options?: {
-    awaitTrack?: boolean;
-  },
 ): Promise<void> {
   const cleanedProperties: Record<string, VercelAllowedPropertyValues> = {};
   for (const [key, value] of Object.entries(properties)) {
@@ -27,22 +26,32 @@ export async function analyticsTrackServer(
     }
   }
 
-  if (options?.awaitTrack) {
-    await track(eventName, cleanedProperties);
-  } else {
-    void track(eventName, cleanedProperties);
-  }
+  // VA
+  await track(eventName, cleanedProperties);
+  // posthog
   const posthogClient = PostHogClient();
   posthogClient.capture({
     event: eventName,
     distinctId: userId,
     properties,
   });
+  await PostHogClient().shutdown();
+
+  await openpanel.track(eventName, {
+    profileId: userId,
+    ...cleanedProperties,
+  });
   console.log("Server track", {
     userId,
     eventName,
     properties,
-    options,
   });
-  await PostHogClient().shutdown();
+}
+
+export function analyticsTrackServer(
+  userId: string,
+  eventName: AnalyticsEventName,
+  properties: AnalyticsEventProperties = {},
+) {
+  return waitUntil(analyticsTrackServerWait(userId, eventName, properties));
 }

@@ -3,6 +3,7 @@
 import { env } from "@/env";
 import posthog from "posthog-js";
 import { PostHogProvider as PHProvider } from "posthog-js/react";
+import { OpenPanelComponent } from "@openpanel/nextjs";
 import { useEffect } from "react";
 import SuspendedPostHogPageView from "../PostHogPageView";
 
@@ -29,6 +30,13 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <PHProvider client={posthog}>
+      <OpenPanelComponent
+        clientId={env.NEXT_PUBLIC_OPEN_PANEL_CLIENT_ID}
+        trackScreenViews={true}
+        trackOutgoingLinks={true}
+        apiUrl="/api/op"
+      />
+
       <SuspendedPostHogPageView />
       {children}
     </PHProvider>

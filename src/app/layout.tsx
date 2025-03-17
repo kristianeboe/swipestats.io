@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
 
 import { TRPCReactProvider } from "@/trpc/react";
+
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { Toaster } from "@/app/_components/ui/sonner";
