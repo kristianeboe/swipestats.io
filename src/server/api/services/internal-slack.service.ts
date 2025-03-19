@@ -81,32 +81,18 @@ export function sendInternalSlackMessage(
   try {
     const blocks: Block[] = [
       createHeaderBlock(title),
-      createContextBlock(textMessage),
-    ];
-
-    // Add any additional context from the body
-    if (Object.keys(body).length > 0) {
-      blocks.push(createDividerBlock());
-      blocks.push(
-        createRichTextBlock([
-          createRichTextSection([
-            createTextElement("Additional Details", { bold: true }),
-          ]),
-          createRichTextList(
-            Object.entries(body).map(([key, value]) => [
-              createTextElement(`${key}: ${value?.toString() ?? "null"}`),
-            ]),
-            "bullet",
+      createRichTextBlock([
+        createRichTextSection([
+          createTextElement(
+            Object.entries(body)
+              .map(([key, value]) => `${key}: ${value?.toString() ?? "null"}`)
+              .join("\n"),
           ),
         ]),
-      );
-    }
-
-    // Add environment info
-    blocks.push(
+      ]),
       createDividerBlock(),
       createContextBlock(`Environment: ${env.NEXT_PUBLIC_MANUAL_ENV}`),
-    );
+    ];
 
     sendRichSlackMessage("rich-message-test", blocks);
   } catch (error) {
