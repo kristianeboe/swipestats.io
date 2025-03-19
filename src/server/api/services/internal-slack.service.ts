@@ -5,6 +5,7 @@ const channels = {
   "bot-messages": env.SLACK_WEBHOOK_INTERNAL,
   "ai-photos": env.SLACK_WEBHOOK_INTERNAL_AI_MESSAGES,
   "bot-developer": env.SLACK_WEBHOOK_INTERNAL_DEVELOPER,
+  sales: env.SLACK_WEBHOOK_INTERNAL_SALES,
 };
 
 type SlackMessageBody = Record<
