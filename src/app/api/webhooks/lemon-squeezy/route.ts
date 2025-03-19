@@ -4,6 +4,7 @@ import { getProductData } from "@/lib/constants/lemonSqueezy.constants";
 import { createSubLogger } from "@/lib/tslog";
 import { sendReactEmail } from "@/server/api/services/email.service";
 import { sendInternalSlackMessage } from "@/server/api/services/internal-slack.service";
+import { analyticsTrackServer } from "@/lib/analytics/analyticsTrackServer";
 import { db } from "@/server/db";
 import { api } from "@/trpc/server";
 import crypto from "crypto";
@@ -144,6 +145,16 @@ export async function POST(request: Request) {
           );
           log.info("Sent dataset purchase confirmation email");
 
+          analyticsTrackServer(attributes.user_email, "Dataset Purchase", {
+            datasetType:
+              purchaseVariantId === fullProductData.variantId
+                ? "full"
+                : "sample",
+            orderId: attributes.order_id,
+            amount: attributes.first_order_item.price,
+            environment: env.NEXT_PUBLIC_MANUAL_ENV,
+          });
+
           // Send Slack notification for dataset purchase
           sendInternalSlackMessage("sales", "🎉 New Dataset Purchase!", {
             customerName: attributes.user_name,
@@ -166,6 +177,17 @@ export async function POST(request: Request) {
           });
           log.info("Completed AI Dating Photos purchase processing");
 
+          // Track AI photos purchase in PostHog
+          analyticsTrackServer(
+            attributes.user_email,
+            "AI Dating Photos Purchase",
+            {
+              orderId: attributes.order_id,
+              amount: attributes.first_order_item.price,
+              environment: env.NEXT_PUBLIC_MANUAL_ENV,
+            },
+          );
+
           // Send Slack notification for AI photos purchase
           sendInternalSlackMessage(
             "sales",
@@ -184,11 +206,22 @@ export async function POST(request: Request) {
             customerEmail: attributes.user_email,
           });
 
-          await db.tinderProfile.update({
+          const updatedProfile = await db.tinderProfile.update({
             where: { tinderId: data.meta.custom_data.tinderId },
             data: { user: { update: { swipestatsTier: "PLUS" } } },
+            include: { user: true },
           });
+          const userId = updatedProfile.user.id;
           log.info("Updated user tier to PLUS");
+
+          // Track Plus subscription in PostHog
+          analyticsTrackServer(userId, "Plus Subscription Purchase", {
+            userId,
+            tinderId: data.meta.custom_data.tinderId,
+            orderId: attributes.order_id,
+            amount: attributes.first_order_item.price,
+            environment: env.NEXT_PUBLIC_MANUAL_ENV,
+          });
 
           // Send Slack notification for Plus purchase
           sendInternalSlackMessage(
@@ -233,6 +266,13 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     log.error("Error processing webhook", { error });
+
+    // Track webhook error in PostHog
+    analyticsTrackServer("system", "Lemon Squeezy Webhook Error", {
+      error: error instanceof Error ? error.message : "Unknown error",
+      timestamp: new Date().toISOString(),
+      environment: env.NEXT_PUBLIC_MANUAL_ENV,
+    });
 
     // Send Slack notification for webhook errors
     sendInternalSlackMessage("sales", "❌ Lemon Squeezy Webhook Error", {

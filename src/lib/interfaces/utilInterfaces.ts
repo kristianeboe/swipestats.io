@@ -66,11 +66,18 @@ type MiscEvent =
 
 type AiPhotosEvent = "AI Dating Photos Purchase";
 
+type PurchaseEvent =
+  | "Dataset Purchase"
+  | "AI Dating Photos Purchase"
+  | "Plus Subscription Purchase"
+  | "Lemon Squeezy Webhook Error";
+
 export type AnalyticsEventName =
   | ProfileEvent
   | FileEvent
   | MiscEvent
-  | AiPhotosEvent;
+  | AiPhotosEvent
+  | PurchaseEvent;
 export type AnalyticsEventProperties = Record<
   string,
   string | number | boolean | null | string[] | undefined
