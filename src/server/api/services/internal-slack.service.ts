@@ -7,7 +7,7 @@ const channels = {
   "bot-developer": env.SLACK_WEBHOOK_INTERNAL_DEVELOPER,
   sales: env.SLACK_WEBHOOK_INTERNAL_SALES,
   "rich-message-test": env.SLACK_WEBHOOK_INTERNAL_RICH_MESSAGE_TEST,
-};
+} as const;
 
 type SlackMessageBody = Record<
   string,
@@ -52,51 +52,53 @@ export function sendInternalSlackMessage(
   title: string,
   body: SlackMessageBody,
 ) {
-  // if (env.NEXT_PUBLIC_MANUAL_ENV !== "production") return;
-
-  const textMessage = formatSlackMessage(body);
-  console.log("Sending slack message", {
-    args: {
-      to,
-      title,
-      body,
-    },
-    textMessage,
-  });
-
-  // Send original simple message
-  waitUntil(
-    fetch(channels[to], {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({
-        text: `${title}\n${textMessage}`,
-      }),
-    }),
-  );
-
-  // Forward to rich message test channel
   try {
     const blocks: Block[] = [
       createHeaderBlock(title),
       createRichTextBlock([
         createRichTextSection([
-          createTextElement(
-            Object.entries(body)
-              .map(([key, value]) => `${key}: ${value?.toString() ?? "null"}`)
-              .join("\n"),
-          ),
+          ...Object.entries(body)
+            .map(([key, value]) => {
+              const elements: RichTextElement[] = [
+                createTextElement(`${key}: `),
+              ];
+
+              const valueStr = value?.toString() ?? "null";
+              // Check if value is a URL
+              if (
+                typeof value === "string" &&
+                (value.startsWith("http://") || value.startsWith("https://"))
+              ) {
+                elements.push(createLinkElement(valueStr, valueStr));
+              } else {
+                elements.push(createTextElement(valueStr));
+              }
+
+              elements.push(createTextElement("\n"));
+              return elements;
+            })
+            .flat(),
         ]),
       ]),
       createDividerBlock(),
       createContextBlock(`Environment: ${env.NEXT_PUBLIC_MANUAL_ENV}`),
     ];
 
-    sendRichSlackMessage("rich-message-test", blocks);
+    sendRichSlackMessage(to, blocks);
   } catch (error) {
     console.error("Failed to send rich slack message:", error);
+    // Fallback to simple message if rich message fails
+    waitUntil(
+      fetch(channels[to], {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          text: `${title}\n${formatSlackMessage(body)}`,
+        }),
+      }),
+    );
   }
 }
 
