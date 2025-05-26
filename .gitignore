@@ -60,3 +60,8 @@ db_dumps
 
 migrateV1toV3Ignored.ts
 migrateV2toV3Ignored.ts
+
+
+.docs
+
+fixtures

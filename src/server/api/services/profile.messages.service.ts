@@ -16,7 +16,7 @@ export function createMessagesAndMatches(
   tjms: TinderJsonMatch[],
   tinderProfileId: string,
 ) {
-  const sortedMatches = tjms.reverse();
+  const sortedMatches = tjms.reverse(); // to get them in chronological order
 
   const matchesInput: Prisma.MatchCreateManyInput[] = sortedMatches.map(
     (tjm, i) => {

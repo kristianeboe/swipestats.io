@@ -252,8 +252,9 @@ model Message {
     sentDateRaw String
     contentRaw  String // html
 
-    content   String // parsed html
-    charCount Int // based on parsed html
+    content          String // parsed html
+    contentSanitized String? // parsed html without PII
+    charCount        Int // based on parsed html
 
     messageType MessageType
     type        String? // text, image, gif // also like from Hinge
