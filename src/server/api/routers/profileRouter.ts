@@ -5,8 +5,13 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
-import { DataProvider, type TinderProfile } from "@prisma/client";
+import {
+  DataProvider,
+  type TinderProfile,
+  type HingeProfile,
+} from "@prisma/client";
 import type { AnonymizedTinderDataJSON } from "@/lib/interfaces/TinderDataJSON";
+import type { AnonymizedHingeDataJSON } from "@/lib/interfaces/HingeDataJSON";
 import { createSubLogger } from "@/lib/tslog";
 
 import {
@@ -207,6 +212,190 @@ export const profileRouter = createTRPCRouter({
       );
 
       return swipestatsProfile;
+    }),
+
+  createHinge: publicProcedure
+    .input(
+      z.object({
+        hingeId: z.string().min(1),
+        anonymizedHingeJson: z.any(),
+        timeZone: z.string().optional(),
+        country: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }): Promise<HingeProfile> => {
+      const existingProfile = await ctx.db.hingeProfile.findUnique({
+        where: {
+          hingeId: input.hingeId,
+        },
+      });
+
+      if (existingProfile) {
+        throw new Error(
+          "Hinge profile already exists. Use update function instead",
+        );
+      }
+
+      const user = ctx.session?.user;
+      const hingeJson = input.anonymizedHingeJson as AnonymizedHingeDataJSON;
+      const userId = user?.id ?? input.hingeId; // defaults to the hingeId as it is unique too
+
+      log.info("Initiate Hinge profile creation", {
+        hingeId: input.hingeId,
+        userId: user?.id,
+        timeZone: input.timeZone,
+        country: input.country,
+      });
+
+      // Calculate age from account signup time since we don't have birth_date in anonymized data
+      const signupDate = new Date(hingeJson.User.account.signup_time);
+      const ageAtUpload = hingeJson.User.profile.age;
+
+      // Create basic Hinge profile using the correct property paths from AnonymizedHingeUser
+      const hingeProfile = await ctx.db.hingeProfile.create({
+        data: {
+          hingeId: input.hingeId,
+          // Use signup_time as a proxy for birthDate since we don't have the actual birth_date
+          birthDate: new Date(
+            signupDate.getTime() - ageAtUpload * 365.25 * 24 * 60 * 60 * 1000,
+          ),
+          ageAtUpload: ageAtUpload,
+          createDate: signupDate,
+          heightCentimeters: hingeJson.User.profile.height_centimeters,
+          gender: hingeJson.User.profile.gender,
+
+          // Required fields that may not be in our interface yet
+          genderIdentity: hingeJson.User.profile.gender || "Unknown",
+          genderIdentityDisplayed: false,
+
+          // Array fields - parse JSON strings to arrays
+          ethnicities: hingeJson.User.profile.ethnicities
+            ? JSON.parse(hingeJson.User.profile.ethnicities)
+            : [],
+          ethnicitiesDisplayed:
+            hingeJson.User.profile.ethnicities_displayed || false,
+          religions: hingeJson.User.profile.religions
+            ? JSON.parse(hingeJson.User.profile.religions)
+            : [],
+          religionsDisplayed:
+            hingeJson.User.profile.religions_displayed || false,
+          workplaces: [], // Not in our interface yet
+          workplacesDisplayed: false,
+          schools: hingeJson.User.profile.schools
+            ? JSON.parse(hingeJson.User.profile.schools)
+            : [],
+          schoolsDisplayed: hingeJson.User.profile.schools_displayed || false,
+          hometowns: hingeJson.User.profile.hometowns
+            ? JSON.parse(hingeJson.User.profile.hometowns)
+            : [],
+          hometownsDisplayed:
+            hingeJson.User.profile.hometowns_displayed || false,
+
+          // String fields
+          jobTitle: hingeJson.User.profile.job_title || "",
+          jobTitleDisplayed:
+            hingeJson.User.profile.job_title_displayed || false,
+          children: hingeJson.User.profile.children || "",
+          childrenDisplayed: hingeJson.User.profile.children_displayed || false,
+          familyPlans: hingeJson.User.profile.family_plans || "",
+          familyPlansDisplayed:
+            hingeJson.User.profile.family_plans_displayed || false,
+          educationAttained: hingeJson.User.profile.education_attained || "",
+          politics: hingeJson.User.profile.politics || "",
+          politicsDisplayed: hingeJson.User.profile.politics_displayed || false,
+          datingIntention: hingeJson.User.profile.dating_intention || "",
+          datingIntentionDisplayed:
+            hingeJson.User.profile.dating_intention_displayed || false,
+          relationshipType: hingeJson.User.profile.relationship_types || "", // Note: singular in schema
+          relationshipTypeDisplayed:
+            hingeJson.User.profile.relationship_type_displayed || false,
+          languagesSpoken: "", // Not in our current interface
+          languagesSpokenDisplayed: false,
+
+          // Boolean lifestyle fields - convert strings to booleans
+          smoking: hingeJson.User.profile.smoking
+            ? hingeJson.User.profile.smoking.toLowerCase() === "yes"
+            : false,
+          smokingDisplayed: hingeJson.User.profile.smoking_displayed || false,
+          drinking: hingeJson.User.profile.drinking
+            ? hingeJson.User.profile.drinking.toLowerCase() === "yes"
+            : false,
+          drinkingDisplayed: hingeJson.User.profile.drinking_displayed || false,
+          marijuana: hingeJson.User.profile.marijuana
+            ? hingeJson.User.profile.marijuana.toLowerCase() === "yes"
+            : false,
+          marijuanaDisplayed:
+            hingeJson.User.profile.marijuana_displayed || false,
+          drugs: hingeJson.User.profile.drugs
+            ? hingeJson.User.profile.drugs.toLowerCase() === "yes"
+            : false,
+          drugsDisplayed: hingeJson.User.profile.drugs_displayed || false,
+
+          // Display preferences
+          instagramDisplayed:
+            hingeJson.User.profile.instagram_displayed || false,
+          selfieVerified: false, // Not in our current interface
+
+          // Preferences
+          distanceMilesMax: hingeJson.User.preferences.distance_miles_max,
+          ageMin: hingeJson.User.preferences.age_min,
+          ageMax: hingeJson.User.preferences.age_max,
+          ageDealbreaker: hingeJson.User.preferences.age_dealbreaker,
+          heightMin: hingeJson.User.preferences.height_min,
+          heightMax: hingeJson.User.preferences.height_max,
+          heightDealbreaker: hingeJson.User.preferences.height_dealbreaker,
+          genderPreference: hingeJson.User.preferences.gender_preference,
+
+          // Array preference fields - parse JSON strings to arrays
+          ethnicityPreference: hingeJson.User.preferences.ethnicity_preference
+            ? JSON.parse(hingeJson.User.preferences.ethnicity_preference)
+            : [],
+          ethnicityDealbreaker:
+            hingeJson.User.preferences.ethnicity_dealbreaker,
+          religionPreference: hingeJson.User.preferences.religion_preference
+            ? JSON.parse(hingeJson.User.preferences.religion_preference)
+            : [],
+          religionDealbreaker: hingeJson.User.preferences.religion_dealbreaker,
+
+          user: {
+            connectOrCreate: {
+              where: { id: userId },
+              create: {
+                id: userId,
+                timeZone: input.timeZone,
+                country: input.country,
+                activeOnHinge: true,
+              },
+            },
+          },
+        },
+      });
+
+      analyticsTrackServer(userId, "Profile Created", {
+        hingeId: input.hingeId,
+        gender: hingeProfile.gender,
+        age: hingeProfile.ageAtUpload,
+        timeZone: input.timeZone ?? null,
+        country: input.country ?? null,
+        provider: "HINGE",
+      });
+
+      sendInternalSlackMessage(
+        env.NEXT_PUBLIC_MANUAL_ENV === "production"
+          ? "bot-messages"
+          : "bot-developer",
+        "Hinge Profile Created",
+        {
+          hingeId: input.hingeId,
+          profileUrl: `https://swipestats.io/insights/hinge/${input.hingeId}`,
+          gender: hingeProfile.gender,
+          age: hingeProfile.ageAtUpload,
+          geoTimezone: input.timeZone,
+          geoCountry: input.country,
+        },
+      );
+
+      return hingeProfile;
     }),
 
   update: publicProcedure

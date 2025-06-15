@@ -102,6 +102,7 @@ export function UploadCTA(props: {
     analyticsTrackClient("Profile Upload Initialized", {
       providerId: "TINDER",
     });
+
     try {
       if (!existingProfileQuery.data) {
         // TODO consider merging create and update into an upsert
@@ -112,21 +113,6 @@ export function UploadCTA(props: {
           timeZone,
           country,
         });
-
-        // track("Profile Created", { // ? moved to server
-        //   tinderId: tinderProfile.tinderId,
-        // });
-        // await ky
-        //   .post('/api/profiles', {
-        //     json: props.swipestatsProfilePayload,
-        //     timeout: false,
-        //   })
-        //   .json<TinderProfilePrisma>()
-        //   .then((tinderProfile) => {
-        //     log('Tinder profile created API Return %O', tinderProfile);
-        //     analyticsSDK.profile.created({ tinderId: tinderProfile.tinderId });
-        //     router.push('/insights/?id=' + tinderProfile.tinderId);
-        //   });
       } else {
         profileUpdateMutation.mutate({
           tinderId: props.swipestatsProfilePayload.tinderId,
