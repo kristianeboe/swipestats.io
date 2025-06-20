@@ -1,6 +1,12 @@
 "use client";
 
-import { Card } from "@/app/_components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/app/_components/ui/card";
 import {
   Book,
   Check,
@@ -195,19 +201,19 @@ export function SwipestatsPlusCard({ className }: { className?: string }) {
       "96d5e7ba8f42af5f40b1ea25a3deafc035ebd5350521b925a5e6478e2aebfee5"
   ) {
     return (
-      <Card.Container className={cn("w-full flex-1 flex-shrink-0", className)}>
-        <Card.Header className="space-y-2 text-center">
+      <Card className={cn("w-full flex-1 flex-shrink-0", className)}>
+        <CardHeader className="space-y-2 text-center">
           <div className="bg-primary/10 mx-auto flex h-12 w-12 items-center justify-center rounded-full">
             <CrownIcon className="text-primary h-6 w-6" />
           </div>
-          <Card.Title className="text-3xl font-bold">
+          <CardTitle className="text-3xl font-bold">
             Welcome to Swipestats+
-          </Card.Title>
-          <Card.Description className="text-lg">
+          </CardTitle>
+          <CardDescription className="text-lg">
             You now have full access to all premium features
-          </Card.Description>
-        </Card.Header>
-        <Card.Content className="space-y-6">
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
           <div className="grid gap-4 md:grid-cols-2">
             {includedSwipestatsPlusFeatures.map((feature) => (
               <div
@@ -226,15 +232,15 @@ export function SwipestatsPlusCard({ className }: { className?: string }) {
               </div>
             ))}
           </div>
-        </Card.Content>
-      </Card.Container>
+        </CardContent>
+      </Card>
     );
   }
 
   // return <TierSelect />;
 
   return (
-    <Card.Container className={cn("lg:flex", className)}>
+    <Card className={cn("flex-row lg:flex lg:max-w-none", className)}>
       <div className="p-8 sm:p-10 lg:flex-auto">
         <h3 className="text-3xl font-semibold tracking-tight text-gray-900">
           Swipestats+
@@ -265,8 +271,8 @@ export function SwipestatsPlusCard({ className }: { className?: string }) {
           ))}
         </ul>
       </div>
-      <div className="-mt-2 p-2 lg:mt-0 lg:w-full lg:max-w-sm lg:shrink-0">
-        <div className="rounded bg-gray-50 py-10 text-center ring-1 ring-inset ring-gray-900/5 lg:flex lg:flex-col lg:justify-center lg:py-16">
+      <div className="-mt-2 pr-8 lg:mt-0 lg:shrink-0 xl:w-full xl:max-w-sm">
+        <div className="rounded-2xl bg-gray-50 py-10 text-center ring-1 ring-inset ring-gray-900/5 lg:flex lg:flex-col lg:justify-center lg:py-16">
           <div className="mx-auto max-w-xs px-8">
             <p className="text-base font-semibold text-gray-600">
               Pay once, access forever
@@ -315,6 +321,6 @@ export function SwipestatsPlusCard({ className }: { className?: string }) {
           </div>
         </div>
       </div>
-    </Card.Container>
+    </Card>
   );
 }

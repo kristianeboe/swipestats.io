@@ -1,13 +1,19 @@
 import { Button } from "@/app/_components/ui/button";
 
-import { Card } from "@/app/_components/ui/card";
+import {
+  Card,
+  CardTitle,
+  CardHeader,
+  CardContent,
+  CardDescription,
+  CardFooter,
+} from "@/app/_components/ui/card";
 import { cn } from "@/lib/utils";
 import { CheckCircle2Icon } from "lucide-react";
-import Link from "next/link";
+
 import { useInsightsProvider } from "./InsightsProvider";
 import { api } from "@/trpc/react";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 export function TierSelect() {
   const { myTinderId } = useInsightsProvider();
@@ -82,7 +88,7 @@ const PricingCard = ({
   const [loading, setLoading] = useState(false);
 
   return (
-    <Card.Container
+    <Card
       className={cn(
         "relative mx-auto flex h-full flex-col justify-between p-6 sm:mx-0",
         exclusive
@@ -97,15 +103,15 @@ const PricingCard = ({
         </div>
       )}
       <div>
-        <Card.Header className="space-y-2 p-0">
-          <Card.Title
+        <CardHeader className="space-y-2 p-0">
+          <CardTitle
             className={cn(
               "text-xl font-semibold",
               exclusive ? "text-white" : "text-zinc-900",
             )}
           >
             {title}
-          </Card.Title>
+          </CardTitle>
           <div className={cn("flex items-baseline gap-1")}>
             <h3
               className={cn(
@@ -124,22 +130,22 @@ const PricingCard = ({
             {price ? "/month" : null}
           </span> */}
           </div>
-          <Card.Description
+          <CardDescription
             className={cn(
               "text-sm",
               exclusive ? "text-zinc-300" : "text-zinc-500",
             )}
           >
             {description}
-          </Card.Description>
-        </Card.Header>
-        <Card.Content className="mt-6 flex flex-col gap-3">
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="mt-6 flex flex-col gap-3">
           {features.map((feature: string) => (
             <CheckItem key={feature} text={feature} exclusive={exclusive} />
           ))}
-        </Card.Content>
+        </CardContent>
       </div>
-      <Card.Footer className="mt-6 p-0">
+      <CardFooter className="mt-6 p-0">
         <Button
           className={cn(
             "relative w-full",
@@ -157,8 +163,8 @@ const PricingCard = ({
         >
           {actionLabel}
         </Button>
-      </Card.Footer>
-    </Card.Container>
+      </CardFooter>
+    </Card>
   );
 };
 

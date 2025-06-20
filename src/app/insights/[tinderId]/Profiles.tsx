@@ -4,7 +4,7 @@ import DemographicsModal from "./DemographicsModal";
 import { useInsightsProvider } from "./InsightsProvider";
 import MiniProfileCard from "./MiniProfileCard";
 import { useMemo } from "react";
-import { Card } from "@/app/_components/ui/card";
+import { Card, CardContent } from "@/app/_components/ui/card";
 
 export default function Profiles() {
   const { profiles, comparisonIdsArray } = useInsightsProvider();
@@ -25,12 +25,9 @@ export default function Profiles() {
         />
       ))}
       {comparisonIdsNotYetLoaded.map((comparisonId) => (
-        <Card.Container
-          key={comparisonId}
-          className="w-full max-w-sm overflow-hidden"
-        >
+        <Card key={comparisonId} className="w-full max-w-sm overflow-hidden">
           <div className="relative h-12 bg-gradient-to-r from-gray-300 to-gray-200 p-4"></div>
-          <Card.Content className="space-y-6 p-6">
+          <CardContent className="space-y-6 p-6">
             {/* Gender and age */}
             <div className="h-8 w-40 animate-pulse rounded bg-gray-200" />
 
@@ -48,8 +45,8 @@ export default function Profiles() {
 
             {/* Date range */}
             {/* <div className="h-5 w-64 animate-pulse rounded bg-gray-200" /> */}
-          </Card.Content>
-        </Card.Container>
+          </CardContent>
+        </Card>
       ))}
       <DemographicsModal />
     </div>
