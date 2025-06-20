@@ -23,8 +23,10 @@ export function HingeUploadCTA(props: {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const [timeZone, setTimeZone] = useState(() => getTimeZoneFromBrowser());
-  const [country, setCountry] = useState(() => getCountryFromBrowserTimeZone());
+  const [timeZone, _setTimeZone] = useState(() => getTimeZoneFromBrowser());
+  const [country, _setCountry] = useState(() =>
+    getCountryFromBrowserTimeZone(),
+  );
 
   const hingeProfileCreateMutation = api.profile.createHinge.useMutation({
     onSuccess: (data) => {

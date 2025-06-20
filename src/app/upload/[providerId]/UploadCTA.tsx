@@ -1,13 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import {
-  type Dispatch,
-  type SetStateAction,
-  useMemo,
-  useState,
-  useEffect,
-  useCallback,
-} from "react";
+import { useMemo, useState, useEffect, useCallback } from "react";
 
 import { UploadProfileCard } from "./UploadProfileCard";
 

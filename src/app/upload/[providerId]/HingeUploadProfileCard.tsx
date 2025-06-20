@@ -12,7 +12,7 @@ interface HingeUploadProfileCardProps {
 export function HingeUploadProfileCard({
   swipestatsHingeProfilePayload,
 }: HingeUploadProfileCardProps) {
-  const hingeId = swipestatsHingeProfilePayload.hingeId;
+  const _hingeId = swipestatsHingeProfilePayload.hingeId;
   const userData = swipestatsHingeProfilePayload.anonymizedHingeJson.User;
   const prompts =
     swipestatsHingeProfilePayload.anonymizedHingeJson.Prompts || [];

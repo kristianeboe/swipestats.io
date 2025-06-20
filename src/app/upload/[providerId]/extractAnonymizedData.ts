@@ -307,12 +307,14 @@ export async function createSwipestatsProfilePayloadFromJsons(
       try {
         // Hinge data comes in multiple files, so we need to parse and combine them
         const hingeDataParts = jsonStrings.map((jsonString) =>
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
           JSON.parse(jsonString),
         );
 
         log.info(
           "Hinge data parts parsed",
           `Found ${hingeDataParts.length} files`,
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
           hingeDataParts.map((part) => Object.keys(part || {})),
         );
 

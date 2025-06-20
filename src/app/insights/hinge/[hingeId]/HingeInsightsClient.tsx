@@ -1,12 +1,7 @@
 "use client";
 
 import { api } from "@/trpc/react";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/app/_components/ui/chart";
-import { Bar, BarChart, XAxis, YAxis } from "recharts";
+
 import { Loader2 } from "lucide-react";
 import { HingeLineChart } from "./HingeChart";
 import React from "react";
@@ -74,37 +69,6 @@ export function HingeInsightsClient({ hingeId }: HingeInsightsClientProps) {
       </div>
     );
   }
-
-  // Prepare chart data for preferences
-  const preferencesData = [
-    {
-      category: "Age Range",
-      min: hingeProfile.ageMin,
-      max: hingeProfile.ageMax,
-      value: hingeProfile.ageMax - hingeProfile.ageMin,
-    },
-    {
-      category: "Height Range",
-      min: Math.round(hingeProfile.heightMin / 2.54), // Convert to inches
-      max: Math.round(hingeProfile.heightMax / 2.54), // Convert to inches
-      value: Math.round(
-        (hingeProfile.heightMax - hingeProfile.heightMin) / 2.54,
-      ),
-    },
-    {
-      category: "Distance",
-      min: 0,
-      max: hingeProfile.distanceMilesMax,
-      value: hingeProfile.distanceMilesMax,
-    },
-  ];
-
-  const chartConfig = {
-    value: {
-      label: "Range",
-      color: "hsl(var(--chart-1))",
-    },
-  } as const;
 
   // Lifestyle preferences data
   const lifestyleData = [
