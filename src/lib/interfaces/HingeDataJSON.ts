@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
-import type { DateString } from "./utilInterfaces";
-
 export interface SwipestatsHingeProfilePayload {
   hingeId: string;
   anonymizedHingeJson: AnonymizedHingeDataJSON;
@@ -152,6 +149,7 @@ export interface PromptEntry {
    * Currently only `"text"` appears, but a union is handy
    * if you later support images, audio, etc.
    */
+  // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
   type: "text" | "image" | "audio" | "video" | string;
 
   /** The user-supplied answer */

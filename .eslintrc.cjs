@@ -24,6 +24,7 @@ const config = {
       "warn",
       {
         argsIgnorePattern: "^_",
+        varsIgnorePattern: "^_",
       },
     ],
     "@typescript-eslint/require-await": "off",
@@ -37,7 +38,7 @@ const config = {
     ],
     // consider turning on again
     "@next/next/no-img-element": "off", // turning it off for now to remove logs
-    "@typescript-eslint/prefer-nullish-coalescing": "warn",
+    "@typescript-eslint/prefer-nullish-coalescing": "off",
   },
 };
 module.exports = config;
