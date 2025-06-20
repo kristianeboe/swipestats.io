@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import type { SwipestatsHingeProfilePayload } from "@/lib/interfaces/HingeDataJSON";
 import { Badge } from "@/app/_components/ui/badge";
-import { Text } from "@/app/_components/ui/text";
-import { format, differenceInYears } from "date-fns";
+import { format } from "date-fns";
 
 interface HingeUploadProfileCardProps {
   swipestatsHingeProfilePayload: SwipestatsHingeProfilePayload;
@@ -23,6 +25,7 @@ export function HingeUploadProfileCard({
   const parseJsonField = (field: string | undefined) => {
     if (!field) return [];
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
       return JSON.parse(field);
     } catch {
       return [field]; // If it's not JSON, treat as single item
@@ -63,7 +66,7 @@ export function HingeUploadProfileCard({
             {userData.profile.height_centimeters && (
               <p className="text-sm text-gray-600">
                 {userData.profile.height_centimeters}cm (
-                {Math.round(userData.profile.height_centimeters / 2.54)}")
+                {Math.round(userData.profile.height_centimeters / 2.54)}&quot;)
               </p>
             )}
           </div>
