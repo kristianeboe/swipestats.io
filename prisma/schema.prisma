@@ -141,26 +141,35 @@ model Event {
 }
 
 model Job {
-    jobId            String        @id @default(cuid())
+    jobId            String   @id @default(cuid())
     title            String
     titleDisplayed   Boolean
     company          String?
     companyDisplayed Boolean?
-    tinderProfileId  String
-    tinderProfile    TinderProfile @relation(fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
+
+    // Profile relations - exactly one must be set
+    tinderProfileId String?
+    tinderProfile   TinderProfile? @relation(fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
+
+    hingeProfileId String?
+    hingeProfile   HingeProfile? @relation(fields: [hingeProfileId], references: [hingeId], onDelete: Cascade)
 }
 
 model School {
-    schoolId        String        @id @default(cuid())
-    id              String?
-    displayed       Boolean
-    name            String
-    type            String?
-    year            String?
-    metadata_id     String?
-    // maybe turn into a many relation TinderProfile[]
-    tinderProfileId String
-    tinderProfile   TinderProfile @relation(fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
+    schoolId    String  @id @default(cuid())
+    id          String?
+    displayed   Boolean
+    name        String
+    type        String?
+    year        String?
+    metadata_id String?
+
+    // Profile relations - exactly one must be set
+    tinderProfileId String?
+    tinderProfile   TinderProfile? @relation(fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
+
+    hingeProfileId String?
+    hingeProfile   HingeProfile? @relation(fields: [hingeProfileId], references: [hingeId], onDelete: Cascade)
 }
 
 model TinderUsage {
@@ -412,7 +421,7 @@ model HingeProfile {
     workplacesDisplayed       Boolean
     jobTitle                  String
     jobTitleDisplayed         Boolean
-    schools                   String[]
+    schoolsOriginal           String[]
     schoolsDisplayed          Boolean
     hometowns                 String[]
     hometownsDisplayed        Boolean
@@ -439,29 +448,37 @@ model HingeProfile {
     relationshipType          String
     relationshipTypeDisplayed Boolean
     selfieVerified            Boolean
+
+    // Raw data storage (similar to Tinder)
+    jobsRaw       Json?
+    schoolsRaw    Json?
+    workplacesRaw Json?
+
     // preferences
-    distanceMilesMax          Int
-    ageMin                    Int
-    ageMax                    Int
-    ageDealbreaker            Boolean
-    heightMin                 Int //?? 92
-    heightMax                 Int //?? 214
-    heightDealbreaker         Boolean
-    genderPreference          String
-    ethnicityPreference       String[]
-    ethnicityDealbreaker      Boolean
-    religionPreference        String[]
-    religionDealbreaker       Boolean
-    prompts                   HingePrompt[]
-    media                     Media[]
-    userId                    String        @unique
-    user                      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-    customData                CustomData?
-    messages                  Message[]
-    hingeBlocks               HingeBlock[]
-    hingeMatches              Match[]
-    profileMeta               ProfileMeta?
-    usage                     HingeUsage[]
+    distanceMilesMax     Int
+    ageMin               Int
+    ageMax               Int
+    ageDealbreaker       Boolean
+    heightMin            Int //?? 92
+    heightMax            Int //?? 214
+    heightDealbreaker    Boolean
+    genderPreference     String
+    ethnicityPreference  String[]
+    ethnicityDealbreaker Boolean
+    religionPreference   String[]
+    religionDealbreaker  Boolean
+    prompts              HingePrompt[]
+    media                Media[]
+    userId               String        @unique
+    user                 User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+    customData           CustomData?
+    messages             Message[]
+    hingeBlocks          HingeBlock[]
+    hingeMatches         Match[]
+    profileMeta          ProfileMeta?
+    usage                HingeUsage[]
+    jobs                 Job[]
+    schools              School[]
 }
 
 enum HingeInteractionType {

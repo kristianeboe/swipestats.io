@@ -319,18 +319,20 @@ export default async function HingeInsightsPage(props: {
                   </p>
                 </div>
               )}
-              {hingeProfile.schools.length > 0 && (
+              {hingeProfile.schoolsOriginal.length > 0 && (
                 <div>
                   <p className="text-sm font-medium text-gray-600">Schools</p>
                   <div className="flex flex-wrap gap-2">
-                    {hingeProfile.schools.slice(0, 3).map((school, i) => (
-                      <span
-                        key={i}
-                        className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800"
-                      >
-                        {school}
-                      </span>
-                    ))}
+                    {hingeProfile.schoolsOriginal
+                      .slice(0, 3)
+                      .map((school, i) => (
+                        <span
+                          key={i}
+                          className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800"
+                        >
+                          {school}
+                        </span>
+                      ))}
                   </div>
                 </div>
               )}

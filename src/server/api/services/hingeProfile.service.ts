@@ -289,7 +289,7 @@ export function createSwipestatsHingeProfileInput(
     religionsDisplayed: user.profile.religions_displayed || false,
     workplaces: [], // Not in current interface
     workplacesDisplayed: false,
-    schools: parseJsonArray(user.profile.schools),
+    schoolsOriginal: parseJsonArray(user.profile.schools),
     schoolsDisplayed: user.profile.schools_displayed || false,
     hometowns: parseJsonArray(user.profile.hometowns),
     hometownsDisplayed: user.profile.hometowns_displayed || false,
@@ -332,6 +332,20 @@ export function createSwipestatsHingeProfileInput(
     languagesSpokenDisplayed: false,
     selfieVerified: false,
 
+    // Raw data storage (similar to Tinder)
+    jobsRaw: user.profile.job_title
+      ? ([
+          {
+            title: user.profile.job_title,
+            titleDisplayed: user.profile.job_title_displayed,
+          },
+        ] as unknown as Prisma.JsonArray)
+      : undefined,
+    schoolsRaw: parseJsonArray(
+      user.profile.schools,
+    ) as unknown as Prisma.JsonArray,
+    workplacesRaw: [] as unknown as Prisma.JsonArray, // Not available in current interface
+
     // Preferences
     distanceMilesMax: user.preferences.distance_miles_max,
     ageMin: user.preferences.age_min,
@@ -360,6 +374,33 @@ export function createSwipestatsHingeProfileInput(
     },
     customData: {
       create: {},
+    },
+
+    // Create normalized Job entities
+    jobs: {
+      create: user.profile.job_title
+        ? [
+            {
+              title: user.profile.job_title,
+              titleDisplayed: user.profile.job_title_displayed || false,
+              company: null, // Hinge doesn't provide company data
+              companyDisplayed: null,
+            },
+          ]
+        : [],
+    },
+
+    // Create normalized School entities
+    schools: {
+      create: parseJsonArray(user.profile.schools).map((schoolName) => ({
+        name: schoolName,
+        displayed: user.profile.schools_displayed || false,
+        // Other fields default to null since Hinge doesn't provide them
+        id: null,
+        type: null,
+        year: null,
+        metadata_id: null,
+      })),
     },
   };
 }

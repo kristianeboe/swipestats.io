@@ -84,6 +84,8 @@ export const profileRouter = createTRPCRouter({
           prompts: true,
           customData: true,
           user: true,
+          jobs: true,
+          schools: true,
         },
       });
 
