@@ -12,7 +12,7 @@ export type TldrBoxProps = SliceComponentProps<Content.TldrBoxSlice>;
  */
 const TldrBox = ({ slice }: TldrBoxProps): JSX.Element => {
   return (
-    <Card.Container
+    <Card
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
       className="max-w-3xl"
@@ -23,7 +23,7 @@ const TldrBox = ({ slice }: TldrBoxProps): JSX.Element => {
           <PrismicRichText field={slice.primary.tldr_content} />
         </div>
       </div>
-    </Card.Container>
+    </Card>
   );
 };
 

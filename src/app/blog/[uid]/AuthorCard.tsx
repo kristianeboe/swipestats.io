@@ -1,11 +1,11 @@
-import { Card } from "@/app/_components/ui/card";
+import { Card, CardHeader } from "@/app/_components/ui/card";
 import { type Author } from "@/lib/utils/prismic.utils";
 import Link from "next/link";
 
 export function AuthorCard(props: { author: Author }) {
   return (
-    <Card.Container className="mx-auto w-full max-w-md">
-      <Card.Header className="bg-muted/20 p-6">
+    <Card className="mx-auto w-full max-w-md">
+      <CardHeader className="bg-muted/20 p-6">
         <img
           src={props.author.profile_image.url!}
           width={192}
@@ -13,8 +13,8 @@ export function AuthorCard(props: { author: Author }) {
           alt="Profile Picture"
           className="mx-auto h-48 w-48 rounded-full object-cover"
         />
-      </Card.Header>
-      <Card.Header className="bg-muted/20 p-6">
+      </CardHeader>
+      <CardHeader className="bg-muted/20 p-6">
         <div className="flex flex-col items-center gap-4">
           <div className="grid gap-1 text-center">
             <div className="flex items-center gap-2">
@@ -35,8 +35,8 @@ export function AuthorCard(props: { author: Author }) {
             <p className="text-muted-foreground">{props.author.role}</p>
           </div>
         </div>
-      </Card.Header>
-    </Card.Container>
+      </CardHeader>
+    </Card>
   );
 }
 

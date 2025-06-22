@@ -7,8 +7,15 @@ import {
   findPeak,
 } from "./GraphCardUsage";
 import { type ChartDataPoint } from "@/lib/interfaces/utilInterfaces";
-import { Card } from "@/app/_components/ui/card";
-import { Tabs } from "@/app/_components/ui/tabs";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/app/_components/ui/card";
+import { Tabs, TabsList, TabsTrigger } from "@/app/_components/ui/tabs";
 import { Badge } from "@/app/_components/ui/badge";
 import {
   Tooltip,
@@ -129,11 +136,11 @@ export function MatchRateCard(props: {
   }, [chartData, myTinderProfile]);
 
   return (
-    <Card.Container>
-      <Card.Header>
-        <Card.Title>{props.title}</Card.Title>
+    <Card>
+      <CardHeader>
+        <CardTitle>{props.title}</CardTitle>
         {props.description && (
-          <Card.Description>{props.description}</Card.Description>
+          <CardDescription>{props.description}</CardDescription>
         )}
         <div className="flex flex-wrap gap-2">
           <Badge variant={"secondary"}>
@@ -168,35 +175,35 @@ export function MatchRateCard(props: {
             </Badge>
           )}
         </div>
-      </Card.Header>
+      </CardHeader>
       {/* <CardContent>
         <Chart.Line />
       </CardContent> */}
-      <Card.Content className="pl-0">
+      <CardContent className="pl-0">
         {/* <Chart.Area data={chartData} /> */}
         <MultiAChart2Combined data={chartData} mode={active} yPercent />
         {/* <Chart.Line data={chartData} /> */}
-      </Card.Content>
+      </CardContent>
       {props.footer && (
-        <Card.Footer>
+        <CardFooter>
           <p>Card Footer</p>
-        </Card.Footer>
+        </CardFooter>
       )}
-      <Card.Footer className="flex justify-center">
-        <Tabs.Root value={active} className="">
-          <Tabs.List>
-            <Tabs.Trigger value="year" onClick={() => setActive("year")}>
+      <CardFooter className="flex justify-center">
+        <Tabs value={active} className="">
+          <TabsList>
+            <TabsTrigger value="year" onClick={() => setActive("year")}>
               Year
-            </Tabs.Trigger>
-            <Tabs.Trigger value="month" onClick={() => setActive("month")}>
+            </TabsTrigger>
+            <TabsTrigger value="month" onClick={() => setActive("month")}>
               Month
-            </Tabs.Trigger>
+            </TabsTrigger>
             {/* <TabsTrigger value="day" onClick={() => setActive("day")}>
                 Day
               </TabsTrigger> */}
-          </Tabs.List>
-        </Tabs.Root>
-      </Card.Footer>
-    </Card.Container>
+          </TabsList>
+        </Tabs>
+      </CardFooter>
+    </Card>
   );
 }

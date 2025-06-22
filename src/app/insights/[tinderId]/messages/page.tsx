@@ -1,13 +1,10 @@
 import { api } from "@/trpc/server";
 import { notFound } from "next/navigation";
-import { Card } from "@/app/_components/ui/card";
-import { InsightsProvider } from "../InsightsProvider";
+import { Card, CardContent } from "@/app/_components/ui/card";
 
-export default async function MessagesPage(
-  props: {
-    params: Promise<{ tinderId: string }>;
-  }
-) {
+export default async function MessagesPage(props: {
+  params: Promise<{ tinderId: string }>;
+}) {
   const params = await props.params;
   const swipestatsProfile = await api.profile.get({
     tinderId: params.tinderId,
@@ -32,8 +29,8 @@ export default async function MessagesPage(
         <h2 className="text-3xl font-bold">Longest conversations</h2>
         <div className="grid grid-cols-2 gap-6">
           {longestConversations.map((match) => (
-            <Card.Container key={match.id}>
-              <Card.Content>
+            <Card key={match.id}>
+              <CardContent>
                 <div className="flex flex-col gap-2">
                   <div className="text-sm text-gray-500">
                     Matched at:{" "}
@@ -47,15 +44,15 @@ export default async function MessagesPage(
                     ))}
                   </div>
                 </div>
-              </Card.Content>
-            </Card.Container>
+              </CardContent>
+            </Card>
           ))}
         </div>
         <h2 className="text-3xl font-bold">All matches</h2>
         <div className="grid grid-cols-2 gap-6">
           {messagesByMatch.map((match) => (
-            <Card.Container key={match.id}>
-              <Card.Content>
+            <Card key={match.id}>
+              <CardContent>
                 <div className="flex flex-col gap-2">
                   <div className="text-sm text-gray-500">
                     Matched at:{" "}
@@ -69,8 +66,8 @@ export default async function MessagesPage(
                     ))}
                   </div>
                 </div>
-              </Card.Content>
-            </Card.Container>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </div>

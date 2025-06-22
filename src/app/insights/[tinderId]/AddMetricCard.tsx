@@ -1,7 +1,14 @@
 "use client";
 
 import { Button } from "@/app/_components/ui/button";
-import { Card } from "@/app/_components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardFooter,
+  CardContent,
+} from "@/app/_components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -26,18 +33,16 @@ export function AddMetricCard() {
 
   return (
     <>
-      <Card.Container>
-        <Card.Header>
-          <Card.Title>Custom data</Card.Title>
-          <Card.Description>
-            Add extra metrics to your insights
-          </Card.Description>
-        </Card.Header>
-        <Card.Content></Card.Content>
-        <Card.Footer>
+      <Card>
+        <CardHeader>
+          <CardTitle>Custom data</CardTitle>
+          <CardDescription>Add extra metrics to your insights</CardDescription>
+        </CardHeader>
+        <CardContent></CardContent>
+        <CardFooter>
           <Button onClick={() => setShowModal(true)}>Add Metrics</Button>
-        </Card.Footer>
-      </Card.Container>
+        </CardFooter>
+      </Card>
 
       <Dialog open={showModal} onOpenChange={setShowModal}>
         <DialogContent className="bg-white">

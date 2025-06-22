@@ -2,7 +2,7 @@
 
 import { Badge } from "@/app/_components/ui/badge";
 import { Button } from "@/app/_components/ui/button";
-import { Card } from "@/app/_components/ui/card";
+import { Card, CardContent } from "@/app/_components/ui/card";
 import { DrawerDialog } from "@/app/_components/ui/DrawerDialog";
 
 import { ProfileLocationForm } from "@/app/upload/[providerId]/ProfileLocationForm";
@@ -59,7 +59,7 @@ export default function MiniProfileCard(props: {
   const specialTitle = getProfileTitle(props.fullTinderProfile.tinderId);
 
   return (
-    <Card.Container className="w-full max-w-sm overflow-hidden">
+    <Card className="w-full max-w-sm gap-0 overflow-hidden py-0">
       <div
         className={cn(
           "relative h-12 bg-gradient-to-r",
@@ -86,7 +86,7 @@ export default function MiniProfileCard(props: {
           </div>
         )}
       </div>
-      <Card.Content className="space-y-3 p-4">
+      <CardContent className="space-y-3 p-6">
         <div className="flex items-start justify-between">
           <div>
             <h2 className="flex items-center gap-1 text-lg font-semibold">
@@ -197,7 +197,7 @@ export default function MiniProfileCard(props: {
           {format(props.fullTinderProfile.firstDayOnApp, "MMM d, yyyy")} to{" "}
           {format(props.fullTinderProfile.lastDayOnApp, "MMM d, yyyy")}
         </div>
-      </Card.Content>
-    </Card.Container>
+      </CardContent>
+    </Card>
   );
 }
