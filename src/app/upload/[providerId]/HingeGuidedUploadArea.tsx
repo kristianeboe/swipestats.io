@@ -365,7 +365,7 @@ export function HingeGuidedUploadArea({
         </div>
       </div>
 
-      {fileRejections.length > 0 && (
+      {fileRejections.length > 0 && !requiredFilesComplete && (
         <Alert
           title="Some files were rejected"
           category="warning"
