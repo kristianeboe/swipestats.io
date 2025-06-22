@@ -78,6 +78,8 @@ model User {
 
     purchases      Purchase[]
     swipestatsTier SwipestatsTier @default(FREE)
+
+    profileComparisons ProfileComparison[]
 }
 
 model VerificationToken {
@@ -738,4 +740,57 @@ model Sequence {
     createdAt    DateTime   @default(now())
     newsletterId String
     newsletter   Newsletter @relation(fields: [newsletterId], references: [id])
+}
+
+model ProfileComparison {
+    id        String   @id @default(cuid())
+    name      String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    columns  ComparisonColumn[]
+    isPublic Boolean            @default(false)
+    shareKey String?            @unique
+
+    city       String?
+    state      String?
+    country    String?
+    age        Int?
+    defaultBio String?
+    // from 
+    // lives in
+    // works at 
+    // customLink
+    // school
+}
+
+model ComparisonColumn {
+    id        String       @id @default(cuid())
+    type      DataProvider
+    order     Int
+    createdAt DateTime     @default(now())
+    updatedAt DateTime     @updatedAt
+
+    comparisonId String
+    comparison   ProfileComparison @relation(fields: [comparisonId], references: [id], onDelete: Cascade)
+
+    photos ComparisonPhoto[]
+    bio    String? // can override default bio
+}
+
+model ComparisonPhoto {
+    id          String   @id @default(cuid())
+    url         String
+    order       Int
+    name        String?
+    description String?
+    // location String?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+
+    columnId String
+    column   ComparisonColumn @relation(fields: [columnId], references: [id], onDelete: Cascade)
 }

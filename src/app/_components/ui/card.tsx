@@ -85,4 +85,11 @@ export const Card = {
   Footer: CardFooter,
 };
 
-export { CardHeader, CardContent };
+export {
+  CardContainer,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+};

@@ -20,6 +20,11 @@ const nextConfig: NextConfig = {
       {
         hostname: "miro.medium.com",
       },
+      {
+        protocol: "https",
+        hostname: "xxcnc3l01nlbs8ho.public.blob.vercel-storage.com",
+        pathname: "**",
+      },
     ],
   },
   async redirects() {
