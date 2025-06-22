@@ -1,0 +1,8 @@
+{
+  "crons": [
+    {
+      "path": "/api/admin/cron/global-demographics",
+      "schedule": "0 2 * * 4"
+    }
+  ]
+}

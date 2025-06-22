@@ -1,47 +1,90 @@
 import { createSubLogger } from "@/lib/tslog";
-import { PrismaClient, Gender } from "@prisma/client";
+import { db } from "@/server/db";
+import { Gender } from "@prisma/client";
 import { differenceInYears } from "date-fns";
 
-const prisma = new PrismaClient();
+const log = createSubLogger("globalDemographics");
 
-const log = createSubLogger("createDemographicProfilesNew");
+export interface AgeRange {
+  label: string;
+  min: number;
+  max: number;
+}
 
-// Add command line argument parsing
-const isSimplifiedMode = true;
+export interface DemographicConfig {
+  genders: Gender[];
+  interestedInGenders: Gender[];
+  ageRanges: AgeRange[];
+}
 
-async function main() {
-  log.info("Starting demographic profile generation");
-  const genders = isSimplifiedMode
-    ? [Gender.MALE, Gender.FEMALE]
-    : [Gender.MALE, Gender.FEMALE, Gender.OTHER];
+export interface DemographicIteration {
+  gender: Gender;
+  interestedIn: Gender;
+  ageRange: AgeRange;
+  demographicId: string;
+}
 
-  const interestedInGenders = isSimplifiedMode
-    ? [Gender.MALE, Gender.FEMALE]
-    : [Gender.MALE, Gender.FEMALE, Gender.OTHER];
+export function getDemographicConfig(
+  isSimplifiedMode: boolean,
+): DemographicConfig {
+  return {
+    genders: isSimplifiedMode
+      ? [Gender.MALE, Gender.FEMALE]
+      : [Gender.MALE, Gender.FEMALE, Gender.OTHER],
 
-  const ageRanges = isSimplifiedMode
-    ? [{ label: "all", min: 18, max: 100 }]
-    : [
-        { label: "all", min: 18, max: 100 },
-        { label: "18-20", min: 18, max: 20 },
-        { label: "18-24", min: 18, max: 24 },
-        { label: "20-25", min: 20, max: 25 },
-        { label: "25-34", min: 25, max: 34 },
-        { label: "35-44", min: 35, max: 44 },
-        { label: "45-54", min: 45, max: 54 },
-        { label: "55-64", min: 55, max: 64 },
-        { label: "65+", min: 65, max: 100 },
-      ];
+    interestedInGenders: isSimplifiedMode
+      ? [Gender.MALE, Gender.FEMALE]
+      : [Gender.MALE, Gender.FEMALE, Gender.OTHER],
 
-  const today = new Date();
+    ageRanges: isSimplifiedMode
+      ? [{ label: "all", min: 18, max: 100 }]
+      : [
+          { label: "all", min: 18, max: 100 },
+          { label: "18-20", min: 18, max: 20 },
+          { label: "18-24", min: 18, max: 24 },
+          { label: "20-25", min: 20, max: 25 },
+          { label: "25-34", min: 25, max: 34 },
+          { label: "35-44", min: 35, max: 44 },
+          { label: "45-54", min: 45, max: 54 },
+          { label: "55-64", min: 55, max: 64 },
+          { label: "65+", min: 65, max: 100 },
+        ],
+  };
+}
 
-  for (const gender of genders) {
-    for (const interestedIn of interestedInGenders) {
+export async function processDemographics(
+  isSimplifiedMode: boolean,
+  callback: (params: DemographicIteration) => Promise<void>,
+): Promise<void> {
+  const config = getDemographicConfig(isSimplifiedMode);
+
+  for (const gender of config.genders) {
+    for (const interestedIn of config.interestedInGenders) {
       log.info(
         `Processing demographic: gender=${gender}, interestedIn=${interestedIn}`,
       );
-      for (const ageRange of ageRanges) {
+      for (const ageRange of config.ageRanges) {
         const demographicId = `average-${gender}-${interestedIn}-${ageRange.label}`;
+
+        await callback({ gender, interestedIn, ageRange, demographicId });
+      }
+    }
+  }
+}
+
+export async function createDemographicProfiles(
+  isSimplifiedMode = true,
+): Promise<{ success: boolean; message: string; processedCount: number }> {
+  let processedCount = 0;
+
+  try {
+    log.info("Starting demographic profile generation");
+
+    const today = new Date();
+
+    await processDemographics(
+      isSimplifiedMode,
+      async ({ gender, interestedIn, ageRange, demographicId }) => {
         log.debug(
           `Processing age range: ${ageRange.label} (${ageRange.min}-${ageRange.max})`,
           demographicId,
@@ -49,10 +92,10 @@ async function main() {
           interestedIn,
         );
 
-        // wipe existing user
+        // Delete existing user if it exists
         log.debug("deleting existing user if it exists", { demographicId });
         try {
-          await prisma.user.delete({
+          await db.user.delete({
             where: {
               id: demographicId,
             },
@@ -69,7 +112,7 @@ async function main() {
         maxBirthDate.setFullYear(today.getFullYear() - ageRange.min);
 
         log.debug("counting profiles");
-        const profileCount = await prisma.tinderProfile.count({
+        const profileCount = await db.tinderProfile.count({
           where: {
             gender: gender,
             interestedIn: interestedIn,
@@ -84,14 +127,14 @@ async function main() {
           log.debug(
             `Skipping demographic - no profiles found: gender=${gender}, interestedIn=${interestedIn}, ageRange=${ageRange.label}`,
           );
-          continue;
+          return;
         }
 
         log.info(
           `Found ${profileCount} profiles for demographic: gender=${gender}, interestedIn=${interestedIn}, ageRange=${ageRange.label}`,
         );
 
-        const avgProfileData = await prisma.tinderProfile
+        const avgProfileData = await db.tinderProfile
           .aggregate({
             where: {
               gender: gender,
@@ -119,10 +162,8 @@ async function main() {
 
         log.debug("Calculated average profile data", { avgProfileData });
 
-        // Replace the usage aggregation logic with a direct DB query
-
         const queryStartTime = performance.now();
-        const averagedUsageByDay = await prisma.tinderUsage.groupBy({
+        const averagedUsageByDay = await db.tinderUsage.groupBy({
           by: ["dateStamp"],
           where: {
             activeUserInLast14Days: true,
@@ -155,7 +196,7 @@ async function main() {
             swipePasses: true,
           },
           _count: {
-            dateStampRaw: true, // This gives us the number of profiles for each day
+            dateStampRaw: true,
           },
           orderBy: {
             dateStamp: "asc",
@@ -175,7 +216,6 @@ async function main() {
 
         // Transform the results to include computed rates
         const processedUsageByDay = averagedUsageByDay.map((day) => {
-          // Helper function to calculate safe rates
           const safeRate = (numerator: number, denominator: number) => {
             const num = numerator ?? 0;
             const den = denominator ?? 0;
@@ -230,38 +270,6 @@ async function main() {
             ) / processedUsageByDay.length,
         });
 
-        const maxAppOpens = Math.max(
-          ...averagedUsageByDay.map((day) => day._max.appOpens ?? 0),
-        );
-        const maxMatches = Math.max(
-          ...averagedUsageByDay.map((day) => day._max.matches ?? 0),
-        );
-        const maxMessagesSent = Math.max(
-          ...averagedUsageByDay.map((day) => day._max.messagesSent ?? 0),
-        );
-        const maxMessagesReceived = Math.max(
-          ...averagedUsageByDay.map((day) => day._max.messagesReceived ?? 0),
-        );
-        const maxSwipeLikes = Math.max(
-          ...averagedUsageByDay.map((day) => day._max.swipeLikes ?? 0),
-        );
-        const maxSwipeSuperLikes = Math.max(
-          ...averagedUsageByDay.map((day) => day._max.swipeSuperLikes ?? 0),
-        );
-        const maxSwipePasses = Math.max(
-          ...averagedUsageByDay.map((day) => day._max.swipePasses ?? 0),
-        );
-
-        log.debug("Maximum daily values:", {
-          maxAppOpens,
-          maxMatches,
-          maxMessagesSent,
-          maxMessagesReceived,
-          maxSwipeLikes,
-          maxSwipeSuperLikes,
-          maxSwipePasses,
-        });
-
         try {
           const demographicBirthDate = new Date(
             today.getFullYear() - avgProfileData._avg.ageAtUpload,
@@ -271,7 +279,7 @@ async function main() {
 
           log.info("demographicBirthDate", { demographicBirthDate });
 
-          const transaction = await prisma.$transaction(
+          const transaction = await db.$transaction(
             async (txn) => {
               const tinderProfile = await txn.tinderProfile.create({
                 data: {
@@ -285,13 +293,16 @@ async function main() {
                       },
                     },
                   },
+
+                  computed: true, // !! IMPORTANT
+
                   tinderId: demographicId,
 
                   birthDate: demographicBirthDate,
                   ageAtUpload: avgProfileData._avg.ageAtUpload,
                   ageAtLastUsage: avgProfileData._avg.ageAtLastUsage,
-                  createDate: new Date(), // Set to current date since this is a computed profile
-                  activeTime: new Date(), // Set to current date since this is a computed profile
+                  createDate: new Date(),
+                  activeTime: new Date(),
                   gender: gender,
                   genderStr:
                     gender === Gender.MALE
@@ -380,45 +391,35 @@ async function main() {
               };
             },
             {
-              maxWait: 60_000, // default 5000
+              maxWait: 60_000,
               timeout: 60_000,
             },
           );
 
-          console.log(""); // line break
-
-          // await prisma.profileMeta.upsert({
-          //   where: {
-          //     tinderProfileId: demographicId,
-          //   },
-          //   update: sharedFields,
-          //   create: {
-          //     tinderProfileId: demographicId,
-          //     ...sharedFields,
-          //   },
-          // });
-
           log.info(`Successfully processed demographic: ${demographicId}`);
+          processedCount++;
         } catch (error) {
           log.error(`Failed to process demographic: ${demographicId}`, {
             error,
           });
           throw error;
         }
-      }
-    }
+      },
+    );
+
+    log.info("Finished processing all demographics", { processedCount });
+
+    return {
+      success: true,
+      message: `Successfully processed ${processedCount} demographics`,
+      processedCount,
+    };
+  } catch (error) {
+    log.error("Script failed", { error: error as Error });
+    return {
+      success: false,
+      message: `Failed to process demographics: ${error instanceof Error ? error.message : "Unknown error"}`,
+      processedCount,
+    };
   }
-
-  log.info("Finished processing all demographics");
-  await prisma.$disconnect();
 }
-
-main()
-  .then(() => {
-    log.info("Script completed successfully");
-  })
-  .catch(async (e) => {
-    log.error("Script failed", { error: e as Error });
-    await prisma.$disconnect();
-    process.exit(1);
-  });
