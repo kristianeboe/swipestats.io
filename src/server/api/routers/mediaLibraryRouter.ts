@@ -192,6 +192,6 @@ export const mediaLibraryRouter = createTRPCRouter({
       distinct: ["assetType"],
     });
 
-    return photos.map((p) => p.assetType).filter(Boolean);
+    return photos.map((p) => p.assetType).filter(Boolean) as string[];
   }),
 });

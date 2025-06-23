@@ -290,6 +290,7 @@ export default function MediaLibraryUploadPage() {
             photoPreview.isProcessing = false;
           }
         } catch (error) {
+          console.error("Processing error:", error);
           rejected.push(`${file.name} (processing failed)`);
         }
       } else {

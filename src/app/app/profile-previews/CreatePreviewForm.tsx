@@ -22,7 +22,7 @@ import {
 } from "@/app/_components/ui/accordion";
 import { Input } from "@/app/_components/ui/input";
 import { Textarea } from "@/app/_components/ui/textarea";
-import { api } from "@/trpc/react";
+import { api, type RouterInputs } from "@/trpc/react";
 import { toast } from "sonner";
 
 const createPreviewSchema = z.object({
@@ -42,7 +42,8 @@ const createPreviewSchema = z.object({
   fromCountry: z.string().optional(),
 });
 
-type CreatePreviewForm = z.infer<typeof createPreviewSchema>;
+// Use RouterInputs for consistency with tRPC types
+type CreatePreviewForm = RouterInputs["profilePreviews"]["create"];
 
 interface CreatePreviewFormProps {
   onSuccess?: (previewId: string) => void;
@@ -61,6 +62,16 @@ export function CreatePreviewForm({
       name: "",
       description: "",
       public: false,
+      jobTitle: "",
+      company: "",
+      school: "",
+      city: "",
+      state: "",
+      country: "",
+      age: undefined,
+      defaultBio: "",
+      fromCity: "",
+      fromCountry: "",
     },
   });
 
@@ -113,7 +124,7 @@ export function CreatePreviewForm({
                 />
               </FormControl>
               <FormDescription>
-                Optional description of what you're testing
+                Optional description of what you&apos;re testing
               </FormDescription>
               <FormMessage />
             </FormItem>

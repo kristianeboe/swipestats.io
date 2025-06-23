@@ -34,6 +34,7 @@ import {
 } from "react-dropzone";
 import { X, Upload, Plus, FolderIcon, Star } from "lucide-react";
 import { type PreviewColumnWithRelations } from "./ProfilePreview";
+import { type RouterOutputs } from "@/trpc/react";
 
 // Types for File System API
 interface FileSystemEntry {
@@ -61,50 +62,8 @@ interface DataTransferItem {
   getAsFile(): File | null;
 }
 
-// Types
-type PreviewPhoto = {
-  id: string;
-  url: string;
-  name?: string | null;
-  description?: string | null;
-  location?: string | null;
-  assetType?: string | null;
-  tags: string[];
-  rating?: number | null;
-};
-
-type PreviewColumn = {
-  id: string;
-  type: DataProvider;
-  order: number;
-  bio?: string | null;
-  jobTitle?: string | null;
-  company?: string | null;
-  school?: string | null;
-  city?: string | null;
-  state?: string | null;
-  country?: string | null;
-  age?: number | null;
-  fromCity?: string | null;
-  fromCountry?: string | null;
-  media: PreviewPhoto[];
-};
-
-type ProfilePreviewData = {
-  id: string;
-  name?: string | null;
-  description?: string | null;
-  jobTitle?: string | null;
-  company?: string | null;
-  school?: string | null;
-  city?: string | null;
-  state?: string | null;
-  country?: string | null;
-  age?: number | null;
-  defaultBio?: string | null;
-  fromCity?: string | null;
-  fromCountry?: string | null;
-};
+// Use RouterOutputs for exact types from tRPC queries
+type ProfilePreviewData = RouterOutputs["profilePreviews"]["getById"];
 
 // Bulk upload types
 type BulkPhotoPreview = {

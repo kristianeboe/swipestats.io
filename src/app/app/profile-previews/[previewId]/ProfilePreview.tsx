@@ -20,23 +20,13 @@ import {
   MessageCircle,
   Star,
 } from "lucide-react";
-import type {
-  DataProvider,
-  ProfilePreview,
-  PreviewColumn,
-  MediaAsset,
-  PreviewPrompt,
-} from "@prisma/client";
+import type { DataProvider } from "@prisma/client";
+import { type RouterOutputs } from "@/trpc/react";
 
-// Extended types with relations
-export type PreviewColumnWithRelations = PreviewColumn & {
-  mediaAssets: MediaAsset[];
-  prompts: PreviewPrompt[];
-};
-
-type ProfilePreviewData = ProfilePreview & {
-  columns: PreviewColumnWithRelations[];
-};
+// Use RouterOutputs for exact type from tRPC queries
+export type PreviewColumnWithRelations =
+  RouterOutputs["profilePreviews"]["getById"]["columns"][number];
+type ProfilePreviewData = RouterOutputs["profilePreviews"]["getById"];
 
 interface ProfilePreviewProps {
   preview: ProfilePreviewData;
