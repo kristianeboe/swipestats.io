@@ -67,8 +67,9 @@ model User {
     relationshipHistory Json @default("[]")
     locationHistory     Json @default("[]")
 
-    timeZone String? // timeZone and country at upload time / location
-    country  String?
+    dateOfBirth DateTime?
+    timeZone    String? // timeZone and country at upload time / location
+    country     String?
 
     originalAnonymizedFiles OriginalAnonymizedFile[]
     events                  Event[]
@@ -78,6 +79,10 @@ model User {
 
     purchases      Purchase[]
     swipestatsTier SwipestatsTier @default(FREE)
+
+    profilePreviews ProfilePreview[]
+    mediaAssets     MediaAsset[]
+    previewPrompts  PreviewPrompt[]
 }
 
 model VerificationToken {
@@ -796,4 +801,110 @@ model HingeUsage {
     activeUserInLast30Days        Boolean
 
     @@id([dateStampRaw, hingeProfileId])
+}
+
+model ProfilePreview {
+    id        String          @id @default(cuid())
+    name      String?
+    createdAt DateTime        @default(now())
+    updatedAt DateTime        @updatedAt
+    userId    String
+    user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+    columns   PreviewColumn[]
+    public    Boolean         @default(false)
+    slug      String?         @unique
+
+    password String?
+
+    // Metadata
+    description String? // User's notes about this preview
+
+    viewCount Int @default(0) // Track popularity if public
+
+    // Default profile information (shared across columns unless overridden)
+    jobTitle    String?
+    company     String?
+    school      String?
+    city        String?
+    state       String?
+    country     String?
+    age         Int?
+    defaultBio  String?
+    fromCity    String?
+    fromCountry String?
+}
+
+model PreviewColumn {
+    id          String          @id @default(cuid())
+    type        DataProvider
+    order       Int
+    createdAt   DateTime        @default(now())
+    updatedAt   DateTime        @updatedAt
+    previewId   String
+    preview     ProfilePreview  @relation(fields: [previewId], references: [id], onDelete: Cascade)
+    mediaAssets MediaAsset[]    @relation("PreviewColumnMedia") // Many-to-many with MediaAsset - photos, videos, etc.
+    prompts     PreviewPrompt[] @relation("PreviewColumnPrompts") // Many-to-many with PreviewPrompt
+
+    // Override defaults - if null, uses ProfilePreview defaults
+    bio         String? // can override default bio
+    jobTitle    String?
+    company     String?
+    school      String?
+    city        String?
+    state       String?
+    country     String?
+    age         Int?
+    fromCity    String?
+    fromCountry String?
+}
+
+// User's media library - centralized media storage
+model MediaAsset {
+    id          String    @id @default(cuid())
+    url         String
+    mediaType   MediaType @default(PHOTO) // photo, video, audio, gif
+    name        String?
+    description String?
+    location    String? // where the media was taken
+    assetType   String? // "main", "full_body", "activity", "group", etc.
+    tags        String[] // searchable tags like "formal", "outdoor", "smile", etc.
+    rating      Int?      @default(0) // user's self-rating 1-5
+    isPrivate   Boolean   @default(false) // whether others can see this asset
+
+    // File metadata
+    fileSize   Int? // in bytes
+    duration   Int? // for videos/audio in seconds
+    dimensions Json? // {width: 1920, height: 1080} for images/videos
+    format     String? // "jpeg", "mp4", "heic", etc.
+
+    // Analytics/feedback
+    viewCount Int @default(0)
+    likeCount Int @default(0)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    userId    String
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    // Many-to-many relationship with PreviewColumn
+    previewColumns PreviewColumn[] @relation("PreviewColumnMedia")
+}
+
+enum MediaType {
+    PHOTO
+    VIDEO
+    AUDIO
+}
+
+model PreviewPrompt {
+    id         String          @id @default(cuid())
+    question   String // "Two truths and a lie", "The way to my heart is..."
+    answer     String
+    promptType String // "dating_goal", "two_truths", "green_flag", etc. - flexible prompt categorization
+    order      Int
+    createdAt  DateTime        @default(now())
+    updatedAt  DateTime        @updatedAt
+    columns    PreviewColumn[] @relation("PreviewColumnPrompts") // Many-to-many with PreviewColumn
+    userId     String
+    user       User            @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

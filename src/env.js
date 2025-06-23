@@ -42,6 +42,10 @@ export const env = createEnv({
     DEEPSEEK_API_KEY: z.string().optional(),
     OPEN_PANEL_SECRET: z.string(),
     ADMIN_PASSWORD: z.string(),
+
+    GOOGLE_CLIENT_ID: z.string(),
+    GOOGLE_CLIENT_SECRET: z.string(),
+    BLOB_READ_WRITE_TOKEN: z.string(),
   },
 
   /**
@@ -65,6 +69,10 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    BLOB_READ_WRITE_TOKEN: process.env.BLOB_READ_WRITE_TOKEN,
+
     NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,

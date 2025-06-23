@@ -7,6 +7,8 @@ import { messagesRouter } from "./routers/messagesRouter";
 import { miscRouter } from "./routers/miscRouter";
 import { purchasesRouter } from "./routers/purchasesRouter";
 import { aiDatingPhotosRouter } from "./routers/aiDatingPhotos";
+import { profilePreviewsRouter } from "./routers/profilePreviewsRouter";
+import { mediaLibraryRouter } from "./routers/mediaLibraryRouter";
 
 /**
  * This is the primary router for your server.
@@ -22,6 +24,8 @@ export const appRouter = createTRPCRouter({
   messages: messagesRouter,
   misc: miscRouter,
   purchases: purchasesRouter,
+  profilePreviews: profilePreviewsRouter,
+  mediaLibrary: mediaLibraryRouter,
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;
