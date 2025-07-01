@@ -36,7 +36,10 @@ type FileEvent =
   | "File reading Aborted"
   | "File reading Failed"
   | "File reading Succeeded"
-  | "File reading Rejected";
+  | "File reading Rejected"
+  | "ZIP File Upload Detected"
+  | "ZIP File Extracted Successfully"
+  | "ZIP File Extraction Failed";
 type ProfileEvent =
   | "Profile Anonymised Successfully"
   | "Profile Anonymised Failed"

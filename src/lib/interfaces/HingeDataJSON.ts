@@ -153,7 +153,7 @@ export interface PromptEntry {
   type: "text" | "image" | "audio" | "video" | string;
 
   /** The user-supplied answer */
-  text: string;
+  text?: string; // ? surprisingly, this can be undefined.
 
   /** Last time the user edited this entry (ISO-8601 string) */
   user_updated: string;

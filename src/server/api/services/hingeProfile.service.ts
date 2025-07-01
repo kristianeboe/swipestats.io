@@ -412,7 +412,7 @@ export function createHingePromptsInput(
   return prompts.map((prompt) => ({
     type: prompt.type,
     prompt: prompt.prompt,
-    answerText: prompt.text,
+    answerText: prompt.text ?? "",
     createdPromptAt: new Date(prompt.created),
     updatedPromptAt: new Date(prompt.user_updated),
     hingeProfileId: hingeId,

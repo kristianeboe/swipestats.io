@@ -5,6 +5,35 @@ import type { SwipestatsHingeProfilePayload } from "@/lib/interfaces/HingeDataJS
 import { Badge } from "@/app/_components/ui/badge";
 import { format } from "date-fns";
 
+// Utility functions
+const convertCmToFeetInches = (cm: number): string => {
+  const totalInches = Math.round(cm / 2.54);
+  const feet = Math.floor(totalInches / 12);
+  const inches = totalInches % 12;
+  return `${feet}'${inches}"`;
+};
+
+const getGenderDisplay = (gender: string) => {
+  switch (gender) {
+    case "M":
+      return { symbol: "♂", text: "Man" };
+    case "F":
+      return { symbol: "♀", text: "Woman" };
+    default:
+      return { symbol: "◦", text: "Person" };
+  }
+};
+
+const parseJsonField = (field: string | undefined): string[] => {
+  if (!field) return [];
+  try {
+    const parsed = JSON.parse(field);
+    return Array.isArray(parsed) ? parsed : [parsed];
+  } catch {
+    return [field];
+  }
+};
+
 interface HingeUploadProfileCardProps {
   swipestatsHingeProfilePayload: SwipestatsHingeProfilePayload;
 }
@@ -20,17 +49,7 @@ export function HingeUploadProfileCard({
     swipestatsHingeProfilePayload.anonymizedHingeJson.Matches || [];
 
   const createDate = new Date(userData.account.signup_time);
-
-  // Parse JSON strings if they exist
-  const parseJsonField = (field: string | undefined) => {
-    if (!field) return [];
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      return JSON.parse(field);
-    } catch {
-      return [field]; // If it's not JSON, treat as single item
-    }
-  };
+  const genderDisplay = getGenderDisplay(userData.profile.gender);
 
   const ethnicities = parseJsonField(userData.profile.ethnicities);
   const religions = parseJsonField(userData.profile.religions);
@@ -42,12 +61,12 @@ export function HingeUploadProfileCard({
       {/* Compact Header */}
       <div className="group flex justify-center rounded-lg bg-gradient-to-r from-purple-700 via-purple-500 to-purple-300 py-4">
         <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
-          <div className="text-2xl font-bold text-white">
-            {userData.profile.gender === "M"
-              ? "♂"
-              : userData.profile.gender === "F"
-                ? "♀"
-                : "◦"}
+          <div
+            className="text-2xl font-bold text-white"
+            role="img"
+            aria-label={`${genderDisplay.text} profile`}
+          >
+            {genderDisplay.symbol}
           </div>
         </div>
       </div>
@@ -56,17 +75,12 @@ export function HingeUploadProfileCard({
         <div className="flex items-start justify-between">
           <div>
             <div className="text-lg font-bold">
-              {userData.profile.gender === "M"
-                ? "Man"
-                : userData.profile.gender === "F"
-                  ? "Woman"
-                  : "Person"}
-              , {userData.profile.age}
+              {genderDisplay.text}, {userData.profile.age}
             </div>
             {userData.profile.height_centimeters && (
               <p className="text-sm text-gray-600">
                 {userData.profile.height_centimeters}cm (
-                {Math.round(userData.profile.height_centimeters / 2.54)}&quot;)
+                {convertCmToFeetInches(userData.profile.height_centimeters)})
               </p>
             )}
           </div>
@@ -255,8 +269,9 @@ export function HingeUploadProfileCard({
             {userData.preferences.height_min &&
               userData.preferences.height_max && (
                 <div>
-                  Height: {userData.preferences.height_min}-
-                  {userData.preferences.height_max}cm
+                  Height:{" "}
+                  {convertCmToFeetInches(userData.preferences.height_min)}-
+                  {convertCmToFeetInches(userData.preferences.height_max)}
                 </div>
               )}
           </div>

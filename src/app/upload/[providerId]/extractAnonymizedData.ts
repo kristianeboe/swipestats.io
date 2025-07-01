@@ -314,8 +314,6 @@ export async function createSwipestatsProfilePayloadFromJsons(
         log.info(
           "Hinge data parts parsed",
           `Found ${hingeDataParts.length} files`,
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-          hingeDataParts.map((part) => Object.keys(part || {})),
         );
 
         // Combine all the Hinge data parts into a single structure

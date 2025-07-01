@@ -1,6 +1,7 @@
 "use client";
 import { useCallback, useState } from "react";
 import { useDropzone, type FileRejection } from "react-dropzone";
+import JSZip from "jszip";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { DocumentIcon, FolderIcon } from "@heroicons/react/24/outline";
 import { Alert } from "@/app/_components/tw/Alert";
@@ -90,7 +91,67 @@ export function HingeGuidedUploadArea({
     const newFileStatus = { ...fileStatus };
     const newEntries: FileEntry[] = [];
 
+    // First, extract ZIP files if any
+    const allFilesToProcess: File[] = [];
+
     for (const file of files) {
+      // Check if this is a ZIP file
+      if (
+        file.type === "application/zip" ||
+        file.type === "application/x-zip-compressed" ||
+        file.type === "application/zip-compressed" ||
+        file.type === "application/x-zip" ||
+        file.type === "multipart/x-zip" ||
+        file.name.toLowerCase().endsWith(".zip")
+      ) {
+        try {
+          analyticsTrackClient("ZIP File Upload Detected", {
+            providerId: "HINGE",
+          });
+
+          const zip = new JSZip();
+          const zipContent = await zip.loadAsync(file);
+
+          // Extract all JSON files from the ZIP
+          const extractedFiles: File[] = [];
+          const promises: Promise<void>[] = [];
+
+          zipContent.forEach((relativePath, zipFile) => {
+            if (relativePath.toLowerCase().endsWith(".json") && !zipFile.dir) {
+              promises.push(
+                zipFile.async("blob").then((blob) => {
+                  // Create a new File object from the blob
+                  const extractedFile = new File([blob], relativePath, {
+                    type: "application/json",
+                  });
+                  extractedFiles.push(extractedFile);
+                }),
+              );
+            }
+          });
+
+          await Promise.all(promises);
+          allFilesToProcess.push(...extractedFiles);
+
+          analyticsTrackClient("ZIP File Extracted Successfully", {
+            providerId: "HINGE",
+            filesFound: extractedFiles.length,
+          });
+        } catch (error) {
+          console.error("Error extracting ZIP file:", error);
+          analyticsTrackClient("ZIP File Extraction Failed", {
+            providerId: "HINGE",
+            error: error instanceof Error ? error.message : "Unknown error",
+          });
+        }
+      } else {
+        // Regular file, add to processing list
+        allFilesToProcess.push(file);
+      }
+    }
+
+    // Now process all files (extracted + regular)
+    for (const file of allFilesToProcess) {
       if (shouldIgnoreFile(file.name)) {
         continue; // Skip ignored files
       }
@@ -271,6 +332,11 @@ export function HingeGuidedUploadArea({
       onDrop,
       accept: {
         "application/json": [".json"],
+        "application/zip": [".zip"],
+        "application/x-zip-compressed": [".zip"],
+        "application/zip-compressed": [".zip"],
+        "application/x-zip": [".zip"],
+        "multipart/x-zip": [".zip"],
       },
       disabled: uploadComplete,
     });
@@ -314,11 +380,11 @@ export function HingeGuidedUploadArea({
         <input {...getInputProps()} />
         <FolderIcon className="mx-auto h-12 w-12 text-gray-400" />
         <h3 className="mt-2 text-sm font-semibold text-gray-900">
-          Drop your Hinge export folder or select files
+          Drop your Hinge export folder, ZIP file, or select files
         </h3>
         <p className="mt-1 text-sm text-gray-500">
-          You can drop the entire &quot;export&quot; folder, or select
-          individual .json files
+          You can drop the entire &quot;export&quot; folder, a ZIP archive, or
+          select individual .json files
         </p>
         <p className="mt-2 text-xs text-gray-400">
           Files are not uploaded to a server, just used to extract your
@@ -369,7 +435,7 @@ export function HingeGuidedUploadArea({
         <Alert
           title="Some files were rejected"
           category="warning"
-          description="Only .json files are accepted. Other file types are ignored."
+          description="Only .json files and .zip archives are accepted. Other file types are ignored."
         />
       )}
 
