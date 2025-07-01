@@ -36,7 +36,10 @@ type FileEvent =
   | "File reading Aborted"
   | "File reading Failed"
   | "File reading Succeeded"
-  | "File reading Rejected";
+  | "File reading Rejected"
+  | "ZIP File Upload Detected"
+  | "ZIP File Extracted Successfully"
+  | "ZIP File Extraction Failed";
 type ProfileEvent =
   | "Profile Anonymised Successfully"
   | "Profile Anonymised Failed"
@@ -48,7 +51,14 @@ type ProfileEvent =
   | "Profile Created"
   | "Profile Updated"
   | "Profile Deleted"
-  | "Profile Upload Simulated";
+  | "Profile Upload Simulated"
+  | "Hinge Profile Upload Initialized"
+  | "Hinge Profile Anonymised Successfully"
+  | "Hinge Profile Anonymised Failed"
+  | "Hinge Profile Upload Complete"
+  | "Hinge Profile Upload Failed"
+  | "Hinge File Processed"
+  | "Hinge Files Dropped";
 
 // reminder of happy path order
 // File reading Initialized

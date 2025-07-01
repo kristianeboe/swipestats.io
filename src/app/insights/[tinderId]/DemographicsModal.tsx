@@ -1,47 +1,102 @@
 "use client";
 
-import { Card, CardContent } from "@/app/_components/ui/card";
 import {
-  CakeIcon,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/app/_components/ui/card";
+import {
   LockIcon,
-  RainbowIcon,
-  SearchIcon,
-  UserIcon,
+  UsersRound,
+  UserCog,
+  Sparkles,
+  CheckCircle2,
+  X,
+  Info,
 } from "lucide-react";
-import { Badge } from "@/app/_components/ui/badge";
 import { type SetStateAction, type Dispatch, useState, useMemo } from "react";
 
-import { Globe2, Crown, MapPin } from "lucide-react";
-import { Tabs } from "@/app/_components/ui/tabs";
-import { useInsightsProvider } from "./InsightsProvider";
 import {
-  getProfileGradientClasses,
-  getProfileIconColor,
-  CREATOR_ID,
-  AVERAGE_MALE_ID,
-  AVERAGE_FEMALE_ID,
-  BRAND_COLORS,
-} from "./insightUtils";
+  MapPin,
+  Globe,
+  Users2,
+  HeartHandshake,
+  CalendarDays,
+  Target,
+} from "lucide-react";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/app/_components/ui/tabs";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose,
+} from "@/app/_components/ui/dialog";
+import { useInsightsProvider } from "./InsightsProvider";
+import { CREATOR_ID, AVERAGE_MALE_ID, AVERAGE_FEMALE_ID } from "./insightUtils";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/app/_components/ui/alert";
+import { Button } from "@/app/_components/ui/button";
+import { SwipestatsPlusCard } from "./SwipestatsPlusCard";
+import { Label } from "@/app/_components/ui/label";
+import { Input } from "@/app/_components/ui/input";
+import { useParams } from "next/navigation";
+import { type SwipestatsTier } from "@prisma/client";
+import { Form } from "@/app/_components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+interface DemographicDetailProps {
+  icon: React.ElementType;
+  label: string;
+  value: string;
+  iconColor?: string;
+}
+
+const DemographicDetail: React.FC<DemographicDetailProps> = ({
+  icon: Icon,
+  label,
+  value,
+  iconColor = "text-muted-foreground",
+}) => (
+  <div className="flex items-center space-x-2 text-sm">
+    <Icon className={`h-4 w-4 ${iconColor}`} />
+    <span className="text-muted-foreground">{label}:</span>
+    <span className="font-medium">{value}</span>
+  </div>
+);
 
 export default function DemographicsModal() {
   const [demographicsModalOpen, setDemographicsModalOpen] = useState(false);
 
   return (
     <>
-      <DrawerDialog
-        size="7xl"
+      <Dialog
         open={demographicsModalOpen}
-        setOpen={setDemographicsModalOpen}
-        trigger={
-          <Card.Container className="w-56 cursor-pointer overflow-hidden border-dashed bg-white/50 backdrop-blur-sm transition-colors hover:bg-white/70">
-            <div className="flex items-center">
-              <div className="h-full w-3 bg-gradient-to-b from-gray-100 to-gray-50" />
+        onOpenChange={setDemographicsModalOpen}
+      >
+        <DialogTrigger asChild>
+          <Card className="w-56 cursor-pointer gap-0 overflow-hidden border-dashed bg-white/50 py-0 backdrop-blur-sm transition-colors hover:bg-white/70">
+            <div className="flex h-full items-center">
               <div className="flex flex-1 items-center gap-4 p-6">
                 <div className="flex flex-col items-center text-center">
-                  <div className="rounded-full bg-gray-100 p-3">
-                    <UsersIcon className="h-6 w-6 text-gray-400" />
+                  <div className="mb-2 rounded-full bg-gray-100 p-3">
+                    <UsersRound className="h-6 w-6 text-gray-400" />
                   </div>
-                  <h3 className="text-lg font-medium text-gray-600">
+                  <h3 className="mb-1 text-lg font-medium text-gray-600">
                     Add Comparison
                   </h3>
                   <p className="text-sm text-gray-500">
@@ -50,15 +105,29 @@ export default function DemographicsModal() {
                 </div>
               </div>
             </div>
-          </Card.Container>
-        }
-        title="Demographics"
-        description="Compare your stats with other individuals and demographics"
-      >
-        <DemographicsSections
-          closeModal={() => setDemographicsModalOpen(false)}
-        />
-      </DrawerDialog>
+          </Card>
+        </DialogTrigger>
+        <DialogContent className="max-w-4xl bg-white p-0 sm:max-w-5xl md:max-w-6xl">
+          <DialogHeader className="p-6 pb-0">
+            <DialogTitle className="text-2xl font-bold">
+              Demographics
+            </DialogTitle>
+            <DialogDescription>
+              Compare your stats with other individuals and demographics.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogClose className="ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:pointer-events-none">
+            <X className="h-4 w-4" />
+            <span className="sr-only">Close</span>
+          </DialogClose>
+
+          <div className="p-6">
+            <DemographicsSections
+              closeModal={() => setDemographicsModalOpen(false)}
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
@@ -84,270 +153,105 @@ export function DemographicsSections(props: { closeModal: () => void }) {
   });
 
   return (
-    <div className="space-y-6">
-      <Tabs.Root
-        value={selectedTab}
-        onValueChange={setSelectedTab}
-        className="w-full"
-      >
-        <Tabs.List className="mb-4 grid grid-cols-3">
-          <Tabs.Trigger
-            value="demographics"
-            className="flex items-center gap-2"
-          >
-            <Globe2 className="h-4 w-4" />
-            Demographics
-          </Tabs.Trigger>
-          <Tabs.Trigger value="individual" className="flex items-center gap-2">
-            <UserIcon className="h-4 w-4" />
-            Individual
-          </Tabs.Trigger>
-          {/* <Tabs.Trigger value="premium" className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4" />
-            Premium
-          </Tabs.Trigger> */}
-          {/* <Tabs.Trigger value="location" className="flex items-center gap-2">
-            <MapPin className="h-4 w-4" />
-            Location
-          </Tabs.Trigger>
-          <Tabs.Trigger value="age" className="flex items-center gap-2">
-            <Calendar className="h-4 w-4" />
-            Age
-          </Tabs.Trigger> */}
-          <Tabs.Trigger value="plus" className="flex items-center gap-2">
-            <Crown className="h-4 w-4" />
-            Swipestats+
-          </Tabs.Trigger>
-        </Tabs.List>
+    <Tabs value={selectedTab} onValueChange={setSelectedTab} className="w-full">
+      <TabsList className="mb-6 grid w-full grid-cols-3">
+        <TabsTrigger value="demographics" className="flex items-center gap-2">
+          <UsersRound className="h-4 w-4" />
+          Demographics
+        </TabsTrigger>
+        <TabsTrigger value="individual" className="flex items-center gap-2">
+          <UserCog className="h-4 w-4" />
+          Individual
+        </TabsTrigger>
+        <TabsTrigger value="plus" className="flex items-center gap-2">
+          <Sparkles className="h-4 w-4" />
+          Swipestats+
+        </TabsTrigger>
+      </TabsList>
 
-        <Tabs.Content value="demographics" className="space-y-4">
-          <div className="space-y-4">
-            {/*<div>
-               <h2 className="text-xl font-semibold">Global Demographics</h2> */}
-            {/* <p className="text-muted-foreground">
-                Basic demographic information available to all users
-              </p> 
-            </div>*/}
-            <div className="grid gap-4">
-              <div className="space-y-2">
-                {/* <h3 className="font-medium">Global averages</h3> */}
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  <DemographicsCard
-                    comparisonId={CREATOR_ID}
-                    data={{
-                      title: "The creator of Swipestats",
-                      location: "Norway",
-                      gender: "Man",
-                      interestedInGender: "Women",
-                      age: 32,
-                      interestedInAge: { min: 24, max: 32 },
-                    }}
-                    selectTab={setSelectedTab}
-                    closeModal={props.closeModal}
-                  />
-                  <DemographicsCard
-                    comparisonId={AVERAGE_MALE_ID}
-                    requiredTier="PLUS"
-                    data={{
-                      title: "Men interested in Women",
-                      location: "Global",
-                      gender: "Men",
-                      interestedInGender: "Women",
-                      age: { min: 18, max: 100 },
-                      interestedInAge: { min: 18, max: 100 },
-                    }}
-                    selectTab={setSelectedTab}
-                    closeModal={props.closeModal}
-                  />
-                  <DemographicsCard
-                    comparisonId={AVERAGE_FEMALE_ID}
-                    requiredTier="PLUS"
-                    data={{
-                      title: "Women interested in Men",
-                      location: "Global",
-                      gender: "Women",
-                      interestedInGender: "Men",
-                      age: { min: 18, max: 100 },
-                      interestedInAge: { min: 18, max: 100 },
-                    }}
-                    selectTab={setSelectedTab}
-                    closeModal={props.closeModal}
-                  />
-                </div>
-              </div>
+      <TabsContent value="demographics">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <DemographicsCard
+            comparisonId={CREATOR_ID}
+            data={{
+              title: "The creator of Swipestats",
+              location: "Norway",
+              gender: "Man",
+              interestedInGender: "Women",
+              age: 32,
+              interestedInAge: { min: 24, max: 32 },
+            }}
+            accentColor="border-rose-500"
+            selectTab={setSelectedTab}
+            closeModal={props.closeModal}
+          />
+          <DemographicsCard
+            comparisonId={AVERAGE_MALE_ID}
+            requiredTier="PLUS"
+            data={{
+              title: "Men interested in Women",
+              location: "Global",
+              gender: "Men",
+              interestedInGender: "Women",
+              age: { min: 18, max: 100 },
+              interestedInAge: { min: 18, max: 100 },
+            }}
+            accentColor="border-sky-500"
+            selectTab={setSelectedTab}
+            closeModal={props.closeModal}
+          />
+          <DemographicsCard
+            comparisonId={AVERAGE_FEMALE_ID}
+            requiredTier="PLUS"
+            data={{
+              title: "Women interested in Men",
+              location: "Global",
+              gender: "Women",
+              interestedInGender: "Men",
+              age: { min: 18, max: 100 },
+              interestedInAge: { min: 18, max: 100 },
+            }}
+            accentColor="border-pink-500"
+            selectTab={setSelectedTab}
+            closeModal={props.closeModal}
+          />
+        </div>
+
+        <Alert className="mt-8">
+          <Info className="h-4 w-4" />
+          <AlertTitle className="font-semibold">
+            About LGBTQ+ Demographics
+          </AlertTitle>
+          <AlertDescription>
+            LGBTQ+ demographics are not yet available due to limited data.
+            Spread the word about Swipestats and help us change that!
+          </AlertDescription>
+        </Alert>
+      </TabsContent>
+
+      <TabsContent value="individual">
+        <Form {...form}>
+          <form className="mt-auto space-y-4" onSubmit={onSubmit}>
+            <div className="space-y-2">
+              <Label htmlFor="tinderId">Swipestats ID</Label>
+              <Input
+                id="tinderId"
+                placeholder="Enter a Swipestats ID"
+                required
+                {...form.register("tinderId")}
+              />
             </div>
-            <Alert>
-              <RainbowIcon className="h-4 w-4" />
-              <AlertTitle>About LGTBQ+ Demographics</AlertTitle>
-              <AlertDescription>
-                LGTBQ+ demographics are not available yet due to limited data.
-                Spread the word about Swipestats and help us change that!
-              </AlertDescription>
-            </Alert>
-          </div>
-        </Tabs.Content>
+            <Button type="submit" className="w-full">
+              Add Profile
+            </Button>
+          </form>
+        </Form>
+      </TabsContent>
 
-        <Tabs.Content value="individual">
-          <Form {...form}>
-            <form className="mt-auto space-y-4" onSubmit={onSubmit}>
-              <div className="space-y-2">
-                <Label htmlFor="tinderId">Swipestats ID</Label>
-                <Input
-                  id="tinderId"
-                  placeholder="Enter a Swipestats ID"
-                  required
-                  {...form.register("tinderId")}
-                />
-              </div>
-              <Button type="submit" className="w-full">
-                Add Profile
-              </Button>
-            </form>
-          </Form>
-        </Tabs.Content>
-
-        <Tabs.Content value="premium" className="space-y-4">
-          <Card.Container>
-            <Card.Header>
-              <Card.Title>Premium Insights</Card.Title>
-              <Card.Description>
-                Detailed demographics for premium subscribers
-              </Card.Description>
-            </Card.Header>
-            <Card.Content className="grid gap-4">
-              <div className="space-y-2">
-                <h3 className="font-medium">Advanced Metrics</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <Card.Container>
-                    <Card.Header>
-                      <Card.Title className="text-lg">Response Rate</Card.Title>
-                      <Badge variant="secondary">Premium</Badge>
-                    </Card.Header>
-                    <Card.Content>
-                      <p className="text-2xl font-bold">48%</p>
-                      <p className="text-muted-foreground text-sm">
-                        Average response rate
-                      </p>
-                    </Card.Content>
-                  </Card.Container>
-                  <Card.Container>
-                    <Card.Header>
-                      <Card.Title className="text-lg">Match Quality</Card.Title>
-                      <Badge variant="secondary">Premium</Badge>
-                    </Card.Header>
-                    <Card.Content>
-                      <p className="text-2xl font-bold">76%</p>
-                      <p className="text-muted-foreground text-sm">
-                        Compatibility score
-                      </p>
-                    </Card.Content>
-                  </Card.Container>
-                </div>
-              </div>
-            </Card.Content>
-          </Card.Container>
-        </Tabs.Content>
-
-        <Tabs.Content value="location" className="space-y-4">
-          <Card.Container>
-            <Card.Header>
-              <Card.Title>Location-Based Demographics</Card.Title>
-              <Card.Description>
-                User distribution by region and city
-              </Card.Description>
-            </Card.Header>
-            <Card.Content className="grid gap-4">
-              <div className="space-y-2">
-                <h3 className="font-medium">Top Locations</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <Card.Container>
-                    <Card.Header>
-                      <Card.Title className="text-lg">Urban Areas</Card.Title>
-                      <Badge>Location</Badge>
-                    </Card.Header>
-                    <Card.Content>
-                      <p className="text-2xl font-bold">78%</p>
-                      <p className="text-muted-foreground text-sm">
-                        Metropolitan users
-                      </p>
-                    </Card.Content>
-                  </Card.Container>
-                  <Card.Container>
-                    <Card.Header>
-                      <Card.Title className="text-lg">Suburban</Card.Title>
-                      <Badge>Location</Badge>
-                    </Card.Header>
-                    <CardContent>
-                      <p className="text-2xl font-bold">22%</p>
-                      <p className="text-muted-foreground text-sm">
-                        Suburban users
-                      </p>
-                    </CardContent>
-                  </Card.Container>
-                </div>
-              </div>
-            </Card.Content>
-          </Card.Container>
-        </Tabs.Content>
-
-        <Tabs.Content value="age" className="space-y-4">
-          <Card.Container>
-            <Card.Header>
-              <Card.Title>Age Demographics</Card.Title>
-              <Card.Description>
-                User distribution by age groups
-              </Card.Description>
-            </Card.Header>
-            <Card.Content className="grid gap-4">
-              <div className="space-y-2">
-                <h3 className="font-medium">Age Groups</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <Card.Container>
-                    <Card.Header>
-                      <Card.Title className="text-lg">18-24</Card.Title>
-                      <Badge>Age</Badge>
-                    </Card.Header>
-                    <Card.Content>
-                      <p className="text-2xl font-bold">32%</p>
-                      <p className="text-muted-foreground text-sm">
-                        Young adults
-                      </p>
-                    </Card.Content>
-                  </Card.Container>
-                  <Card.Container>
-                    <Card.Header>
-                      <Card.Title className="text-lg">25-34</Card.Title>
-                      <Badge>Age</Badge>
-                    </Card.Header>
-                    <Card.Content>
-                      <p className="text-2xl font-bold">45%</p>
-                      <p className="text-muted-foreground text-sm">
-                        Professionals
-                      </p>
-                    </Card.Content>
-                  </Card.Container>
-                </div>
-              </div>
-            </Card.Content>
-          </Card.Container>
-        </Tabs.Content>
-
-        <Tabs.Content value="plus" className="space-y-4">
-          <SwipestatsPlusCard />
-          {/* <Card.Container>
-            <Card.Header>
-              <Card.Title>Available Profile Upgrades</Card.Title>
-              <Card.Description>
-                One-time purchases to permanently upgrade your profile
-              </Card.Description>
-            </Card.Header>
-            <Card.Content className="grid gap-4">
-              <TierSelect />
-            </Card.Content>
-          </Card.Container> */}
-        </Tabs.Content>
-      </Tabs.Root>
-    </div>
+      <TabsContent value="plus">
+        <SwipestatsPlusCard />
+      </TabsContent>
+    </Tabs>
   );
 }
 
@@ -360,28 +264,6 @@ interface DemographicData {
   interestedInAge: number | { min: number; max: number };
 }
 
-import { MapPinIcon, UsersIcon, CalendarIcon, HeartIcon } from "lucide-react";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/app/_components/ui/alert";
-import { Button } from "@/app/_components/ui/button";
-import Link from "next/link";
-import { TierSelect } from "./TierSelect";
-import { SwipestatsPlusCard } from "./SwipestatsPlusCard";
-import { DrawerDialog } from "@/app/_components/ui/DrawerDialog";
-import { ComparisonForm } from "./ComparisonForm";
-import { Label } from "@/app/_components/ui/label";
-import { Input } from "@/app/_components/ui/input";
-import { useParams, useSearchParams } from "next/navigation";
-import { type SwipestatsTier } from "@prisma/client";
-import { Form } from "@/app/_components/ui/form";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { cn } from "@/lib/utils";
-
 function formatAge(age: number | { min: number; max: number }): string {
   if (typeof age === "number") {
     return age.toString();
@@ -392,12 +274,14 @@ function formatAge(age: number | { min: number; max: number }): string {
 export function DemographicsCard({
   data,
   comparisonId,
+  accentColor,
   requiredTier = "FREE",
   selectTab,
   closeModal,
 }: {
   data: DemographicData;
   comparisonId: string;
+  accentColor: string;
   requiredTier?: SwipestatsTier;
   selectTab: Dispatch<SetStateAction<string>>;
   closeModal?: () => void;
@@ -438,135 +322,92 @@ export function DemographicsCard({
     return profileIdInParamsButNotInArray;
   }, [loading, comparisonId, profiles, comparisonIdsArray]);
 
-  // Get the index based on whether this profile is selected
-  const index = profiles.findIndex((p) => p.tinderId === comparisonId);
-  const gradientClasses = getProfileGradientClasses(comparisonId, index);
+  // Get the icon color based on accent color
+  const getIconColor = () => {
+    if (accentColor.includes("rose")) return "text-rose-500";
+    if (accentColor.includes("sky")) return "text-sky-500";
+    if (accentColor.includes("pink")) return "text-pink-500";
+    return "text-muted-foreground";
+  };
+
+  const iconColor = getIconColor();
+
+  const details = [
+    {
+      icon: data.location === "Global" ? Globe : MapPin,
+      label: "Location",
+      value: data.location,
+      iconColor,
+    },
+    { icon: Users2, label: "Gender", value: data.gender },
+    {
+      icon: HeartHandshake,
+      label: "Interested in",
+      value: data.interestedInGender,
+    },
+    { icon: CalendarDays, label: "Age", value: formatAge(data.age) },
+    {
+      icon: Target,
+      label: "Looking for",
+      value: formatAge(data.interestedInAge),
+    },
+  ];
+
+  const isPremium =
+    !hasAccess || (onDemoProfile && comparisonId !== CREATOR_ID);
+  const isCurrentlyViewing = selected && comparisonId === CREATOR_ID;
 
   return (
-    <Card.Container
-      className={`relative w-full max-w-md cursor-pointer overflow-hidden bg-gray-50 shadow-lg transition-all duration-300 hover:shadow-xl dark:bg-gray-800 ${
-        selected ? "scale-[1.02] ring-2 ring-blue-500" : "hover:scale-[1.01]"
-      }`}
-    >
+    <Card className={`flex flex-col ${accentColor} relative border-t-4`}>
       {isLoading && (
-        <div className="absolute inset-0 z-20 flex items-center justify-center bg-white/50 backdrop-blur-sm">
+        <div className="absolute inset-0 z-20 flex items-center justify-center rounded-lg bg-white/50 backdrop-blur-sm">
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-blue-500" />
         </div>
       )}
 
-      <Card.Header
-        className={cn(
-          "flex flex-row items-center justify-between space-y-0 bg-gradient-to-br p-4",
-          gradientClasses,
-        )}
-      >
-        <Card.Title className="text-xl font-bold text-white dark:text-white">
-          {data.title}
-        </Card.Title>
-      </Card.Header>
+      <CardHeader>
+        <CardTitle className="text-lg">{data.title}</CardTitle>
+      </CardHeader>
 
-      <Card.Content className="grid gap-3 p-4">
-        <InfoItem
-          icon={MapPin}
-          value={data.location}
-          comparisonId={comparisonId}
-          index={index}
-        />
-        <div className="grid grid-cols-2 gap-3">
-          <InfoItem
-            icon={UsersIcon}
-            label="Gender"
-            value={data.gender}
-            comparisonId={comparisonId}
-            index={index}
-          />
-          <InfoItem
-            icon={HeartIcon}
-            label="Interested in"
-            value={data.interestedInGender}
-            comparisonId={comparisonId}
-            index={index}
-          />
-          <InfoItem
-            icon={CakeIcon}
-            label="Age"
-            value={formatAge(data.age)}
-            comparisonId={comparisonId}
-            index={index}
-          />
-          <InfoItem
-            icon={SearchIcon}
-            label="Looking for"
-            value={formatAge(data.interestedInAge)}
-            comparisonId={comparisonId}
-            index={index}
-          />
-        </div>
-      </Card.Content>
+      <CardContent className="flex-grow space-y-3">
+        {details.map((detail, index) => (
+          <DemographicDetail key={index} {...detail} />
+        ))}
+      </CardContent>
 
-      <Card.Footer className="p-4">
-        {!hasAccess || (onDemoProfile && comparisonId !== CREATOR_ID) ? (
+      <CardFooter>
+        {isPremium ? (
           <Button
-            type="button"
-            variant="default"
-            className="w-full"
-            onClick={() => {
-              console.log("onClick");
-              selectTab?.("plus");
-            }}
+            className="w-full bg-red-600 text-white hover:bg-red-700"
+            onClick={() => selectTab?.("plus")}
+            disabled={isLoading}
           >
             <LockIcon className="mr-2 h-4 w-4" />
-            Swipestats+ Required -{" "}
-            {onDemoProfile ? "Not available in demo" : "Upgrade Now"}
+            {onDemoProfile && comparisonId !== CREATOR_ID
+              ? "Not available in demo"
+              : "Swipestats+ Required"}
+          </Button>
+        ) : isCurrentlyViewing ? (
+          <Button
+            className="w-full bg-rose-50 text-rose-700 hover:bg-rose-100"
+            variant="secondary"
+            disabled={true}
+          >
+            <CheckCircle2 className="mr-2 h-4 w-4" />
+            Currently Viewing
           </Button>
         ) : (
           <Button
             className="w-full"
             variant={selected ? "secondary" : "default"}
             onClick={handleClick}
-            disabled={isLoading ?? onDemoProfile}
+            disabled={isLoading}
           >
-            {onDemoProfile
-              ? comparisonId === CREATOR_ID
-                ? "Already viewing"
-                : "Not available in demo"
-              : selected
-                ? "Remove Comparison"
-                : "Apply Demographic"}
+            {selected ? "Remove Comparison" : "Apply Demographic"}
           </Button>
         )}
-      </Card.Footer>
-    </Card.Container>
-  );
-}
-
-function InfoItem({
-  icon: Icon,
-  label,
-  value,
-  comparisonId,
-  index,
-}: {
-  icon: React.ElementType;
-  label?: string;
-  value: string;
-  comparisonId: string;
-  index: number;
-}) {
-  const iconColor = getProfileIconColor(comparisonId, index);
-
-  return (
-    <div className="flex items-center space-x-2 rounded-md bg-white p-2 shadow dark:bg-gray-900">
-      <Icon style={{ color: iconColor }} className="h-4 w-4" />
-      {label && (
-        <span className="text-xs text-gray-500 dark:text-gray-400">
-          {label}:
-        </span>
-      )}
-      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-        {value}
-      </span>
-    </div>
+      </CardFooter>
+    </Card>
   );
 }
 

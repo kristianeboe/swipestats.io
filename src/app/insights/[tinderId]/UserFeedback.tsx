@@ -6,18 +6,18 @@
  */
 
 import { Button } from "@/app/_components/ui/button";
-import { Card } from "@/app/_components/ui/card";
-import { Form } from "@/app/_components/ui/form";
 import {
-  RadioGroupFormField,
-  StarRatingFormField,
-} from "@/app/_components/ui/formFields/RadioGroupFormField";
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+  CardFooter,
+} from "@/app/_components/ui/card";
+import { Form } from "@/app/_components/ui/form";
+import { StarRatingFormField } from "@/app/_components/ui/formFields/RadioGroupFormField";
 import { TagGroupFormField } from "@/app/_components/ui/formFields/TagGroupFormField";
-import { Label } from "@/app/_components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/app/_components/ui/radio-group";
-import { Textarea } from "@/app/_components/ui/textarea";
 import { useLocalStorage } from "@/lib/hooks/useLocalStorage";
-import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CheckCircleIcon } from "lucide-react";
@@ -84,35 +84,35 @@ export function UserFeedback({ tinderId }: { tinderId: string }) {
 
   if (feedbackSubmitted) {
     return (
-      <Card.Container className="w-full flex-shrink">
-        <Card.Header>
+      <Card className="w-full flex-shrink">
+        <CardHeader>
           <div className="mb-4 flex items-center justify-center">
             <CheckCircleIcon className="text-primary h-16 w-16" />
           </div>
-          <Card.Title className="text-center text-2xl sm:text-3xl">
+          <CardTitle className="text-center text-2xl sm:text-3xl">
             Thank You for Your Feedback!
-          </Card.Title>
-        </Card.Header>
-        <Card.Content>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
           <p className="text-muted-foreground text-center">
             We appreciate you taking the time to share your thoughts with us.
             Your feedback is invaluable in helping us improve Swipestats.
           </p>
-        </Card.Content>
-        <Card.Footer className="flex justify-center"></Card.Footer>
-      </Card.Container>
+        </CardContent>
+        <CardFooter className="flex justify-center"></CardFooter>
+      </Card>
     );
   }
 
   return (
-    <Card.Container className="w-full flex-shrink">
-      <Card.Header>
-        <Card.Title>How is your experience with Swipestats?</Card.Title>
-        <Card.Description>
+    <Card className="w-full flex-shrink">
+      <CardHeader>
+        <CardTitle>How is your experience with Swipestats?</CardTitle>
+        <CardDescription>
           Please take a moment to provide your feedback.
-        </Card.Description>
-      </Card.Header>
-      <Card.Content>
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="">
             <div className="mb-4 grid gap-4">
@@ -176,7 +176,7 @@ export function UserFeedback({ tinderId }: { tinderId: string }) {
             </div>
           </form>
         </Form>
-      </Card.Content>
-    </Card.Container>
+      </CardContent>
+    </Card>
   );
 }

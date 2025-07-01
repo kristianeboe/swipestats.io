@@ -141,26 +141,35 @@ model Event {
 }
 
 model Job {
-    jobId            String        @id @default(cuid())
+    jobId            String   @id @default(cuid())
     title            String
     titleDisplayed   Boolean
     company          String?
     companyDisplayed Boolean?
-    tinderProfileId  String
-    tinderProfile    TinderProfile @relation(fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
+
+    // Profile relations - exactly one must be set
+    tinderProfileId String?
+    tinderProfile   TinderProfile? @relation(fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
+
+    hingeProfileId String?
+    hingeProfile   HingeProfile? @relation(fields: [hingeProfileId], references: [hingeId], onDelete: Cascade)
 }
 
 model School {
-    schoolId        String        @id @default(cuid())
-    id              String?
-    displayed       Boolean
-    name            String
-    type            String?
-    year            String?
-    metadata_id     String?
-    // maybe turn into a many relation TinderProfile[]
-    tinderProfileId String
-    tinderProfile   TinderProfile @relation(fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
+    schoolId    String  @id @default(cuid())
+    id          String?
+    displayed   Boolean
+    name        String
+    type        String?
+    year        String?
+    metadata_id String?
+
+    // Profile relations - exactly one must be set
+    tinderProfileId String?
+    tinderProfile   TinderProfile? @relation(fields: [tinderProfileId], references: [tinderId], onDelete: Cascade)
+
+    hingeProfileId String?
+    hingeProfile   HingeProfile? @relation(fields: [hingeProfileId], references: [hingeId], onDelete: Cascade)
 }
 
 model TinderUsage {
@@ -267,7 +276,7 @@ model Message {
 
     language String?
 
-    timeSinceLastMessage         Int // 0 indicates it's an opener // distance in seconds
+    timeSinceLastMessage         Int? // 0 indicates it's an opener // distance in seconds
     timeSinceLastMessageRelative String? // null indicates it's an opener // distance in human readable format
     emotionScore                 Int? // todo future implement
 
@@ -412,7 +421,7 @@ model HingeProfile {
     workplacesDisplayed       Boolean
     jobTitle                  String
     jobTitleDisplayed         Boolean
-    schools                   String[]
+    schoolsOriginal           String[]
     schoolsDisplayed          Boolean
     hometowns                 String[]
     hometownsDisplayed        Boolean
@@ -439,36 +448,55 @@ model HingeProfile {
     relationshipType          String
     relationshipTypeDisplayed Boolean
     selfieVerified            Boolean
+
+    // Raw data storage (similar to Tinder)
+    jobsRaw       Json?
+    schoolsRaw    Json?
+    workplacesRaw Json?
+
     // preferences
-    distanceMilesMax          Int
-    ageMin                    Int
-    ageMax                    Int
-    ageDealbreaker            Boolean
-    heightMin                 Int //?? 92
-    heightMax                 Int //?? 214
-    heightDealbreaker         Boolean
-    genderPreference          String
-    ethnicityPreference       String[]
-    ethnicityDealbreaker      Boolean
-    religionPreference        String[]
-    religionDealbreaker       Boolean
-    prompts                   HingePrompt[]
-    media                     Media[]
-    userId                    String        @unique
-    user                      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-    customData                CustomData?
-    messages                  Message[]
-    hingeBlocks               HingeBlock[]
-    hingeMatches              Match[]
-    profileMeta               ProfileMeta?
+    distanceMilesMax     Int
+    ageMin               Int
+    ageMax               Int
+    ageDealbreaker       Boolean
+    heightMin            Int //?? 92
+    heightMax            Int //?? 214
+    heightDealbreaker    Boolean
+    genderPreference     String
+    ethnicityPreference  String[]
+    ethnicityDealbreaker Boolean
+    religionPreference   String[]
+    religionDealbreaker  Boolean
+    prompts              HingePrompt[]
+    media                Media[]
+    userId               String        @unique
+    user                 User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+    customData           CustomData?
+    messages             Message[]
+    hingeBlocks          HingeBlock[]
+    hingeMatches         Match[]
+    profileMeta          ProfileMeta?
+    usage                HingeUsage[]
+    jobs                 Job[]
+    schools              School[]
+}
+
+enum HingeInteractionType {
+    LIKE // someone liked you or you liked someone
+    MATCH // mutual like (we will *also* keep writing to Match table)
+    UNLIKE // one side revoked the like before a match
+    BLOCK // the existing "block" events
 }
 
 model HingeBlock {
-    id           String       @id @default(cuid())
-    blockType    String
-    dateStamp    DateTime
-    dateStampRaw String
-    hingeId      String
+    id              String               @id @default(cuid())
+    hingeId         String
+    interactionType HingeInteractionType // NEW – replaces / supersedes blockType
+    detail          String? // eg. "photo_like", "comment_like", Hinge's block_type, etc.
+    body            String? // optional comment / message that accompanied the like
+    dateStamp       DateTime
+    dateStampRaw    String
+
     hingeProfile HingeProfile @relation(fields: [hingeId], references: [hingeId], onDelete: Cascade)
 }
 
@@ -738,4 +766,34 @@ model Sequence {
     createdAt    DateTime   @default(now())
     newsletterId String
     newsletter   Newsletter @relation(fields: [newsletterId], references: [id])
+}
+
+model HingeUsage {
+    dateStamp      DateTime // canonical date (00:00 UTC or user TZ)
+    dateStampRaw   String // "YYYY-MM-DD" so it can be composite PK
+    hingeProfileId String
+    hingeProfile   HingeProfile @relation(fields: [hingeProfileId], references: [hingeId], onDelete: Cascade)
+
+    // metrics – mirrors TinderUsage as closely as possible
+    matches          Int
+    likesSent        Int
+    likesReceived    Int? // Hinge doesn't expose this yet
+    blocks           Int
+    messagesSent     Int
+    messagesReceived Int?
+
+    // derived
+    matchRate      Float // matches / likesSent
+    responseRate   Float // messagesSent / messagesReceived
+    engagementRate Float // (likesSent + messagesSent) / appOpens
+
+    // quality-of-life flags
+    dateIsMissingFromOriginalData Boolean
+    daysSinceLastActive           Int?
+    activeUser                    Boolean
+    activeUserInLast7Days         Boolean
+    activeUserInLast14Days        Boolean
+    activeUserInLast30Days        Boolean
+
+    @@id([dateStampRaw, hingeProfileId])
 }

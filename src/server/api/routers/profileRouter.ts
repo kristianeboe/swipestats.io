@@ -5,8 +5,14 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
-import { DataProvider, type TinderProfile } from "@prisma/client";
+import {
+  DataProvider,
+  type TinderProfile,
+  type HingeProfile,
+  HingeInteractionType,
+} from "@prisma/client";
 import type { AnonymizedTinderDataJSON } from "@/lib/interfaces/TinderDataJSON";
+import type { AnonymizedHingeDataJSON } from "@/lib/interfaces/HingeDataJSON";
 import { createSubLogger } from "@/lib/tslog";
 
 import {
@@ -15,6 +21,7 @@ import {
   prismaCreateTinderProfileTxn,
 } from "../services/profile.service";
 import { createMessagesAndMatches } from "../services/profile.messages.service";
+import { prismaCreateHingeProfileTxn } from "../services/hingeProfile.service";
 import { analyticsTrackServer } from "@/lib/analytics/analyticsTrackServer";
 import { expandAndAugmentProfileWithMissingDays } from "@/lib/profile.utils";
 import { sendInternalSlackMessage } from "../services/internal-slack.service";
@@ -60,6 +67,29 @@ export const profileRouter = createTRPCRouter({
       });
 
       return tinderProfile;
+    }),
+
+  getHinge: publicProcedure
+    .input(
+      z.object({
+        hingeId: z.string(),
+      }),
+    )
+    .query(({ ctx, input }) => {
+      const hingeProfile = ctx.db.hingeProfile.findUnique({
+        where: {
+          hingeId: input.hingeId,
+        },
+        include: {
+          prompts: true,
+          customData: true,
+          user: true,
+          jobs: true,
+          schools: true,
+        },
+      });
+
+      return hingeProfile;
     }),
 
   compare: publicProcedure
@@ -207,6 +237,72 @@ export const profileRouter = createTRPCRouter({
       );
 
       return swipestatsProfile;
+    }),
+
+  createHinge: publicProcedure
+    .input(
+      z.object({
+        hingeId: z.string().min(1),
+        anonymizedHingeJson: z.any(),
+        timeZone: z.string().optional(),
+        country: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }): Promise<HingeProfile> => {
+      const existingProfile = await ctx.db.hingeProfile.findUnique({
+        where: {
+          hingeId: input.hingeId,
+        },
+      });
+
+      if (existingProfile) {
+        throw new Error(
+          "Hinge profile already exists. Use update function instead",
+        );
+      }
+
+      const user = ctx.session?.user;
+      const hingeJson = input.anonymizedHingeJson as AnonymizedHingeDataJSON;
+      const userId = user?.id ?? input.hingeId; // defaults to the hingeId as it is unique too
+
+      log.info("Initiate Hinge profile creation", {
+        hingeId: input.hingeId,
+        userId: user?.id,
+        timeZone: input.timeZone,
+        country: input.country,
+      });
+
+      const hingeProfile = await prismaCreateHingeProfileTxn({
+        user: { userId, timeZone: input.timeZone, country: input.country },
+        hingeId: input.hingeId,
+        hingeJson,
+      });
+
+      analyticsTrackServer(userId, "Profile Created", {
+        hingeId: input.hingeId,
+        gender: hingeProfile.gender,
+        age: hingeProfile.ageAtUpload,
+        timeZone: input.timeZone ?? null,
+        country: input.country ?? null,
+        provider: "HINGE",
+      });
+
+      sendInternalSlackMessage(
+        env.NEXT_PUBLIC_MANUAL_ENV === "production"
+          ? "bot-messages"
+          : "bot-developer",
+        "Hinge Profile Created",
+        {
+          hingeId: input.hingeId,
+          profileUrl: `https://swipestats.io/insights/hinge/${input.hingeId}`,
+          gender: hingeProfile.gender,
+          age: hingeProfile.ageAtUpload,
+          geoTimezone: input.timeZone,
+          geoCountry: input.country,
+        },
+      );
+
+      return hingeProfile;
     }),
 
   update: publicProcedure
@@ -682,5 +778,100 @@ export const profileRouter = createTRPCRouter({
           country: input.location.country,
         },
       });
+    }),
+
+  getHingeMatches: publicProcedure
+    .input(
+      z.object({
+        hingeId: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      // Fetch all matches for the hinge profile
+      const matches = await ctx.db.match.findMany({
+        where: {
+          hingeProfileId: input.hingeId,
+        },
+        select: {
+          matchedAt: true,
+        },
+      });
+
+      // Aggregate matches per month (YYYY-MM)
+      const aggregation: Record<string, number> = {};
+
+      for (const match of matches) {
+        if (!match.matchedAt) continue;
+        const monthKey = match.matchedAt.toISOString().slice(0, 7); // "YYYY-MM"
+        aggregation[monthKey] = (aggregation[monthKey] ?? 0) + 1;
+      }
+
+      const result = Object.entries(aggregation)
+        .sort((a, b) => a[0].localeCompare(b[0]))
+        .map(([month, count]) => ({ month, count }));
+
+      return result;
+    }),
+
+  // Likes over time
+  getHingeLikes: publicProcedure
+    .input(
+      z.object({
+        hingeId: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const likes = await ctx.db.hingeBlock.findMany({
+        where: {
+          hingeId: input.hingeId,
+          interactionType: HingeInteractionType.LIKE,
+        },
+        select: {
+          dateStamp: true,
+        },
+      });
+
+      const aggregation: Record<string, number> = {};
+
+      for (const like of likes) {
+        const monthKey = like.dateStamp.toISOString().slice(0, 7);
+        aggregation[monthKey] = (aggregation[monthKey] ?? 0) + 1;
+      }
+
+      return Object.entries(aggregation)
+        .sort((a, b) => a[0].localeCompare(b[0]))
+        .map(([month, count]) => ({ month, count }));
+    }),
+
+  // Blocks / Unlikes over time
+  getHingeBlocks: publicProcedure
+    .input(
+      z.object({
+        hingeId: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const blocks = await ctx.db.hingeBlock.findMany({
+        where: {
+          hingeId: input.hingeId,
+          interactionType: {
+            in: [HingeInteractionType.BLOCK, HingeInteractionType.UNLIKE],
+          },
+        },
+        select: {
+          dateStamp: true,
+        },
+      });
+
+      const aggregation: Record<string, number> = {};
+
+      for (const blk of blocks) {
+        const monthKey = blk.dateStamp.toISOString().slice(0, 7);
+        aggregation[monthKey] = (aggregation[monthKey] ?? 0) + 1;
+      }
+
+      return Object.entries(aggregation)
+        .sort((a, b) => a[0].localeCompare(b[0]))
+        .map(([month, count]) => ({ month, count }));
     }),
 });
