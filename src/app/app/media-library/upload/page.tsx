@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { heicTo } from "heic-to";
 import { Button } from "@/app/_components/ui/button";
 import {
   Card,
@@ -10,32 +11,30 @@ import {
   CardTitle,
 } from "@/app/_components/ui/card";
 import { Input } from "@/app/_components/ui/input";
-import { Textarea } from "@/app/_components/ui/textarea";
 import { Badge } from "@/app/_components/ui/badge";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/app/_components/ui/select";
 import { Progress } from "@/app/_components/ui/progress";
 import { api } from "@/trpc/react";
 import { useDropzone, type FileRejection } from "react-dropzone";
 import {
   FolderIcon,
   X,
-  Star,
-  Tag,
   Upload,
   Camera,
   ArrowLeft,
   CheckCircle,
   AlertTriangle,
   Zap,
+  Copy,
 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/app/_components/ui/dialog";
 
 // Types for File System API (same as before)
 interface FileSystemEntry {
@@ -66,54 +65,13 @@ interface DataTransferItem {
 type PhotoPreview = {
   file: File;
   preview: string;
-  name: string;
-  description: string;
-  location: string;
-  assetType: string;
-  tags: string[];
-  rating: number;
+  originalFileName: string; // Keep original for fingerprinting
+  displayName: string; // Editable display name
   originalSize: number;
   compressedSize?: number;
   isProcessing?: boolean;
+  isDuplicate?: boolean;
 };
-
-const ASSET_TYPES = [
-  "main",
-  "full_body",
-  "headshot",
-  "activity",
-  "travel",
-  "group",
-  "formal",
-  "casual",
-  "outdoor",
-  "indoor",
-  "professional",
-  "hobby",
-];
-
-const COMMON_TAGS = [
-  "smile",
-  "formal",
-  "casual",
-  "outdoor",
-  "indoor",
-  "professional",
-  "travel",
-  "beach",
-  "city",
-  "nature",
-  "fitness",
-  "hobby",
-  "friends",
-  "pet",
-  "car",
-  "food",
-  "selfie",
-  "group",
-  "event",
-  "party",
-];
 
 // Supported image formats
 const SUPPORTED_IMAGE_TYPES = [
@@ -134,6 +92,39 @@ const VIDEO_TYPES = [
   "video/quicktime",
 ];
 
+// LocalStorage key for uploaded images
+const UPLOADED_IMAGES_KEY = "swipestats_uploaded_images";
+
+// Duplicate detection utilities
+const createFingerprint = (
+  originalFileName: string,
+  fileSize: number,
+): string => {
+  return `${originalFileName}_${fileSize}`;
+};
+
+const getUploadedImages = (): Record<string, string> => {
+  if (typeof window === "undefined") return {};
+  try {
+    const stored = localStorage.getItem(UPLOADED_IMAGES_KEY);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return stored ? JSON.parse(stored) : {};
+  } catch {
+    return {};
+  }
+};
+
+const saveUploadedImage = (fingerprint: string) => {
+  if (typeof window === "undefined") return;
+  try {
+    const existing = getUploadedImages();
+    existing[fingerprint] = new Date().toISOString().split("T")[0]!;
+    localStorage.setItem(UPLOADED_IMAGES_KEY, JSON.stringify(existing));
+  } catch (error) {
+    console.warn("Failed to save uploaded image to localStorage:", error);
+  }
+};
+
 export default function MediaLibraryUploadPage() {
   const router = useRouter();
   const [photos, setPhotos] = useState<PhotoPreview[]>([]);
@@ -144,8 +135,24 @@ export default function MediaLibraryUploadPage() {
   const [currentlyUploading, setCurrentlyUploading] = useState<string>("");
   const [rejectedFiles, setRejectedFiles] = useState<string[]>([]);
 
+  // Duplicate detection state
+  const [showDuplicateDialog, setShowDuplicateDialog] = useState(false);
+  const [pendingFiles, setPendingFiles] = useState<File[]>([]);
+  const [duplicateCount, setDuplicateCount] = useState(0);
+
   const addPhotos = api.mediaLibrary.addPhotos.useMutation({
-    onSuccess: () => {
+    onSuccess: (data) => {
+      // Save fingerprints of successfully uploaded photos
+      photos.forEach((photo) => {
+        if (!photo.isDuplicate) {
+          const fingerprint = createFingerprint(
+            photo.originalFileName,
+            photo.originalSize,
+          );
+          saveUploadedImage(fingerprint);
+        }
+      });
+
       toast.success("Photos uploaded successfully!");
       setUploadComplete(true);
       setTimeout(() => {
@@ -170,6 +177,35 @@ export default function MediaLibraryUploadPage() {
       VIDEO_TYPES.includes(file.type.toLowerCase()) ||
       /\.(mp4|mov|avi|wmv)$/.exec(file.name.toLowerCase())
     );
+  };
+
+  const isHeicFile = (file: File): boolean => {
+    return (
+      file.type === "image/heic" ||
+      file.type === "image/heif" ||
+      file.name.toLowerCase().endsWith(".heic") ||
+      file.name.toLowerCase().endsWith(".heif")
+    );
+  };
+
+  const convertHeicToJpeg = async (file: File): Promise<File> => {
+    try {
+      const jpegBlob = await heicTo({
+        blob: file,
+        type: "image/jpeg",
+        quality: 0.9,
+      });
+
+      const newFileName = file.name.replace(/\.(heic|heif)$/i, ".jpg");
+
+      return new File([jpegBlob], newFileName, {
+        type: "image/jpeg",
+        lastModified: Date.now(),
+      });
+    } catch (error) {
+      console.error("HEIC conversion failed:", error);
+      throw new Error("Failed to convert HEIC file");
+    }
   };
 
   // Client-side image compression using Canvas API
@@ -231,12 +267,45 @@ export default function MediaLibraryUploadPage() {
     });
   };
 
-  const processFiles = async (files: File[]) => {
+  const checkForDuplicates = (
+    files: File[],
+  ): { duplicates: File[]; unique: File[] } => {
+    const uploadedImages = getUploadedImages();
+    const duplicates: File[] = [];
+    const unique: File[] = [];
+
+    files.forEach((file) => {
+      const fingerprint = createFingerprint(file.name, file.size);
+      if (uploadedImages[fingerprint]) {
+        duplicates.push(file);
+      } else {
+        unique.push(file);
+      }
+    });
+
+    return { duplicates, unique };
+  };
+
+  const processFiles = async (files: File[], filterDuplicates = false) => {
     setProcessingFiles(true);
     const newPhotos: PhotoPreview[] = [];
     const rejected: string[] = [];
 
-    for (const file of files) {
+    // Check for duplicates if not already filtered
+    let filesToProcess = files;
+    if (!filterDuplicates) {
+      const { duplicates, unique } = checkForDuplicates(files);
+      if (duplicates.length > 0) {
+        setDuplicateCount(duplicates.length);
+        setPendingFiles(files);
+        setShowDuplicateDialog(true);
+        setProcessingFiles(false);
+        return;
+      }
+      filesToProcess = unique;
+    }
+
+    for (const file of filesToProcess) {
       // Filter out videos
       if (isVideoFile(file)) {
         rejected.push(`${file.name} (video files not supported yet)`);
@@ -246,28 +315,46 @@ export default function MediaLibraryUploadPage() {
       // Only process images
       if (isImageFile(file)) {
         try {
-          const preview = URL.createObjectURL(file);
+          let processedFile = file;
+
+          // Convert HEIC files to JPEG
+          if (isHeicFile(file)) {
+            try {
+              toast.info(`Converting ${file.name} from HEIC to JPEG...`);
+              processedFile = await convertHeicToJpeg(file);
+              toast.success(`${file.name} converted successfully!`);
+            } catch (error) {
+              rejected.push(
+                `${file.name} (HEIC conversion failed: ${error instanceof Error ? error.message : "Unknown error"})`,
+              );
+              continue; // Skip this file
+            }
+          }
+
+          const preview = URL.createObjectURL(processedFile);
+          const fingerprint = createFingerprint(
+            processedFile.name,
+            processedFile.size,
+          );
+          const uploadedImages = getUploadedImages();
 
           // Add to photos array first
           const photoPreview: PhotoPreview = {
-            file,
+            file: processedFile,
             preview,
-            name: file.name.replace(/\.[^/.]+$/, ""), // remove extension
-            description: "",
-            location: "",
-            assetType: "",
-            tags: [],
-            rating: 0,
-            originalSize: file.size,
+            originalFileName: processedFile.name,
+            displayName: processedFile.name.replace(/\.[^/.]+$/, ""), // remove extension for display
+            originalSize: processedFile.size,
             isProcessing: true,
+            isDuplicate: !!uploadedImages[fingerprint],
           };
 
           newPhotos.push(photoPreview);
 
           // Compress large files in background
-          if (file.size > 5 * 1024 * 1024) {
+          if (processedFile.size > 5 * 1024 * 1024) {
             // > 5MB
-            compressImage(file)
+            compressImage(processedFile)
               .then((compressedFile) => {
                 setPhotos((prev) =>
                   prev.map((p) =>
@@ -305,6 +392,27 @@ export default function MediaLibraryUploadPage() {
     if (rejected.length > 0) {
       toast.warning(`${rejected.length} files were skipped`);
     }
+  };
+
+  const handleDuplicateDecision = (filterOut: boolean) => {
+    setShowDuplicateDialog(false);
+
+    if (filterOut) {
+      const { unique } = checkForDuplicates(pendingFiles);
+      void processFiles(unique, true);
+      if (unique.length === 0) {
+        toast.info("All files were duplicates and have been filtered out");
+      } else {
+        toast.info(
+          `Filtered out ${duplicateCount} duplicates, processing ${unique.length} new files`,
+        );
+      }
+    } else {
+      void processFiles(pendingFiles, true);
+    }
+
+    setPendingFiles([]);
+    setDuplicateCount(0);
   };
 
   // Helper function to read directory contents
@@ -377,34 +485,6 @@ export default function MediaLibraryUploadPage() {
     });
   };
 
-  const addTag = (photoIndex: number, tag: string) => {
-    if (!tag.trim()) return;
-
-    setPhotos((prev) =>
-      prev.map((photo, i) =>
-        i === photoIndex
-          ? {
-              ...photo,
-              tags: [...new Set([...photo.tags, tag.trim().toLowerCase()])],
-            }
-          : photo,
-      ),
-    );
-  };
-
-  const removeTag = (photoIndex: number, tagToRemove: string) => {
-    setPhotos((prev) =>
-      prev.map((photo, i) =>
-        i === photoIndex
-          ? {
-              ...photo,
-              tags: photo.tags.filter((tag) => tag !== tagToRemove),
-            }
-          : photo,
-      ),
-    );
-  };
-
   const handleUpload = async () => {
     if (photos.length === 0) {
       toast.error("Please add some photos first");
@@ -424,11 +504,10 @@ export default function MediaLibraryUploadPage() {
 
         const batchPromises = batch.map(async (photo, batchIndex) => {
           const actualIndex = i + batchIndex;
-          setCurrentlyUploading(`Uploading ${photo.name}...`);
+          setCurrentlyUploading(`Uploading ${photo.displayName}...`);
 
           const formData = new FormData();
           formData.append("file", photo.file);
-          // No dataProvider needed for media library uploads
 
           const response = await fetch("/api/upload/photo", {
             method: "POST",
@@ -436,7 +515,7 @@ export default function MediaLibraryUploadPage() {
           });
 
           if (!response.ok) {
-            throw new Error(`Failed to upload ${photo.name}`);
+            throw new Error(`Failed to upload ${photo.displayName}`);
           }
 
           const result = (await response.json()) as { url: string };
@@ -445,12 +524,7 @@ export default function MediaLibraryUploadPage() {
 
           return {
             url: result.url,
-            name: photo.name,
-            description: photo.description || undefined,
-            location: photo.location || undefined,
-            assetType: photo.assetType || undefined,
-            tags: photo.tags,
-            rating: photo.rating,
+            name: photo.displayName,
           };
         });
 
@@ -507,7 +581,7 @@ export default function MediaLibraryUploadPage() {
           <CardContent className="flex flex-col items-center justify-center py-12">
             <CheckCircle className="mb-4 h-16 w-16 text-green-500" />
             <h2 className="mb-2 text-xl font-semibold">Upload Complete!</h2>
-            <p className="text-muted-foreground mb-4 text-center">
+            <p className="mb-4 text-center text-muted-foreground">
               Your photos have been added to your library
             </p>
             {compressionSavings > 0 && (
@@ -526,6 +600,42 @@ export default function MediaLibraryUploadPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* Duplicate Detection Dialog */}
+      <Dialog open={showDuplicateDialog} onOpenChange={setShowDuplicateDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Copy className="h-5 w-5 text-orange-500" />
+              Duplicate Photos Detected
+            </DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <p className="text-muted-foreground">
+              Found{" "}
+              <span className="font-semibold text-orange-600">
+                {duplicateCount}
+              </span>{" "}
+              photos that appear to be duplicates based on filename and file
+              size.
+            </p>
+            <p className="mt-2 text-muted-foreground">
+              What would you like to do?
+            </p>
+          </div>
+          <DialogFooter className="gap-2">
+            <Button
+              variant="outline"
+              onClick={() => handleDuplicateDecision(true)}
+            >
+              Filter Out Duplicates
+            </Button>
+            <Button onClick={() => handleDuplicateDecision(false)}>
+              Upload Anyway
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       {/* Header */}
       <div className="mb-8 flex items-center gap-4">
         <Button variant="outline" size="sm" asChild>
@@ -537,7 +647,7 @@ export default function MediaLibraryUploadPage() {
         <div>
           <h1 className="text-2xl font-bold">Upload Photos</h1>
           <p className="text-muted-foreground">
-            Add photos to your library with tags and ratings
+            Preview and upload photos to your library
           </p>
         </div>
       </div>
@@ -565,9 +675,14 @@ export default function MediaLibraryUploadPage() {
               Drop photos or folders here
             </h3>
             <p className="mb-4 text-gray-500">
-              Supports JPG, PNG, WebP, HEIC formats. Large files will be
+              Supports JPG, PNG, WebP, HEIC/HEIF formats. Large files will be
               automatically compressed.
             </p>
+            <div className="mb-4 flex items-center justify-center gap-2">
+              <div className="rounded bg-blue-100 px-2 py-1 text-xs text-blue-700">
+                HEIC → JPEG conversion
+              </div>
+            </div>
             <div className="mb-4 flex items-center justify-center gap-2">
               <Zap className="h-4 w-4 text-green-600" />
               <span className="text-sm text-green-600">
@@ -618,12 +733,12 @@ export default function MediaLibraryUploadPage() {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium">Upload Progress</span>
-                <span className="text-muted-foreground text-sm">
+                <span className="text-sm text-muted-foreground">
                   {Math.round(uploadProgress)}%
                 </span>
               </div>
               <Progress value={uploadProgress} className="h-2" />
-              <p className="text-muted-foreground text-sm">
+              <p className="text-sm text-muted-foreground">
                 {currentlyUploading}
               </p>
             </div>
@@ -639,7 +754,7 @@ export default function MediaLibraryUploadPage() {
               <div>
                 <CardTitle>Photos to Upload ({photos.length})</CardTitle>
                 {totalOriginalSize > 0 && (
-                  <p className="text-muted-foreground mt-1 text-sm">
+                  <p className="mt-1 text-sm text-muted-foreground">
                     Total size: {formatFileSize(totalOriginalSize)}
                     {compressionSavings > 0 && (
                       <span className="ml-2 text-green-600">
@@ -664,16 +779,14 @@ export default function MediaLibraryUploadPage() {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {photos.map((photo, index) => (
-                <PhotoEditCard
+                <PhotoPreviewCard
                   key={index}
                   photo={photo}
                   index={index}
                   onUpdate={(updates) => updatePhoto(index, updates)}
                   onRemove={() => removePhoto(index)}
-                  onAddTag={(tag) => addTag(index, tag)}
-                  onRemoveTag={(tag) => removeTag(index, tag)}
                 />
               ))}
             </div>
@@ -684,30 +797,17 @@ export default function MediaLibraryUploadPage() {
   );
 }
 
-function PhotoEditCard({
+function PhotoPreviewCard({
   photo,
   index,
   onUpdate,
   onRemove,
-  onAddTag,
-  onRemoveTag,
 }: {
   photo: PhotoPreview;
   index: number;
   onUpdate: (updates: Partial<PhotoPreview>) => void;
   onRemove: () => void;
-  onAddTag: (tag: string) => void;
-  onRemoveTag: (tag: string) => void;
 }) {
-  const [newTag, setNewTag] = useState("");
-
-  const handleAddTag = () => {
-    if (newTag.trim()) {
-      onAddTag(newTag.trim());
-      setNewTag("");
-    }
-  };
-
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return "0 Bytes";
     const k = 1024;
@@ -717,11 +817,13 @@ function PhotoEditCard({
   };
 
   return (
-    <Card className="group relative">
+    <Card
+      className={`group relative ${photo.isDuplicate ? "bg-orange-50/50 ring-2 ring-orange-200" : ""}`}
+    >
       <div className="relative aspect-[3/4] overflow-hidden rounded-t-lg">
         <img
           src={photo.preview}
-          alt={photo.name}
+          alt={photo.displayName}
           className="h-full w-full object-cover"
         />
 
@@ -732,6 +834,19 @@ function PhotoEditCard({
               <div className="mx-auto mb-2 h-6 w-6 animate-spin rounded-full border-2 border-white border-t-transparent" />
               <span className="text-xs">Compressing...</span>
             </div>
+          </div>
+        )}
+
+        {/* Duplicate indicator */}
+        {photo.isDuplicate && (
+          <div className="absolute left-2 top-2">
+            <Badge
+              variant="secondary"
+              className="border-orange-200 bg-orange-100 text-orange-800"
+            >
+              <Copy className="mr-1 h-3 w-3" />
+              Duplicate
+            </Badge>
           </div>
         )}
 
@@ -754,111 +869,34 @@ function PhotoEditCard({
         </div>
       </div>
 
-      <CardContent className="space-y-4 p-4">
-        {/* Name */}
-        <Input
-          placeholder="Photo name"
-          value={photo.name}
-          onChange={(e) => onUpdate({ name: e.target.value })}
-        />
-
-        {/* Description */}
-        <Textarea
-          placeholder="Description (optional)"
-          value={photo.description}
-          onChange={(e) => onUpdate({ description: e.target.value })}
-          rows={2}
-        />
-
-        {/* Location & Photo Type */}
-        <div className="grid grid-cols-2 gap-2">
-          <Input
-            placeholder="Location"
-            value={photo.location}
-            onChange={(e) => onUpdate({ location: e.target.value })}
-          />
-          <Select
-            value={photo.assetType}
-            onValueChange={(value) => onUpdate({ assetType: value })}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Photo type" />
-            </SelectTrigger>
-            <SelectContent>
-              {ASSET_TYPES.map((type) => (
-                <SelectItem key={type} value={type}>
-                  {type.replace("_", " ")}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        {/* Rating */}
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium">Rating:</span>
-          {[1, 2, 3, 4, 5].map((rating) => (
-            <button
-              key={rating}
-              onClick={() => onUpdate({ rating })}
-              className={`p-1 ${
-                rating <= photo.rating
-                  ? "text-yellow-400"
-                  : "text-gray-300 hover:text-yellow-200"
-              }`}
-            >
-              <Star className="h-4 w-4" fill="currentColor" />
-            </button>
-          ))}
-          <span className="text-muted-foreground ml-2 text-sm">
-            {photo.rating}/5
-          </span>
-        </div>
-
-        {/* Tags */}
+      <CardContent className="space-y-3 p-4">
+        {/* Editable display name */}
         <div>
-          <div className="mb-2 flex flex-wrap gap-1">
-            {photo.tags.map((tag) => (
-              <Badge key={tag} variant="secondary" className="text-xs">
-                {tag}
-                <button
-                  onClick={() => onRemoveTag(tag)}
-                  className="ml-1 hover:text-red-500"
-                >
-                  <X className="h-3 w-3" />
-                </button>
-              </Badge>
-            ))}
-          </div>
-
-          <div className="flex gap-2">
-            <Input
-              placeholder="Add tag"
-              value={newTag}
-              onChange={(e) => setNewTag(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleAddTag()}
-              className="text-xs"
-            />
-            <Button size="sm" onClick={handleAddTag}>
-              <Tag className="h-3 w-3" />
-            </Button>
-          </div>
-
-          {/* Common tags */}
-          <div className="mt-2 flex flex-wrap gap-1">
-            {COMMON_TAGS.filter((tag) => !photo.tags.includes(tag))
-              .slice(0, 6)
-              .map((tag) => (
-                <button
-                  key={tag}
-                  onClick={() => onAddTag(tag)}
-                  className="text-xs text-blue-600 hover:text-blue-800 hover:underline"
-                >
-                  +{tag}
-                </button>
-              ))}
-          </div>
+          <Input
+            placeholder="Photo name"
+            value={photo.displayName}
+            onChange={(e) => onUpdate({ displayName: e.target.value })}
+            className={
+              photo.isDuplicate
+                ? "border-orange-200 focus:border-orange-400"
+                : ""
+            }
+          />
+          {photo.originalFileName !== photo.displayName && (
+            <p className="mt-1 text-xs text-muted-foreground">
+              Original: {photo.originalFileName}
+            </p>
+          )}
         </div>
+
+        {/* Duplicate warning */}
+        {photo.isDuplicate && (
+          <div className="rounded-md border border-orange-200 bg-orange-100 p-2">
+            <p className="text-xs text-orange-800">
+              This file appears to be a duplicate based on filename and size.
+            </p>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

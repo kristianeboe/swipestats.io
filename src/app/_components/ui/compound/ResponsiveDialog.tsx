@@ -66,7 +66,7 @@ export function ResponsiveDialog({
     return (
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>{trigger}</DialogTrigger>
-        <DialogContent className={cn("sm:max-w-[425px]", className)}>
+        <DialogContent className={cn("sm:max-w-[600px]", className)}>
           {hasStructuredContent && (title || description) ? (
             <DialogHeader>
               {title && <DialogTitle>{title}</DialogTitle>}
@@ -76,7 +76,7 @@ export function ResponsiveDialog({
             </DialogHeader>
           ) : null}
           {scrollable ? (
-            <ScrollArea className="max-h-[80vh] pr-4">{children}</ScrollArea>
+            <ScrollArea className="max-h-[80vh]">{children}</ScrollArea>
           ) : (
             children
           )}
@@ -159,7 +159,7 @@ function ProfileForm({ className }: React.ComponentProps<"form">) {
           type="email"
           id="email"
           defaultValue="shadcn@example.com"
-          className="border-input placeholder:text-muted-foreground focus-visible:ring-ring flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
         />
       </div>
       <div className="grid gap-3">
@@ -172,7 +172,7 @@ function ProfileForm({ className }: React.ComponentProps<"form">) {
         <input
           id="username"
           defaultValue="@shadcn"
-          className="border-input placeholder:text-muted-foreground focus-visible:ring-ring flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
         />
       </div>
       <Button type="submit">Save changes</Button>

@@ -60,7 +60,7 @@ export default function ProfilePreviewsPage() {
             <h1 className="text-3xl font-bold tracking-tight">
               Profile Previews
             </h1>
-            <p className="text-muted-foreground mt-2">
+            <p className="mt-2 text-muted-foreground">
               Create and compare dating app profile variations
             </p>
           </div>
@@ -83,14 +83,14 @@ export default function ProfilePreviewsPage() {
             <h1 className="text-3xl font-bold tracking-tight">
               Profile Previews
             </h1>
-            <p className="text-muted-foreground mt-2">
+            <p className="mt-2 text-muted-foreground">
               Create and compare dating app profile variations
             </p>
           </div>
         </div>
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
-            <p className="text-muted-foreground mb-4">
+            <p className="mb-4 text-muted-foreground">
               Failed to load previews: {error.message}
             </p>
             <Button onClick={() => window.location.reload()}>Try Again</Button>
@@ -107,7 +107,7 @@ export default function ProfilePreviewsPage() {
           <h1 className="text-3xl font-bold tracking-tight">
             Profile Previews
           </h1>
-          <p className="text-muted-foreground mt-2">
+          <p className="mt-2 text-muted-foreground">
             Create and compare dating app profile variations
           </p>
         </div>
@@ -124,6 +124,7 @@ export default function ProfilePreviewsPage() {
               New Preview
             </Button>
           }
+          scrollable={true}
         >
           <CreatePreviewForm
             onSuccess={handleCreateSuccess}
@@ -134,7 +135,7 @@ export default function ProfilePreviewsPage() {
 
       {previews.length === 0 ? (
         <div className="py-12 text-center">
-          <div className="text-muted-foreground mb-4">
+          <div className="mb-4 text-muted-foreground">
             <Eye className="mx-auto mb-4 h-12 w-12 opacity-50" />
             <p className="text-lg">No profile previews yet</p>
             <p>
@@ -163,7 +164,7 @@ export default function ProfilePreviewsPage() {
                       {preview.description || "No description"}
                     </CardDescription>
                   </div>
-                  <div className="text-muted-foreground flex items-center gap-1 text-xs">
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
                     {preview.public && (
                       <div className="flex items-center gap-1">
                         <Share className="h-3 w-3" />
@@ -174,7 +175,7 @@ export default function ProfilePreviewsPage() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-muted-foreground mb-4 flex items-center justify-between text-sm">
+                <div className="mb-4 flex items-center justify-between text-sm text-muted-foreground">
                   <span>
                     {preview.columns.length} variation
                     {preview.columns.length !== 1 ? "s" : ""}

@@ -67,9 +67,15 @@ model User {
     relationshipHistory Json @default("[]")
     locationHistory     Json @default("[]")
 
-    dateOfBirth DateTime?
-    timeZone    String? // timeZone and country at upload time / location
-    country     String?
+    dateOfBirth    DateTime?
+    heightCm       Int? // Height in centimeters
+    unitPreference UnitSystem @default(METRIC) // User's preferred unit system
+    timeZone       String? // timeZone and country at upload time / location
+    city           String?
+    state          String?
+    country        String?
+    hometown       String?
+    nationality    String?
 
     originalAnonymizedFiles OriginalAnonymizedFile[]
     events                  Event[]
@@ -711,6 +717,7 @@ enum DataProvider {
     TINDER
     HINGE
     BUMBLE
+    RAYA
     GRINDER
     BADOO
     BOO
@@ -822,30 +829,43 @@ model ProfilePreview {
     viewCount Int @default(0) // Track popularity if public
 
     // Default profile information (shared across columns unless overridden)
+    firstName   String? // User's first name to display in profile
+    gender      Gender?
+    age         Int?
+    heightCm    Int? // Height in centimeters
+    defaultBio  String?
     jobTitle    String?
     company     String?
     school      String?
     city        String?
     state       String?
     country     String?
-    age         Int?
-    defaultBio  String?
+    hometown    String?
+    nationality String?
     fromCity    String?
     fromCountry String?
 }
 
 model PreviewColumn {
-    id          String          @id @default(cuid())
+    id          String                    @id @default(cuid())
     type        DataProvider
+    label       String? // Custom label for this column (e.g., "Main Tinder", "Experimental Hinge")
     order       Int
-    createdAt   DateTime        @default(now())
-    updatedAt   DateTime        @updatedAt
+    createdAt   DateTime                  @default(now())
+    updatedAt   DateTime                  @updatedAt
     previewId   String
-    preview     ProfilePreview  @relation(fields: [previewId], references: [id], onDelete: Cascade)
-    mediaAssets MediaAsset[]    @relation("PreviewColumnMedia") // Many-to-many with MediaAsset - photos, videos, etc.
-    prompts     PreviewPrompt[] @relation("PreviewColumnPrompts") // Many-to-many with PreviewPrompt
+    preview     ProfilePreview            @relation(fields: [previewId], references: [id], onDelete: Cascade)
+    mediaAssets PreviewColumnMediaAsset[] // Changed to explicit join table
+    prompts     PreviewPrompt[]           @relation("PreviewColumnPrompts") // Many-to-many with PreviewPrompt
+
+    // UI preferences
+    hideUnusedPhotoSlots Boolean @default(false) // Toggle to hide empty photo slots in grid
 
     // Override defaults - if null, uses ProfilePreview defaults
+    firstName   String? // can override default firstName
+    gender      Gender?
+    age         Int?
+    heightCm    Int? // Height in centimeters - can override default
     bio         String? // can override default bio
     jobTitle    String?
     company     String?
@@ -853,9 +873,21 @@ model PreviewColumn {
     city        String?
     state       String?
     country     String?
-    age         Int?
-    fromCity    String?
-    fromCountry String?
+    hometown    String?
+    nationality String?
+}
+
+// Explicit join table for PreviewColumn <-> MediaAsset with ordering
+model PreviewColumnMediaAsset {
+    id           String        @id @default(cuid())
+    columnId     String
+    column       PreviewColumn @relation(fields: [columnId], references: [id], onDelete: Cascade)
+    mediaAssetId String
+    mediaAsset   MediaAsset    @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+    order        Int // Order of this media asset within the column
+    createdAt    DateTime      @default(now())
+
+    @@unique([columnId, mediaAssetId]) // Prevent duplicate connections
 }
 
 // User's media library - centralized media storage
@@ -886,8 +918,8 @@ model MediaAsset {
     userId    String
     user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    // Many-to-many relationship with PreviewColumn
-    previewColumns PreviewColumn[] @relation("PreviewColumnMedia")
+    // Changed to explicit join table relationship
+    previewColumns PreviewColumnMediaAsset[]
 }
 
 enum MediaType {
@@ -907,4 +939,9 @@ model PreviewPrompt {
     columns    PreviewColumn[] @relation("PreviewColumnPrompts") // Many-to-many with PreviewColumn
     userId     String
     user       User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum UnitSystem {
+    METRIC
+    IMPERIAL
 }

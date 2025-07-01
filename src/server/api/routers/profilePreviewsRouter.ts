@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
-import { DataProvider } from "@prisma/client";
+import { DataProvider, Gender } from "@prisma/client";
 
 export const profilePreviewsRouter = createTRPCRouter({
   // Get all previews for the authenticated user
@@ -13,9 +13,42 @@ export const profilePreviewsRouter = createTRPCRouter({
         columns: {
           orderBy: { order: "asc" },
           include: {
-            mediaAssets: true,
+            mediaAssets: {
+              orderBy: { order: "asc" },
+              include: {
+                mediaAsset: true,
+              },
+            },
             prompts: { orderBy: { order: "asc" } },
           },
+        },
+      },
+      orderBy: { createdAt: "desc" },
+    });
+  }),
+
+  // Get all previews for dropdown (simplified)
+  getAllForDropdown: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.db.profilePreview.findMany({
+      where: {
+        userId: ctx.session.user.id,
+      },
+      select: {
+        id: true,
+        name: true,
+        createdAt: true,
+        columns: {
+          select: {
+            id: true,
+            type: true,
+            order: true,
+            _count: {
+              select: {
+                mediaAssets: true,
+              },
+            },
+          },
+          orderBy: { order: "asc" },
         },
       },
       orderBy: { createdAt: "desc" },
@@ -35,7 +68,12 @@ export const profilePreviewsRouter = createTRPCRouter({
           columns: {
             orderBy: { order: "asc" },
             include: {
-              mediaAssets: true,
+              mediaAssets: {
+                orderBy: { order: "asc" },
+                include: {
+                  mediaAsset: true,
+                },
+              },
               prompts: { orderBy: { order: "asc" } },
             },
           },
@@ -54,27 +92,109 @@ export const profilePreviewsRouter = createTRPCRouter({
     .input(
       z.object({
         name: z.string().min(1),
-        description: z.string().optional(),
         public: z.boolean().default(false),
-        // Default profile info
+        // Basic info
+        gender: z.nativeEnum(Gender).optional(),
+        age: z.number().optional(),
+        heightCm: z.number().optional(),
+        defaultBio: z.string().optional(),
+        // Work & Education
         jobTitle: z.string().optional(),
         company: z.string().optional(),
         school: z.string().optional(),
+        // Location
+        country: z.string().optional(),
         city: z.string().optional(),
         state: z.string().optional(),
-        country: z.string().optional(),
-        age: z.number().optional(),
-        defaultBio: z.string().optional(),
+        nationality: z.string().optional(),
+        hometown: z.string().optional(),
         fromCity: z.string().optional(),
         fromCountry: z.string().optional(),
+        // Photo copying options
+        sourceColumnId: z.string().optional(),
+        targetColumnTypes: z.array(z.nativeEnum(DataProvider)).optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      return ctx.db.profilePreview.create({
-        data: {
-          ...input,
-          userId: ctx.session.user.id,
-        },
+      const { sourceColumnId, targetColumnTypes, ...previewData } = input;
+
+      return ctx.db.$transaction(async (tx) => {
+        // Create the preview first
+        const preview = await tx.profilePreview.create({
+          data: {
+            ...previewData,
+            userId: ctx.session.user.id,
+          },
+        });
+
+        // If photo copying is requested, create columns and copy photos
+        if (
+          sourceColumnId &&
+          targetColumnTypes &&
+          targetColumnTypes.length > 0
+        ) {
+          // Verify the user owns the source column
+          const sourceColumn = await tx.previewColumn.findFirst({
+            where: {
+              id: sourceColumnId,
+              preview: { userId: ctx.session.user.id },
+            },
+            include: {
+              mediaAssets: {
+                orderBy: { order: "asc" },
+                include: {
+                  mediaAsset: true,
+                },
+              },
+            },
+          });
+
+          if (!sourceColumn) {
+            throw new Error("Source column not found or not owned by user");
+          }
+
+          // Create columns for each target type and copy photos
+          for (let i = 0; i < targetColumnTypes.length; i++) {
+            const columnType = targetColumnTypes[i]!;
+
+            // Create the new column
+            const newColumn = await tx.previewColumn.create({
+              data: {
+                type: columnType,
+                order: i,
+                previewId: preview.id,
+                // Copy profile data from source column if available
+                gender: sourceColumn.gender,
+                age: sourceColumn.age,
+                heightCm: sourceColumn.heightCm,
+                bio: sourceColumn.bio,
+                jobTitle: sourceColumn.jobTitle,
+                company: sourceColumn.company,
+                school: sourceColumn.school,
+                city: sourceColumn.city,
+                state: sourceColumn.state,
+                country: sourceColumn.country,
+                hometown: sourceColumn.hometown,
+                nationality: sourceColumn.nationality,
+                fromCity: sourceColumn.fromCity,
+                fromCountry: sourceColumn.fromCountry,
+              },
+            });
+
+            // Copy photo connections from source column
+            for (const sourcePhotoConnection of sourceColumn.mediaAssets) {
+              await tx.previewColumnMediaAsset.create({
+                data: {
+                  columnId: newColumn.id,
+                  mediaAssetId: sourcePhotoConnection.mediaAsset.id,
+                  order: sourcePhotoConnection.order,
+                },
+              });
+            }
+          }
+        }
+
+        return preview;
       });
     }),
 
@@ -84,16 +204,22 @@ export const profilePreviewsRouter = createTRPCRouter({
       z.object({
         id: z.string(),
         name: z.string().min(1).optional(),
-        description: z.string().optional(),
         public: z.boolean().optional(),
+        // Basic info
+        gender: z.nativeEnum(Gender).optional(),
+        age: z.number().optional(),
+        heightCm: z.number().optional(),
+        defaultBio: z.string().optional(),
+        // Work & Education
         jobTitle: z.string().optional(),
         company: z.string().optional(),
         school: z.string().optional(),
+        // Location
+        country: z.string().optional(),
         city: z.string().optional(),
         state: z.string().optional(),
-        country: z.string().optional(),
-        age: z.number().optional(),
-        defaultBio: z.string().optional(),
+        nationality: z.string().optional(),
+        hometown: z.string().optional(),
         fromCity: z.string().optional(),
         fromCountry: z.string().optional(),
       }),
@@ -128,6 +254,9 @@ export const profilePreviewsRouter = createTRPCRouter({
       z.object({
         previewId: z.string(),
         type: z.nativeEnum(DataProvider),
+        gender: z.nativeEnum(Gender).optional(),
+        age: z.number().optional(),
+        heightCm: z.number().optional(),
         bio: z.string().optional(),
         jobTitle: z.string().optional(),
         company: z.string().optional(),
@@ -135,7 +264,8 @@ export const profilePreviewsRouter = createTRPCRouter({
         city: z.string().optional(),
         state: z.string().optional(),
         country: z.string().optional(),
-        age: z.number().optional(),
+        hometown: z.string().optional(),
+        nationality: z.string().optional(),
         fromCity: z.string().optional(),
         fromCountry: z.string().optional(),
       }),
@@ -160,11 +290,16 @@ export const profilePreviewsRouter = createTRPCRouter({
       });
     }),
 
-  // Update column
-  updateColumn: protectedProcedure
+  // Create new column with photos copied from source column
+  createColumnWithPhotos: protectedProcedure
     .input(
       z.object({
-        id: z.string(),
+        previewId: z.string(),
+        sourceColumnId: z.string(),
+        type: z.nativeEnum(DataProvider),
+        gender: z.nativeEnum(Gender).optional(),
+        age: z.number().optional(),
+        heightCm: z.number().optional(),
         bio: z.string().optional(),
         jobTitle: z.string().optional(),
         company: z.string().optional(),
@@ -172,7 +307,100 @@ export const profilePreviewsRouter = createTRPCRouter({
         city: z.string().optional(),
         state: z.string().optional(),
         country: z.string().optional(),
+        hometown: z.string().optional(),
+        nationality: z.string().optional(),
+        fromCity: z.string().optional(),
+        fromCountry: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { previewId, sourceColumnId, ...columnData } = input;
+
+      return ctx.db.$transaction(async (tx) => {
+        // Verify the user owns both the preview and the source column
+        const [preview, sourceColumn] = await Promise.all([
+          tx.profilePreview.findFirst({
+            where: {
+              id: previewId,
+              userId: ctx.session.user.id,
+            },
+          }),
+          tx.previewColumn.findFirst({
+            where: {
+              id: sourceColumnId,
+              preview: { userId: ctx.session.user.id },
+            },
+            include: {
+              mediaAssets: {
+                orderBy: { order: "asc" },
+                include: {
+                  mediaAsset: true,
+                },
+              },
+            },
+          }),
+        ]);
+
+        if (!preview) {
+          throw new Error("Preview not found or not owned by user");
+        }
+
+        if (!sourceColumn) {
+          throw new Error("Source column not found or not owned by user");
+        }
+
+        // Get the next order number for the new column
+        const lastColumn = await tx.previewColumn.findFirst({
+          where: { previewId },
+          orderBy: { order: "desc" },
+        });
+
+        const order = (lastColumn?.order ?? 0) + 1;
+
+        // Create the new column
+        const newColumn = await tx.previewColumn.create({
+          data: {
+            ...columnData,
+            previewId,
+            order,
+          },
+        });
+
+        // Copy photo connections from source column
+        for (const sourcePhotoConnection of sourceColumn.mediaAssets) {
+          await tx.previewColumnMediaAsset.create({
+            data: {
+              columnId: newColumn.id,
+              mediaAssetId: sourcePhotoConnection.mediaAsset.id,
+              order: sourcePhotoConnection.order,
+            },
+          });
+        }
+
+        return newColumn;
+      });
+    }),
+
+  // Update column
+  updateColumn: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        // UI preferences
+        hideUnusedPhotoSlots: z.boolean().optional(),
+        // Profile info
+        gender: z.nativeEnum(Gender).optional(),
         age: z.number().optional(),
+        heightCm: z.number().optional(),
+        bio: z.string().optional(),
+        jobTitle: z.string().optional(),
+        company: z.string().optional(),
+        school: z.string().optional(),
+        city: z.string().optional(),
+        state: z.string().optional(),
+        country: z.string().optional(),
+        hometown: z.string().optional(),
+        nationality: z.string().optional(),
         fromCity: z.string().optional(),
         fromCountry: z.string().optional(),
       }),
@@ -213,6 +441,9 @@ export const profilePreviewsRouter = createTRPCRouter({
             id: columnId,
             preview: { userId: ctx.session.user.id },
           },
+          include: {
+            mediaAssets: { orderBy: { order: "desc" }, take: 1 }, // Get highest order
+          },
         }),
         ctx.db.mediaAsset.findFirst({
           where: {
@@ -230,13 +461,30 @@ export const profilePreviewsRouter = createTRPCRouter({
         throw new Error("Photo not found or not owned by user");
       }
 
-      // Use Prisma's connect to link the photo to the column
-      return ctx.db.previewColumn.update({
-        where: { id: columnId },
-        data: {
-          mediaAssets: {
-            connect: { id: mediaAssetId },
+      // Check if photo is already in this column
+      const existingConnection = await ctx.db.previewColumnMediaAsset.findFirst(
+        {
+          where: {
+            columnId,
+            mediaAssetId,
           },
+        },
+      );
+
+      if (existingConnection) {
+        throw new Error("Photo is already in this column");
+      }
+
+      // Get the next order number (highest + 1, or 0 if no photos)
+      const nextOrder =
+        column.mediaAssets.length > 0 ? column.mediaAssets[0]!.order + 1 : 0;
+
+      // Create the connection with proper order
+      return ctx.db.previewColumnMediaAsset.create({
+        data: {
+          columnId,
+          mediaAssetId,
+          order: nextOrder,
         },
       });
     }),
@@ -264,15 +512,42 @@ export const profilePreviewsRouter = createTRPCRouter({
         throw new Error("Column not found or not owned by user");
       }
 
-      // Use Prisma's disconnect to unlink the photo from the column
-      return ctx.db.previewColumn.update({
-        where: { id: columnId },
-        data: {
-          mediaAssets: {
-            disconnect: { id: mediaAssetId },
-          },
+      // Find the connection to delete
+      const connection = await ctx.db.previewColumnMediaAsset.findFirst({
+        where: {
+          columnId,
+          mediaAssetId,
         },
       });
+
+      if (!connection) {
+        throw new Error("Photo not found in this column");
+      }
+
+      // Delete the connection
+      await ctx.db.previewColumnMediaAsset.delete({
+        where: { id: connection.id },
+      });
+
+      // Reorder remaining photos to fill the gap
+      const remainingConnections =
+        await ctx.db.previewColumnMediaAsset.findMany({
+          where: { columnId },
+          orderBy: { order: "asc" },
+        });
+
+      // Update orders to be sequential (0, 1, 2, ...)
+      for (let i = 0; i < remainingConnections.length; i++) {
+        const connection = remainingConnections[i]!;
+        if (connection.order !== i) {
+          await ctx.db.previewColumnMediaAsset.update({
+            where: { id: connection.id },
+            data: { order: i },
+          });
+        }
+      }
+
+      return { success: true };
     }),
 
   // Legacy: Add photo directly (for bulk upload)
@@ -296,26 +571,39 @@ export const profilePreviewsRouter = createTRPCRouter({
           id: columnId,
           preview: { userId: ctx.session.user.id },
         },
+        include: {
+          mediaAssets: { orderBy: { order: "desc" }, take: 1 }, // Get highest order
+        },
       });
 
       if (!column) {
         throw new Error("Column not found or not owned by user");
       }
 
-      // Create photo in media library and connect to column in one operation
-      return ctx.db.previewColumn.update({
-        where: { id: columnId },
+      // Create the media asset first
+      const mediaAsset = await ctx.db.mediaAsset.create({
         data: {
-          mediaAssets: {
-            create: {
-              ...photoData,
-              userId: ctx.session.user.id,
-              tags: [], // Default empty tags
-              rating: 0, // Default rating
-            },
-          },
+          ...photoData,
+          userId: ctx.session.user.id,
+          tags: [], // Default empty tags
+          rating: 0, // Default rating
         },
       });
+
+      // Get the next order number
+      const nextOrder =
+        column.mediaAssets.length > 0 ? column.mediaAssets[0]!.order + 1 : 0;
+
+      // Create the connection with proper order
+      await ctx.db.previewColumnMediaAsset.create({
+        data: {
+          columnId,
+          mediaAssetId: mediaAsset.id,
+          order: nextOrder,
+        },
+      });
+
+      return mediaAsset;
     }),
 
   // Update photo
@@ -353,6 +641,59 @@ export const profilePreviewsRouter = createTRPCRouter({
           userId: ctx.session.user.id,
         },
       });
+    }),
+
+  // Swap photos in column
+  swapPhotos: protectedProcedure
+    .input(
+      z.object({
+        columnId: z.string(),
+        photoId1: z.string(),
+        photoId2: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { columnId, photoId1, photoId2 } = input;
+
+      // Verify the user owns the column
+      const column = await ctx.db.previewColumn.findFirst({
+        where: {
+          id: columnId,
+          preview: { userId: ctx.session.user.id },
+        },
+      });
+
+      if (!column) {
+        throw new Error("Column not found or not owned by user");
+      }
+
+      // Find both photo connections
+      const [connection1, connection2] = await Promise.all([
+        ctx.db.previewColumnMediaAsset.findFirst({
+          where: { columnId, mediaAssetId: photoId1 },
+        }),
+        ctx.db.previewColumnMediaAsset.findFirst({
+          where: { columnId, mediaAssetId: photoId2 },
+        }),
+      ]);
+
+      if (!connection1 || !connection2) {
+        throw new Error("One or both photos not found in column");
+      }
+
+      // Swap the order values directly
+      await Promise.all([
+        ctx.db.previewColumnMediaAsset.update({
+          where: { id: connection1.id },
+          data: { order: connection2.order },
+        }),
+        ctx.db.previewColumnMediaAsset.update({
+          where: { id: connection2.id },
+          data: { order: connection1.order },
+        }),
+      ]);
+
+      return { success: true };
     }),
 
   // Add prompt to column (create new prompt and link to column)

@@ -42,9 +42,19 @@ export const mediaLibraryRouter = createTRPCRouter({
         orderBy: { createdAt: "desc" },
         include: {
           previewColumns: {
-            include: {
-              preview: {
-                select: { name: true },
+            select: {
+              id: true,
+              column: {
+                select: {
+                  id: true,
+                  type: true,
+                  preview: {
+                    select: {
+                      id: true,
+                      name: true,
+                    },
+                  },
+                },
               },
             },
           },

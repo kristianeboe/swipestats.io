@@ -4,13 +4,15 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/app/_components/ui/button";
 import { ResponsiveDialog } from "@/app/_components/ui/compound/ResponsiveDialog";
-import { ArrowLeft, Settings, Share } from "lucide-react";
+import { ArrowLeft, Settings, Share, Plus, Sparkles } from "lucide-react";
 import { api } from "@/trpc/react";
 import { ProfilePreview } from "./ProfilePreview";
 import { CreateColumnForm } from "./CreateColumnForm";
 import { EditColumnForm } from "./EditColumnForm";
+import { CreatePreviewForm } from "../CreatePreviewForm";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Card, CardContent } from "@/app/_components/ui/card";
 
 export default function ProfilePreviewPage() {
   const params = useParams();
@@ -19,6 +21,7 @@ export default function ProfilePreviewPage() {
 
   const [isAddColumnOpen, setIsAddColumnOpen] = useState(false);
   const [editingColumnId, setEditingColumnId] = useState<string | null>(null);
+  const [isCreatePreviewOpen, setIsCreatePreviewOpen] = useState(false);
 
   // Fetch preview data
   const {
@@ -66,6 +69,11 @@ export default function ProfilePreviewPage() {
     void utils.profilePreviews.getById.invalidate({ id: previewId });
   };
 
+  const handleCreatePreviewSuccess = (newPreviewId: string) => {
+    setIsCreatePreviewOpen(false);
+    router.push(`/app/profile-previews/${newPreviewId}`);
+  };
+
   const editingColumn = editingColumnId
     ? preview?.columns.find((col) => col.id === editingColumnId)
     : null;
@@ -104,7 +112,7 @@ export default function ProfilePreviewPage() {
         </div>
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
-            <p className="text-muted-foreground mb-4">
+            <p className="mb-4 text-muted-foreground">
               {error?.message || "Preview not found"}
             </p>
             <Button asChild>
@@ -116,6 +124,9 @@ export default function ProfilePreviewPage() {
     );
   }
 
+  // Check if this preview has no columns (empty state)
+  const hasNoColumns = preview.columns.length === 0;
+
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header */}
@@ -125,6 +136,16 @@ export default function ProfilePreviewPage() {
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Previews
           </Link>
+        </Button>
+
+        {/* Add New Preview CTA */}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setIsCreatePreviewOpen(true)}
+        >
+          <Plus className="mr-2 h-4 w-4" />
+          New Preview
         </Button>
 
         <div className="flex-1">
@@ -154,12 +175,79 @@ export default function ProfilePreviewPage() {
         </div>
       </div>
 
-      {/* Profile Preview Component */}
-      <ProfilePreview
-        preview={preview}
-        onEditColumn={handleEditColumn}
-        onAddColumn={handleAddColumn}
-      />
+      {/* Empty State or Profile Preview */}
+      {hasNoColumns ? (
+        <Card className="border-2 border-dashed border-gray-200">
+          <CardContent className="flex flex-col items-center justify-center py-20">
+            <div className="max-w-md space-y-6 text-center">
+              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-pink-500 to-purple-600">
+                <Sparkles className="h-10 w-10 text-white" />
+              </div>
+
+              <div className="space-y-2">
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Ready to create magic? ✨
+                </h2>
+                <p className="text-lg text-gray-600">
+                  Start building your perfect dating profile variations
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <p className="text-sm text-gray-500">
+                  Compare how your profile looks across different dating apps
+                  like Tinder, Hinge, and Bumble
+                </p>
+
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg transition-all hover:from-pink-600 hover:to-purple-700 hover:shadow-xl"
+                  onClick={handleAddColumn}
+                >
+                  <Plus className="mr-2 h-5 w-5" />
+                  Add Your First App Variation
+                </Button>
+              </div>
+
+              <div className="grid grid-cols-3 gap-4 pt-4">
+                <div className="text-center">
+                  <div className="mb-1 text-2xl">🔥</div>
+                  <p className="text-xs text-gray-500">Tinder</p>
+                </div>
+                <div className="text-center">
+                  <div className="mb-1 text-2xl">🔒</div>
+                  <p className="text-xs text-gray-500">Hinge</p>
+                </div>
+                <div className="text-center">
+                  <div className="mb-1 text-2xl">🐝</div>
+                  <p className="text-xs text-gray-500">Bumble</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      ) : (
+        <ProfilePreview
+          preview={preview}
+          onEditColumn={handleEditColumn}
+          onAddColumn={handleAddColumn}
+        />
+      )}
+
+      {/* Create New Preview Dialog */}
+      <ResponsiveDialog
+        open={isCreatePreviewOpen}
+        onOpenChange={setIsCreatePreviewOpen}
+        title="Create New Profile Preview"
+        description="Start a new profile comparison"
+        className="max-w-2xl"
+        scrollable={true}
+      >
+        <CreatePreviewForm
+          onSuccess={handleCreatePreviewSuccess}
+          onCancel={() => setIsCreatePreviewOpen(false)}
+        />
+      </ResponsiveDialog>
 
       {/* Add Column Dialog */}
       <ResponsiveDialog
@@ -185,7 +273,7 @@ export default function ProfilePreviewPage() {
           onOpenChange={(open) => !open && setEditingColumnId(null)}
           title="Edit App Variation"
           description="Modify this profile variation"
-          className="max-w-4xl"
+          className="max-w-6xl"
           scrollable={true}
         >
           <EditColumnForm

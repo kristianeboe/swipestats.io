@@ -13,7 +13,7 @@ const CheckboxTag = React.forwardRef<
   <CheckboxPrimitive.Root
     ref={ref}
     className={cn(
-      "peer h-4 w-4 shrink-0 rounded-sm border border-rose-200 ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-rose-500 data-[state=checked]:text-rose-50 dark:border-rose-50 dark:border-rose-800 dark:ring-offset-rose-950 dark:focus-visible:ring-rose-300 dark:data-[state=checked]:bg-rose-50 dark:data-[state=checked]:text-rose-900",
+      "border-primary ring-offset-background focus-visible:ring-ring data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground peer h-4 w-4 shrink-0 rounded-sm border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
       className,
     )}
     {...props}
@@ -46,9 +46,9 @@ const TagBadge = React.forwardRef<
         "text-sm",
         "inline-flex cursor-pointer select-none items-center justify-center rounded-full px-3 py-1",
         checked
-          ? "bg-rose-500 text-rose-50 dark:bg-rose-50 dark:text-rose-900"
-          : "bg-rose-100 text-rose-900 dark:bg-rose-900 dark:text-rose-100",
-        "hover:bg-rose-200 dark:hover:bg-rose-800",
+          ? "bg-primary text-primary-foreground"
+          : "bg-secondary text-secondary-foreground",
+        "hover:bg-accent hover:text-accent-foreground",
         "transition-colors duration-200",
         className,
       )}
@@ -70,7 +70,7 @@ const Checkbox = React.forwardRef<
   <CheckboxPrimitive.Root
     ref={ref}
     className={cn(
-      "peer h-4 w-4 shrink-0 rounded-sm border border-rose-200 ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-rose-500 data-[state=checked]:text-rose-50 dark:border-rose-50 dark:border-rose-800 dark:ring-offset-rose-950 dark:focus-visible:ring-rose-300 dark:data-[state=checked]:bg-rose-50 dark:data-[state=checked]:text-rose-900",
+      "border-primary ring-offset-background focus-visible:ring-ring data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground peer h-4 w-4 shrink-0 rounded-sm border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
       className,
     )}
     {...props}
@@ -109,7 +109,7 @@ export function CheckboxWithLabel(props: {
           {props.label}
         </label>
         {props.description && (
-          <p className="text-sm text-gray-400">{props.description}</p>
+          <p className="text-muted-foreground text-sm">{props.description}</p>
         )}
       </div>
     </div>
