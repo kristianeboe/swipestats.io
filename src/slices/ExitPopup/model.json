@@ -1,0 +1,127 @@
+{
+  "id": "exit_popup",
+  "type": "SharedSlice",
+  "name": "ExitPopup",
+  "description": "ExitPopup",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "triggerdelay": {
+          "type": "Number",
+          "config": {
+            "label": "TriggerDelay",
+            "placeholder": "3000"
+          }
+        },
+        "title": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Title",
+            "placeholder": "main popup heading",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "subtitle": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Subtitle",
+            "placeholder": "popup description",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "offertext": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Description",
+            "placeholder": "Main popup description/ value proposition",
+            "allowTargetBlank": true,
+            "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "buttontext": {
+          "type": "StructuredText",
+          "config": {
+            "label": "ButtonText",
+            "placeholder": "main CTA button",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "buttonlink": {
+          "type": "Link",
+          "config": {
+            "label": "ButtonLink",
+            "placeholder": "where CTA button leads to",
+            "select": null,
+            "allowTargetBlank": true,
+            "allowText": true,
+            "repeat": false
+          }
+        },
+        "closebuttontext": {
+          "type": "StructuredText",
+          "config": {
+            "label": "CloseButtonText",
+            "placeholder": "Maybe later",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        }
+      },
+      "items": {
+        "stat_text": {
+          "type": "Text",
+          "config": {
+            "label": "Stat Text",
+            "placeholder": "10,000+ photos created"
+          }
+        },
+        "stat_icon": {
+          "type": "Select",
+          "config": {
+            "label": "Stat Icon",
+            "options": [
+              "star",
+              "clock"
+            ],
+            "default_value": "star"
+          }
+        },
+        "trust_text": {
+          "type": "Text",
+          "config": {
+            "label": "Trust Text (Full)",
+            "placeholder": "Secure payment"
+          }
+        },
+        "trust_text_mobile": {
+          "type": "Text",
+          "config": {
+            "label": "Trust Text (Mobile)",
+            "placeholder": "Secure"
+          }
+        },
+        "trust_icon": {
+          "type": "Select",
+          "config": {
+            "label": "Trust Icon",
+            "options": [
+              "lock",
+              "check",
+              "shield"
+            ],
+            "default_value": "lock"
+          }
+        }
+      }
+    }
+  ]
+}

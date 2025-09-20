@@ -1,0 +1,107 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"title": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Stop Wasting Money on Dating Apps",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"description": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Swipestats data reveals the real issues. Check out our products designed to taking your dating game to the next level! ",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"primarybuttonlink": {
+				"key": "b143eb33-25c0-4e2d-a95c-8b189c4fdae9",
+				"__TYPE__": "LinkContent",
+				"value": {
+					"__TYPE__": "ExternalLink",
+					"url": "https://www.swipestats.io/",
+					"text": "Data Visualization"
+				}
+			},
+			"secondarybuttontext": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Dating Profile Review",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"secondarybuttonlink": {
+				"key": "65c4f7a7-8c06-4f8f-9b60-a7c6b4de95b7",
+				"__TYPE__": "LinkContent",
+				"value": {
+					"__TYPE__": "ExternalLink",
+					"url": "https://www.swipestats.io/products/dating-profile-review",
+					"text": "Profile Review"
+				}
+			},
+			"thirdbuttontext": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "Dating App Stats"
+			},
+			"fourthbuttontext": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "Join Our Newsletter"
+			},
+			"thirdbuttonlink": {
+				"key": "65642f56-9dc7-4f63-8580-6ea8f0d74730",
+				"__TYPE__": "LinkContent",
+				"value": {
+					"__TYPE__": "ExternalLink",
+					"url": "https://swipestats.io",
+					"text": "Dating Photos"
+				}
+			},
+			"fourthbuttonlink": {
+				"key": "dce00cb2-01ca-4977-9437-51c76e7a3092",
+				"__TYPE__": "LinkContent",
+				"value": {
+					"__TYPE__": "ExternalLink",
+					"url": "https://www.swipestats.io/newsletter",
+					"text": "Newsletter"
+				}
+			},
+			"primarybutton": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "AI Dating Photos",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			}
+		},
+		"items": []
+	}
+]

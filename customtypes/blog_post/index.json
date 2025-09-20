@@ -45,6 +45,9 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "get_dates_product_links": {
+              "type": "SharedSlice"
+            },
             "cta_section": {
               "type": "SharedSlice"
             },

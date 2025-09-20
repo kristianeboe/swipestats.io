@@ -1,0 +1,113 @@
+{
+  "id": "sidebar_cta",
+  "type": "SharedSlice",
+  "name": "SidebarCta",
+  "description": "SidebarCta",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "title": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Title",
+            "placeholder": "Stop Wasting Money on Dating Apps",
+            "allowTargetBlank": true,
+            "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "description": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Description",
+            "placeholder": "Fix the real problem instead. Our undetectable AI photos show you from your best side.",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "primarybutton": {
+          "type": "StructuredText",
+          "config": {
+            "label": "PrimaryButtonText",
+            "placeholder": "Check It Out",
+            "allowTargetBlank": true,
+            "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "primarybuttonlink": {
+          "type": "Link",
+          "config": {
+            "label": "PrimaryButtonLink",
+            "placeholder": "main CTA destination",
+            "select": null,
+            "allowTargetBlank": true,
+            "allowText": true,
+            "repeat": false
+          }
+        },
+        "secondarybuttontext": {
+          "type": "StructuredText",
+          "config": {
+            "label": "SecondaryButtonText",
+            "placeholder": "Or Join Our Newsletter",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "secondarybuttonlink": {
+          "type": "Link",
+          "config": {
+            "label": "SecondaryButtonLink",
+            "placeholder": "newsletter signup destination",
+            "select": null,
+            "allowTargetBlank": true,
+            "allowText": true,
+            "repeat": false
+          }
+        },
+        "thirdbuttontext": {
+          "type": "Text",
+          "config": {
+            "label": "thirdbuttontext",
+            "placeholder": ""
+          }
+        },
+        "thirdbuttonlink": {
+          "type": "Link",
+          "config": {
+            "label": "thirdbuttonlink",
+            "placeholder": "",
+            "select": null,
+            "allowTargetBlank": true,
+            "allowText": true,
+            "repeat": false
+          }
+        },
+        "fourthbuttontext": {
+          "type": "Text",
+          "config": {
+            "label": "fourthbuttontext",
+            "placeholder": ""
+          }
+        },
+        "fourthbuttonlink": {
+          "type": "Link",
+          "config": {
+            "label": "fourthbuttonlink",
+            "placeholder": "",
+            "select": null,
+            "allowTargetBlank": true,
+            "allowText": true,
+            "repeat": false
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}

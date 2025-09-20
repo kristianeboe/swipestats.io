@@ -156,6 +156,7 @@ export type AuthorDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithUID<Simplify<AuthorDocumentData>, "author", Lang>;
 
 type BlogPostDocumentDataSlicesSlice =
+  | GetDatesProductLinksSlice
   | CtaSectionSlice
   | ImageSectionSlice
   | VideoSlice
@@ -592,7 +593,13 @@ export interface AuthorBoxSliceDefaultPrimary {
    * - **API ID Path**: author_box.default.primary.author_instagram
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  author_instagram: prismic.LinkField;
+  author_instagram: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 
   /**
    * Author LinkedIn field in *AuthorBox → Default → Primary*
@@ -602,7 +609,13 @@ export interface AuthorBoxSliceDefaultPrimary {
    * - **API ID Path**: author_box.default.primary.author_linkedin
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  author_linkedin: prismic.LinkField;
+  author_linkedin: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 
   /**
    * Author X field in *AuthorBox → Default → Primary*
@@ -612,7 +625,13 @@ export interface AuthorBoxSliceDefaultPrimary {
    * - **API ID Path**: author_box.default.primary.author_x
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  author_x: prismic.LinkField;
+  author_x: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 }
 
 /**
@@ -687,7 +706,13 @@ export interface BannerSliceDefaultPrimary {
    * - **API ID Path**: banner.default.primary.cta_link
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  cta_link: prismic.LinkField;
+  cta_link: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 }
 
 /**
@@ -745,7 +770,13 @@ export interface BannerSliceOnBrandPrimary {
    * - **API ID Path**: banner.onBrand.primary.cta_link
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  cta_link: prismic.LinkField;
+  cta_link: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 }
 
 /**
@@ -1273,6 +1304,151 @@ export type ContentWithTestimonialsAndStatsSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Item in *CtaFooter → Default → Primary → Before Images*
+ */
+export interface CtaFooterSliceDefaultPrimaryBeforeimagesItem {
+  /**
+   * Before Image field in *CtaFooter → Default → Primary → Before Images*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_footer.default.primary.beforeimages[].image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+}
+
+/**
+ * Item in *CtaFooter → Default → Primary → After Images*
+ */
+export interface CtaFooterSliceDefaultPrimaryAfterimagesItem {
+  /**
+   * After Image field in *CtaFooter → Default → Primary → After Images*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_footer.default.primary.afterimages[].image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+}
+
+/**
+ * Primary content in *CtaFooter → Default → Primary*
+ */
+export interface CtaFooterSliceDefaultPrimary {
+  /**
+   * Title field in *CtaFooter → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Transform Your Dating Profile
+   * - **API ID Path**: cta_footer.default.primary.title
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  title: prismic.RichTextField;
+
+  /**
+   * Subtitle field in *CtaFooter → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Our AI turns your ordinary photos into optimal dating profile pictures that get results
+   * - **API ID Path**: cta_footer.default.primary.subtitle
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  subtitle: prismic.RichTextField;
+
+  /**
+   * Description field in *CtaFooter → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Upload your photos and get professionally enhanced versions in 48 hours
+   * - **API ID Path**: cta_footer.default.primary.description
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  description: prismic.RichTextField;
+
+  /**
+   * ButtonText field in *CtaFooter → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Check It Out
+   * - **API ID Path**: cta_footer.default.primary.buttontext
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  buttontext: prismic.RichTextField;
+
+  /**
+   * ButtonLink field in *CtaFooter → Default → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: main CTA destination
+   * - **API ID Path**: cta_footer.default.primary.buttonlink
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  buttonlink: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
+
+  /**
+   * Before Images field in *CtaFooter → Default → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_footer.default.primary.beforeimages[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  beforeimages: prismic.GroupField<
+    Simplify<CtaFooterSliceDefaultPrimaryBeforeimagesItem>
+  >;
+
+  /**
+   * After Images field in *CtaFooter → Default → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: cta_footer.default.primary.afterimages[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  afterimages: prismic.GroupField<
+    Simplify<CtaFooterSliceDefaultPrimaryAfterimagesItem>
+  >;
+}
+
+/**
+ * Default variation for CtaFooter Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type CtaFooterSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<CtaFooterSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *CtaFooter*
+ */
+type CtaFooterSliceVariation = CtaFooterSliceDefault;
+
+/**
+ * CtaFooter Shared Slice
+ *
+ * - **API ID**: `cta_footer`
+ * - **Description**: CtaFooter
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type CtaFooterSlice = prismic.SharedSlice<
+  "cta_footer",
+  CtaFooterSliceVariation
+>;
+
+/**
  * Primary content in *Cta → Default → Primary*
  */
 export interface CtaInfoSliceDefaultPrimary {
@@ -1314,7 +1490,7 @@ export interface CtaInfoSliceDefaultPrimary {
    * - **API ID Path**: cta_info.default.primary.link
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  link: prismic.LinkField;
+  link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 
   /**
    * Image field in *Cta → Default → Primary*
@@ -1392,7 +1568,7 @@ export interface CtaInfoSliceVisualizeYourTinderDataPrimary {
    * - **API ID Path**: cta_info.visualizeYourTinderData.primary.link
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  link: prismic.LinkField;
+  link: prismic.LinkField<string, string, unknown, prismic.FieldState, never>;
 
   /**
    * Image field in *Cta → Visualize your Tinder data → Primary*
@@ -1489,7 +1665,13 @@ export interface CtaSectionSliceDefaultPrimary {
    * - **API ID Path**: cta_section.default.primary.cta_href
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  cta_href: prismic.LinkField;
+  cta_href: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 
   /**
    * Secondary Cta Label field in *CtaSection → Default → Primary*
@@ -1509,7 +1691,13 @@ export interface CtaSectionSliceDefaultPrimary {
    * - **API ID Path**: cta_section.default.primary.secondary_cta_href
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  secondary_cta_href: prismic.LinkField;
+  secondary_cta_href: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 }
 
 /**
@@ -1567,7 +1755,13 @@ export interface CtaSectionSliceSimpleCenteredPrimary {
    * - **API ID Path**: cta_section.simpleCentered.primary.cta_href
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  cta_href: prismic.LinkField;
+  cta_href: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 
   /**
    * Secondary Cta Label field in *CtaSection → Simple Centered → Primary*
@@ -1587,7 +1781,13 @@ export interface CtaSectionSliceSimpleCenteredPrimary {
    * - **API ID Path**: cta_section.simpleCentered.primary.secondary_cta_href
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  secondary_cta_href: prismic.LinkField;
+  secondary_cta_href: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 }
 
 /**
@@ -1663,6 +1863,174 @@ type EmbedSliceVariation = EmbedSliceDefault;
  * - **Documentation**: https://prismic.io/docs/slice
  */
 export type EmbedSlice = prismic.SharedSlice<"embed", EmbedSliceVariation>;
+
+/**
+ * Primary content in *ExitPopup → Default → Primary*
+ */
+export interface ExitPopupSliceDefaultPrimary {
+  /**
+   * TriggerDelay field in *ExitPopup → Default → Primary*
+   *
+   * - **Field Type**: Number
+   * - **Placeholder**: 3000
+   * - **API ID Path**: exit_popup.default.primary.triggerdelay
+   * - **Documentation**: https://prismic.io/docs/field#number
+   */
+  triggerdelay: prismic.NumberField;
+
+  /**
+   * Title field in *ExitPopup → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: main popup heading
+   * - **API ID Path**: exit_popup.default.primary.title
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  title: prismic.RichTextField;
+
+  /**
+   * Subtitle field in *ExitPopup → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: popup description
+   * - **API ID Path**: exit_popup.default.primary.subtitle
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  subtitle: prismic.RichTextField;
+
+  /**
+   * Description field in *ExitPopup → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Main popup description/ value proposition
+   * - **API ID Path**: exit_popup.default.primary.offertext
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  offertext: prismic.RichTextField;
+
+  /**
+   * ButtonText field in *ExitPopup → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: main CTA button
+   * - **API ID Path**: exit_popup.default.primary.buttontext
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  buttontext: prismic.RichTextField;
+
+  /**
+   * ButtonLink field in *ExitPopup → Default → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: where CTA button leads to
+   * - **API ID Path**: exit_popup.default.primary.buttonlink
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  buttonlink: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
+
+  /**
+   * CloseButtonText field in *ExitPopup → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Maybe later
+   * - **API ID Path**: exit_popup.default.primary.closebuttontext
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  closebuttontext: prismic.RichTextField;
+}
+
+/**
+ * Primary content in *ExitPopup → Items*
+ */
+export interface ExitPopupSliceDefaultItem {
+  /**
+   * Stat Text field in *ExitPopup → Items*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: 10,000+ photos created
+   * - **API ID Path**: exit_popup.items[].stat_text
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  stat_text: prismic.KeyTextField;
+
+  /**
+   * Stat Icon field in *ExitPopup → Items*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **Default Value**: star
+   * - **API ID Path**: exit_popup.items[].stat_icon
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  stat_icon: prismic.SelectField<"star" | "clock", "filled">;
+
+  /**
+   * Trust Text (Full) field in *ExitPopup → Items*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Secure payment
+   * - **API ID Path**: exit_popup.items[].trust_text
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  trust_text: prismic.KeyTextField;
+
+  /**
+   * Trust Text (Mobile) field in *ExitPopup → Items*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Secure
+   * - **API ID Path**: exit_popup.items[].trust_text_mobile
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  trust_text_mobile: prismic.KeyTextField;
+
+  /**
+   * Trust Icon field in *ExitPopup → Items*
+   *
+   * - **Field Type**: Select
+   * - **Placeholder**: *None*
+   * - **Default Value**: lock
+   * - **API ID Path**: exit_popup.items[].trust_icon
+   * - **Documentation**: https://prismic.io/docs/field#select
+   */
+  trust_icon: prismic.SelectField<"lock" | "check" | "shield", "filled">;
+}
+
+/**
+ * Default variation for ExitPopup Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ExitPopupSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<ExitPopupSliceDefaultPrimary>,
+  Simplify<ExitPopupSliceDefaultItem>
+>;
+
+/**
+ * Slice variation for *ExitPopup*
+ */
+type ExitPopupSliceVariation = ExitPopupSliceDefault;
+
+/**
+ * ExitPopup Shared Slice
+ *
+ * - **API ID**: `exit_popup`
+ * - **Description**: ExitPopup
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type ExitPopupSlice = prismic.SharedSlice<
+  "exit_popup",
+  ExitPopupSliceVariation
+>;
 
 /**
  * Item in *Faq → Default → Primary → Questions And Answers*
@@ -1957,6 +2325,124 @@ export type FeaturesSectionSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Item in *GetDatesProductLinks → Default → Primary → Product Images*
+ */
+export interface GetDatesProductLinksSliceDefaultPrimaryProductImagesItem {
+  /**
+   * Image field in *GetDatesProductLinks → Default → Primary → Product Images*
+   *
+   * - **Field Type**: Image
+   * - **Placeholder**: *None*
+   * - **API ID Path**: get_dates_product_links.default.primary.product_images[].image
+   * - **Documentation**: https://prismic.io/docs/field#image
+   */
+  image: prismic.ImageField<never>;
+}
+
+/**
+ * Primary content in *GetDatesProductLinks → Default → Primary*
+ */
+export interface GetDatesProductLinksSliceDefaultPrimary {
+  /**
+   * Title field in *GetDatesProductLinks → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Title
+   * - **API ID Path**: get_dates_product_links.default.primary.title
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  title: prismic.RichTextField;
+
+  /**
+   * Description field in *GetDatesProductLinks → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Description
+   * - **API ID Path**: get_dates_product_links.default.primary.description
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  description: prismic.RichTextField;
+
+  /**
+   * Button Text field in *GetDatesProductLinks → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: get_dates_product_links.default.primary.button_text
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  button_text: prismic.KeyTextField;
+
+  /**
+   * CTA Link field in *GetDatesProductLinks → Default → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: get_dates_product_links.default.primary.cta_link
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  cta_link: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
+
+  /**
+   * Product Images field in *GetDatesProductLinks → Default → Primary*
+   *
+   * - **Field Type**: Group
+   * - **Placeholder**: *None*
+   * - **API ID Path**: get_dates_product_links.default.primary.product_images[]
+   * - **Documentation**: https://prismic.io/docs/field#group
+   */
+  product_images: prismic.GroupField<
+    Simplify<GetDatesProductLinksSliceDefaultPrimaryProductImagesItem>
+  >;
+
+  /**
+   * Features List field in *GetDatesProductLinks → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: get_dates_product_links.default.primary.features_list
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  features_list: prismic.RichTextField;
+}
+
+/**
+ * Default variation for GetDatesProductLinks Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type GetDatesProductLinksSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<GetDatesProductLinksSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *GetDatesProductLinks*
+ */
+type GetDatesProductLinksSliceVariation = GetDatesProductLinksSliceDefault;
+
+/**
+ * GetDatesProductLinks Shared Slice
+ *
+ * - **API ID**: `get_dates_product_links`
+ * - **Description**: GetDatesProductLinks
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type GetDatesProductLinksSlice = prismic.SharedSlice<
+  "get_dates_product_links",
+  GetDatesProductLinksSliceVariation
+>;
+
+/**
  * Primary content in *HeadingWithSubHeading → H1WithSubheading → Primary*
  */
 export interface H1WithSubHeadingSliceDefaultPrimary {
@@ -2069,7 +2555,13 @@ export interface HeroSectionSliceDefaultPrimary {
    * - **API ID Path**: hero_section.default.primary.primaryctabuttonhref
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  primaryctabuttonhref: prismic.LinkField;
+  primaryctabuttonhref: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 
   /**
    * CtaLinkText field in *HeroSection → Default → Primary*
@@ -2089,7 +2581,13 @@ export interface HeroSectionSliceDefaultPrimary {
    * - **API ID Path**: hero_section.default.primary.ctalinkHref
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  ctalinkHref: prismic.LinkField;
+  ctalinkHref: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 
   /**
    * Image1 field in *HeroSection → Default → Primary*
@@ -2207,7 +2705,13 @@ export interface HeroSectionSliceWithRichTextPrimary {
    * - **API ID Path**: hero_section.withRichText.primary.primaryctabuttonhref
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  primaryctabuttonhref: prismic.LinkField;
+  primaryctabuttonhref: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 
   /**
    * CtaLinkText field in *HeroSection → WithRichText → Primary*
@@ -2227,7 +2731,13 @@ export interface HeroSectionSliceWithRichTextPrimary {
    * - **API ID Path**: hero_section.withRichText.primary.ctalinkHref
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  ctalinkHref: prismic.LinkField;
+  ctalinkHref: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 
   /**
    * Image1 field in *HeroSection → WithRichText → Primary*
@@ -2325,7 +2835,13 @@ export interface HeroSectionSliceWithAngledImageOnRightPrimary {
    * - **API ID Path**: hero_section.withAngledImageOnRight.primary.title_eyebrow_cta_link
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  title_eyebrow_cta_link: prismic.LinkField;
+  title_eyebrow_cta_link: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 
   /**
    * Title field in *HeroSection → With angled image on right → Primary*
@@ -2365,7 +2881,13 @@ export interface HeroSectionSliceWithAngledImageOnRightPrimary {
    * - **API ID Path**: hero_section.withAngledImageOnRight.primary.primaryctabuttonhref
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  primaryctabuttonhref: prismic.LinkField;
+  primaryctabuttonhref: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 
   /**
    * CtaLinkText field in *HeroSection → With angled image on right → Primary*
@@ -2385,7 +2907,13 @@ export interface HeroSectionSliceWithAngledImageOnRightPrimary {
    * - **API ID Path**: hero_section.withAngledImageOnRight.primary.ctalinkHref
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  ctalinkHref: prismic.LinkField;
+  ctalinkHref: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 
   /**
    * Image field in *HeroSection → With angled image on right → Primary*
@@ -2454,7 +2982,13 @@ export interface HeroSectionSliceSimplePrimary {
    * - **API ID Path**: hero_section.simple.primary.primaryctabuttonhref
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  primaryctabuttonhref: prismic.LinkField;
+  primaryctabuttonhref: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 
   /**
    * Image1 field in *HeroSection → simple → Primary*
@@ -2522,7 +3056,13 @@ export interface HeroSectionSliceSimpleimageleftPrimary {
    * - **API ID Path**: hero_section.simpleimageleft.primary.primaryctabuttonhref
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  primaryctabuttonhref: prismic.LinkField;
+  primaryctabuttonhref: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 
   /**
    * Image1 field in *HeroSection → simpleimageleft → Primary*
@@ -2669,6 +3209,101 @@ type LogoCloudSliceVariation = LogoCloudSliceDefault;
 export type LogoCloudSlice = prismic.SharedSlice<
   "logo_cloud",
   LogoCloudSliceVariation
+>;
+
+/**
+ * Primary content in *NewsletterCta → Default → Primary*
+ */
+export interface NewsletterCtaSliceDefaultPrimary {
+  /**
+   * Title field in *NewsletterCta → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: 💡 Expert Dating Insights
+   * - **API ID Path**: newsletter_cta.default.primary.title
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  title: prismic.RichTextField;
+
+  /**
+   * Description field in *NewsletterCta → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Join thousands getting insider data and optimization tips from our SwipeStats dating experts.
+   * - **API ID Path**: newsletter_cta.default.primary.description
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  description: prismic.RichTextField;
+
+  /**
+   * ButtonText field in *NewsletterCta → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: Join SwipeStats Community
+   * - **API ID Path**: newsletter_cta.default.primary.buttontext
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  buttontext: prismic.KeyTextField;
+
+  /**
+   * PlaceHolderText field in *NewsletterCta → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: your@email.com
+   * - **API ID Path**: newsletter_cta.default.primary.placeholdertext
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  placeholdertext: prismic.RichTextField;
+
+  /**
+   * PrivacyText field in *NewsletterCta → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: No spam. Unsubscribe anytime.
+   * - **API ID Path**: newsletter_cta.default.primary.privacytext
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  privacytext: prismic.RichTextField;
+
+  /**
+   * SuccessMessage field in *NewsletterCta → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Subscribed! Check your email 🎉
+   * - **API ID Path**: newsletter_cta.default.primary.successmessage
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  successmessage: prismic.RichTextField;
+}
+
+/**
+ * Default variation for NewsletterCta Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type NewsletterCtaSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<NewsletterCtaSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *NewsletterCta*
+ */
+type NewsletterCtaSliceVariation = NewsletterCtaSliceDefault;
+
+/**
+ * NewsletterCta Shared Slice
+ *
+ * - **API ID**: `newsletter_cta`
+ * - **Description**: NewsletterCta
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type NewsletterCtaSlice = prismic.SharedSlice<
+  "newsletter_cta",
+  NewsletterCtaSliceVariation
 >;
 
 /**
@@ -2828,7 +3463,13 @@ export interface PricingSectionSliceSingleTierPrimary {
    * - **API ID Path**: pricing_section.singleTier.primary.cta_link
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  cta_link: prismic.LinkField;
+  cta_link: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 
   /**
    * Cta Label field in *PricingSection → Single Tier → Primary*
@@ -2916,7 +3557,13 @@ export interface PricingSectionSliceThreeTiersWithDividersPrimary {
    * - **API ID Path**: pricing_section.threeTiersWithDividers.primary.tier_1_cta_href
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  tier_1_cta_href: prismic.LinkField;
+  tier_1_cta_href: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 
   /**
    * Tier 1 Features field in *PricingSection → Three tiers with dividers → Primary*
@@ -2948,7 +3595,13 @@ export interface PricingSectionSliceThreeTiersWithDividersPrimary {
    * - **API ID Path**: pricing_section.threeTiersWithDividers.primary.tier_2_cta_href
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  tier_2_cta_href: prismic.LinkField;
+  tier_2_cta_href: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 
   /**
    * Tier 2 Features field in *PricingSection → Three tiers with dividers → Primary*
@@ -2980,7 +3633,13 @@ export interface PricingSectionSliceThreeTiersWithDividersPrimary {
    * - **API ID Path**: pricing_section.threeTiersWithDividers.primary.tier_3_cta_href
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  tier_3_cta_href: prismic.LinkField;
+  tier_3_cta_href: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 
   /**
    * Tier 3 Features field in *PricingSection → Three tiers with dividers → Primary*
@@ -3227,6 +3886,165 @@ export type SectionWithHeadingSlice = prismic.SharedSlice<
 >;
 
 /**
+ * Primary content in *SidebarCta → Default → Primary*
+ */
+export interface SidebarCtaSliceDefaultPrimary {
+  /**
+   * Title field in *SidebarCta → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Stop Wasting Money on Dating Apps
+   * - **API ID Path**: sidebar_cta.default.primary.title
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  title: prismic.RichTextField;
+
+  /**
+   * Description field in *SidebarCta → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Fix the real problem instead. Our undetectable AI photos show you from your best side.
+   * - **API ID Path**: sidebar_cta.default.primary.description
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  description: prismic.RichTextField;
+
+  /**
+   * PrimaryButtonText field in *SidebarCta → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Check It Out
+   * - **API ID Path**: sidebar_cta.default.primary.primarybutton
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  primarybutton: prismic.RichTextField;
+
+  /**
+   * PrimaryButtonLink field in *SidebarCta → Default → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: main CTA destination
+   * - **API ID Path**: sidebar_cta.default.primary.primarybuttonlink
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  primarybuttonlink: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
+
+  /**
+   * SecondaryButtonText field in *SidebarCta → Default → Primary*
+   *
+   * - **Field Type**: Rich Text
+   * - **Placeholder**: Or Join Our Newsletter
+   * - **API ID Path**: sidebar_cta.default.primary.secondarybuttontext
+   * - **Documentation**: https://prismic.io/docs/field#rich-text-title
+   */
+  secondarybuttontext: prismic.RichTextField;
+
+  /**
+   * SecondaryButtonLink field in *SidebarCta → Default → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: newsletter signup destination
+   * - **API ID Path**: sidebar_cta.default.primary.secondarybuttonlink
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  secondarybuttonlink: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
+
+  /**
+   * thirdbuttontext field in *SidebarCta → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sidebar_cta.default.primary.thirdbuttontext
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  thirdbuttontext: prismic.KeyTextField;
+
+  /**
+   * thirdbuttonlink field in *SidebarCta → Default → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sidebar_cta.default.primary.thirdbuttonlink
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  thirdbuttonlink: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
+
+  /**
+   * fourthbuttontext field in *SidebarCta → Default → Primary*
+   *
+   * - **Field Type**: Text
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sidebar_cta.default.primary.fourthbuttontext
+   * - **Documentation**: https://prismic.io/docs/field#key-text
+   */
+  fourthbuttontext: prismic.KeyTextField;
+
+  /**
+   * fourthbuttonlink field in *SidebarCta → Default → Primary*
+   *
+   * - **Field Type**: Link
+   * - **Placeholder**: *None*
+   * - **API ID Path**: sidebar_cta.default.primary.fourthbuttonlink
+   * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
+   */
+  fourthbuttonlink: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
+}
+
+/**
+ * Default variation for SidebarCta Slice
+ *
+ * - **API ID**: `default`
+ * - **Description**: Default
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type SidebarCtaSliceDefault = prismic.SharedSliceVariation<
+  "default",
+  Simplify<SidebarCtaSliceDefaultPrimary>,
+  never
+>;
+
+/**
+ * Slice variation for *SidebarCta*
+ */
+type SidebarCtaSliceVariation = SidebarCtaSliceDefault;
+
+/**
+ * SidebarCta Shared Slice
+ *
+ * - **API ID**: `sidebar_cta`
+ * - **Description**: SidebarCta
+ * - **Documentation**: https://prismic.io/docs/slice
+ */
+export type SidebarCtaSlice = prismic.SharedSlice<
+  "sidebar_cta",
+  SidebarCtaSliceVariation
+>;
+
+/**
  * Primary content in *SuccessPhotosSection → Default → Primary*
  */
 export interface SuccessPhotosSectionSliceDefaultPrimary {
@@ -3268,7 +4086,13 @@ export interface SuccessPhotosSectionSliceDefaultPrimary {
    * - **API ID Path**: success_photos_section.default.primary.cta_href
    * - **Documentation**: https://prismic.io/docs/field#link-content-relationship
    */
-  cta_href: prismic.LinkField;
+  cta_href: prismic.LinkField<
+    string,
+    string,
+    unknown,
+    prismic.FieldState,
+    never
+  >;
 
   /**
    * Cta Label field in *SuccessPhotosSection → Default → Primary*
@@ -3795,6 +4619,17 @@ declare module "@prismicio/client" {
     ): prismic.Client<AllDocumentTypes>;
   }
 
+  interface CreateWriteClient {
+    (
+      repositoryNameOrEndpoint: string,
+      options: prismic.WriteClientConfig,
+    ): prismic.WriteClient<AllDocumentTypes>;
+  }
+
+  interface CreateMigration {
+    (): prismic.Migration<AllDocumentTypes>;
+  }
+
   namespace Content {
     export type {
       AiDatingPhotosDocument,
@@ -3849,6 +4684,12 @@ declare module "@prismicio/client" {
       ContentWithTestimonialsAndStatsSliceDefaultPrimary,
       ContentWithTestimonialsAndStatsSliceVariation,
       ContentWithTestimonialsAndStatsSliceDefault,
+      CtaFooterSlice,
+      CtaFooterSliceDefaultPrimaryBeforeimagesItem,
+      CtaFooterSliceDefaultPrimaryAfterimagesItem,
+      CtaFooterSliceDefaultPrimary,
+      CtaFooterSliceVariation,
+      CtaFooterSliceDefault,
       CtaInfoSlice,
       CtaInfoSliceDefaultPrimary,
       CtaInfoSliceVisualizeYourTinderDataPrimary,
@@ -3865,6 +4706,11 @@ declare module "@prismicio/client" {
       EmbedSliceDefaultPrimary,
       EmbedSliceVariation,
       EmbedSliceDefault,
+      ExitPopupSlice,
+      ExitPopupSliceDefaultPrimary,
+      ExitPopupSliceDefaultItem,
+      ExitPopupSliceVariation,
+      ExitPopupSliceDefault,
       FaqsSlice,
       FaqsSliceDefaultPrimaryQuestionsAndAnswersItem,
       FaqsSliceDefaultPrimary,
@@ -3878,6 +4724,11 @@ declare module "@prismicio/client" {
       FeaturesSectionSliceVariation,
       FeaturesSectionSliceDefault,
       FeaturesSectionSliceContainedInPanel,
+      GetDatesProductLinksSlice,
+      GetDatesProductLinksSliceDefaultPrimaryProductImagesItem,
+      GetDatesProductLinksSliceDefaultPrimary,
+      GetDatesProductLinksSliceVariation,
+      GetDatesProductLinksSliceDefault,
       H1WithSubHeadingSlice,
       H1WithSubHeadingSliceDefaultPrimary,
       H1WithSubHeadingSliceVariation,
@@ -3903,6 +4754,10 @@ declare module "@prismicio/client" {
       LogoCloudSliceDefaultPrimary,
       LogoCloudSliceVariation,
       LogoCloudSliceDefault,
+      NewsletterCtaSlice,
+      NewsletterCtaSliceDefaultPrimary,
+      NewsletterCtaSliceVariation,
+      NewsletterCtaSliceDefault,
       PricingSectionSlice,
       PricingSectionSliceSingleTierPrimaryFeaturesItem,
       PricingSectionSliceSingleTierPrimary,
@@ -3926,6 +4781,10 @@ declare module "@prismicio/client" {
       SectionWithHeadingSliceDefaultPrimary,
       SectionWithHeadingSliceVariation,
       SectionWithHeadingSliceDefault,
+      SidebarCtaSlice,
+      SidebarCtaSliceDefaultPrimary,
+      SidebarCtaSliceVariation,
+      SidebarCtaSliceDefault,
       SuccessPhotosSectionSlice,
       SuccessPhotosSectionSliceDefaultPrimary,
       SuccessPhotosSectionSliceVariation,

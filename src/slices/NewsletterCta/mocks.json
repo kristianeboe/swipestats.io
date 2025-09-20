@@ -1,0 +1,91 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"title": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "heading3",
+						"content": {
+							"text": "💡 Expert Dating Insights",
+							"spans": [
+								{
+									"type": "strong",
+									"start": 0,
+									"end": 25
+								}
+							]
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"description": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Join thousands getting insider data and optimization tips from our Swipestats dating experts.",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"placeholdertext": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "your@email.com",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"privacytext": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "No spam. Unsubscribe anytime",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"successmessage": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Subscribed! Check your email 🎉",
+							"spans": [
+								{
+									"type": "strong",
+									"start": 0,
+									"end": 31
+								}
+							]
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"buttontext": {
+				"__TYPE__": "FieldContent",
+				"type": "Text",
+				"value": "Join Swipestats Community"
+			}
+		},
+		"items": []
+	}
+]

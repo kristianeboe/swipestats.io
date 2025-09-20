@@ -67,3 +67,10 @@ migrateV2toV3Ignored.ts
 
 
 fixtures
+
+# Test pages
+src/app/test-cta/
+src/app/test-slice/
+
+# Documentation files
+CTA_IMPLEMENTATION_SUMMARY.md

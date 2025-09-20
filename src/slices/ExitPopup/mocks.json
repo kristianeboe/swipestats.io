@@ -1,0 +1,201 @@
+[
+	{
+		"__TYPE__": "SharedSliceContent",
+		"variation": "default",
+		"primary": {
+			"triggerdelay": {
+				"__TYPE__": "FieldContent",
+				"value": "54",
+				"type": "Number"
+			},
+			"title": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Before You Leave... A Swipestats Insight",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"subtitle": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Photos are the make-or-break factor in dating success.\n",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"offertext": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Our analysis reveals that most people struggle with dating apps because their photos don't showcase their best self. Skip the studio sessions and photoshoots, get photos that turn heads the easy way.",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"buttonlink": {
+				"key": "172c4680-1075-4b21-8891-0fd6d8593e9d",
+				"__TYPE__": "LinkContent",
+				"value": {
+					"__TYPE__": "ExternalLink",
+					"url": "https://getdates.ai",
+					"text": "family"
+				}
+			},
+			"closebuttontext": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "No thanks, I don't want more matches",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			},
+			"items": {
+				"__TYPE__": "GroupContentType",
+				"value": [
+					{
+						"__TYPE__": "GroupItemContent",
+						"value": []
+					}
+				]
+			},
+			"buttontext": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Cool! Tell Me More",
+							"spans": []
+						},
+						"direction": "ltr"
+					}
+				]
+			}
+		},
+		"items": [
+			{
+				"__TYPE__": "GroupItemContent",
+				"value": [
+					[
+						"stat_text",
+						{
+							"__TYPE__": "FieldContent",
+							"type": "Text",
+							"value": "10,000+ photos created"
+						}
+					],
+					[
+						"trust_text",
+						{
+							"__TYPE__": "FieldContent",
+							"type": "Text",
+							"value": "Secure Payment"
+						}
+					],
+					[
+						"trust_text_mobile",
+						{
+							"__TYPE__": "FieldContent",
+							"type": "Text",
+							"value": "Secure Payment"
+						}
+					]
+				]
+			},
+			{
+				"__TYPE__": "GroupItemContent",
+				"value": [
+					[
+						"stat_text",
+						{
+							"__TYPE__": "FieldContent",
+							"type": "Text",
+							"value": "48-hour delivery"
+						}
+					],
+					[
+						"stat_icon",
+						{
+							"__TYPE__": "FieldContent",
+							"type": "Select",
+							"value": "clock"
+						}
+					],
+					[
+						"trust_text",
+						{
+							"__TYPE__": "FieldContent",
+							"type": "Text",
+							"value": "Money-back guarantee"
+						}
+					],
+					[
+						"trust_text_mobile",
+						{
+							"__TYPE__": "FieldContent",
+							"type": "Text",
+							"value": "Money-back guarantee"
+						}
+					],
+					[
+						"trust_icon",
+						{
+							"__TYPE__": "FieldContent",
+							"type": "Select",
+							"value": "check"
+						}
+					]
+				]
+			},
+			{
+				"__TYPE__": "GroupItemContent",
+				"value": [
+					[
+						"trust_text",
+						{
+							"__TYPE__": "FieldContent",
+							"type": "Text",
+							"value": "Privacy protected"
+						}
+					],
+					[
+						"trust_text_mobile",
+						{
+							"__TYPE__": "FieldContent",
+							"type": "Text",
+							"value": "Privacy protected"
+						}
+					],
+					[
+						"trust_icon",
+						{
+							"__TYPE__": "FieldContent",
+							"type": "Select",
+							"value": "shield"
+						}
+					]
+				]
+			}
+		]
+	}
+]
