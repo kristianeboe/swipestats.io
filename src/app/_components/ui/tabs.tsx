@@ -59,3 +59,5 @@ export const Tabs = {
   Trigger: TabsTrigger,
   Content: TabsContent,
 };
+
+export { TabsContent, TabsList, TabsTrigger };
