@@ -114,7 +114,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@slicemachine/adapter-next": "^0.3.43",
+    "@slicemachine/adapter-next": "^0.3.84",
     "@tailwindcss/typography": "^0.5.13",
     "@types/bun": "^1.2.2",
     "@types/papaparse": "^5.3.15",
@@ -134,12 +134,13 @@
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.5",
     "prisma": "^6.8.2",
-    "slice-machine-ui": "^2.3.0",
+    "slice-machine-ui": "^2.18.2",
     "tailwindcss": "^3.4.3",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.5.3"
   },
   "ct3aMetadata": {
     "initVersion": "7.38.1"
-  }
+  },
+  "packageManager": "pnpm@10.17.0+sha512.fce8a3dd29a4ed2ec566fb53efbb04d8c44a0f05bc6f24a73046910fb9c3ce7afa35a0980500668fa3573345bd644644fa98338fa168235c80f4aa17aa17fbef"
 }
