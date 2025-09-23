@@ -100,6 +100,17 @@
 						"direction": "ltr"
 					}
 				]
+			},
+			"stats_text": {
+				"__TYPE__": "StructuredTextContent",
+				"value": [
+					{
+						"type": "paragraph",
+						"content": {
+							"text": "Qui deserunt qui non. Nostrud eiusmod culpa enim incididunt velit eu voluptate occaecat excepteur magna anim. Nostrud minim in aliquip eiusmod voluptate amet ea dolore dolor aliquip."
+						}
+					}
+				]
 			}
 		},
 		"items": []
