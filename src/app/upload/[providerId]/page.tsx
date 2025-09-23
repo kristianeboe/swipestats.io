@@ -2,6 +2,7 @@
 import { useState, useEffect, type FormEvent, use } from "react";
 
 import { UploadArea } from "./UploadArea";
+import { HingeGuidedUploadArea } from "./HingeGuidedUploadArea";
 
 import { RadioGroup } from "@headlessui/react";
 import { CheckCircleIcon } from "@heroicons/react/20/solid";
@@ -12,13 +13,18 @@ import Head from "next/head";
 
 import { cn } from "@/lib/utils";
 import type { SwipestatsProfilePayload } from "@/lib/interfaces/TinderDataJSON";
+import type { SwipestatsHingeProfilePayload } from "@/lib/interfaces/HingeDataJSON";
 
 import { Button } from "@/app/_components/ui/button";
 import { api } from "@/trpc/react";
 import type { DataProvider } from "@prisma/client";
 import { StepHeader } from "./StepHeader";
 import { UploadCTA } from "./UploadCTA";
-import { createSwipestatsProfilePayloadFromJson } from "./extractAnonymizedData";
+import { HingeUploadCTA } from "./HingeUploadCTA";
+import {
+  createSwipestatsProfilePayloadFromJson,
+  createSwipestatsProfilePayloadFromJsons,
+} from "./extractAnonymizedData";
 import { Input } from "@/app/_components/ui/input";
 import DataRequestSupport from "@/app/DataRequestSupport";
 import { analyticsTrackClient } from "@/lib/analytics/analyticsTrackClient";
@@ -58,6 +64,8 @@ export default function UploadPage(props: {
   const posthog = usePostHog();
   const [swipestatsProfilePayload, setSwipestatsProfilePayload] =
     useState<SwipestatsProfilePayload | null>(null);
+  const [swipestatsHingeProfilePayload, setSwipestatsHingeProfilePayload] =
+    useState<SwipestatsHingeProfilePayload | null>(null);
 
   function updateProfilePayload(
     partialProfile: Partial<SwipestatsProfilePayload["anonymizedTinderJson"]>,
@@ -92,11 +100,14 @@ export default function UploadPage(props: {
         data,
         selectedDataProvider.id,
       );
-      setSwipestatsProfilePayload(payload);
-      posthog.identify(payload.tinderId);
+
+      if ("tinderId" in payload) {
+        setSwipestatsProfilePayload(payload);
+        posthog.identify(payload.tinderId);
+      }
 
       analyticsTrackClient("Profile Anonymised Successfully", {
-        tinderId: payload.tinderId,
+        profileId: "tinderId" in payload ? payload.tinderId : payload.hingeId,
         providerId: selectedDataProvider.id,
       });
     } catch (error) {
@@ -107,11 +118,35 @@ export default function UploadPage(props: {
     }
   }
 
+  async function onAcceptedHingeFilesLoad(dataArray: string[]) {
+    try {
+      const payload = await createSwipestatsProfilePayloadFromJsons(
+        dataArray,
+        selectedDataProvider.id,
+      );
+
+      if ("hingeId" in payload) {
+        setSwipestatsHingeProfilePayload(payload);
+        posthog.identify(payload.hingeId);
+      }
+
+      analyticsTrackClient("Hinge Profile Anonymised Successfully", {
+        profileId: "hingeId" in payload ? payload.hingeId : payload.tinderId,
+        providerId: selectedDataProvider.id,
+      });
+    } catch (error) {
+      console.error(error);
+      analyticsTrackClient("Hinge Profile Anonymised Failed", {
+        providerId: selectedDataProvider.id,
+      });
+    }
+  }
+
   return (
     <div>
       <Head>
         <title>
-          Upload your {selectedDataProvider.title} data | Swipestats
+          Upload your {selectedDataProvider.title} data | Swipestats
         </title>
         <meta
           name="description"
@@ -136,7 +171,7 @@ export default function UploadPage(props: {
       <StepHeader />
       <div className="min-h-screen">
         <div>
-          {!swipestatsProfilePayload && (
+          {!swipestatsProfilePayload && !swipestatsHingeProfilePayload && (
             <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
               <div className="text-center">
                 <h2 className="text-base font-semibold uppercase tracking-wide text-rose-600">
@@ -234,6 +269,22 @@ export default function UploadPage(props: {
                   <UploadArea
                     dataProviderId={selectedDataProvider.id}
                     onAcceptedFileLoad={onAcceptedFileLoad}
+                  />
+                </>
+              )}
+            </div>
+          </div>
+        ) : selectedDataProvider.title === "Hinge" ? (
+          <div className="">
+            <div className="flex flex-col items-center justify-center">
+              {swipestatsHingeProfilePayload ? (
+                <HingeUploadCTA
+                  swipestatsHingeProfilePayload={swipestatsHingeProfilePayload}
+                />
+              ) : (
+                <>
+                  <HingeGuidedUploadArea
+                    onAcceptedFileLoad={onAcceptedHingeFilesLoad}
                   />
                 </>
               )}

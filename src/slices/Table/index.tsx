@@ -23,7 +23,7 @@ const Table = ({ slice }: TableProps): JSX.Element => {
   if (!header) return <div>No table data provided</div>;
 
   return (
-    <Card.Container
+    <Card
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
       className="mx-auto mt-5 max-w-3xl"
@@ -52,7 +52,7 @@ const Table = ({ slice }: TableProps): JSX.Element => {
           ))}
         </TableBody>
       </ShadTable>
-    </Card.Container>
+    </Card>
   );
 };
 

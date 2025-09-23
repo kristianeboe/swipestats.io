@@ -6,7 +6,12 @@ import { GraphCardUsage } from "./GraphCardUsage";
 import RoastBanner from "@/app/_components/RoastBanner";
 import DataRequestCTA from "@/app/_components/DataRequestCTA";
 import { MatchRateCard } from "./MatchRateCard";
-import { Card } from "@/app/_components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "@/app/_components/ui/card";
 import {
   Calendar,
   CircleSlash,
@@ -22,13 +27,11 @@ import { UserFeedback } from "./UserFeedback";
 import Profiles from "./Profiles";
 import { SwipestatsPlusCard } from "./SwipestatsPlusCard";
 
-export default async function InsightsPage(
-  props: {
-    params: Promise<{
-      tinderId: string;
-    }>;
-  }
-) {
+export default async function InsightsPage(props: {
+  params: Promise<{
+    tinderId: string;
+  }>;
+}) {
   const params = await props.params;
   const swipestatsProfile = await api.profile.get({
     tinderId: params.tinderId,
@@ -58,11 +61,11 @@ export default async function InsightsPage(
         </div>
 
         <div className="flex flex-wrap gap-5 xl:flex-nowrap">
-          <Card.Container className="w-full">
-            <Card.Header>
-              <Card.Title>Messages meta</Card.Title>
-            </Card.Header>
-            <Card.Content className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle>Messages meta</CardTitle>
+            </CardHeader>
+            <CardContent className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               <MessagesMetaCard
                 title="# of conversations"
                 icon={MessagesSquare}
@@ -133,8 +136,8 @@ export default async function InsightsPage(
                 }
               />
               {/* <AddMetricCard /> */}
-            </Card.Content>
-          </Card.Container>
+            </CardContent>
+          </Card>
           {/* <UserFeedback tinderId={params.tinderId} /> */}
         </div>
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
@@ -168,19 +171,19 @@ function MessagesMetaCard(props: {
   from?: string;
 }) {
   return (
-    <Card.Container>
-      <Card.Header className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <Card.Title className="text-sm font-medium">{props.title}</Card.Title>
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">{props.title}</CardTitle>
         {/* <DollarSign className="text-muted-foreground h-4 w-4" /> */}
         <props.icon className="text-muted-foreground h-4 w-4" />
-      </Card.Header>
-      <Card.Content>
+      </CardHeader>
+      <CardContent>
         <div className="text-2xl font-bold">{props.stat}</div>
         {props.from && (
           <p className="text-muted-foreground text-xs">{props.from}</p>
         )}
-      </Card.Content>
-    </Card.Container>
+      </CardContent>
+    </Card>
   );
 }
 

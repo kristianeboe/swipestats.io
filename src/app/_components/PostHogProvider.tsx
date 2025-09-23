@@ -21,7 +21,14 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
         //   ph.opt_out_capturing(); // opts a user out of event capture
         //   ph.set_config({ disable_session_recording: true });
         // }
+        // Randomly decide if the user should have their session recorded
+        const shouldRecordSession = Math.random() < 0.2; // 20% chance
+
+        if (!shouldRecordSession) {
+          ph.set_config({ disable_session_recording: true });
+        }
       },
+
       _onCapture: function (event) {
         console.log("PostHog client event captured", event);
       },
