@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 export default function RoastBanner() {
   return (
     <div className="relative overflow-hidden sm:py-16">
-      <div className="mx-auto  overflow-hidden  ">
+      <div className="mx-auto overflow-hidden">
         <div className="relative overflow-hidden rounded-2xl bg-rose-600 px-6 py-10 shadow-xl sm:px-12 sm:py-20">
           <div
             aria-hidden="true"
@@ -33,18 +33,17 @@ export default function RoastBanner() {
           </div>
           <div className="relative">
             <div className="">
-              <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                Want to improve your conversion rate? <br /> Take this test now
+              <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl max-w-3xl lg:max-w-xl">
+                Your photos are the #1 deciding factor on dating apps
               </h2>
               <p className=" mt-6 max-w-xl text-lg text-white">
-                Take this 2-min quiz, optimize your profile instantly, and boost
-                your stats for good!
+                Get premium AI dating photos that actually get you out on real life dates.
               </p>
             </div>
 
             <div className="mt-12 sm:flex sm:max-w-lg">
               <a
-                href="https://roast.dating/sw"
+                href="https://www.getdates.ai"
                 target={"_blank"}
                 rel="noreferrer"
               >
@@ -67,7 +66,7 @@ export default function RoastBanner() {
                 <StarIcon className="h-5 w-5" aria-hidden="true" />
                 <StarIcon className="h-5 w-5 " aria-hidden="true" />
               </div>
-              <span>Join 75,000 happy users</span>
+              <span>More matches guaranteed</span>
             </div>
           </div>
           <div className="absolute -right-96 -top-16 hidden w-3/4 items-center overflow-hidden lg:flex ">

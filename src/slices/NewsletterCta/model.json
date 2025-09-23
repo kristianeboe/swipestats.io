@@ -1,0 +1,71 @@
+{
+  "id": "newsletter_cta",
+  "type": "SharedSlice",
+  "name": "NewsletterCta",
+  "description": "NewsletterCta",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "initial",
+      "description": "Default",
+      "imageUrl": "",
+      "primary": {
+        "title": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Title",
+            "placeholder": "💡 Expert Dating Insights",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "description": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Description",
+            "placeholder": "Join thousands getting insider data and optimization tips from our SwipeStats dating experts.",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "buttontext": {
+          "type": "Text",
+          "config": {
+            "label": "ButtonText",
+            "placeholder": "Join SwipeStats Community"
+          }
+        },
+        "placeholdertext": {
+          "type": "StructuredText",
+          "config": {
+            "label": "PlaceHolderText",
+            "placeholder": "your@email.com",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "privacytext": {
+          "type": "StructuredText",
+          "config": {
+            "label": "PrivacyText",
+            "placeholder": "No spam. Unsubscribe anytime.",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        },
+        "successmessage": {
+          "type": "StructuredText",
+          "config": {
+            "label": "SuccessMessage",
+            "placeholder": "Subscribed! Check your email 🎉",
+            "allowTargetBlank": false,
+            "multi": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+          }
+        }
+      },
+      "items": {}
+    }
+  ]
+}
