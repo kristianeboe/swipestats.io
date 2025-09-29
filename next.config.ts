@@ -7,6 +7,15 @@ import "./src/env.js";
 
 import type { NextConfig } from "next";
 
+// Start Velite for content processing
+const isDev = process.argv.indexOf("dev") !== -1;
+const isBuild = process.argv.indexOf("build") !== -1;
+if (!process.env.VELITE_STARTED && (isDev || isBuild)) {
+  process.env.VELITE_STARTED = "1";
+  import("velite").then((m) => m.build({ watch: isDev, clean: !isDev }));
+}
+
+
 const nextConfig: NextConfig = {
   trailingSlash: false,
   images: {

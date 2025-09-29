@@ -221,6 +221,10 @@ export type AuthorDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithUID<Simplify<AuthorDocumentData>, "author", Lang>;
 
 type BlogPostDocumentDataSlicesSlice =
+  | SidebarCtaSlice
+  | NewsletterCtaSlice
+  | CtaFooterSlice
+  | ExitPopupSlice
   | GetDatesProductLinksSlice
   | CtaSectionSlice
   | ImageSectionSlice

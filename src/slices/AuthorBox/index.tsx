@@ -1,4 +1,4 @@
-import { AuthorCard } from "@/app/blog/[uid]/AuthorCard";
+import { AuthorCard } from "@/app/blog-old/[uid]/AuthorCard";
 import { getPrismicLinkUrl } from "@/lib/utils/prismic.utils";
 import { type Content } from "@prismicio/client";
 import { type SliceComponentProps } from "@prismicio/react";

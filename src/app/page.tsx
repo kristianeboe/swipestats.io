@@ -17,7 +17,7 @@ import Testimonials from "./Testimonials";
 import { FAQ } from "./FAQ";
 import NewsletterCTA from "./NewsletterCTA";
 import { StarIcon } from "lucide-react";
-import { Blog } from "./blog/BlogSection";
+import { Blog } from "./blog-old/BlogSection";
 import { About } from "./AboutSection";
 import { Button } from "./_components/ui/button";
 import { getProductData } from "@/lib/constants/lemonSqueezy.constants";

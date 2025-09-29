@@ -1,42 +1,43 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    /* Base Options: */
+    /** Base Options */
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "target": "es2022",
+    "target": "ES2022",
+    "lib": ["ES2022", "dom", "dom.iterable"],
     "allowJs": true,
     "resolveJsonModule": true,
     "moduleDetection": "force",
     "isolatedModules": true,
 
-    /* Strictness */
+    /** Keep TSC performant in monorepos */
+    "incremental": true,
+    "disableSourceOfProjectReferenceRedirect": true,
+    "tsBuildInfoFile": ".cache/tsbuildinfo.json",
+
+    /** Strictness */
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "checkJs": true,
 
-    /* Bundled projects */
-    "lib": ["dom", "dom.iterable", "ES2022"],
-    "noEmit": true,
-    "module": "ESNext",
+    /** Transpile using Bundler (not tsc) */
+    "module": "Preserve",
     "moduleResolution": "Bundler",
+    "noEmit": true,
+    
+    /** Next.js specific */
     "jsx": "preserve",
     "plugins": [{ "name": "next" }],
-    "incremental": true,
-
-    /* Path Aliases */
+    
+    /** Path Aliases */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/content/*": ["./content/*"],
+      ".velite": ["./.velite"]
     }
   },
-  "include": [
-    ".eslintrc.cjs",
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.cjs",
-    "**/*.js",
-    ".next/types/**/*.ts"
-  ],
-  "exclude": ["node_modules", "ssMigrations"]
+  "include": [".", ".next/types/**/*.ts", "./content/**/*", ".velite"],
+  "exclude": ["node_modules", "build", "dist", ".next", ".expo"]
 }
