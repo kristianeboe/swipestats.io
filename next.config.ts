@@ -1,9 +1,10 @@
 import { withSentryConfig } from "@sentry/nextjs";
+
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
  * for Docker builds.
  */
-import "./src/env.js";
+import "./src/env";
 
 import type { NextConfig } from "next";
 
@@ -14,7 +15,6 @@ if (!process.env.VELITE_STARTED && (isDev || isBuild)) {
   process.env.VELITE_STARTED = "1";
   import("velite").then((m) => m.build({ watch: isDev, clean: !isDev }));
 }
-
 
 const nextConfig: NextConfig = {
   trailingSlash: false,

@@ -3,45 +3,45 @@ import { env } from "@/env";
 import { BlogGrid } from "./BlogGrid";
 import { posts as allPosts } from ".velite";
 
-const ogImageUrl = `${env.NEXT_PUBLIC_BASE_URL}/api/sharing?title=${encodeURIComponent("Homi Blog")}&description=${encodeURIComponent("Smart real estate insights and data-driven strategies")}&tag=insights`;
+const ogImageUrl = `${env.NEXT_PUBLIC_BASE_URL}/api/og/blog`;
 
 export const metadata = {
-  title: "Blog | Homi - Smart Real Estate Insights",
+  title: "Blog | SwipeStats - Data-Driven Dating Insights",
   description:
-    "Smart real estate insights, data-driven strategies, and expert advice for better property decisions.",
+    "Expert insights, data-driven strategies, and actionable advice for improving your online dating success.",
   keywords: [
-    "real estate blog",
-    "house hunting strategies",
-    "property investment",
-    "real estate technology",
-    "data-driven decisions",
-    "algorithmic approach",
-    "property research",
-    "market insights",
+    "dating app blog",
+    "online dating tips",
+    "dating app statistics",
+    "tinder insights",
+    "dating app strategy",
+    "data-driven dating",
+    "match rate optimization",
+    "dating profile tips",
   ],
   openGraph: {
-    title: "Homi Blog - Smart Real Estate Insights",
+    title: "SwipeStats Blog - Data-Driven Dating Insights",
     description:
-      "Smart real estate insights and data-driven strategies for better property decisions.",
+      "Expert insights and data-driven strategies for online dating success.",
     type: "website",
     url: "/blog",
-    siteName: "Homi",
+    siteName: "SwipeStats",
     images: [
       {
         url: ogImageUrl,
         width: 1200,
         height: 630,
-        alt: "Homi Blog (Velite) - Smart Real Estate Insights",
+        alt: "SwipeStats Blog - Data-Driven Dating Insights",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Homi Blog - Smart Real Estate Insights",
+    title: "SwipeStats Blog - Data-Driven Dating Insights",
     description:
-      "Smart real estate insights and data-driven strategies for better property decisions.",
+      "Expert insights and data-driven strategies for online dating success.",
     images: [ogImageUrl],
-    creator: "@homi_dev",
+    creator: "@SwipeStats",
   },
   alternates: {
     types: {
@@ -61,8 +61,8 @@ export default function BlogPage() {
     <>
       <BlogGrid
         posts={regularPosts}
-        title="Smart Real Estate Insights"
-        description="Expert insights and data-driven strategies to help you make smarter real estate decisions."
+        title="Data-Driven Dating Insights"
+        description="Expert insights and actionable strategies to help you succeed on dating apps."
         showFeatured={true}
         featuredPosts={featuredPosts}
       />

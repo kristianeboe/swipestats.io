@@ -1,7 +1,8 @@
 // Image for blog post
-import { SwipestatsLogo } from "@/svg/logos/SwipestatsLogo";
+import type { NextRequest } from "next/server";
 import { ImageResponse } from "next/og";
-import { type NextRequest } from "next/server";
+
+import { SwipestatsLogo } from "@/svg/logos/SwipestatsLogo";
 
 export async function GET(
   req: NextRequest,
