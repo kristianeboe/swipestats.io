@@ -3,6 +3,7 @@
 import * as runtime from "react/jsx-runtime";
 
 // Import all the custom components that might be used in MDX
+import { AuthorCard } from "./AuthorCard";
 import { CalloutBox } from "./CalloutBox";
 import { CTA } from "./CTA";
 import { FeatureGrid } from "./FeatureGrid";
@@ -12,6 +13,7 @@ import { Stats } from "./Stats";
 
 // Global components available to all MDX content
 const sharedComponents = {
+  AuthorCard,
   CalloutBox,
   CTA,
   FeatureGrid,
