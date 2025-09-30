@@ -1,16 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { PrismicNextImage } from "@prismicio/next";
-import { type ImageField } from "@prismicio/client";
+import Link from "next/link";
 
 // Types for component props
 interface ProductImage {
   src?: string;
   alt?: string;
-  field?: ImageField; // For Prismic images
 }
 
 interface CTAProductLinksProps {
@@ -25,7 +22,7 @@ interface CTAProductLinksProps {
 }
 
 // Product links CTA for mid-article placement - drives traffic to main product
-const CTAProductLinks = ({
+export const CTAProductLinks = ({
   title = "📸 Got Boring Photos?",
   description = "Swipestats analysis reveals that profile photos are the driving factor in getting you likes and matches. Get eye-catching photos that make you stand out from the crowd and actually get dates.",
   buttonText = "Check It Out",
@@ -100,10 +97,7 @@ const CTAProductLinks = ({
   const styles = themeStyles[theme];
 
   return (
-    <div
-      className={`my-6 p-5 ${styles.container} ${className} mx-auto w-full max-w-4xl`}
-      style={{ transform: "scale(0.85)", transformOrigin: "center" }}
-    >
+    <div className={`my-6 p-5 ${styles.container} ${className} w-full`}>
       {/* Subtle background glow */}
       <div className={styles.glow}></div>
 
@@ -125,27 +119,18 @@ const CTAProductLinks = ({
         >
           {images.length > 0 && images[currentImageIndex] && (
             <>
-              {images[currentImageIndex].field ? (
-                <PrismicNextImage
-                  field={images[currentImageIndex].field}
-                  fill
-                  className="object-cover transition-all duration-500"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              ) : (
-                <Image
-                  src={
-                    images[currentImageIndex].src || "/api/placeholder/400/500"
-                  }
-                  alt={
-                    images[currentImageIndex].alt ||
-                    `AI Enhanced Photo ${currentImageIndex + 1}`
-                  }
-                  fill
-                  className="object-cover transition-all duration-500"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              )}
+              <Image
+                src={
+                  images[currentImageIndex].src || "/api/placeholder/400/500"
+                }
+                alt={
+                  images[currentImageIndex].alt ||
+                  `AI Enhanced Photo ${currentImageIndex + 1}`
+                }
+                fill
+                className="object-cover transition-all duration-500"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
             </>
           )}
 
@@ -256,5 +241,3 @@ const CTAProductLinks = ({
     </div>
   );
 };
-
-export default CTAProductLinks;

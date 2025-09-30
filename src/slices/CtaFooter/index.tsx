@@ -1,9 +1,11 @@
 import type { FC } from "react";
-import type { Content } from "@prismicio/client";
 import { asText } from "@prismicio/client";
-import type { SliceComponentProps } from "@prismicio/react";
-import CTAFooter from "@/components/cta/CTAFooter";
+
+import { CTAFooter } from "@/app/blog/mdx/CTAFooter";
 import { getPrismicLinkUrl } from "@/lib/utils/prismic.utils";
+
+import type { Content } from "@prismicio/client";
+import type { SliceComponentProps } from "@prismicio/react";
 
 /**
  * Props for `CtaFooter`.

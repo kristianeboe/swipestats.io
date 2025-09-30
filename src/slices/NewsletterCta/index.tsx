@@ -1,8 +1,10 @@
 import type { FC } from "react";
-import type { Content } from "@prismicio/client";
 import { asText } from "@prismicio/client";
+
+import { CTANewsletterCompact } from "@/app/blog/mdx/CTANewsletterCompact";
+
+import type { Content } from "@prismicio/client";
 import type { SliceComponentProps } from "@prismicio/react";
-import CTANewsletterCompact from "@/components/cta/CTANewsletterCompact";
 
 /**
  * Props for `NewsletterCta`.

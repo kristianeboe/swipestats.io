@@ -2,8 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { format, parseISO } from "date-fns";
 
-import { env } from "@/env";
-
 import type { Post } from ".velite";
 
 interface BlogGridProps {
@@ -23,23 +21,10 @@ export function BlogGrid({
   featuredPosts = [],
   basePath = "/blog",
 }: BlogGridProps) {
-  // Get display image with proper hierarchy: custom > display OG > gradient fallback
+  // Get OG image URL for blog posts - always use OG route for consistent generation
   const getDisplayImageUrl = (post: Post) => {
-    // Priority 1: Use custom post image if available (return relative path for Next.js Image)
-    if (post.image) {
-      return `/images/blog/${post.image}`;
-    }
-
-    // Priority 2: Generate display-optimized OG image as fallback
-    const displayOgUrl = new URL(
-      "/api/internal-display",
-      env.NEXT_PUBLIC_BASE_URL,
-    );
-    displayOgUrl.searchParams.set("title", post.title);
-    if (post.tags.length > 0) {
-      displayOgUrl.searchParams.set("tag", post.tags[0] ?? "");
-    }
-    return displayOgUrl.toString();
+    // Use relative OG image route - works for both localhost and production
+    return `/api/og/v0/${post.slug}`;
   };
 
   return (
@@ -113,7 +98,11 @@ export function BlogGrid({
                     <div className="relative mt-6 flex items-center gap-x-4">
                       {post.authorImage ? (
                         <Image
-                          src={`/images/people/${post.authorImage}`}
+                          src={
+                            post.authorImage.startsWith("/")
+                              ? post.authorImage
+                              : `/images/people/${post.authorImage}`
+                          }
                           alt={post.author}
                           width={40}
                           height={40}
@@ -204,7 +193,11 @@ export function BlogGrid({
                     <div className="relative mt-8 flex items-center gap-x-4">
                       {post.authorImage ? (
                         <Image
-                          src={`/images/people/${post.authorImage}`}
+                          src={
+                            post.authorImage.startsWith("/")
+                              ? post.authorImage
+                              : `/images/people/${post.authorImage}`
+                          }
                           alt={post.author}
                           width={40}
                           height={40}

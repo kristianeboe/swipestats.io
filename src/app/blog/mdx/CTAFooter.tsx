@@ -1,21 +1,17 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
-import { PrismicNextImage } from "@prismicio/next";
-import { type ImageField } from "@prismicio/client";
+import Link from "next/link";
 
 // Types for component props
 interface BeforeImage {
   src?: string;
   alt?: string;
-  field?: ImageField; // For Prismic images
 }
 
 interface AfterImage {
   src?: string;
   alt?: string;
-  field?: ImageField; // For Prismic images
 }
 
 interface CTAFooterProps {
@@ -32,7 +28,7 @@ interface CTAFooterProps {
 }
 
 // Large footer CTA component showcasing AI photo transformation
-const CTAFooter = ({
+export const CTAFooter = ({
   title = "Transform Your Dating Profile",
   subtitle = "Our AI turns your ordinary photos into optimal dating profile pictures that get results",
   description = "Upload your photos and get professionally enhanced versions in 48 hours",
@@ -174,24 +170,15 @@ const CTAFooter = ({
                         key={index}
                         className="relative overflow-hidden rounded-lg bg-gray-600"
                       >
-                        {image.field ? (
-                          <PrismicNextImage
-                            field={image.field}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 150px, 200px"
-                          />
-                        ) : (
-                          <Image
-                            src={image.src || "/api/placeholder/200/200"}
-                            alt={
-                              image.alt || `Original casual photo ${index + 1}`
-                            }
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 150px, 200px"
-                          />
-                        )}
+                        <Image
+                          src={image.src || "/api/placeholder/200/200"}
+                          alt={
+                            image.alt || `Original casual photo ${index + 1}`
+                          }
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 150px, 200px"
+                        />
                       </div>
                     ))}
                   </div>
@@ -281,22 +268,13 @@ const CTAFooter = ({
                         key={index}
                         className={`from-opacity-30 to-opacity-20 relative overflow-hidden rounded-lg bg-gradient-to-br ${styles.beforeAfter.afterImageBorder}`}
                       >
-                        {image.field ? (
-                          <PrismicNextImage
-                            field={image.field}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 150px, 200px"
-                          />
-                        ) : (
-                          <Image
-                            src={image.src || "/api/placeholder/200/200"}
-                            alt={image.alt || `AI Enhanced Photo ${index + 1}`}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 150px, 200px"
-                          />
-                        )}
+                        <Image
+                          src={image.src || "/api/placeholder/200/200"}
+                          alt={image.alt || `AI Enhanced Photo ${index + 1}`}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 150px, 200px"
+                        />
                         <div className="absolute right-1 top-1">
                           <svg
                             className={`h-3 w-3 ${styles.beforeAfter.starIcon} animate-pulse`}
@@ -481,5 +459,3 @@ const CTAFooter = ({
     </footer>
   );
 };
-
-export default CTAFooter;

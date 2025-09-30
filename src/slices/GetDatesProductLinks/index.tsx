@@ -1,9 +1,11 @@
 import type { FC } from "react";
-import type { Content } from "@prismicio/client";
 import { asText } from "@prismicio/client";
-import type { SliceComponentProps } from "@prismicio/react";
-import CTAProductLinks from "@/components/cta/CTAProductLinks";
+
+import { CTAProductLinks } from "@/app/blog/mdx/CTAProductLinks";
 import { getPrismicLinkUrl } from "@/lib/utils/prismic.utils";
+
+import type { Content } from "@prismicio/client";
+import type { SliceComponentProps } from "@prismicio/react";
 
 /**
  * Props for `GetDatesProductLinks`.

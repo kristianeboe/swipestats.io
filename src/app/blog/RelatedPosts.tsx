@@ -2,8 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { format, parseISO } from "date-fns";
 
-import { env } from "@/env";
-
 import type { Post } from ".velite";
 
 interface RelatedPostsProps {
@@ -37,28 +35,10 @@ export function RelatedPosts({
     return null;
   }
 
-  // Get display image (custom post image or null for gradient fallback)
+  // Get OG image URL for blog posts - always use OG route for consistent generation
   const getDisplayImageUrl = (post: Post) => {
-    // Use custom post image if available (keep gradient fallback for visual variety)
-    if (post.image) {
-      return `${env.NEXT_PUBLIC_BASE_URL}/images/blog/${post.image}`;
-    }
-
-    // Return null to use gradient fallback (more visual variety than OG)
-    return null;
-  };
-
-  // Generate a gradient background for each post based on title
-  const getGradientClasses = (title: string, index: number) => {
-    const gradients = [
-      "from-blue-400 to-purple-500",
-      "from-purple-400 to-pink-500",
-      "from-pink-400 to-red-500",
-      "from-red-400 to-orange-500",
-      "from-orange-400 to-yellow-500",
-      "from-green-400 to-blue-500",
-    ];
-    return gradients[index % gradients.length];
+    // Use relative OG image route - works for both localhost and production
+    return `/api/og/v0/${post.slug}`;
   };
 
   return (
@@ -77,30 +57,15 @@ export function RelatedPosts({
                 key={post.slug}
                 className="group relative isolate flex flex-col justify-end overflow-hidden rounded-2xl bg-gray-900 px-8 pb-8 pt-80 transition-transform hover:scale-[1.02] sm:pt-48 lg:pt-80"
               >
-                {/* Background image or gradient fallback */}
-                {getDisplayImageUrl(post) ? (
-                  <div
-                    className="absolute inset-0 -z-10"
-                    style={{
-                      backgroundImage: `url(${getDisplayImageUrl(post)})`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                    }}
-                  />
-                ) : (
-                  <div
-                    className={`absolute inset-0 -z-10 bg-gradient-to-br ${getGradientClasses(
-                      post.title,
-                      index,
-                    )}`}
-                  >
-                    <div className="flex h-full items-center justify-center">
-                      <div className="text-6xl font-bold text-white/20">
-                        {post.title.charAt(0)}
-                      </div>
-                    </div>
-                  </div>
-                )}
+                {/* Background display image */}
+                <div
+                  className="absolute inset-0 -z-10"
+                  style={{
+                    backgroundImage: `url(${getDisplayImageUrl(post)})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                  }}
+                />
 
                 {/* Gradient overlay */}
                 <div className="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40" />
@@ -123,7 +88,11 @@ export function RelatedPosts({
                       <div className="flex gap-x-2.5">
                         {post.authorImage ? (
                           <Image
-                            src={`/images/people/${post.authorImage}`}
+                            src={
+                              post.authorImage.startsWith("/")
+                                ? post.authorImage
+                                : `/images/people/${post.authorImage}`
+                            }
                             alt={post.author}
                             width={24}
                             height={24}

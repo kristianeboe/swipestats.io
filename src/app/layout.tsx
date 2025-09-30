@@ -1,26 +1,24 @@
 import "@/styles/globals.css";
-import { Analytics } from "@vercel/analytics/react";
 
+import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { PrismicPreview } from "@prismicio/next";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
+import { Toaster } from "@/app/_components/ui/sonner";
+import { getBaseUrl } from "@/lib/utils/getBaseUrl";
 import { TRPCReactProvider } from "@/trpc/react";
 
+import { PostHogProvider } from "./_components/PostHogProvider";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
-import { Toaster } from "@/app/_components/ui/sonner";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
 });
-import { SpeedInsights } from "@vercel/speed-insights/next";
-
-import { NuqsAdapter } from "nuqs/adapters/next/app";
-
-import { PrismicPreview } from "@prismicio/next";
-import { type Metadata } from "next";
-import { PostHogProvider } from "./_components/PostHogProvider";
-import { getBaseUrl } from "@/lib/utils/getBaseUrl";
 
 export const metadata: Metadata = {
   metadataBase: new URL(getBaseUrl()),

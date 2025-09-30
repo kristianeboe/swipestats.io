@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+
 import { api } from "@/trpc/react";
 
 // Types for component props
@@ -14,15 +15,15 @@ interface CTANewsletterCompactProps {
   className?: string;
 }
 
-// Compact newsletter CTA for mid-article placement - minimal and non-intrusive  
-const CTANewsletterCompact = ({
+// Compact newsletter CTA for mid-article placement - minimal and non-intrusive
+export const CTANewsletterCompact = ({
   title = "💡 Expert Dating Insights",
   description = "Join thousands getting insider data and optimization tips from our SwipeStats dating experts.",
   buttonText = "Join SwipeStats Community",
   placeholder = "your@email.com",
   privacyText = "No spam. Unsubscribe anytime.",
   theme = "swipestats",
-  className = ""
+  className = "",
 }: CTANewsletterCompactProps) => {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -42,7 +43,7 @@ const CTANewsletterCompact = ({
       icon: "text-rose-600",
       glow: "absolute inset-0 bg-gradient-to-r from-rose-600/5 via-transparent to-rose-600/5 pointer-events-none",
       successBg: "bg-gradient-to-r from-rose-600 to-rose-700",
-      successIcon: "bg-gradient-to-br from-rose-600 to-rose-700"
+      successIcon: "bg-gradient-to-br from-rose-600 to-rose-700",
     },
     getdates: {
       container:
@@ -57,8 +58,8 @@ const CTANewsletterCompact = ({
       icon: "text-yellow-400",
       glow: "absolute inset-0 bg-gradient-to-r from-yellow-400/5 via-transparent to-yellow-400/5 pointer-events-none",
       successBg: "bg-gradient-to-r from-yellow-400 to-yellow-500",
-      successIcon: "bg-gradient-to-br from-yellow-400 to-yellow-500"
-    }
+      successIcon: "bg-gradient-to-br from-yellow-400 to-yellow-500",
+    },
   };
 
   const styles = themeStyles[theme];
@@ -73,7 +74,7 @@ const CTANewsletterCompact = ({
       console.error("Newsletter signup failed:", error);
       // Still show success for better UX, but log error
       setIsSubmitted(true);
-    }
+    },
   });
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
@@ -86,11 +87,15 @@ const CTANewsletterCompact = ({
   // Success state - eye-catching and celebratory
   if (isSubmitted) {
     return (
-      <div className={`my-6 ${styles.container} ${className} mx-auto max-w-3xl w-full`}>
-        <div className="p-4 flex items-center justify-center gap-3">
-          <div className={`w-6 h-6 rounded-full ${styles.successIcon} flex items-center justify-center`}>
+      <div
+        className={`my-6 ${styles.container} ${className} mx-auto w-full max-w-3xl`}
+      >
+        <div className="flex items-center justify-center gap-3 p-4">
+          <div
+            className={`h-6 w-6 rounded-full ${styles.successIcon} flex items-center justify-center`}
+          >
             <svg
-              className={`w-4 h-4 ${theme === 'swipestats' ? 'text-white' : 'text-black'}`}
+              className={`h-4 w-4 ${theme === "swipestats" ? "text-white" : "text-black"}`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -112,13 +117,15 @@ const CTANewsletterCompact = ({
   }
 
   return (
-    <div className={`my-6 ${styles.container} ${className} mx-auto max-w-3xl w-full`}>
+    <div
+      className={`my-6 ${styles.container} ${className} mx-auto w-full max-w-3xl`}
+    >
       {/* Subtle background glow */}
       <div className={styles.glow}></div>
 
-      <div className="relative z-10 px-6 pt-8 pb-8">
+      <div className="relative z-10 px-6 pb-8 pt-8">
         {/* Title */}
-        <div className="flex flex-col items-center justify-center text-center mb-4">
+        <div className="mb-4 flex flex-col items-center justify-center text-center">
           <h3
             className={`text-3xl ${styles.title} mb-2.5 text-center leading-tight`}
             style={{ margin: "0", lineHeight: 1.1 }}
@@ -133,7 +140,7 @@ const CTANewsletterCompact = ({
         {/* Email form */}
         <form
           onSubmit={handleEmailSubmit}
-          className="flex flex-col gap-4 items-center"
+          className="flex flex-col items-center gap-4"
         >
           <input
             type="email"
@@ -157,7 +164,7 @@ const CTANewsletterCompact = ({
 
         {/* Privacy note */}
         <p
-          className={`text-xs mt-4 text-center opacity-60 ${theme === 'swipestats' ? 'text-gray-500' : 'text-gray-400'}`}
+          className={`mt-4 text-center text-xs opacity-60 ${theme === "swipestats" ? "text-gray-500" : "text-gray-400"}`}
         >
           {privacyText}
         </p>
@@ -165,5 +172,3 @@ const CTANewsletterCompact = ({
     </div>
   );
 };
-
-export default CTANewsletterCompact;

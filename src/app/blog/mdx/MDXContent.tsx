@@ -2,24 +2,53 @@
 
 import * as runtime from "react/jsx-runtime";
 
+/**
+ * MDX Content Components
+ *
+ * Available components for use in blog posts:
+ *
+ * CONTENT COMPONENTS:
+ * - <TLDR /> - Article summary with pros/cons
+ * - <CalloutBox /> - Highlighted information boxes
+ * - <Quote /> - Styled quote blocks
+ * - <Stats /> - Display statistics
+ * - <FeatureGrid /> - Grid of features
+ * - <MdxImage /> - Enhanced image component
+ *
+ * CTA COMPONENTS:
+ * - <CTANewsletterCompact /> - Newsletter signup (mid-article)
+ * - <CTAProductLinks /> - Product promotion with carousel
+ * - <CTAFooter /> - Large footer CTA with before/after
+ * - <CTA /> - General purpose CTA
+ * - <ExitPopup /> - Exit intent popup (auto-triggers)
+ */
+
 // Import all the custom components that might be used in MDX
-import { AuthorCard } from "./AuthorCard";
 import { CalloutBox } from "./CalloutBox";
 import { CTA } from "./CTA";
+import { CTAFooter } from "./CTAFooter";
+import { CTANewsletterCompact } from "./CTANewsletterCompact";
+import { CTAProductLinks } from "./CTAProductLinks";
+import { ExitPopup } from "./ExitPopup";
 import { FeatureGrid } from "./FeatureGrid";
 import { MdxImage } from "./MdxImage";
 import { Quote } from "./Quote";
 import { Stats } from "./Stats";
+import { TLDR } from "./TLDR";
 
 // Global components available to all MDX content
 const sharedComponents = {
-  AuthorCard,
   CalloutBox,
   CTA,
+  CTAFooter,
+  CTANewsletterCompact,
+  CTAProductLinks,
+  ExitPopup,
   FeatureGrid,
   MdxImage,
   Quote,
   Stats,
+  TLDR,
 };
 
 // Parse the Velite generated MDX code into a React component function
