@@ -16,9 +16,10 @@ import * as runtime from "react/jsx-runtime";
  * - <MdxImage /> - Enhanced image component
  *
  * CTA COMPONENTS:
- * - <CTANewsletterCompact /> - Newsletter signup (mid-article)
- * - <CTAProductLinks /> - Product promotion with carousel
- * - <CTAFooter /> - Large footer CTA with before/after
+ * - <CtaNewsletter /> - Newsletter signup (mid-article)
+ * - <CtaCarousel /> - Product promotion with carousel
+ * - <CtaShowcase /> - Large footer CTA with before/after
+ * - CtaCard /> - "Visualize Your Tinder Data" card CTA
  * - <CTA /> - General purpose CTA
  * - <ExitPopup /> - Exit intent popup (auto-triggers)
  */
@@ -26,9 +27,10 @@ import * as runtime from "react/jsx-runtime";
 // Import all the custom components that might be used in MDX
 import { CalloutBox } from "./CalloutBox";
 import { CTA } from "./CTA";
-import { CTAFooter } from "./CTAFooter";
-import { CTANewsletterCompact } from "./CTANewsletterCompact";
-import { CTAProductLinks } from "./CTAProductLinks";
+import { CtaCard } from "./CtaCard";
+import { CtaCarousel } from "./CtaCarousel";
+import { CtaNewsletter } from "./CtaNewsletter";
+import { CtaShowcase } from "./CtaShowcase";
 import { ExitPopup } from "./ExitPopup";
 import { FeatureGrid } from "./FeatureGrid";
 import { MdxImage } from "./MdxImage";
@@ -40,9 +42,10 @@ import { TLDR } from "./TLDR";
 const sharedComponents = {
   CalloutBox,
   CTA,
-  CTAFooter,
-  CTANewsletterCompact,
-  CTAProductLinks,
+  CtaShowcase,
+  CtaNewsletter,
+  CtaCarousel,
+  CtaCard,
   ExitPopup,
   FeatureGrid,
   MdxImage,

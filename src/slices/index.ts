@@ -14,7 +14,7 @@ export const components = {
   content_with_testimonials_and_stats: dynamic(
     () => import("./ContentWithTestimonialsAndStats"),
   ),
-  cta_footer: dynamic(() => import("./CtaFooter")),
+  cta_footer: dynamic(() => import("./CtaShowcase")),
   cta_info: dynamic(() => import("./Cta")),
   cta_section: dynamic(() => import("./CtaSection")),
   embed: dynamic(() => import("./Embed")),

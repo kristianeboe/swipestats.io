@@ -221,7 +221,7 @@ export const ExitPopup = ({
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     // Set timeout - longer for mobile users since they're more likely to be actively engaged
-    const timeoutId = setTimeout(handleTimeout, isMobile ? 45000 : 30000);
+    const timeoutId = setTimeout(handleTimeout, isMobile ? 180000 : 120000);
 
     // Cleanup
     return () => {

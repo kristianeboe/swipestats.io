@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-interface CTASimpleProps {
+interface CtaCardProps {
   emoji?: string;
   heading?: string;
   description?: string;
@@ -13,15 +13,24 @@ interface CTASimpleProps {
   className?: string;
 }
 
-export function CTASimple({
+/**
+ * CtaCard - Propless CTA for promoting Swipestats data visualization
+ *
+ * Use this component without props in blog posts to encourage users to upload their dating app data.
+ * Defaults are optimized for maximum reusability across all Swipestats content.
+ *
+ * @example
+ * CtaCard />
+ */
+export function CtaCard({
   emoji = "📊",
-  heading = "Visualize Your Tinder Data",
-  description = "Curious where you stand on the dating market? Anonymously upload your data to Swipestats and find out today (it's free)",
-  buttonText = "Learn How(It's FREE)",
-  buttonUrl = "/upload/tinder",
+  heading = "Visualize Your Dating Data",
+  description = "Curious where you stand on the dating market? Anonymously upload your Tinder, Bumble, or Hinge data to Swipestats and get instant insights (it's free)",
+  buttonText = "Analyze My Data (FREE)",
+  buttonUrl = "/",
   imageSrc = "/ss2.png",
   className = "",
-}: CTASimpleProps) {
+}: CtaCardProps = {}) {
   return (
     <section
       className={`relative mt-10 max-w-4xl rounded-xl border-l-8 border-rose-600 bg-white p-6 shadow-lg ring-1 ring-gray-900/10 ${className}`}

@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 
 import { Button } from "./_components/ui/button";
 import { About } from "./AboutSection";
+import { Blog } from "./blog/BlogSection";
 import DataRequestSupport from "./DataRequestSupport";
 import { FAQ } from "./FAQ";
 import { HeroHeading } from "./HeroHeading";

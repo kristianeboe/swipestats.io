@@ -10,7 +10,7 @@ interface ProductImage {
   alt?: string;
 }
 
-interface CTAProductLinksProps {
+interface CtaCarouselProps {
   title?: string;
   description?: string;
   buttonText?: string;
@@ -21,21 +21,29 @@ interface CTAProductLinksProps {
   className?: string;
 }
 
-// Product links CTA for mid-article placement - drives traffic to main product
-export const CTAProductLinks = ({
-  title = "📸 Got Boring Photos?",
-  description = "Swipestats analysis reveals that profile photos are the driving factor in getting you likes and matches. Get eye-catching photos that make you stand out from the crowd and actually get dates.",
-  buttonText = "Check It Out",
-  buttonUrl = "/",
+/**
+ * CtaCarousel - Propless CTA for promoting AI dating photos
+ *
+ * Use this component without props in blog posts to promote the AI photo service.
+ * Features proven copy and showcases AI-generated photos.
+ *
+ * @example
+ * <CtaCarousel />
+ */
+export const CtaCarousel = ({
+  title = "📸 Struggling with Matches?",
+  description = "Our data shows photos are the #1 factor in getting matches. Get AI-enhanced photos that make you stand out and actually get dates.",
+  buttonText = "Transform Your Profile",
+  buttonUrl = "/ai-dating-photos",
   productImages = [],
   featuresList = [
     "More matches or your money back",
-    "AI-generated photos",
-    "48-hour turnaround",
+    "AI-generated photos in 48 hours",
+    "Used by 10,000+ daters",
   ],
   theme = "swipestats",
   className = "",
-}: CTAProductLinksProps) => {
+}: CtaCarouselProps = {}) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Default images if none provided (SwipeStats themed)
@@ -97,66 +105,54 @@ export const CTAProductLinks = ({
   const styles = themeStyles[theme];
 
   return (
-    <div className={`my-6 p-5 ${styles.container} ${className} w-full`}>
+    <div
+      className={`my-6 p-4 sm:p-6 lg:p-8 ${styles.container} ${className} w-full`}
+    >
       {/* Subtle background glow */}
       <div className={styles.glow}></div>
 
       {/* Mobile-only heading above grid */}
-      <div className="mb-4 flex items-center justify-center md:hidden">
-        <h3
-          className={`text-xl font-bold sm:text-2xl ${styles.title} text-center leading-tight`}
-          style={{ margin: 0, lineHeight: 1.1 }}
-        >
+      <div className="mb-6 text-center md:hidden">
+        <h3 className={`text-2xl font-bold ${styles.title} leading-tight`}>
           {title}
         </h3>
       </div>
 
-      <div className="relative z-10 grid grid-cols-1 items-stretch gap-3 md:aspect-[8/5] md:grid-cols-2 md:gap-5">
+      <div className="relative z-10 grid grid-cols-1 items-center gap-6 md:grid-cols-2 md:gap-8 lg:gap-12">
         {/* Left Section - AI Photo Carousel */}
-        <div
-          className="relative aspect-[4/5] w-full overflow-hidden md:aspect-[5/6]"
-          style={{ borderRadius: "12px" }}
-        >
+        <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl shadow-xl">
           {images.length > 0 && images[currentImageIndex] && (
-            <>
-              <Image
-                src={
-                  images[currentImageIndex].src || "/api/placeholder/400/500"
-                }
-                alt={
-                  images[currentImageIndex].alt ||
-                  `AI Enhanced Photo ${currentImageIndex + 1}`
-                }
-                fill
-                className="object-cover transition-all duration-500"
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            </>
+            <Image
+              src={images[currentImageIndex].src || "/api/placeholder/400/500"}
+              alt={
+                images[currentImageIndex].alt ||
+                `AI Enhanced Photo ${currentImageIndex + 1}`
+              }
+              fill
+              className="rounded-2xl object-cover transition-all duration-700 ease-in-out"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
           )}
 
           {/* AI-generated tag */}
           <div
-            className={`absolute right-3 top-3 ${styles.aiTag} rounded-full px-2 py-1 text-xs font-bold shadow-lg`}
+            className={`absolute left-1/2 top-3 -translate-x-1/2 ${styles.aiTag} rounded-full px-3 py-1.5 text-xs font-bold shadow-lg backdrop-blur-sm`}
           >
             ✨ AI-Generated
           </div>
 
           {/* Carousel indicators */}
           {images.length > 1 && (
-            <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 transform space-x-1">
+            <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 transform gap-2">
               {images.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentImageIndex(index)}
-                  className={`rounded-sm transition-colors ${
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
                     index === currentImageIndex
-                      ? styles.indicator
-                      : styles.indicatorInactive
+                      ? `${styles.indicator} w-8`
+                      : `${styles.indicatorInactive} w-1.5`
                   }`}
-                  style={{
-                    width: "16px",
-                    height: "5px",
-                  }}
                   aria-label={`View image ${index + 1}`}
                 />
               ))}
@@ -165,73 +161,57 @@ export const CTAProductLinks = ({
         </div>
 
         {/* Right Section - Copy and CTA */}
-        <div
-          className="flex h-full flex-col justify-start p-2 text-center md:p-3 md:text-left"
-          style={{ gap: "clamp(3rem, 8vw, 5rem)" }}
-        >
-          <div className="hidden items-center justify-center md:flex md:justify-start">
+        <div className="flex flex-col justify-center gap-6 text-center md:text-left">
+          {/* Desktop heading */}
+          <div className="hidden md:block">
             <h3
-              className={`text-xl font-bold sm:text-2xl md:text-3xl ${styles.title} leading-tight`}
-              style={{ margin: 0, lineHeight: 1.1 }}
+              className={`text-3xl font-bold lg:text-4xl ${styles.title} leading-tight`}
             >
               {title}
             </h3>
           </div>
 
-          <div className="flex items-center justify-center md:justify-start">
+          {/* Description */}
+          <div>
             <p
-              className={`text-base sm:text-lg md:text-xl ${styles.description} leading-relaxed`}
+              className={`text-base sm:text-lg ${styles.description} leading-relaxed`}
             >
               {description}
             </p>
           </div>
 
-          {/* Quick benefits */}
-          <div className="flex items-center justify-center md:justify-start">
-            <div className="flex flex-col items-start gap-3 text-base md:text-lg">
-              {featuresList.map((feature, index) => {
-                // Mobile-optimized shorter versions of features
-                const mobileFeatures = [
-                  "Guaranteed results",
-                  "AI-generated photos",
-                  "48-hour turnaround",
-                ];
-
-                return (
-                  <span
-                    key={index}
-                    className={`flex items-center ${styles.stats}`}
+          {/* Features list */}
+          <div className="flex justify-center md:justify-start">
+            <div className="flex flex-col gap-3">
+              {featuresList.map((feature, index) => (
+                <div
+                  key={index}
+                  className={`flex items-center gap-3 ${styles.stats}`}
+                >
+                  <svg
+                    className={`h-5 w-5 flex-shrink-0 ${styles.accent}`}
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
                   >
-                    <svg
-                      className={`mr-3 h-5 w-5 md:h-6 md:w-6 ${styles.accent} flex-shrink-0`}
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    {/* Show shorter text on mobile, full text on desktop */}
-                    <span className="sm:hidden">
-                      {mobileFeatures[index] || feature}
-                    </span>
-                    <span className="hidden sm:inline">{feature}</span>
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="text-sm font-medium sm:text-base">
+                    {feature}
                   </span>
-                );
-              })}
+                </div>
+              ))}
             </div>
           </div>
 
           {/* CTA Button */}
-          <div
-            style={{ marginTop: "clamp(1rem, 3vw, 1.5rem)" }}
-            className="flex justify-center"
-          >
+          <div className="mt-2">
             <Link
               href={buttonUrl}
-              className={`w-full px-6 py-4 text-center text-base font-semibold md:px-8 md:py-5 md:text-lg ${styles.button}`}
+              className={`inline-block w-full px-8 py-4 text-center text-base font-bold sm:text-lg ${styles.button}`}
             >
               {buttonText}
             </Link>

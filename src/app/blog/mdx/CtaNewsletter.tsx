@@ -5,7 +5,7 @@ import { useState } from "react";
 import { api } from "@/trpc/react";
 
 // Types for component props
-interface CTANewsletterCompactProps {
+interface CtaNewsletterProps {
   title?: string;
   description?: string;
   buttonText?: string;
@@ -15,16 +15,24 @@ interface CTANewsletterCompactProps {
   className?: string;
 }
 
-// Compact newsletter CTA for mid-article placement - minimal and non-intrusive
-export const CTANewsletterCompact = ({
-  title = "💡 Expert Dating Insights",
-  description = "Join thousands getting insider data and optimization tips from our SwipeStats dating experts.",
-  buttonText = "Join SwipeStats Community",
+/**
+ * CtaNewsletter - Propless newsletter signup CTA
+ *
+ * Use this component without props in blog posts for newsletter signups.
+ * Optimized for mid-article placement with proven copy.
+ *
+ * @example
+ * <CtaNewsletter />
+ */
+export const CtaNewsletter = ({
+  title = "📊 Get Expert Dating Insights",
+  description = "Join thousands getting insider data and proven strategies to improve your dating profile. Free tips delivered to your inbox.",
+  buttonText = "Get Free Tips",
   placeholder = "your@email.com",
   privacyText = "No spam. Unsubscribe anytime.",
   theme = "swipestats",
   className = "",
-}: CTANewsletterCompactProps) => {
+}: CtaNewsletterProps = {}) => {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
 

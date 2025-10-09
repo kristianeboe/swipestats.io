@@ -63,7 +63,7 @@ export default function BlogPage() {
         posts={regularPosts}
         title="Data-Driven Dating Insights"
         description="Expert insights and actionable strategies to help you succeed on dating apps."
-        showFeatured={true}
+        showFeatured={false}
         featuredPosts={featuredPosts}
       />
     </>

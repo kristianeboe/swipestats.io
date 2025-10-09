@@ -13,7 +13,7 @@ const posts = defineCollection({
       author: s.string().optional(),
       authorImage: s.string().optional(),
       featured: s.boolean().default(false),
-      showStickyVisual: s.boolean().default(false),
+      showStickyVisual: s.boolean().default(true),
       image: s.string().optional(),
       readingTime: s.number().optional(),
       // Velite will handle MDX content processing and expose it as 'content'

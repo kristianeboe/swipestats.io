@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { asText } from "@prismicio/client";
 
-import { CTANewsletterCompact } from "@/app/blog/mdx/CTANewsletterCompact";
+import { CtaNewsletter } from "@/app/blog/mdx/CtaNewsletter";
 
 import type { Content } from "@prismicio/client";
 import type { SliceComponentProps } from "@prismicio/react";
@@ -44,7 +44,7 @@ const NewsletterCta: FC<NewsletterCtaProps> = ({ slice }) => {
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
     >
-      <CTANewsletterCompact
+      <CtaNewsletter
         title={titleText}
         description={descriptionText}
         buttonText={buttonText}

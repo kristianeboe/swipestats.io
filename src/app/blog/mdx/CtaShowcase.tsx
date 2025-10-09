@@ -14,7 +14,7 @@ interface AfterImage {
   alt?: string;
 }
 
-interface CTAFooterProps {
+interface CtaShowcaseProps {
   title?: string;
   subtitle?: string;
   description?: string;
@@ -27,19 +27,27 @@ interface CTAFooterProps {
   fullWidth?: boolean;
 }
 
-// Large footer CTA component showcasing AI photo transformation
-export const CTAFooter = ({
-  title = "Transform Your Dating Profile",
-  subtitle = "Our AI turns your ordinary photos into optimal dating profile pictures that get results",
-  description = "Upload your photos and get professionally enhanced versions in 48 hours",
-  buttonText = "Check It Out",
-  buttonUrl = "/",
+/**
+ * CtaShowcase - Propless large footer CTA for AI photos
+ *
+ * Use this component without props at the end of blog posts to showcase AI photo transformation.
+ * Features before/after visuals and proven conversion copy.
+ *
+ * @example
+ * <CtaShowcase />
+ */
+export const CtaShowcase = ({
+  title = "Transform Your Dating Profile Today",
+  subtitle = "Get AI-enhanced photos that make you stand out and match with people you actually like",
+  description = "Upload your photos and get professionally enhanced versions delivered in 48 hours",
+  buttonText = "Get AI Photos",
+  buttonUrl = "/ai-dating-photos",
   beforeImages = [],
   afterImages = [],
   theme = "swipestats",
   className = "",
   fullWidth = true,
-}: CTAFooterProps) => {
+}: CtaShowcaseProps = {}) => {
   // Default before images if none provided
   const defaultBeforeImages: BeforeImage[] = [
     { src: "/images/get_dates/IMG_5344.jpg", alt: "Original casual photo 1" },
