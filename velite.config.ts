@@ -5,7 +5,6 @@ const posts = defineCollection({
   pattern: "posts/**/*.mdx",
   schema: s
     .object({
-      slug: s.slug("posts"),
       title: s.string().max(99),
       description: s.string().max(999).optional(),
       date: s.isodate(),
@@ -13,11 +12,12 @@ const posts = defineCollection({
       author: s.string().optional(),
       authorImage: s.string().optional(),
       featured: s.boolean().default(false),
-      showStickyVisual: s.boolean().default(true),
       image: s.string().optional(),
       readingTime: s.number().optional(),
       // Velite will handle MDX content processing and expose it as 'content'
       content: s.mdx(),
+      // Auto-generate slug from file path
+      slug: s.path().transform((path) => path.replace(/^posts\//, "")),
     })
     .transform((data) => ({
       ...data,

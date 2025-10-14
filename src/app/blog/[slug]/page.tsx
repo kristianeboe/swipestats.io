@@ -134,7 +134,7 @@ export default async function BlogPostPage({
           <div className="mx-auto w-full max-w-3xl flex-1">
             <Link
               href="/blog"
-              className="mb-8 inline-flex items-center gap-2 text-base font-semibold text-blue-600 hover:text-blue-500"
+              className="mb-8 inline-flex items-center gap-2 text-base font-semibold text-rose-600 hover:text-blue-500"
             >
               <ArrowLeft className="h-4 w-4" />
               Back to Blog
@@ -261,7 +261,7 @@ export default async function BlogPostPage({
                 </div>
 
                 {/* Trust indicators */}
-                <div className="mt-5 space-y-1.5 border-t border-gray-200 pt-4">
+                {/* <div className="mt-5 space-y-1.5 border-t border-gray-200 pt-4">
                   <div className="flex items-center gap-2 text-xs text-gray-500">
                     <svg
                       className="h-3.5 w-3.5"
@@ -290,7 +290,7 @@ export default async function BlogPostPage({
                     </svg>
                     Privacy protected
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
           </aside>

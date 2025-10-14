@@ -43,7 +43,7 @@ export function CtaCard({
         <div className="mt-6 flex items-center gap-x-5">
           <Link
             href={buttonUrl}
-            className="inline-flex items-center justify-center rounded-lg bg-rose-600 px-4 py-2 text-base font-semibold text-white shadow-sm hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-600 focus:ring-offset-2"
+            className="inline-flex items-center justify-center rounded-lg bg-rose-600 px-4 py-2 text-base font-semibold text-white no-underline shadow-sm hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-600 focus:ring-offset-2"
           >
             {buttonText}
           </Link>

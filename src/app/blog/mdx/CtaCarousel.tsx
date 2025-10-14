@@ -211,7 +211,7 @@ export const CtaCarousel = ({
           <div className="mt-2">
             <Link
               href={buttonUrl}
-              className={`inline-block w-full px-8 py-4 text-center text-base font-bold sm:text-lg ${styles.button}`}
+              className={`inline-block w-full px-8 py-4 text-center text-base font-bold sm:text-lg ${styles.button} no-underline`}
             >
               {buttonText}
             </Link>
