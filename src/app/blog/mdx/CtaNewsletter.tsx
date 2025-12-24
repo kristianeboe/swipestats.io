@@ -11,9 +11,17 @@ interface CtaNewsletterProps {
   buttonText?: string;
   placeholder?: string;
   privacyText?: string;
-  theme?: "swipestats" | "getdates";
   className?: string;
 }
+
+// Bar Chart Icon Component
+const BarChartIcon = () => (
+  <div className="flex h-8 items-end gap-1">
+    <div className="h-6 w-2 rounded-sm bg-gradient-to-t from-rose-600 to-rose-400"></div>
+    <div className="h-8 w-2 rounded-sm bg-gradient-to-t from-blue-600 to-blue-400"></div>
+    <div className="h-5 w-2 rounded-sm bg-gradient-to-t from-green-600 to-green-400"></div>
+  </div>
+);
 
 /**
  * CtaNewsletter - Propless newsletter signup CTA
@@ -25,52 +33,32 @@ interface CtaNewsletterProps {
  * <CtaNewsletter />
  */
 export const CtaNewsletter = ({
-  title = "📊 Get Expert Dating Insights",
+  title = "Get Expert Dating Insights",
   description = "Join thousands getting insider data and proven strategies to improve your dating profile. Free tips delivered to your inbox.",
   buttonText = "Get Free Tips",
   placeholder = "your@email.com",
   privacyText = "No spam. Unsubscribe anytime.",
-  theme = "swipestats",
   className = "",
 }: CtaNewsletterProps = {}) => {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // Theme-based styling adapted for SwipeStats
-  const themeStyles = {
-    swipestats: {
-      container:
-        "bg-gradient-to-r from-white via-gray-50 to-white border border-rose-200/60 rounded-2xl backdrop-blur-sm shadow-lg relative overflow-hidden",
-      title: "text-gray-900 font-bold",
-      description: "text-gray-600",
-      button:
-        "bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-700 hover:to-rose-800 text-white border-none font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 rounded-lg",
-      input:
-        "bg-white border border-gray-300 text-gray-900 placeholder-gray-500 focus:border-rose-500 focus:ring-2 focus:ring-rose-500/30 transition-all duration-200 focus:outline-none rounded-lg",
-      accent: "text-rose-600",
-      icon: "text-rose-600",
-      glow: "absolute inset-0 bg-gradient-to-r from-rose-600/5 via-transparent to-rose-600/5 pointer-events-none",
-      successBg: "bg-gradient-to-r from-rose-600 to-rose-700",
-      successIcon: "bg-gradient-to-br from-rose-600 to-rose-700",
-    },
-    getdates: {
-      container:
-        "bg-gradient-to-r from-gray-900/90 via-gray-800/90 to-gray-900/90 border border-yellow-400/20 rounded-2xl backdrop-blur-sm shadow-lg relative overflow-hidden",
-      title: "text-white font-bold",
-      description: "text-gray-300",
-      button:
-        "bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black border-none font-bold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 rounded-lg",
-      input:
-        "bg-gray-900/80 border border-gray-600/50 text-white placeholder-gray-400 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/30 backdrop-blur-sm transition-all duration-200 focus:outline-none rounded-lg",
-      accent: "text-yellow-400",
-      icon: "text-yellow-400",
-      glow: "absolute inset-0 bg-gradient-to-r from-yellow-400/5 via-transparent to-yellow-400/5 pointer-events-none",
-      successBg: "bg-gradient-to-r from-yellow-400 to-yellow-500",
-      successIcon: "bg-gradient-to-br from-yellow-400 to-yellow-500",
-    },
+  // SwipeStats styling
+  const styles = {
+    container:
+      "bg-gradient-to-br from-rose-50/80 via-white to-rose-50/80 border border-rose-200/50 rounded-3xl backdrop-blur-sm shadow-xl relative overflow-hidden",
+    title: "text-gray-900 font-bold tracking-tight",
+    description: "text-gray-600 leading-relaxed",
+    button:
+      "bg-gradient-to-r from-rose-600 via-rose-500 to-rose-600 hover:from-rose-700 hover:via-rose-600 hover:to-rose-700 text-white border-none font-bold shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 rounded-xl px-8 py-3.5",
+    input:
+      "bg-white/90 border border-rose-200/60 text-gray-900 placeholder-gray-500 focus:border-rose-400 focus:ring-2 focus:ring-rose-400/20 focus:bg-white transition-all duration-300 focus:outline-none rounded-xl px-5 py-3.5 backdrop-blur-sm",
+    accent: "text-rose-600",
+    icon: "text-rose-600",
+    glow: "absolute inset-0 bg-gradient-to-r from-rose-600/8 via-transparent to-rose-600/8 pointer-events-none",
+    successBg: "bg-gradient-to-r from-rose-600 to-rose-700",
+    successIcon: "bg-gradient-to-br from-rose-600 to-rose-700",
   };
-
-  const styles = themeStyles[theme];
 
   // Use SwipeStats' existing tRPC newsletter system
   const newsletterMutation = api.newsletter.subscribe.useMutation({
@@ -95,15 +83,13 @@ export const CtaNewsletter = ({
   // Success state - eye-catching and celebratory
   if (isSubmitted) {
     return (
-      <div
-        className={`my-6 ${styles.container} ${className} mx-auto w-full max-w-3xl`}
-      >
+      <div className={`my-6 ${styles.container} ${className} mx-auto w-full`}>
         <div className="flex items-center justify-center gap-3 p-4">
           <div
             className={`h-6 w-6 rounded-full ${styles.successIcon} flex items-center justify-center`}
           >
             <svg
-              className={`h-4 w-4 ${theme === "swipestats" ? "text-white" : "text-black"}`}
+              className="h-4 w-4 text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -125,22 +111,23 @@ export const CtaNewsletter = ({
   }
 
   return (
-    <div
-      className={`my-6 ${styles.container} ${className} mx-auto w-full max-w-3xl`}
-    >
+    <div className={`my-8 ${styles.container} ${className} mx-auto w-full`}>
       {/* Subtle background glow */}
       <div className={styles.glow}></div>
 
-      <div className="relative z-10 px-6 pb-8 pt-8">
-        {/* Title */}
-        <div className="mb-4 flex flex-col items-center justify-center text-center">
-          <h3
-            className={`text-3xl ${styles.title} mb-2.5 text-center leading-tight`}
-            style={{ margin: "0", lineHeight: 1.1 }}
-          >
-            {title}
-          </h3>
-          <p className={`text-base ${styles.description} leading-relaxed`}>
+      <div className="relative z-10 px-8 pb-8 pt-10">
+        {/* Title with Icon */}
+        <div className="mb-6 flex flex-col items-center justify-center text-center">
+          <div className="mb-4 flex items-center gap-3">
+            <BarChartIcon />
+            <h3
+              className={`text-2xl sm:text-3xl ${styles.title} leading-tight`}
+              style={{ margin: "0", lineHeight: 1.1 }}
+            >
+              {title}
+            </h3>
+          </div>
+          <p className={`text-base ${styles.description} max-w-lg`}>
             {description}
           </p>
         </div>
@@ -148,12 +135,12 @@ export const CtaNewsletter = ({
         {/* Email form */}
         <form
           onSubmit={handleEmailSubmit}
-          className="flex flex-col items-center gap-4"
+          className="mx-auto flex max-w-lg flex-col items-stretch gap-4 sm:flex-row sm:items-center"
         >
           <input
             type="email"
             placeholder={placeholder}
-            className={`w-full px-4 py-3 text-sm ${styles.input}`}
+            className={`flex-1 text-sm ${styles.input}`}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -162,18 +149,16 @@ export const CtaNewsletter = ({
           <button
             type="submit"
             disabled={newsletterMutation.isPending}
-            className={`px-6 py-3 text-sm font-bold ${styles.button} ${
+            className={`text-sm ${styles.button} ${
               newsletterMutation.isPending ? "opacity-50" : ""
-            } whitespace-nowrap`}
+            } whitespace-nowrap sm:flex-shrink-0`}
           >
             {newsletterMutation.isPending ? "Subscribing..." : buttonText}
           </button>
         </form>
 
         {/* Privacy note */}
-        <p
-          className={`mt-4 text-center text-xs opacity-60 ${theme === "swipestats" ? "text-gray-500" : "text-gray-400"}`}
-        >
+        <p className="mt-5 text-center text-xs text-gray-500 opacity-70">
           {privacyText}
         </p>
       </div>

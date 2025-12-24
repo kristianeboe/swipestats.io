@@ -58,14 +58,12 @@ export default function BlogPage() {
   const regularPosts = sortedPosts.filter((post) => !post.featured);
 
   return (
-    <>
-      <BlogGrid
-        posts={regularPosts}
-        title="Data-Driven Dating Insights"
-        description="Expert insights and actionable strategies to help you succeed on dating apps."
-        showFeatured={false}
-        featuredPosts={featuredPosts}
-      />
-    </>
+    <BlogGrid
+      posts={regularPosts}
+      title="Data-Driven Dating Insights"
+      description="Expert insights and actionable strategies to help you succeed on dating apps."
+      showFeatured={false}
+      featuredPosts={featuredPosts}
+    />
   );
 }

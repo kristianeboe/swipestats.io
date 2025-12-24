@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { format, parseISO } from "date-fns";
+import { AUTHORS } from "velite.config";
 
 import type { Post } from ".velite";
 
@@ -15,6 +16,10 @@ interface BlogGridProps {
 
 // Moved outside component to avoid recreation on every render
 function getDisplayImageUrl(post: Post): string {
+  // Use thumbnailImage if available, otherwise fall back to OG image
+  if (post.thumbnailImage) {
+    return post.thumbnailImage;
+  }
   return `/api/og/v0/${post.slug}`;
 }
 
@@ -103,19 +108,17 @@ export function BlogGrid({
             </h3>
             <article className="group relative isolate mb-16 flex flex-col justify-end overflow-hidden rounded-2xl bg-gray-900 px-8 pb-8 pt-80 sm:pt-48 lg:pt-80">
               {/* Background display image */}
-              <div
+              {/* <div
                 className="absolute inset-0 -z-10"
                 style={{
                   backgroundImage: `url(${getDisplayImageUrl(featuredPost)})`,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                 }}
-              />
-
+              /> */}
               {/* Gradient overlay */}
               <div className="absolute inset-0 -z-10 bg-gradient-to-t from-gray-900 via-gray-900/40" />
               <div className="absolute inset-0 -z-10 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
-
               <div className="flex flex-wrap items-center gap-2 overflow-hidden text-sm leading-6 text-gray-300">
                 <time dateTime={featuredPost.date} className="mr-4">
                   {format(parseISO(featuredPost.date), "MMM dd, yyyy")}
@@ -126,7 +129,6 @@ export function BlogGrid({
                   </span>
                 )}
               </div>
-
               <h3 className="mt-3 text-3xl font-semibold leading-6 text-white sm:text-4xl">
                 <Link
                   href={`${basePath}/${featuredPost.slug}`}
@@ -135,7 +137,6 @@ export function BlogGrid({
                   {featuredPost.title}
                 </Link>
               </h3>
-
               {featuredPost.description && (
                 <Link
                   href={`${basePath}/${featuredPost.slug}`}
@@ -145,14 +146,12 @@ export function BlogGrid({
                 </Link>
               )}
 
-              {featuredPost.author && (
-                <AuthorInfo
-                  author={featuredPost.author}
-                  authorImage={featuredPost.authorImage}
-                  theme="dark"
-                  className="mt-6"
-                />
-              )}
+              <AuthorInfo
+                author={featuredPost.author}
+                authorImage={AUTHORS[featuredPost.author].image}
+                theme="dark"
+                className="mt-6"
+              />
             </article>
           </div>
         )}
@@ -168,13 +167,13 @@ export function BlogGrid({
                 href={`${basePath}/${post.slug}`}
                 className="relative w-full transition-transform group-hover:scale-[1.02]"
               >
-                <Image
+                {/* <Image
                   src={getDisplayImageUrl(post)}
                   alt={post.title}
                   width={640}
                   height={360}
                   className="aspect-video w-full rounded-2xl object-cover sm:aspect-[2/1] lg:aspect-[3/2]"
-                />
+                /> */}
                 <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
               </Link>
 
@@ -183,11 +182,14 @@ export function BlogGrid({
                   <time dateTime={post.date} className="text-gray-500">
                     {format(parseISO(post.date), "MMM dd, yyyy")}
                   </time>
-                  {post.tags.length > 0 && (
-                    <span className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 transition-colors hover:bg-gray-200 hover:text-gray-900">
-                      #{post.tags[0]}
+                  {post.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 transition-colors hover:bg-gray-200 hover:text-gray-900"
+                    >
+                      #{tag}
                     </span>
-                  )}
+                  ))}
                 </div>
 
                 <div className="relative grow">
@@ -209,12 +211,10 @@ export function BlogGrid({
                   )}
                 </div>
 
-                {post.author && (
-                  <AuthorInfo
-                    author={post.author}
-                    authorImage={post.authorImage}
-                  />
-                )}
+                <AuthorInfo
+                  author={post.author}
+                  authorImage={AUTHORS[post.author].image}
+                />
               </div>
             </article>
           ))}

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { format, parseISO } from "date-fns";
 import { ArrowLeft, Calendar, Clock } from "lucide-react";
 
+import { AUTHORS } from "@/../velite.config";
 import { env } from "@/env";
 
 import { CtaShowcase } from "../mdx/CtaShowcase";
@@ -48,7 +49,7 @@ export async function generateMetadata({
       description: post.description,
       type: "article",
       publishedTime: post.date,
-      authors: post.author ? [post.author] : [],
+      authors: [post.author],
       images: [
         {
           url: socialImageUrl,
@@ -80,6 +81,8 @@ export default async function BlogPostPage({
   }
 
   const { content, ...meta } = post;
+
+  const authorInfo = AUTHORS[meta.author];
 
   // Always use sticky layout
   return (
@@ -142,33 +145,22 @@ export default async function BlogPostPage({
 
             {/* Article meta */}
             <div className="mb-12 flex items-center gap-x-6 text-sm">
-              {meta.author && (
-                <div className="flex items-center gap-x-2">
-                  {meta.authorImage ? (
-                    <Image
-                      src={
-                        meta.authorImage.startsWith("/")
-                          ? meta.authorImage
-                          : `/images/people/${meta.authorImage}`
-                      }
-                      alt={meta.author}
-                      width={40}
-                      height={40}
-                      className="h-10 w-10 rounded-full object-cover ring-2 ring-white"
-                    />
-                  ) : (
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600">
-                      <span className="text-sm font-semibold text-white">
-                        {meta.author.charAt(0)}
-                      </span>
-                    </div>
-                  )}
-                  <div className="text-sm leading-6">
-                    <p className="font-semibold text-gray-900">{meta.author}</p>
-                    <p className="text-gray-600">Author</p>
-                  </div>
+              <div className="flex items-center gap-x-2">
+                <Image
+                  src={authorInfo.image}
+                  alt={authorInfo.name}
+                  width={40}
+                  height={40}
+                  className="h-10 w-10 rounded-full object-cover ring-2 ring-white"
+                />
+                <div className="text-sm leading-6">
+                  <p className="font-semibold text-gray-900">
+                    {authorInfo.name}
+                  </p>
+                  <p className="text-gray-600">Author</p>
                 </div>
-              )}
+              </div>
+
               <div className="flex items-center gap-x-6 text-gray-500">
                 {meta.date && (
                   <div className="flex items-center gap-x-2">
@@ -298,46 +290,30 @@ export default async function BlogPostPage({
       </div>
 
       {/* Author section */}
-      {meta.author && (
-        <div className="bg-gray-50">
-          <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
-            <div className="mx-auto max-w-2xl lg:mx-0">
-              <h2 className="text-pretty text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl">
-                About the Author
-              </h2>
-              <div className="mt-8 flex items-center gap-x-6">
-                {meta.authorImage ? (
-                  <Image
-                    src={
-                      meta.authorImage.startsWith("/")
-                        ? meta.authorImage
-                        : `/images/people/${meta.authorImage}`
-                    }
-                    alt={meta.author}
-                    width={64}
-                    height={64}
-                    className="h-16 w-16 rounded-full object-cover shadow-lg ring-4 ring-white"
-                  />
-                ) : (
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600">
-                    <span className="text-xl font-semibold text-white">
-                      {meta.author.charAt(0)}
-                    </span>
-                  </div>
-                )}
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    {meta.author}
-                  </h3>
-                  <p className="text-gray-600">
-                    Founder of homi and real estate enthusiast.
-                  </p>
-                </div>
+      <div className="bg-gray-50">
+        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
+          <div className="mx-auto max-w-2xl lg:mx-0">
+            <h2 className="text-pretty text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl">
+              About the Author
+            </h2>
+            <div className="mt-8 flex items-center gap-x-6">
+              <Image
+                src={authorInfo.image}
+                alt={authorInfo.name}
+                width={64}
+                height={64}
+                className="h-16 w-16 rounded-full object-cover shadow-lg ring-4 ring-white"
+              />
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {authorInfo.name}
+                </h3>
+                <p className="text-gray-600">{authorInfo.description}</p>
               </div>
             </div>
           </div>
         </div>
-      )}
+      </div>
 
       {/* CTA Showcase */}
       <CtaShowcase />
