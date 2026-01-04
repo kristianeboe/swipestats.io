@@ -1,0 +1,267 @@
+---
+title: "CTA Component Showcase - Testing Sandbox"
+description: "A showcase of all CTA components used in SwipeStats blog posts. This is a test/sandbox page."
+date: 2025-10-09
+tags: ["test", "showcase", "internal"]
+author: "paw"
+authorImage: "/images/get_dates/PSB.png"
+featured: false
+image: "/images/SwipestatsArticle.png"
+readingTime: 5
+---
+
+## Overview
+
+This is a **sandbox page** to showcase all the different CTA components we use in blog posts. Use this to see how each one looks and behaves in action.
+
+---
+
+## 1. CtaCard - Quick Data Upload CTA
+
+This is the lightweight, minimal CTA for promoting data visualization. Perfect for end of posts or when you want something quick and unobtrusive.
+
+<CtaCard />
+
+**Use case:** End of shorter posts, quick data viz promotion  
+**Drives to:** Homepage (data upload)  
+**Visual style:** Compact card with image on desktop
+
+---
+
+## 2. CtaNewsletter - Email Capture
+
+This component captures emails for your newsletter. It's interactive with form submission and success states.
+
+<CtaNewsletter />
+
+**Use case:** Mid-article lead generation  
+**Drives to:** Newsletter signup  
+**Visual style:** Form with email input  
+**Note:** Try submitting an email to see the success state!
+
+---
+
+## 3. CtaCarousel - AI Photos with Carousel
+
+This is your mid-article product promotion for AI dating photos. Features an auto-rotating carousel of AI-generated photos with a features list.
+
+<CtaCarousel />
+
+**Use case:** Mid-article when discussing photos/profiles  
+**Drives to:** `/ai-dating-photos` product page  
+**Visual style:** Split layout with photo carousel + benefits  
+**Note:** Watch the photos rotate automatically every 3 seconds
+
+---
+
+## 4. CtaShowcase - Large Conversion Section
+
+This is your big, comprehensive footer CTA. It shows before/after photo comparisons, feature cards, and social proof. This is the most visually impressive CTA.
+
+<CtaShowcase />
+
+**Use case:** End of blog posts for final conversion push  
+**Drives to:** `/ai-dating-photos` product page  
+**Visual style:** Full-width section with photo grids, feature cards, stats  
+**Note:** Most detailed and visually rich component
+
+⚠️ **IMPORTANT: Do NOT use `<CtaShowcase />` in blog posts!** It is already integrated by default at the bottom of every blog page (see line 343 in `src/app/blog/[slug]/page.tsx`). Adding it manually will result in duplicate CTAs.
+
+---
+
+## 5. CTA - Simple Button Component
+
+This is the basic building block CTA - just a styled button/link. It has three variants (primary, secondary, ghost) and requires you to pass the label and URL.
+
+<CTA
+  label="Primary Button"
+
+variant="primary"
+link="/"
+/>
+
+<CTA label="Secondary Button" link="/" variant="secondary" />
+
+<CTA label="Ghost Button" link="/" variant="ghost" />
+
+**Use case:** Custom CTAs with specific links, inline buttons  
+**Drives to:** Whatever URL you specify  
+**Visual style:** Simple centered button with variants  
+**Note:** Requires `label` and `link` props (not propless like the others)
+
+---
+
+## 6. CalloutBox - Highlighted Information
+
+This component creates highlighted boxes for important information. It has 4 types: info (blue), success (green), warning (yellow), and error (red).
+
+<CalloutBox type="info">
+  **Info callout:** This is useful for providing additional context or helpful
+  tips to your readers. It draws attention without being alarming.
+</CalloutBox>
+<br />
+<CalloutBox type="success">
+  **Success callout:** Perfect for positive reinforcement, confirmation
+  messages, or celebrating wins. Use this when you want to highlight something
+  good!
+</CalloutBox>
+<br />
+<CalloutBox type="warning">
+  **Warning callout:** Great for cautionary advice or things readers should be
+  aware of. Not as severe as errors, but important to note.
+</CalloutBox>
+<br />
+<CalloutBox type="error">
+  **Error callout:** Use sparingly for critical information, common mistakes to
+  avoid, or things that could seriously harm the user's dating profile.
+</CalloutBox>
+
+**Use case:** Highlighting key information, tips, warnings  
+**Visual style:** Colored boxes with icons (lucide-react)  
+**Props:** `type` (required) - "info", "success", "warning", or "error"
+
+---
+
+## 7. FeatureGrid - Feature Showcase Grid
+
+This component displays features in a 2-column responsive grid with icons. Great for listing benefits or features.
+
+<FeatureGrid
+  features={[
+    {
+      title: "Data Analytics",
+      description:
+        "Get deep insights into your dating app performance with comprehensive statistics.",
+      icon: "chart-bar",
+    },
+    {
+      title: "Privacy Protected",
+      description:
+        "Your data is anonymized and secure. We never share your personal information.",
+      icon: "shield-check",
+    },
+    {
+      title: "Lightning Fast",
+      description:
+        "Process and visualize your data in seconds with our optimized algorithms.",
+      icon: "lightning-bolt",
+    },
+    {
+      title: "Community Insights",
+      description:
+        "Compare your stats with aggregated data from thousands of other users.",
+      icon: "users",
+    },
+  ]}
+/>
+
+**Use case:** Showcasing multiple features or benefits  
+**Visual style:** 2-column grid (responsive) with icons and descriptions  
+**Props:** `features` array with `title`, `description`, and `icon`  
+**Available icons:** calendar, shield-check, code, document, lightning-bolt, lightbulb, layers, chart-bar, star, users, cog, link, chart-line
+
+---
+
+## Testing Notes
+
+### Typical Post Structure
+
+Most blog posts use this pattern:
+
+```jsx
+// Intro content...
+
+<CtaNewsletter />      // ~25% through
+
+// Main content...
+
+<CtaCarousel />            // ~50-60% through
+
+// Conclusion...
+
+// Note: <CtaShowcase /> is automatically added by the blog layout - DO NOT add it manually!
+```
+
+### Simpler Posts
+
+Some shorter posts just use:
+
+```jsx
+// Content...
+
+<CtaCard /> // At the end
+```
+
+---
+
+## Component Props (Optional)
+
+All components work without props now, but you can still override:
+
+```jsx
+// Example: Custom newsletter CTA
+<CtaNewsletter
+  title="Special Offer"
+  description="Custom message here"
+/>
+
+// Example: Custom product CTA
+<CtaCarousel
+  title="Custom Title"
+  buttonText="Custom Button"
+/>
+```
+
+---
+
+## Design System
+
+### Colors
+
+- **Primary:** Rose/Pink (#E11D48 - rose-600)
+- **Accents:** Gradient from rose-600 to rose-700
+- **Backgrounds:** White/Gray-50
+- **Text:** Gray-900 (headings), Gray-600 (body)
+
+### Spacing
+
+- Components have built-in margin (`my-6` or `my-10`)
+- Responsive padding adjusts for mobile/desktop
+- Max-width containers for readability
+
+### Responsive Behavior
+
+- **Mobile:** Single column, stacked layout
+- **Desktop:** Split layouts, side-by-side content
+- **Breakpoints:** sm (640px), md (768px), xl (1280px)
+
+---
+
+## Testing Checklist
+
+When updating CTAs, test:
+
+- [ ] Mobile view (< 768px)
+- [ ] Tablet view (768px - 1024px)
+- [ ] Desktop view (> 1024px)
+- [ ] Newsletter form submission
+- [ ] Photo carousel auto-rotation
+- [ ] All links go to correct URLs
+- [ ] Hover states work properly
+- [ ] Text is readable and not cut off
+
+---
+
+## Quick Reference
+
+| Component           | Purpose        | Best For                  | Links To            |
+| ------------------- | -------------- | ------------------------- | ------------------- |
+| `<CtaCard />`       | Data upload    | Quick mention             | `/` (homepage)      |
+| `<CtaNewsletter />` | Email signup   | Lead gen                  | Newsletter          |
+| `<CtaCarousel />`   | AI photos      | Mid-article               | `/ai-dating-photos` |
+| `<CtaShowcase />`   | Big conversion | Auto-included (DON'T ADD) | `/ai-dating-photos` |
+| `<CTA />`           | Custom button  | Inline buttons            | Custom URL          |
+
+---
+
+**Note:** This is a test page. It won't be included in production blog listings because it's marked as internal testing content.

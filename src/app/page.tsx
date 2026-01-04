@@ -1,27 +1,27 @@
+import Image from "next/image";
+import Link from "next/link";
+import { CheckIcon } from "@heroicons/react/20/solid";
 import {
   ArrowPathIcon,
   CloudArrowUpIcon,
   FingerPrintIcon,
   LockClosedIcon,
 } from "@heroicons/react/24/outline";
-import { CheckIcon } from "@heroicons/react/20/solid";
+import { StarIcon } from "lucide-react";
+
+import { Text } from "@/app/_components/ui/text";
+import { getProductData } from "@/lib/constants/lemonSqueezy.constants";
 import { cn } from "@/lib/utils";
 
-import Link from "next/link";
-
-import { HeroHeading } from "./HeroHeading";
-import Image from "next/image";
-import { Text } from "@/app/_components/ui/text";
-import DataRequestSupport from "./DataRequestSupport";
-import Testimonials from "./Testimonials";
-import { FAQ } from "./FAQ";
-import NewsletterCTA from "./NewsletterCTA";
-import { StarIcon } from "lucide-react";
-import { Blog } from "./blog/BlogSection";
-import { About } from "./AboutSection";
 import { Button } from "./_components/ui/button";
-import { getProductData } from "@/lib/constants/lemonSqueezy.constants";
+import { About } from "./AboutSection";
+import { Blog } from "./blog/BlogSection";
+import DataRequestSupport from "./DataRequestSupport";
+import { FAQ } from "./FAQ";
+import { HeroHeading } from "./HeroHeading";
 import LiveDemoLink from "./LiveDemoLink";
+import NewsletterCTA from "./NewsletterCTA";
+import Testimonials from "./Testimonials";
 
 const features = [
   {

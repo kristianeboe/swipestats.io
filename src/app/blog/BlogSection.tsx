@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 import { Button } from "../_components/ui/button";
 
 export type BlogPost = {
@@ -26,10 +27,10 @@ export const posts: BlogPost[] = [
   {
     id: "1",
     title:
-      "I analyzed hundreds of user’s Tinder data — including messages — so you don’t have to.",
+      "I analyzed hundreds of user's Tinder data — including messages — so you don't have to.",
     href: "https://towardsdatascience.com/i-analyzed-hundreds-of-users-tinder-data-including-messages-so-you-dont-have-to-14c6dc4a5fdd",
     description:
-      "The data is embarrassingly intimate, but reveals the most boring parts of ourselves we already knew. I read Modern Romance by Aziz Ansari in 2016 and beyond a shadow of a doubt, it is one of the most influential books I’ve ever read...",
+      "The data is embarrassingly intimate, but reveals the most boring parts of ourselves we already knew. I read Modern Romance by Aziz Ansari in 2016 and beyond a shadow of a doubt, it is one of the most influential books I've ever read...",
     readTime: "13 min read",
     imageUrl: "https://miro.medium.com/max/1400/1*VqIdzn99v1VmeQVD34pO_w.jpeg",
     date: "Aug 10, 2021",

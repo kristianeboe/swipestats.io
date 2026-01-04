@@ -1,9 +1,11 @@
 import type { FC } from "react";
-import type { Content } from "@prismicio/client";
 import { asText } from "@prismicio/client";
-import type { SliceComponentProps } from "@prismicio/react";
-import CTAProductLinks from "@/components/cta/CTAProductLinks";
+
+import { CtaCarousel } from "@/app/blog/mdx/CtaCarousel";
 import { getPrismicLinkUrl } from "@/lib/utils/prismic.utils";
+
+import type { Content } from "@prismicio/client";
+import type { SliceComponentProps } from "@prismicio/react";
 
 /**
  * Props for `GetDatesProductLinks`.
@@ -51,7 +53,7 @@ const GetDatesProductLinks: FC<GetDatesProductLinksProps> = ({ slice }) => {
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
     >
-      <CTAProductLinks
+      <CtaCarousel
         title={titleText}
         description={descriptionText}
         buttonText={buttonText}

@@ -45,6 +45,18 @@
         "fieldset": "Slice Zone",
         "config": {
           "choices": {
+            "sidebar_cta": {
+              "type": "SharedSlice"
+            },
+            "newsletter_cta": {
+              "type": "SharedSlice"
+            },
+            "cta_footer": {
+              "type": "SharedSlice"
+            },
+            "exit_popup": {
+              "type": "SharedSlice"
+            },
             "get_dates_product_links": {
               "type": "SharedSlice"
             },

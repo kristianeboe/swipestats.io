@@ -1,8 +1,8 @@
 {
   "id": "cta_footer",
   "type": "SharedSlice",
-  "name": "CtaFooter",
-  "description": "CtaFooter",
+  "name": "CtaShowcase",
+  "description": "CtaShowcase",
   "variations": [
     {
       "id": "default",
@@ -78,7 +78,7 @@
         "afterimages": {
           "type": "Group",
           "config": {
-            "label": "After Images", 
+            "label": "After Images",
             "fields": {
               "image": {
                 "type": "Image",

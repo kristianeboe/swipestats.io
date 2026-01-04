@@ -28,8 +28,7 @@ type PickContentRelationshipFieldData<
       TSubRelationship["customtypes"],
       TLang
     >;
-  } & // Group
-  {
+  } & { // Group
     [TGroup in Extract<
       TRelationship["fields"][number],
       | prismic.CustomTypeModelFetchGroupLevel1
@@ -41,8 +40,7 @@ type PickContentRelationshipFieldData<
           PickContentRelationshipFieldData<TGroup, TGroupData, TLang>
         >
       : never;
-  } & // Other fields
-  {
+  } & { // Other fields
     [TFieldKey in Extract<
       TRelationship["fields"][number],
       string
@@ -221,6 +219,10 @@ export type AuthorDocument<Lang extends string = string> =
   prismic.PrismicDocumentWithUID<Simplify<AuthorDocumentData>, "author", Lang>;
 
 type BlogPostDocumentDataSlicesSlice =
+  | SidebarCtaSlice
+  | NewsletterCtaSlice
+  | CtaShowcaseSlice
+  | ExitPopupSlice
   | GetDatesProductLinksSlice
   | CtaSectionSlice
   | ImageSectionSlice
@@ -1369,11 +1371,11 @@ export type ContentWithTestimonialsAndStatsSlice = prismic.SharedSlice<
 >;
 
 /**
- * Item in *CtaFooter → Default → Primary → Before Images*
+ * Item in *CtaShowcase → Default → Primary → Before Images*
  */
-export interface CtaFooterSliceDefaultPrimaryBeforeimagesItem {
+export interface CtaShowcaseSliceDefaultPrimaryBeforeimagesItem {
   /**
-   * Before Image field in *CtaFooter → Default → Primary → Before Images*
+   * Before Image field in *CtaShowcase → Default → Primary → Before Images*
    *
    * - **Field Type**: Image
    * - **Placeholder**: *None*
@@ -1384,11 +1386,11 @@ export interface CtaFooterSliceDefaultPrimaryBeforeimagesItem {
 }
 
 /**
- * Item in *CtaFooter → Default → Primary → After Images*
+ * Item in *CtaShowcase → Default → Primary → After Images*
  */
-export interface CtaFooterSliceDefaultPrimaryAfterimagesItem {
+export interface CtaShowcaseSliceDefaultPrimaryAfterimagesItem {
   /**
-   * After Image field in *CtaFooter → Default → Primary → After Images*
+   * After Image field in *CtaShowcase → Default → Primary → After Images*
    *
    * - **Field Type**: Image
    * - **Placeholder**: *None*
@@ -1399,11 +1401,11 @@ export interface CtaFooterSliceDefaultPrimaryAfterimagesItem {
 }
 
 /**
- * Primary content in *CtaFooter → Default → Primary*
+ * Primary content in *CtaShowcase → Default → Primary*
  */
-export interface CtaFooterSliceDefaultPrimary {
+export interface CtaShowcaseSliceDefaultPrimary {
   /**
-   * Title field in *CtaFooter → Default → Primary*
+   * Title field in *CtaShowcase → Default → Primary*
    *
    * - **Field Type**: Rich Text
    * - **Placeholder**: Transform Your Dating Profile
@@ -1413,7 +1415,7 @@ export interface CtaFooterSliceDefaultPrimary {
   title: prismic.RichTextField;
 
   /**
-   * Subtitle field in *CtaFooter → Default → Primary*
+   * Subtitle field in *CtaShowcase → Default → Primary*
    *
    * - **Field Type**: Rich Text
    * - **Placeholder**: Our AI turns your ordinary photos into optimal dating profile pictures that get results
@@ -1423,7 +1425,7 @@ export interface CtaFooterSliceDefaultPrimary {
   subtitle: prismic.RichTextField;
 
   /**
-   * Description field in *CtaFooter → Default → Primary*
+   * Description field in *CtaShowcase → Default → Primary*
    *
    * - **Field Type**: Rich Text
    * - **Placeholder**: Upload your photos and get professionally enhanced versions in 48 hours
@@ -1433,7 +1435,7 @@ export interface CtaFooterSliceDefaultPrimary {
   description: prismic.RichTextField;
 
   /**
-   * ButtonText field in *CtaFooter → Default → Primary*
+   * ButtonText field in *CtaShowcase → Default → Primary*
    *
    * - **Field Type**: Rich Text
    * - **Placeholder**: Check It Out
@@ -1443,7 +1445,7 @@ export interface CtaFooterSliceDefaultPrimary {
   buttontext: prismic.RichTextField;
 
   /**
-   * ButtonLink field in *CtaFooter → Default → Primary*
+   * ButtonLink field in *CtaShowcase → Default → Primary*
    *
    * - **Field Type**: Link
    * - **Placeholder**: main CTA destination
@@ -1459,7 +1461,7 @@ export interface CtaFooterSliceDefaultPrimary {
   >;
 
   /**
-   * Before Images field in *CtaFooter → Default → Primary*
+   * Before Images field in *CtaShowcase → Default → Primary*
    *
    * - **Field Type**: Group
    * - **Placeholder**: *None*
@@ -1467,11 +1469,11 @@ export interface CtaFooterSliceDefaultPrimary {
    * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
    */
   beforeimages: prismic.GroupField<
-    Simplify<CtaFooterSliceDefaultPrimaryBeforeimagesItem>
+    Simplify<CtaShowcaseSliceDefaultPrimaryBeforeimagesItem>
   >;
 
   /**
-   * After Images field in *CtaFooter → Default → Primary*
+   * After Images field in *CtaShowcase → Default → Primary*
    *
    * - **Field Type**: Group
    * - **Placeholder**: *None*
@@ -1479,38 +1481,38 @@ export interface CtaFooterSliceDefaultPrimary {
    * - **Documentation**: https://prismic.io/docs/fields/repeatable-group
    */
   afterimages: prismic.GroupField<
-    Simplify<CtaFooterSliceDefaultPrimaryAfterimagesItem>
+    Simplify<CtaShowcaseSliceDefaultPrimaryAfterimagesItem>
   >;
 }
 
 /**
- * Default variation for CtaFooter Slice
+ * Default variation for CtaShowcase Slice
  *
  * - **API ID**: `default`
  * - **Description**: Default
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type CtaFooterSliceDefault = prismic.SharedSliceVariation<
+export type CtaShowcaseSliceDefault = prismic.SharedSliceVariation<
   "default",
-  Simplify<CtaFooterSliceDefaultPrimary>,
+  Simplify<CtaShowcaseSliceDefaultPrimary>,
   never
 >;
 
 /**
- * Slice variation for *CtaFooter*
+ * Slice variation for *CtaShowcase*
  */
-type CtaFooterSliceVariation = CtaFooterSliceDefault;
+type CtaShowcaseSliceVariation = CtaShowcaseSliceDefault;
 
 /**
- * CtaFooter Shared Slice
+ * CtaShowcase Shared Slice
  *
  * - **API ID**: `cta_footer`
- * - **Description**: CtaFooter
+ * - **Description**: CtaShowcase
  * - **Documentation**: https://prismic.io/docs/slices
  */
-export type CtaFooterSlice = prismic.SharedSlice<
+export type CtaShowcaseSlice = prismic.SharedSlice<
   "cta_footer",
-  CtaFooterSliceVariation
+  CtaShowcaseSliceVariation
 >;
 
 /**
@@ -4759,12 +4761,12 @@ declare module "@prismicio/client" {
       ContentWithTestimonialsAndStatsSliceDefaultPrimary,
       ContentWithTestimonialsAndStatsSliceVariation,
       ContentWithTestimonialsAndStatsSliceDefault,
-      CtaFooterSlice,
-      CtaFooterSliceDefaultPrimaryBeforeimagesItem,
-      CtaFooterSliceDefaultPrimaryAfterimagesItem,
-      CtaFooterSliceDefaultPrimary,
-      CtaFooterSliceVariation,
-      CtaFooterSliceDefault,
+      CtaShowcaseSlice,
+      CtaShowcaseSliceDefaultPrimaryBeforeimagesItem,
+      CtaShowcaseSliceDefaultPrimaryAfterimagesItem,
+      CtaShowcaseSliceDefaultPrimary,
+      CtaShowcaseSliceVariation,
+      CtaShowcaseSliceDefault,
       CtaInfoSlice,
       CtaInfoSliceDefaultPrimary,
       CtaInfoSliceVisualizeYourTinderDataPrimary,

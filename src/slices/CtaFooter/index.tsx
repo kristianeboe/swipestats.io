@@ -1,19 +1,21 @@
 import type { FC } from "react";
-import type { Content } from "@prismicio/client";
 import { asText } from "@prismicio/client";
-import type { SliceComponentProps } from "@prismicio/react";
-import CTAFooter from "@/components/cta/CTAFooter";
+
+import { CtaShowcase } from "@/app/blog/mdx/CtaShowcase";
 import { getPrismicLinkUrl } from "@/lib/utils/prismic.utils";
 
-/**
- * Props for `CtaFooter`.
- */
-export type CtaFooterProps = SliceComponentProps<Content.CtaFooterSlice>;
+import type { Content } from "@prismicio/client";
+import type { SliceComponentProps } from "@prismicio/react";
 
 /**
- * Component for "CtaFooter" Slices.
+ * Props for `CtaShowcase`.
  */
-const CtaFooter: FC<CtaFooterProps> = ({ slice }) => {
+export type CtaShowcaseProps = SliceComponentProps<Content.CtaShowcaseSlice>;
+
+/**
+ * Component for "CtaShowcase" Slices.
+ */
+const CtaShowcase: FC<CtaShowcaseProps> = ({ slice }) => {
   // Extract title from rich text
   const titleText = slice.primary.title
     ? asText(slice.primary.title)
@@ -56,7 +58,7 @@ const CtaFooter: FC<CtaFooterProps> = ({ slice }) => {
       data-slice-type={slice.slice_type}
       data-slice-variation={slice.variation}
     >
-      <CTAFooter
+      <CtaShowcase
         title={titleText}
         subtitle={subtitleText}
         description={descriptionText}
@@ -70,4 +72,4 @@ const CtaFooter: FC<CtaFooterProps> = ({ slice }) => {
   );
 };
 
-export default CtaFooter;
+export default CtaShowcase;

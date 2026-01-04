@@ -18,6 +18,9 @@ db.sqlite
 /out/
 next-env.d.ts
 
+# velite
+/.velite
+
 # production
 /build
 
@@ -74,3 +77,6 @@ src/app/test-slice/
 
 # Documentation files
 CTA_IMPLEMENTATION_SUMMARY.md
+
+
+exports

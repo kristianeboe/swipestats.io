@@ -1,0 +1,1 @@
+This file will be used by Gemini to keep notes and track its work.

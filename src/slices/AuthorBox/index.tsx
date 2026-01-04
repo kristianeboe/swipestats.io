@@ -1,8 +1,8 @@
-import { AuthorCard } from "@/app/blog/[uid]/AuthorCard";
-import { getPrismicLinkUrl } from "@/lib/utils/prismic.utils";
+import { type JSX } from "react";
 import { type Content } from "@prismicio/client";
 import { type SliceComponentProps } from "@prismicio/react";
-import { type JSX } from "react";
+
+import { getPrismicLinkUrl } from "@/lib/utils/prismic.utils";
 
 /**
  * Props for `AuthorBox`.
